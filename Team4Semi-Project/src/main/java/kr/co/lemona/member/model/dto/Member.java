@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//회원 정보를 담는 DTO 클래스
+// 회원 정보를 담는 DTO 클래스
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

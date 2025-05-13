@@ -1,4 +1,4 @@
-package kh.eclass.team4.project;
+package kr.co.lemona;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

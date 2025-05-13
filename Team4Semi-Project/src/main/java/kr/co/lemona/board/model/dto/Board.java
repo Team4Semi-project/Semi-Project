@@ -34,7 +34,12 @@ public class Board {
 	private String memberNickname;	// 작성자 닉네임
 	private String profileImg;		// 작성자 프로필 이미지
 	
-	private String thumbnail;		// 썸내일 - summernote 최상단 이미지
+	// 좋아요 Y/N == 1/0  
+	private int likeCheck;			// 좋아요 여부 확인
 	
+	// 썸내일 - summernote 최상단 이미지
+	private String thumbnail;		
+	
+	// 게시글에 달린 댓글 리스트
 	private List<DefaultComment> commentList;
 }

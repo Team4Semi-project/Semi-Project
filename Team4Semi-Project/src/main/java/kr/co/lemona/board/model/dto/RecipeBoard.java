@@ -1,5 +1,7 @@
 package kr.co.lemona.board.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +20,24 @@ public class RecipeBoard {
 	private String boardDelFl; 		// 삭제여부 ('N' or 'Y')
 	private String boardCreateDate; // 작성일
 	private String boardUpdateDate; // 수정일
-	private int memberNo; 			// 작성자 회원번호 (FK)
 	private int boardCode; 			// 게시판 코드 (FK)
 	private int categoryNo; 		// 카테고리 번호
+	
+	// BOARD(+)DEFAULT_COMMENT(+)DEFAULT_BOARD_LIKE
+	private int commentCount;		// 댓글 수
+	private int likeCount;			// 좋아요 수
+	// 좋아요 Y/N == 1/0  
+	private int likeCheck;			// 좋아요 여부 확인
+	
+	// 작성자 정보
+	private int memberNo; 			// 작성자 회원번호 (FK)
+	// BOARD(+)MEMBER
+	private String memberNickname;	// 작성자 닉네임
+	private String profileImg;		// 작성자 프로필 이미지
+	
+	// 썸내일 - <input type="radio" name="checkThumbnail">:checked
+	private String thumbnail;		
+	
+	// 게시글에 달린 댓글 리스트
+	private List<DefaultComment> commentList;
 }

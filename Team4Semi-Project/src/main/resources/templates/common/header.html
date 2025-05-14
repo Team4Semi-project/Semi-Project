@@ -1,0 +1,45 @@
+<!-- 헤더 프래그먼트 -->
+<header th:fragment="header" class="header">
+    <div class="header-container">
+        <div class="logo">
+            <a th:href="@{/}">
+                <img src="/images/lemona-logo.png" alt="레모나">
+                <span>LEMONA</span>
+            </a>
+        </div>
+
+        <div class="search-dropdown">
+            <button class="dropdown-button">
+                <span>제목 + 내용</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">제목 + 내용</a>
+                <a href="#">제목만</a>
+                <a href="#">내용만</a>
+                <a href="#">작성자</a>
+            </div>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" placeholder="검색어를 입력하세요">
+            <button type="submit" class="search-button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <div class="user-actions">
+            <a th:if="${session.user == null}" th:href="@{/login}" class="login-button">로그인</a>
+            <div th:if="${session.user != null}" class="user-menu">
+                <span th:text="${session.user.nickname}">사용자명</span>
+                <div class="user-dropdown">
+                    <a th:href="@{/mypage}">내 정보</a>
+                    <a th:href="@{/logout}">로그아웃</a>
+                </div>
+            </div>
+            <a th:href="@{/share}" class="share-button">
+                <i class="fas fa-share-alt"></i>
+            </a>
+        </div>
+    </div>
+</header>

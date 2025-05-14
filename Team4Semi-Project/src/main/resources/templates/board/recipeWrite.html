@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEMONA - 글 작성하기</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Summernote CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
+
+    
+    <style>
+        .lemona-brand {
+            background-color: #ffc107;
+            padding: 10px 0;
+        }
+        .lemona-logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        .chef-hat {
+            margin-right: 5px;
+        }
+        .title-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .write-header {
+            background-color: #ffc107;
+            color: #000;
+            padding: 15px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .submit-btn {
+            background-color: #ffc107;
+            border: none;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 4px;
+            float: right;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <th:block th:replace="~{common/header}"></th:block>
+    
+    <div class="container mt-3">
+        <div class="write-header">
+            글 작성하기
+        </div>
+        
+        <form id="postForm" method="post" action="/post/save">
+            <input type="text" name="title" class="title-input" placeholder="글제목을 입력해주세요" required>
+            
+            <textarea id="summernote" name="content"></textarea>
+            
+            <button type="submit" class="submit-btn">작성 완료</button>
+        </form>
+    </div>
+    
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Summernote JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                placeholder: '내용을 입력해주세요',
+                height: 300,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        // Here you would handle image uploads to your server
+                        // This is just a placeholder for where you'd implement image uploads
+                        for(let i = 0; i < files.length; i++) {
+                            // Example: You would upload the file and get a URL back
+                            // Then insert the image with that URL
+                            // uploadImage(files[i]);
+                        }
+                    }
+                }
+            });
+        });
+        
+        // Example image upload function (you would need to implement this)
+        function uploadImage(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Example AJAX call to upload the image
+            /*
+            $.ajax({
+                url: '/upload/image',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(url) {
+                    $('#summernote').summernote('insertImage', url);
+                },
+                error: function(error) {
+                    console.error('Upload failed:', error);
+                }
+            });
+            */
+        }
+    </script>
+</body>
+</html>

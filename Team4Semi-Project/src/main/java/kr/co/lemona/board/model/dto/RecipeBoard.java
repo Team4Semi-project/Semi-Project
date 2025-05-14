@@ -40,4 +40,7 @@ public class RecipeBoard {
 	
 	// 게시글에 달린 댓글 리스트
 	private List<DefaultComment> commentList;
+	
+	// 게시글에 포함된 해쉬태그
+	private List<String> hashTag;
 }

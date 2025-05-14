@@ -1,0 +1,33 @@
+<!-- 네비게이션 프래그먼트 -->
+<nav th:fragment="navigation" class="navigation">
+    <div class="nav-container">
+        <ul class="menu-list">
+            <li class="menu-item recipe-menu" th:classappend="${currentMenu == 'recipe'} ? 'active' : ''">
+                <a th:href="@{/recipes}">레시피</a>
+                <!-- 레시피 메뉴 호버 시 나타나는 서브 메뉴 -->
+                <div class="submenu">
+                    <ul class="category-list">
+                        <li><a th:href="@{/recipes(category='all')}">전체</a></li>
+                        <li><a th:href="@{/recipes(category='korean')}">한식</a></li>
+                        <li><a th:href="@{/recipes(category='chinese')}">중식</a></li>
+                        <li><a th:href="@{/recipes(category='western')}">양식</a></li>
+                        <li><a th:href="@{/recipes(category='japanese')}">일식</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="menu-item" th:classappend="${currentMenu == 'popular'} ? 'active' : ''">
+                <a th:href="@{/recipes/popular}">인기 레시피</a>
+            </li>
+            <li class="menu-item" th:classappend="${currentMenu == 'free'} ? 'active' : ''">
+                <a th:href="@{/board/free}">자유 게시판</a>
+            </li>
+            <li class="menu-item" th:classappend="${currentMenu == 'notice'} ? 'active' : ''">
+                <a th:href="@{/board/notice}">공지사항</a>
+            </li>
+        </ul>
+
+        <div class="write-button-container">
+            <a th:href="@{/write}" class="write-button">Write Button</a>
+        </div>
+    </div>
+</nav>

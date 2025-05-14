@@ -35,7 +35,7 @@ public class Board {
 	private String memberNickname;	// 작성자 닉네임
 	private String profileImg;		// 작성자 프로필 이미지
 	
-	// 썸내일 - summernote 최상단 이미지
+	// 썸네일 - summernote 최상단 이미지
 	private String thumbnail;		
 	
 	// 게시글에 달린 댓글 리스트

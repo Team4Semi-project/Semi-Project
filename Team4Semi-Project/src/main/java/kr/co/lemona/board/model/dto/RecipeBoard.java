@@ -35,7 +35,7 @@ public class RecipeBoard {
 	private String memberNickname;	// 작성자 닉네임
 	private String profileImg;		// 작성자 프로필 이미지
 	
-	// 썸내일 - <input type="radio" name="checkThumbnail">:checked
+	// 썸네일 - <input type="radio" name="checkThumbnail">:checked
 	private String thumbnail;		
 	
 	// 게시글에 달린 댓글 리스트

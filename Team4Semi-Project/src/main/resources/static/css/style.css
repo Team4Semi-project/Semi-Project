@@ -1,215 +1,169 @@
-/* 전체 스타일 초기화 */
+/* LEMONA Login Page CSS */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
 }
 
 body {
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-/* 헤더 스타일 */
-.header {
-  padding: 20px;
-  background-color: white;
-  border-bottom: 1px solid #eee;
+.container {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-.search-bar {
-  max-width: 720px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 10px;
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 20px;
 }
 
 .logo {
-  width: 100px;
-  margin-left: 20px;
+    text-align: center;
 }
 
-/* 로고 컨테이너 스타일 */
-.logo-container {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0;
+.logo img {
+    width: 80px;
+    height: 80px;
 }
 
-.logo-container .logo {
-  width: 120px;
-  text-align: center;
-  margin-left: 0;
+.brand-name {
+    color: #204c33;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5px;
 }
 
-/* 탭 스타일 */
-.tab-container {
-  display: flex;
-  max-width: 450px;
-  margin: 30px auto 0;
-  width: 100%;
-}
-
-.tab {
-  flex: 1;
-  padding: 15px 0;
-  text-align: center;
-  cursor: pointer;
-  background-color: white;
-  border: none;
-}
-
-.tab.active {
-  background-color: #FFDD33;
-  color: #333;
-  font-weight: bold;
-}
-
-/* 로그인 컨테이너 스타일 */
 .login-container {
-  max-width: 450px;
-  margin: 20px auto;
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+    border: 1px solid #f0e8d0;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    margin: 0 auto;
+    margin-bottom: 40px;
 }
 
-/* 아이디/비밀번호 찾기 컨테이너 스타일 */
-.find-container {
-  max-width: 450px;
-  margin: 0 auto 30px;
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+.login-header {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-/* 회원가입 컨테이너 스타일 */
-.register-container {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+.input-group {
+    margin-bottom: 10px;
 }
 
-/* 입력 필드 스타일 */
 .input-field {
-  width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff9e0;
 }
 
-/* 에러 메시지 스타일 */
 .error-message {
-  color: #e74c3c;
-  font-size: 14px;
-  margin: -10px 0 15px;
-  display: none;
+    color: #ff4d4f;
+    font-size: 12px;
+    margin: 8px 0;
+    display: none;
 }
 
-/* 결과 필드 스타일 */
-.result-field {
-  width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  background-color: #f9f9f9;
-  display: none;
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-/* 버튼 스타일 */
 .button-primary {
-  width: 100%;
-  padding: 12px;
-  background-color: #FFDD33;
-  color: #333;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 15px;
+    flex: 1;
+    padding: 12px;
+    background-color: #ffda44;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .button-secondary {
-  width: 100%;
-  padding: 12px;
-  background-color: white;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 15px;
+    flex: 1;
+    padding: 12px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
 }
 
-/* 폼 행 스타일 (회원가입 페이지용) */
-.form-row {
-  display: flex;
-  margin-bottom: 15px;
-  align-items: center;
+.find-buttons-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.form-row .input-field {
-  flex: 1;
-  margin-bottom: 0;
+.find-button {
+    flex: 1;
+    padding: 10px;
+    background-color: #f8f8f8;
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
 }
 
-.form-row .button {
-  padding: 12px 15px;
-  background-color: #FFDD33;
-  color: #333;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-left: 10px;
-  white-space: nowrap;
-}
-
-/* 링크 컨테이너 스타일 */
-.links-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-}
-
-.link {
-  margin: 0 10px;
-  color: #777;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-/* 푸터 스타일 */
 .footer {
-  background-color: #333;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  margin-top: auto;
+    margin-top: auto;
+    background-color: #333;
+    color: #888;
+    padding: 15px;
 }
 
 .footer-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    font-size: 12px;
 }
 
 .footer-link {
-  color: white;
-  margin: 0 10px;
-  font-size: 14px;
+    cursor: pointer;
+    color: #888;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 480px) {
+    .login-container {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .footer-links {
+        gap: 10px;
+        font-size: 10px;
+    }
 }

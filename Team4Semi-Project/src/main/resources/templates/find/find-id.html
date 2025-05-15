@@ -1,53 +1,131 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEMONA - 아이디 찾기</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEMONA - 아이디 찾기</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.find-container {
+    background-color: #fff;
+    border: 1px solid #f0e8d0;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+.find-header {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.tab-buttons {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #888;
+    cursor: pointer;
+}
+
+.tab-button.active {
+    color: #204c33;
+    font-weight: bold;
+    border-bottom: 2px solid #ffda44;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+</style>
 </head>
 <body>
-
-  <div class="header">
-    <img src="/api/placeholder/100/50" alt="LEMONA" class="logo">
-  </div>
-
-  <div class="tab-container">
-    <button class="tab active" id="findIdTab">아이디 찾기</button>
-    <button class="tab" id="findPwTab">비밀번호 찾기</button>
-  </div>
-
-  <div class="find-container">
-    <form id="findIdForm">
-      <input type="text" class="input-field" placeholder="이름" required>
-      <input type="email" class="input-field" placeholder="이메일" required>
-      <div class="result-field" id="idResult">찾은 아이디가 여기에 표시됩니다</div>
-      
-      <!-- 초기 버튼 -->
-      <div id="initialButtons">
-        <button type="submit" class="button-primary">아이디 찾기</button>
-        <button type="button" class="button-secondary" onclick="location.href='register.html'">회원가입</button>
+  <div class="container">
+    <div class="logo-container">
+      <div class="logo">
+        <img src="lemona-logo.svg" alt="LEMONA">
+        <div class="brand-name">LEMONA</div>
       </div>
-      
-      <!-- 결과 후 버튼 -->
-      <div id="resultButtons" style="display: none;">
-        <button type="button" class="button-primary" onclick="location.href='find-password.html'">비밀번호 찾기</button>
-        <button type="button" class="button-secondary" onclick="location.href='login.html'">로그인 하기</button>
-      </div>
-    </form>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-links">
-      <span class="footer-link">프라이버시 정책</span>
-      <span class="footer-link">개인정보 처리방침</span>
-      <span class="footer-link">서비스 이용약관</span>
-      <span class="footer-link">마케팅</span>
-      <span class="footer-link">© Copyright</span>
-      <span class="footer-link">연락처</span>
     </div>
-  </footer>
 
-  <script src="find-id.js"></script>
+    <div class="find-container">
+      <div class="find-header">아이디 찾기</div>
+      
+      <div class="tab-buttons">
+        <button class="tab-button active">아이디 찾기</button>
+        <button class="tab-button" id="findPwTab">비밀번호 찾기</button>
+      </div>
+      
+      <form id="findIdForm">
+        <div class="form-group">
+          <label class="form-label">이름</label>
+          <input type="text" class="input-field" id="name" placeholder="이름을 입력하세요">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">이메일</label>
+          <input type="email" class="input-field" id="email" placeholder="이메일을 입력하세요">
+        </div>
+        
+        <div class="button-group">
+          <button type="button" id="cancelBtn" class="button-secondary">취소</button>
+          <button type="submit" id="findBtn" class="button-primary">아이디 찾기</button>
+        </div>
+      </form>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <span class="footer-link">프라이버시 정책</span>
+        <span class="footer-link">개인정보 처리방침</span>
+        <span class="footer-link">서비스 이용약관</span>
+        <span class="footer-link">마케팅</span>
+        <span class="footer-link">© Copyright</span>
+        <span class="footer-link">Q&A</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cancelBtn = document.getElementById('cancelBtn');
+      const findPwTab = document.getElementById('findPwTab');
+      
+      cancelBtn.addEventListener('click', function() {
+        window.location.href = 'index.html';
+      });
+      
+      findPwTab.addEventListener('click', function() {
+        window.location.href = 'find-password.html';
+      });
+      
+      const findIdForm = document.getElementById('findIdForm');
+      
+      findIdForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('입력하신 정보로 아이디를 찾을 수 없습니다.');
+      });
+    });
+  </script>
 </body>
-</html> 
+</html>

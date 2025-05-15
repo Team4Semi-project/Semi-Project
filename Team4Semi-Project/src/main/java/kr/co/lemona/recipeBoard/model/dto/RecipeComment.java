@@ -1,4 +1,4 @@
-package kr.co.lemona.board.model.dto;
+package kr.co.lemona.recipeBoard.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

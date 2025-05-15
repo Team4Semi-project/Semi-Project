@@ -1,4 +1,4 @@
-package kr.co.lemona.board.controller;
+package kr.co.lemona.recipeBoard.controller;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.co.lemona.board.model.service.RecipeBoardService;
+import kr.co.lemona.recipeBoard.model.service.RecipeBoardService;
 import lombok.extern.slf4j.Slf4j;
 
 /** 레시피 게시판 컨트롤러

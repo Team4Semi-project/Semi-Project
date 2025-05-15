@@ -13,37 +13,51 @@ import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import kr.co.lemona.recipeBoard.model.mapper.RecipeBoardMapper;
 
 @Service
-public class RecipeBoardServiceImpl implements RecipeBoardService{
-	
+public class RecipeBoardServiceImpl implements RecipeBoardService {
+
 	@Autowired
 	private RecipeBoardMapper mapper;
-	
-	
-	/** 레시피 게시판/카테고리 별 페이지 요청 서비스
-	 * @author 재호
-	 */
+
+	// 레시피 게시판 목록 조회
 	@Override
 	public Map<String, Object> selectRecipeBoardList(int categoryNo, int cp) {
-	
-		// 지정된 카테고리 게시판의 레시피 게시글 수를 조회
-		int listCount = mapper.getRecipeBoardListCount(categoryNo);
-		
-		// 게시글 수를 이용해서 Pagination 생성
+
+		// 1. 지정된 카테고리(categoryNo)에서
+		// 삭제 되지 않은 게시글 수를 조회
+		int listCount = mapper.getListCount(categoryNo);
+
+		// 2. 1번의 결과 + cp 를 이용해서
+		// Pagination 객체를 생성
+		// * Pagination 객체 : 게시글 목록 구성에 필요한 값을 저장한 객체
 		Pagination pagination = new Pagination(cp, listCount);
-		
-		// 지정된 카테고리 게시판의 페이지 목록 조회
-		int limit = pagination.getLimit(); // 한 페이지에 보여줄 게시글 개수
-		int offset = (cp-1)*limit; 		   // 건너뛸 게시글 수
-		RowBounds rowBounds = new RowBounds(offset,limit);
-		
-		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
-		
-		// 조회 결과 + 페이지내이션 객체 전달
-		Map<String,Object> map = new HashMap<>();
-		
+
+		// 3. 특정 게시판의 지정된 페이지 목록 조회
+		/*
+		 * ROWBOUNDS 객체 (MyBatis 제공 객체) : 지정된 크기만큼 건너뛰고 제한된 크기만큼(limit) 행을 조회하는 객체
+		 * 
+		 * --> 페이징 처리가 굉장히 간단해짐
+		 */
+		int limit = pagination.getLimit(); // 10개씩 조회
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		// Mapper 메서드 호출 시 원래 전달할 수 있는 매개변수 1개
+		// -> 2개를 전달할 수 있는 경우가 있음
+		// rowBounds 를 이용할 때!
+		// -> 첫번째 매개변수 -> SQL 에 전달할 파라미터
+		// -> 두번째 매개변수 -> RowBounds 객체 전달
+		List<RecipeBoard> RecipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
+
+		// log.debug("boardList 결과 : {}", boardList);
+
+		// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묶어서 반환
+		Map<String, Object> map = new HashMap<>();
+
 		map.put("pagination", pagination);
-		map.put("recipeBoardList", recipeBoardList);
-		
+		map.put("boardList", RecipeBoardList);
+
+		// 5. 결과 반환
 		return map;
 	}
+
 }

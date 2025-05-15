@@ -24,34 +24,36 @@ public class RecipeBoardController {
 	@Autowired
 	private RecipeBoardService service;
 	
-	
-	/** 레시피 게시판/카테고리 별 페이지 요청 메서드
-	 * @param categoryNo 
-	 * @param cp		 // 페이지내이션
-	 * @param model		 // 리스트 전달 객체
-	 * @param paramMap   // 검색어 + cp
-	 * @return
-	 * @author 재호
-	 */
-	@GetMapping("{categoryNo:[1-9]+}")
-	public String recipeBoardCategory(@PathVariable("categoryNo") int categoryNo,
-									  @RequestParam(value="cp", required=false, defaultValue="1") int cp,
-									  Model model,
-									  @RequestParam Map<String, Object> paramMap) {
+  
+	@GetMapping("{categoryNo:[0-9]+}")
+	public String selectRecipeBoardList(@PathVariable("categoryNo") int categoryNo,
+								@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+								Model model,
+								@RequestParam Map<String, Object> paramMap) {
 		
-		// 조회 서비스 호출후 결과 반환
-		Map<String, Object> map = service.selectRecipeBoardList(categoryNo, cp);
+		// 조회 서비스 호출 후 결과 반환 받기.
+		log.debug("===================> categoryNo : " + categoryNo);
 		
-		if(paramMap.get("key") == null) { // 검색이 아닐때
+		Map<String, Object> map = null;
+		
+
+		if(paramMap.get("key") == null) { // 검색이 아닌 경우
 			
-		} else { // 검색일 때
+			// 게시글 목록 조회 서비스 호출
+			map = service.selectRecipeBoardList(categoryNo, cp);
 			
-		}
+		} else { // 검색인 경우 --> paramMap
+			 			
+			// 검색 서비스 호출
+			// map = service.serchList(paramMap, cp);
+			
+		}		
 		
+		// model 에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
-		model.addAttribute("recipeBoardList", map.get("recipeBoardList"));
+		model.addAttribute("boardList", map.get("boardList"));
 		
-		return "board/recipeBoardList";
+		return "board/boardList";
 	}
 	
 }

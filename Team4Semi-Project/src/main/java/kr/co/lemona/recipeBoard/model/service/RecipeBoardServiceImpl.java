@@ -24,7 +24,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		// 1. 지정된 카테고리(categoryNo)에서
 		// 삭제 되지 않은 게시글 수를 조회
-		int listCount = mapper.getListCount(categoryNo);
+		int listCount = mapper.getRecipeBoardListCount(categoryNo);
 
 		// 2. 1번의 결과 + cp 를 이용해서
 		// Pagination 객체를 생성
@@ -46,7 +46,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		// rowBounds 를 이용할 때!
 		// -> 첫번째 매개변수 -> SQL 에 전달할 파라미터
 		// -> 두번째 매개변수 -> RowBounds 객체 전달
-		List<RecipeBoard> RecipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
+		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
 
 		// log.debug("boardList 결과 : {}", boardList);
 
@@ -54,7 +54,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("pagination", pagination);
-		map.put("boardList", RecipeBoardList);
+		map.put("recipeBoardList", recipeBoardList);
 
 		// 5. 결과 반환
 		return map;

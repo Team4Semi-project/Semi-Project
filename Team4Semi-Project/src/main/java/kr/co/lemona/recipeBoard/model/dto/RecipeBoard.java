@@ -1,7 +1,8 @@
-package kr.co.lemona.board.model.dto;
+package kr.co.lemona.recipeBoard.model.dto;
 
 import java.util.List;
 
+import kr.co.lemona.board.model.dto.DefaultComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

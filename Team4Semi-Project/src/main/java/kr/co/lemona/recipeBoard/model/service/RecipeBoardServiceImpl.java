@@ -1,4 +1,4 @@
-package kr.co.lemona.board.model.service;
+package kr.co.lemona.recipeBoard.model.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,9 +8,9 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.lemona.board.model.dto.RecipeBoard;
 import kr.co.lemona.board.model.dto.Pagination;
-import kr.co.lemona.board.model.mapper.RecipeBoardMapper;
+import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
+import kr.co.lemona.recipeBoard.model.mapper.RecipeBoardMapper;
 
 @Service
 public class RecipeBoardServiceImpl implements RecipeBoardService {

@@ -1,4 +1,4 @@
-package kr.co.lemona.board.model.service;
+package kr.co.lemona.recipeBoard.model.service;
 
 import java.util.Map;
 

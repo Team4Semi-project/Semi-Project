@@ -1,11 +1,11 @@
-package kr.co.lemona.board.model.mapper;
+package kr.co.lemona.recipeBoard.model.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
-import kr.co.lemona.board.model.dto.RecipeBoard;
+import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 
 @Mapper
 public interface RecipeBoardMapper {

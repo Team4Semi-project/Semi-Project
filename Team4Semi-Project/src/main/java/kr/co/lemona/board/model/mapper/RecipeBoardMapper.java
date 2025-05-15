@@ -5,10 +5,11 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
-import kr.co.lemona.board.model.dto.Board;
+import kr.co.lemona.board.model.dto.RecipeBoard;
 
 @Mapper
 public interface RecipeBoardMapper {
+
 
 	/** 해당 카테고리 내에서 삭제되지 않은 글 갯수
 	 * @param categoryNo
@@ -21,6 +22,6 @@ public interface RecipeBoardMapper {
 	 * @param rowBounds
 	 * @return
 	 */
-	List<Board> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
+	List<RecipeBoard> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
 
 }

@@ -8,7 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.lemona.board.model.dto.Board;
+import kr.co.lemona.board.model.dto.RecipeBoard;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.board.model.mapper.RecipeBoardMapper;
 
@@ -46,7 +46,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		// rowBounds 를 이용할 때!
 		// -> 첫번째 매개변수 -> SQL 에 전달할 파라미터
 		// -> 두번째 매개변수 -> RowBounds 객체 전달
-		List<Board> RecipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
+		List<RecipeBoard> RecipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
 
 		// log.debug("boardList 결과 : {}", boardList);
 

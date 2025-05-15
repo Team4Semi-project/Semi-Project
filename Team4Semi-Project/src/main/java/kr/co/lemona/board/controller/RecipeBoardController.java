@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.co.lemona.board.model.service.RecipeBoardService;
 import lombok.extern.slf4j.Slf4j;
 
+/** 레시피 게시판 컨트롤러
+ * @author 미애, 재호
+ */
 @Controller
 @Slf4j
 @RequestMapping("board/1")
@@ -21,6 +24,7 @@ public class RecipeBoardController {
 	@Autowired
 	private RecipeBoardService service;
 	
+  
 	@GetMapping("{categoryNo:[0-9]+}")
 	public String selectRecipeBoardList(@PathVariable("categoryNo") int categoryNo,
 								@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
@@ -49,9 +53,7 @@ public class RecipeBoardController {
 			
 		}		
 		
-		
-		
-		
+    
 		// model 에 반환 받은 값 등록
 		//model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));

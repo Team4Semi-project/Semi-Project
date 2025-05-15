@@ -21,7 +21,7 @@ public class Pagination {
 		super();
 		this.currentPage = currentPage;
 		this.listCount = listCount;
-		
+
 		calculate();
 	}
 
@@ -31,7 +31,7 @@ public class Pagination {
 		this.listCount = listCount;
 		this.limit = limit;
 		this.pageSize = pageSize;
-		
+	
 		calculate();
 	}
 
@@ -61,6 +61,7 @@ public class Pagination {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 		calculate();
+
 	}
 
 	@Override

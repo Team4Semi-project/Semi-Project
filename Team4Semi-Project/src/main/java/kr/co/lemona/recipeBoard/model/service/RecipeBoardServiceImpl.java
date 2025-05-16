@@ -1,6 +1,6 @@
 package kr.co.lemona.recipeBoard.model.service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.lemona.board.model.dto.Pagination;
+import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import kr.co.lemona.recipeBoard.model.mapper.RecipeBoardMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +79,27 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		// 5. 결과 반환
 		return map;
+	}
+
+	/** 레시피 게시글 상세 조회
+	 * @author miae
+	 */
+	@Override
+	public Map<String, Object> selectOneRecipe(Map<String, Integer> map) {
+		
+		// 각각의 테이블에서 값을 조회해와야하기 때문에 map 사용
+		Map<String, Object> map2 = new HashMap<>();
+		
+		// boardStep은 여러개의 값을 받아오기 때문에 ArrayList 사용
+		List<BoardStep> boardStepList = new ArrayList<>();
+		
+		boardStepList = mapper.selectBoardStepList(map.get("boardNo"));
+		RecipeBoard recipeBoard = mapper.selectOneRecipe(map);
+		
+		map2.put("recipeBoard", recipeBoard);
+		map2.put("boardStepList", boardStepList);
+		
+		return map2;
 	}
 
 }

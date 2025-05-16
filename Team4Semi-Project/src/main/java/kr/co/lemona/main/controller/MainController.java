@@ -14,7 +14,7 @@ public class MainController {
 	@RequestMapping("/")
 	public String mainPage() {
 		
-		return "board/defaultBoardWrite";
+		return "common/main";
 	}
 	
 	

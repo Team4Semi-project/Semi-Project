@@ -51,7 +51,6 @@ public class RecipeBoardController {
 			 			
 			// 검색 서비스 호출, 추후 개발 예정
 			// map = service.serchList(paramMap, cp);
-			
 		}		
 		
 		// model 에 반환 받은 값 등록
@@ -61,4 +60,39 @@ public class RecipeBoardController {
 		return "board/boardList";
 	}
 	
+	
+	/** 인기 게시판 조회
+	 * @param cp
+	 * @param model
+	 * @param paramMap
+	 * @return
+	 * @author 재호
+	 */
+	@GetMapping("popular")
+	public String selectPopularBoardList(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+									 Model model,
+									 @RequestParam Map<String,Object> paramMap) {
+		
+		// 조회 서비스 호출 후 결과 반환 받기.		
+		Map<String, Object> map = null;
+		
+		if(paramMap.get("key") == null) { // 검색이 아닌 경우
+			
+			// 게시글 목록 조회 서비스 호출
+			map = service.selectPopularBoardList(cp);
+			
+			log.debug(""+map.get("boardList"));
+			
+		} else { // 검색인 경우 --> paramMap
+			 			
+			// 검색 서비스 호출
+			// map = service.serchList(paramMap, cp);
+		}		
+		
+		// model 에 반환 받은 값 등록
+		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("boardList", map.get("boardList"));
+		
+		return "recipeBoard/recipeBoardList";		
+	}
 }

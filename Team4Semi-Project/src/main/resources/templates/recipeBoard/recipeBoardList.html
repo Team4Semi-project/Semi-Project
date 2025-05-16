@@ -224,12 +224,17 @@
         </section>
     </main>
 
+    <!-- 추가 스크립트 -->
+    <script layout:fragment="script">
+        // 추가 스크립트가 필요한 경우
+    </script>
+
     <!-- 푸터 프래그먼트 -->
     <footer th:replace="~{common/footer :: footer}"></footer>
 
     <!-- 공통 스크립트 -->
     <script th:src="@{/js/recipeBoard/recipeBoardList.js}"></script>
-    <script layout:fragment="script"></script>
+    <!-- <script layout:fragment="script"></script> -->
 </body>
 
 </html>

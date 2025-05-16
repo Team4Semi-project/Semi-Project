@@ -8,7 +8,7 @@
  * 5. 게시글 정렬 기능
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 전역 변수
     const recipeMenu = document.querySelector('.recipe-menu');
     const viewToggles = document.querySelectorAll('.view-toggle');
@@ -22,16 +22,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 메뉴 호버 기능
     initMenuHover();
-    
+
     // 뷰 토글 (아젠다/코지)
     initViewToggle();
-    
+
     // 드롭다운 기능
     initDropdowns();
-    
+
     // 정렬 기능
     initSorting();
-    
+
     // 검색 기능
     initSearch();
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (recipeMenu) {
             // 모바일 환경에서는 클릭 이벤트로 서브메뉴 표시
             if (window.innerWidth <= 768) {
-                recipeMenu.addEventListener('click', function(e) {
+                recipeMenu.addEventListener('click', function (e) {
                     // 이미 서브메뉴가 열려있는 경우, 링크 동작 허용
                     if (e.target.tagName === 'A' && !e.target.closest('.submenu')) {
                         e.preventDefault();
@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                 });
-                
+
                 // 서브메뉴 외부 클릭 시 닫기
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', function (e) {
                     if (!e.target.closest('.recipe-menu')) {
                         const submenu = recipeMenu.querySelector('.submenu');
                         if (submenu) {
@@ -75,26 +75,26 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function initViewToggle() {
         viewToggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
+            toggle.addEventListener('click', function () {
                 // 활성화된 토글 클래스 제거
                 viewToggles.forEach(t => t.classList.remove('active'));
-                
+
                 // 클릭된 토글 활성화
                 this.classList.add('active');
-                
+
                 // 뷰 모드 변경
                 const viewMode = this.dataset.view;
                 if (recipeContainer) {
                     if (viewMode === 'agenda') {
                         cozy.style.display = "none";
                         agenda.style.display = "block";
-                        
+
                         // AJAX로 아젠다 뷰 데이터 요청
                         //fetchAgendaView();
                     } else {
                         agenda.style.display = "none";
                         cozy.style.display = "block";
-                        
+
                         // AJAX로 코지 뷰 데이터 요청
                         //fetchCozyView();
                     }
@@ -103,30 +103,66 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // 토글 배경 전환 UI 구현 코드
+    const indicator = document.querySelector('.background-indicator');
+
+    viewToggles.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            // active 클래스 관리
+            viewToggles.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // 1단계: 먼저 width를 100%로 확장
+            indicator.style.transition = 'width 0.3s ease';
+            indicator.style.width = '100%';
+
+            // 2단계: 약간 기다린 뒤 위치(left/right) 설정
+            setTimeout(() => {
+                if (index === 0) {
+                    // agenda 왼쪽
+                    indicator.style.left = '0';
+                    indicator.style.right = 'auto';
+                } else {
+                    // cozy 오른쪽
+                    indicator.style.left = 'auto';
+                    indicator.style.right = '0';
+                }
+
+                // 3단계: 다시 width를 50%로 줄임
+                // 위치 설정이 적용되도록 약간의 시간차를 둠
+                setTimeout(() => {
+                    indicator.style.transition = 'width 0.3s ease';
+                    indicator.style.width = '50%';
+                }, 20); // 위치 변경 후 살짝 기다림
+
+            }, 240); // width 확장 후 대기 시간 (transition 시간과 같음)
+        });
+    });
+
     /**
      * 아젠다 뷰 데이터 가져오기
      */
     function fetchAgendaView() {
         // 현재 URL 정보 가져오기
         const url = new URL(window.location.href);
-        
+
         // 뷰 모드 파라미터 추가
         url.searchParams.set('viewMode', 'agenda');
-        
+
         // AJAX 요청
         fetch(url.toString(), {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-        .then(response => response.text())
-        .then(html => {
-            // 컨테이너 내용 교체
-            recipeContainer.innerHTML = html;
-        })
-        .catch(error => {
-            console.error('아젠다 뷰 로딩 실패:', error);
-        });
+            .then(response => response.text())
+            .then(html => {
+                // 컨테이너 내용 교체
+                recipeContainer.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('아젠다 뷰 로딩 실패:', error);
+            });
     }
 
     /**
@@ -135,24 +171,24 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchCozyView() {
         // 현재 URL 정보 가져오기
         const url = new URL(window.location.href);
-        
+
         // 뷰 모드 파라미터 추가
         url.searchParams.set('viewMode', 'cozy');
-        
+
         // AJAX 요청
         fetch(url.toString(), {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-        .then(response => response.text())
-        .then(html => {
-            // 컨테이너 내용 교체
-            recipeContainer.innerHTML = html;
-        })
-        .catch(error => {
-            console.error('코지 뷰 로딩 실패:', error);
-        });
+            .then(response => response.text())
+            .then(html => {
+                // 컨테이너 내용 교체
+                recipeContainer.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('코지 뷰 로딩 실패:', error);
+            });
     }
 
     /**
@@ -161,46 +197,46 @@ document.addEventListener('DOMContentLoaded', function() {
     function initDropdowns() {
         dropdownButtons.forEach(button => {
             const dropdown = button.nextElementSibling;
-            
+
             // 드롭다운 토글
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 e.stopPropagation();
                 const isVisible = dropdown.style.display === 'block';
-                
+
                 // 모든 드롭다운 닫기
                 document.querySelectorAll('.dropdown-content').forEach(d => {
                     d.style.display = 'none';
                 });
-                
+
                 // 현재 드롭다운 토글
                 if (!isVisible) {
                     dropdown.style.display = 'block';
                 }
             });
-            
+
             // 드롭다운 항목 클릭 시
             if (dropdown) {
                 dropdown.querySelectorAll('a').forEach(item => {
-                    item.addEventListener('click', function(e) {
+                    item.addEventListener('click', function (e) {
                         e.preventDefault();
-                        
+
                         // 버튼 텍스트 업데이트
                         button.querySelector('span').textContent = this.textContent;
-                        
+
                         // 데이터 속성 저장
                         if (this.dataset.type) {
                             button.dataset.type = this.dataset.type;
                         }
-                        
+
                         // 드롭다운 닫기
                         dropdown.style.display = 'none';
                     });
                 });
             }
         });
-        
+
         // 외부 클릭 시 드롭다운 닫기
-        document.addEventListener('click', function() {
+        document.addEventListener('click', function () {
             document.querySelectorAll('.dropdown-content').forEach(dropdown => {
                 dropdown.style.display = 'none';
             });
@@ -212,16 +248,16 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function initSorting() {
         if (sortSelect) {
-            sortSelect.addEventListener('change', function() {
+            sortSelect.addEventListener('change', function () {
                 // 현재 URL 정보 가져오기
                 const url = new URL(window.location.href);
-                
+
                 // 정렬 파라미터 설정
                 url.searchParams.set('sort', this.value);
-                
+
                 // 페이지 파라미터 초기화
                 url.searchParams.set('page', '1');
-                
+
                 // 페이지 이동
                 window.location.href = url.toString();
             });
@@ -233,12 +269,12 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function initSearch() {
         if (searchButton && searchInput) {
-            searchButton.addEventListener('click', function() {
+            searchButton.addEventListener('click', function () {
                 performSearch();
             });
-            
+
             // 엔터 키 입력 시 검색
-            searchInput.addEventListener('keypress', function(e) {
+            searchInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     performSearch();
                 }
@@ -252,18 +288,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function performSearch() {
         const searchType = document.querySelector('.search-dropdown .dropdown-button').dataset.type || 'all';
         const searchKeyword = searchInput.value.trim();
-        
+
         if (searchKeyword) {
             // 현재 URL 정보 가져오기
             const url = new URL(window.location.href);
-            
+
             // 검색 파라미터 설정
             url.searchParams.set('searchType', searchType);
             url.searchParams.set('keyword', searchKeyword);
-            
+
             // 페이지 파라미터 초기화
             url.searchParams.set('page', '1');
-            
+
             // 페이지 이동
             window.location.href = url.toString();
         }
@@ -274,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function handleResponsive() {
         const width = window.innerWidth;
-        
+
         // 모바일 환경 처리
         if (width <= 768) {
             if (recipeContainer && recipeContainer.classList.contains('cozy-view')) {
@@ -305,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 초기 반응형 처리 실행
     handleResponsive();
-    
+
     // 윈도우 크기 변경 시 반응형 처리
     window.addEventListener('resize', handleResponsive);
 
@@ -314,12 +350,12 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function lazyLoadImages() {
         const lazyImages = document.querySelectorAll('img[data-src]');
-        
+
         if (lazyImages.length > 0) {
             // IntersectionObserver 지원 확인
             if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
+                const imageObserver = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
                         if (entry.isIntersecting) {
                             const lazyImage = entry.target;
                             lazyImage.src = lazyImage.dataset.src;
@@ -328,29 +364,29 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
                 });
-                
-                lazyImages.forEach(function(lazyImage) {
+
+                lazyImages.forEach(function (lazyImage) {
                     imageObserver.observe(lazyImage);
                 });
             } else {
                 // 대체 방법으로 스크롤 이벤트 사용
                 let lazyLoadThrottleTimeout;
-                
+
                 function lazyLoad() {
                     if (lazyLoadThrottleTimeout) {
                         clearTimeout(lazyLoadThrottleTimeout);
                     }
-                    
-                    lazyLoadThrottleTimeout = setTimeout(function() {
+
+                    lazyLoadThrottleTimeout = setTimeout(function () {
                         const scrollTop = window.scrollY;
-                        
-                        lazyImages.forEach(function(lazyImage) {
+
+                        lazyImages.forEach(function (lazyImage) {
                             if (lazyImage.offsetTop < (window.innerHeight + scrollTop)) {
                                 lazyImage.src = lazyImage.dataset.src;
                                 lazyImage.removeAttribute('data-src');
                             }
                         });
-                        
+
                         if (lazyImages.length === 0) {
                             document.removeEventListener('scroll', lazyLoad);
                             window.removeEventListener('resize', lazyLoad);
@@ -358,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }, 20);
                 }
-                
+
                 document.addEventListener('scroll', lazyLoad);
                 window.addEventListener('resize', lazyLoad);
                 window.addEventListener('orientationChange', lazyLoad);

@@ -11,4 +11,11 @@ public interface RecipeBoardService {
 	 */
 	Map<String, Object> selectRecipeBoardList(int categoryNo, int cp);
 
+	/** 인기 게시판 목록 조회 서비스
+	 * @param cp : 현재 페이지
+	 * @return
+	 * @author 재호
+	 */
+	Map<String, Object> selectPopularBoardList(int cp);
+
 }

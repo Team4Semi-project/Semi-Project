@@ -4,53 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LEMONA - 로그인</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-
-  <div class="header">
-    <div class="search-bar">
-      <input type="text" placeholder="Find Pw.." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+  <div class="container">
+    <div class="logo-container">
+      <img src="/images/lemona-logo.png" alt="LEMONA Logo" class="logo-img">
+      <div class="brand-name">레모나!</div>
     </div>
+
+    <div class="login-box">
+      <div class="login-header">로그인</div>
+      <form id="loginForm">
+        <input type="text" class="input-field" id="username" placeholder="아이디를 입력하세요">
+        <input type="password" class="input-field" id="password" placeholder="비밀번호를 입력하세요">
+        <div class="error-message" id="loginError">아이디 또는 비밀번호가 일치하지 않습니다.</div>
+
+        <div class="button-group">
+          <button type="button" class="btn-sub" onclick="location.href='/register'">회원가입</button>
+          <button type="submit" class="btn-main">로그인</button>
+        </div>
+      </form>
+
+      <div class="find-links">
+        <a href="/findid">아이디 찾기</a>
+        <a href="/findpw">비밀번호 찾기</a>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <span>프로젝트 소개</span>
+        <span>개발자 소개</span>
+        <span>개인정보 처리방침</span>
+        <span>이용약관</span>
+        <span>© Copyright</span>
+        <span>SNS</span>
+      </div>
+    </footer>
   </div>
 
-  <div class="logo-container">
-    <div class="logo">
-      <img src="/api/placeholder/120/120" alt="LEMONA" style="border-radius: 50%;">
-      <div style="font-weight:bold; margin-top:5px;">LEMONA</div>
-    </div>
-  </div>
-
-  <div class="tab-container">
-    <button class="tab">아이디 찾기</button>
-    <button class="tab active">비밀번호 찾기</button>
-  </div>
-
-  <div class="login-container">
-    <form id="loginForm">
-      <input type="text" class="input-field" placeholder="아이디" required>
-      <input type="password" class="input-field" placeholder="비밀번호" required>
-      <div class="error-message" id="loginError">아이디 또는 비밀번호가 일치하지 않습니다.</div>
-      <button type="submit" class="button-primary">로그인</button>
-      <button type="button" class="button-secondary" onclick="location.href='register.html'">회원가입</button>
-    </form>
-    <div class="tab-container">
-      <button class="tab" type="button" onclick="location.href='find-id.html'">아이디 찾기</button>
-      <button class="tab active" type="button" onclick="location.href='find-password.html'">비밀번호 찾기</button>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-links">
-      <span class="footer-link">프라이버시 정책</span>
-      <span class="footer-link">개인정보 처리방침</span>
-      <span class="footer-link">서비스 이용약관</span>
-      <span class="footer-link">마케팅</span>
-      <span class="footer-link">© Copyright</span>
-      <span class="footer-link">연락처</span>
-    </div>
-  </footer>
-
-  <script src="login.js"></script>
+  <script src="/js/login/login.js"></script>
 </body>
 </html>

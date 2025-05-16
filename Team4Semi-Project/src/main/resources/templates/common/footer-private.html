@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/css/globals.css" />
+  <link rel="stylesheet" href="/css/styleguide.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+
+
+  <style>
+ /* 기본 전체 페이지 스타일 */
+body {
+  background-color: #f9fafb;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 콘텐츠 박스: 가운데 정렬 */
+.container {
+  max-width: 768px; /* max-w-3xl에 해당 */
+  margin: 3rem auto; /* 상단 여백 + 수평 가운데 정렬 */
+  padding: 1.5rem; /* p-6 */
+  background-color: #ffffff;
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* shadow-md */
+}
+
+/* 제목 스타일 */
+.container h1 {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  color: #1f2937; /* text-gray-800 */
+  margin-bottom: 1rem;
+}
+
+/* 소제목 */
+.container h2 {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+/* 본문 텍스트 */
+.container p {
+  font-size: 1rem; /* text-base */
+  line-height: 1.75;
+  color: #4b5563; /* text-gray-600 */
+  margin-bottom: 1rem;
+}
+
+/* 푸터 텍스트 */
+footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 0.875rem; /* text-sm */
+  color: #9ca3af;
+}
+
+
+  </style>
+
+</head>
+
+<body>
+
+    <!-- 헤더 프래그먼트 -->
+  <header th:replace="~{common/header :: header}"></header>
+
+<div class="container">
+  <h1 class="text-2xl font-bold mb-4">개인정보처리방침</h1>
+  
+  <p class="text-sm text-gray-500 mb-6">최종 업데이트: 2025년 5월 16일</p>
+  
+  <div class="space-y-6 text-gray-800 text-base leading-relaxed">
+    <section>
+      <h2 class="font-semibold text-lg mb-2">1. 수집하는 개인정보 항목</h2>
+      <p>
+        당사는 회원가입, 상담, 서비스 신청 등을 위해 아래와 같은 개인정보를 수집할 수 있습니다.<br/>
+        - 이름, 이메일, 전화번호, 주소, 서비스 이용기록, 접속 로그 등
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-semibold text-lg mb-2">2. 개인정보 수집 및 이용목적</h2>
+      <p>
+        수집된 개인정보는 다음의 목적을 위해 활용됩니다.<br/>
+        - 서비스 제공에 관한 계약 이행 및 요금 정산<br/>
+        - 회원 관리 및 마케팅 활용
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-semibold text-lg mb-2">3. 개인정보 보유 및 이용기간</h2>
+      <p>
+        원칙적으로 개인정보 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.<br/>
+        단, 관련 법령에 따라 일정 기간 동안 보관이 필요한 경우는 예외로 합니다.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-semibold text-lg mb-2">4. 개인정보 제공</h2>
+      <p>
+        당사는 원칙적으로 이용자의 개인정보를 외부에 제공하지 않습니다. 다만, 이용자의 사전 동의가 있는 경우 또는 법령에 의거한 경우는 예외로 합니다.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-semibold text-lg mb-2">5. 개인정보 보호책임자 안내</h2>
+      <p>
+        책임자: 신명하<br/>
+        연락처: privacy@example.com
+      </p>
+    </section>
+  </div>
+</div>
+<!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+</body>
+
+</html>

@@ -64,7 +64,9 @@ public class DefaultBoardController {
 		// 2) 서비스 호출
 		Board board = service.selectOne(map);
 		
-		return "";
+		model.addAttribute("board", board);
+		
+		return "board/defaultBoardDetail";
 	}
 	
 }

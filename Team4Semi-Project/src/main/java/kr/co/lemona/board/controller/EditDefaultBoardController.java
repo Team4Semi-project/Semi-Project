@@ -58,7 +58,7 @@ public class EditDefaultBoardController {
 		// inputBoard에 게시글 종류(자유게시판), 회원번호 저장
 		int boardCode = 2;
 		inputBoard.setBoardCode(boardCode);
-		inputBoard.setMemberNo(1);
+		inputBoard.setMemberNo(2);
 
 		// insert하고 게시글 번호 저장 : 작성한 글의 Detail 페이지로 보내기 위함
 		int boardNo = service.defaultBoardInsert(inputBoard);

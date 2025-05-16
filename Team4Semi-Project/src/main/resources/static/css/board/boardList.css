@@ -1,0 +1,377 @@
+/* 메인 콘텐츠 스타일 */
+main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--lightgray);
+}
+
+.section-title {
+    font-family: var(--ryu-p-3-font-family);
+    font-size: var(--ryu-p-3-font-size);
+    font-weight: var(--ryu-p-3-font-weight);
+    color: var(--darkgray);
+}
+
+.view-options {
+    display: flex;
+    gap: 10px;
+}
+
+.view-toggle {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: var(--input-color);
+    color: var(--deepgray);
+}
+
+.view-toggle.active {
+    background-color: var(--lemon);
+    color: var(--deepbrown);
+}
+
+.sort-options {
+    position: relative;
+}
+
+.sort-select {
+    appearance: none;
+    padding: 5px 30px 5px 10px;
+    border: 1px solid var(--input-color);
+    border-radius: 4px;
+    background-color: var(--input-color);
+    font-size: var(--pre-p-1-font-size);
+    cursor: pointer;
+    color: var(--deepgray);
+}
+
+.sort-options i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 12px;
+    color: var(--deepgray);
+}
+
+/* 레시피 컨테이너 스타일 */
+.recipe-container {
+    margin-bottom: 30px;
+}
+
+.no-recipes {
+    text-align: center;
+    padding: 50px 0;
+    color: var(--gray);
+    font-family: var(--pre-p-3-font-family);
+    font-size: var(--pre-p-3-font-size);
+}
+
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.recipe-item {
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: var(--white);
+}
+
+.recipe-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--SHADOW);
+}
+
+.recipe-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.recipe-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recipe-info {
+    padding: 15px;
+}
+
+.recipe-title {
+    font-family: var(--pre-h-1-font-family);
+    font-weight: var(--pre-h-1-font-weight);
+    font-size: var(--pre-h-1-font-size);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--deepbrown);
+}
+
+.comment-count {
+    color: var(--gray);
+    font-size: var(--pre-p-1-font-size);
+    font-weight: var(--pre-p-1-font-weight);
+}
+
+.recipe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.tag {
+    font-size: var(--pre-p-1-font-size);
+    color: var(--brown);
+    background-color: var(--lightyellow);
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.recipe-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.author-image {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.author-name {
+    font-size: var(--pre-p-1-font-size);
+    color: var(--deepgray);
+}
+
+.recipe-date {
+    font-size: var(--pre-p-1-font-size);
+    color: var(--gray);
+}
+
+.recipe-stats {
+    display: flex;
+    gap: 15px;
+}
+
+.likes, .views {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: var(--pre-p-1-font-size);
+    color: var(--gray);
+}
+
+.likes i {
+    color: var(--yellow);
+}
+
+.views i {
+    color: var(--deepgray);
+}
+
+/* 페이지네이션 스타일 */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.pagination {
+    display: flex;
+    gap: 5px;
+}
+
+.pagination li {
+    display: inline-block;
+}
+
+.pagination li a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    font-size: var(--pre-p-1-font-size);
+    transition: background-color 0.2s;
+    color: var(--deepgray);
+}
+
+.pagination li.active a {
+    background-color: var(--lemon);
+    color: var(--deepbrown);
+    font-weight: var(--pre-h-1-font-weight);
+}
+
+.pagination li a:hover:not(.active) {
+    background-color: var(--lightyellow);
+}
+
+.page-first, .page-prev, .page-next, .page-last {
+    font-size: var(--pre-p-1-font-size);
+    color: var(--deepgray);
+}
+
+/* 검색 컨테이너 스타일 */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.search-dropdown {
+    position: relative;
+}
+
+.search-dropdown .dropdown-button {
+    height: 40px;
+}
+
+.search-input-container {
+    display: flex;
+    border: 1px solid var(--input-color);
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: var(--input-color);
+    width: 300px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 15px;
+    border: none;
+    outline: none;
+    font-size: var(--pre-p-1-font-size);
+    background-color: transparent;
+}
+
+.search-container .search-button {
+    background-color: var(--lemon);
+    color: var(--deepbrown);
+    padding: 0 15px;
+    border-radius: 0 20px 20px 0;
+}
+
+.search-container .search-button:hover {
+    background-color: var(--yellow);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .recipe-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-wrap: wrap;
+    }
+    
+    .search-bar {
+        order: 3;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .recipe-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .recipe-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* 아젠다 뷰 스타일 */
+.agenda-view {
+    display: none;
+}
+
+.agenda-view .recipe-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.agenda-view .recipe-item {
+    display: flex;
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.agenda-view .recipe-image {
+    width: 100px;
+    height: 100px;
+    margin-right: 15px;
+}
+
+.agenda-view .recipe-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.agenda-view .recipe-title {
+    font-size: var(--pre-h-1-font-size);
+    margin-bottom: 5px;
+}
+
+.agenda-view .recipe-meta {
+    margin-bottom: 5px;
+}
+
+.agenda-view .recipe-stats {
+    align-self: flex-end;
+}
+
+/* 활성화된 뷰에 따라 표시 조절 */
+ body.agenda-view-active .cozy-view {
+    display: none;
+}
+
+body.agenda-view-active .agenda-view {
+    display: block;
+}

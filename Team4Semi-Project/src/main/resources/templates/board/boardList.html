@@ -18,7 +18,7 @@
     <nav th:replace="~{common/navigation :: navigation}"></nav>
 
     <!-- 메인 콘텐츠 영역 -->
-    <main layout:fragment="content">
+    <main class="main-list">
         <section class="recipe-section">
             <!-- 섹션 헤더 -->
             <div class="section-header">
@@ -45,7 +45,7 @@
             </div>
 
             <!-- 게시글 컨테이너 (Cozy View) -->
-            <div class="recipe-container cozy-view">
+            <div class="recipe-container cozy-view" id="cozy">
                 <!-- 게시글 없을 때 -->
                 <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
                     <p>등록된 게시글이 없습니다.</p>
@@ -55,7 +55,8 @@
                 <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
                     <div th:each="board : ${boardList}" class="recipe-item">
                         <div class="recipe-image">
-                            <img th:src="${board.thumbnail}" alt="레시피 이미지">
+                            <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
+                             <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.profileImg}" alt="레시피 이미지">
                         </div>
                         <div class="recipe-info">
                             <h3 class="recipe-title">
@@ -67,7 +68,7 @@
                             </div>
                             <div class="recipe-meta">
                                 <div class="author-info">
-                                    <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : recipe.profileImg}" alt="프로필 이미지" class="author-image">
+                                    <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}" alt="프로필 이미지" class="author-image">
                                     <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
                                 </div>
                                 <span class="recipe-date"
@@ -90,18 +91,18 @@
 
 
         <!-- 게시글 컨테이너 (Agenda View) -->
-        <div class="recipe-container agenda-view">
+        <div class="recipe-container agenda-view" id="agenda" style="display: none;">
             <!-- 게시글 없을 때 -->
             <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
-                <p>제발나와줘...</p>
+                <p>등록된 게시글이 없습니다.</p>
             </div>
 
             <!-- 게시글 목록 -->
             <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list">
-                <p>test123123123123123</p>
                 <div th:each="board : ${boardList}" class="recipe-item">
                     <div class="recipe-thumbnail">
-                        <img th:src="${board.thumbnail}" alt="레시피 이미지">
+                       <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
+                        <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.profileImg}" style="height: 100px; object-fit: cover;" alt="레시피 이미지">
                     </div>
                     <div class="recipe-details">
                         <h3 class="recipe-title">
@@ -177,14 +178,13 @@
 					<!-- 특정 페이지로 이동 -->
 					
 					<th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-						
 						<!-- 현재 보고있는 페이지 -->
 						<li th:if="${i} == *{currentPage}">
 							<a class="current" th:text="${i}">현재페이지</a>
 						</li>
 						
 						<!-- 보고있지 않은 페이지 -->
-						<li th:unless="${i} == *{currentPage}">
+						<li th:unless="${i} == *{currentPage} or ${i} == 0">
 							<a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})}" 
 								th:text="${i}">이동할 페이지</a>
 						</li>

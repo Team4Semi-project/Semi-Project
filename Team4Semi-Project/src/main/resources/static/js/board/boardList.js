@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropdownButtons = document.querySelectorAll('.dropdown-button');
     const searchInput = document.querySelector('.search-input');
     const searchButton = document.querySelector('.search-button');
+    const cozy = document.querySelector("#cozy");
+    const agenda = document.querySelector("#agenda");
 
     // 메뉴 호버 기능
     initMenuHover();
@@ -84,17 +86,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 const viewMode = this.dataset.view;
                 if (recipeContainer) {
                     if (viewMode === 'agenda') {
-                        recipeContainer.classList.remove('cozy-view');
-                        recipeContainer.classList.add('agenda-view');
-                        console.log("아젠다 가보자 제발........");
+                        cozy.style.display = "none";
+                        agenda.style.display = "block";
+                        
                         // AJAX로 아젠다 뷰 데이터 요청
-                        fetchAgendaView();
+                        //fetchAgendaView();
                     } else {
-                        recipeContainer.classList.remove('agenda-view');
-                        recipeContainer.classList.add('cozy-view');
+                        agenda.style.display = "none";
+                        cozy.style.display = "block";
                         
                         // AJAX로 코지 뷰 데이터 요청
-                        fetchCozyView();
+                        //fetchCozyView();
                     }
                 }
             });
@@ -107,10 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchAgendaView() {
         // 현재 URL 정보 가져오기
         const url = new URL(window.location.href);
-        console.log("아젠다 가보자 제발........222 " + url);
+        
         // 뷰 모드 파라미터 추가
         url.searchParams.set('viewMode', 'agenda');
-        console.log("url.searchParams " + url.searchParams);
         
         // AJAX 요청
         fetch(url.toString(), {

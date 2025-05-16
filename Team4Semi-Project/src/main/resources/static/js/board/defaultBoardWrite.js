@@ -24,17 +24,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+
+  // 이미지 서버에 업로드
   function uploadImage(file) {
     const formData = new FormData();
     formData.append('image', file);
 
-    fetch('/uploadImage', {
+    fetch('/editBoard/uploadImage', {
       method: 'POST',
       body: formData
     })
       .then(res => res.text()) // 서버에서 이미지 URL 문자열 반환
       .then(imageUrl => {
-        $('#summernote').summernote('insertImage', imageUrl);
+        $('#summernote').summernote('insertImage', imageUrl); // 본문에 삽입
       })
       .catch(err => {
         console.error('이미지 업로드 실패', err);

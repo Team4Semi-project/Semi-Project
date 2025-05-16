@@ -27,16 +27,25 @@
         <div class="write-header">
             글 작성하기
         </div>
+
+        <!-- 메시지 출력 -->
+        <!-- 메시지 출력 (JS alert 방식) -->
+        <script th:if="${message != null}" th:inline="javascript">
+            alert([[${ message }]]);
+        </script>
+
+
         <!-- <form th:action="@{/editBoard/{boardCode}/insert(boardCode=${boardCode})}"  -->
-        <form id="postForm" method="post" action="editBoadrd/2/insert">
+        <form id="postForm" method="post" action="/editBoard/2/insert">
             <!-- 제목 -->
-            <input type="text" name="boardTitle" class="title-input" placeholder="글제목을 입력해주세요" required>
-            
+            <input type="text" name="boardTitle" th:value="${board?.boardTitle}" class="title-input"
+                placeholder="글제목을 입력해주세요" required>
+
             <!-- 서머노트(내용) -->
-            <textarea id="summernote" name="boardContent"></textarea>
+            <textarea id="summernote" name="boardContent" th:text="${board?.boardContent}"></textarea>
 
             <!-- 작성 완료 버튼 -->
-            <button type="button" class="submit-btn">작성 완료</button>
+            <button type="submit" class="submit-btn">작성 완료</button>
         </form>
     </div>
 

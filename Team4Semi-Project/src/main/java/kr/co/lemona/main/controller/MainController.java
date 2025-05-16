@@ -42,8 +42,12 @@ public class MainController {
 //		model.addAttribute("boardList", map.get("recipeBoardList"));
 
 		return "common/main";
+  }
+
+	public String mainPage() {
+		
+		return "board/defaultBoardWrite";
 	}
-	
 	
 	/** 로그인이 되어있지 않을 때, 메인페이지로 리다이렉트하는 메서드
 	 * @param ra
@@ -53,9 +57,9 @@ public class MainController {
 	public String loginError(RedirectAttributes ra) {
 		ra.addFlashAttribute("message","로그인 후 이용해주세요");
 		
-		return "redirect:/";		
+		return "redirect:/";
 	}
-	
+
 	@Autowired
 	private MainService service;
 	

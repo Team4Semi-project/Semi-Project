@@ -368,7 +368,7 @@ main {
 }
 
 /* 활성화된 뷰에 따라 표시 조절 */
-body.agenda-view-active .cozy-view {
+ body.agenda-view-active .cozy-view {
     display: none;
 }
 

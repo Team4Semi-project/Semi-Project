@@ -43,5 +43,77 @@
 		ORDER BY BOARD_NO DESC
 	</select>
 	
+	<!-- 인기 게시글 수 조회 -->
+	<!-- 재호 -->
+	<select id="getPopularListCount">
+		<![CDATA[
+		
+		SELECT COUNT(*)
+		FROM "RECIPE_BOARD" B
+		JOIN (
+		    SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+		    FROM "RECIPE_BOARD_LIKE"
+		    GROUP BY BOARD_NO
+		    HAVING COUNT(*) >= 0) L
+		    ON B.BOARD_NO = L.BOARD_NO
+		WHERE B.BOARD_DEL_FL = 'N'
+		  AND B.READ_COUNT >= 20
+		  AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
+		  
+		]]>
+	</select>
+	
+	<!-- 인기 게시판 중 지정된 페이지 목록 조회 -->
+	<!-- 재호 -->
+	<select id="selectPopularBoardList">
+		<![CDATA[
+		
+		SELECT 
+		    B.BOARD_NO, 
+		    B.BOARD_TITLE, 
+		    B.READ_COUNT,
+		    M.MEMBER_NICKNAME, 
+		    M.PROFILE_IMG,
+		    
+		    (SELECT COUNT(*) 
+		     FROM "RECIPE_COMMENT" C 
+		     WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+		
+		    (SELECT COUNT(*) 
+		     FROM "RECIPE_BOARD_LIKE" L 
+		     WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+		
+		    CASE
+		        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60
+		        THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+		        
+		        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24
+		        THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+		        
+		        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1
+		        THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+		        
+		        ELSE TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+		    END AS BOARD_CREATE_DATE
+		
+		FROM "RECIPE_BOARD" B
+		JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
+		
+		WHERE B.BOARD_DEL_FL = 'N'
+		  AND B.READ_COUNT >= 20
+		  AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
+		  AND (
+		      SELECT COUNT(*) 
+		      FROM "RECIPE_BOARD_LIKE" L 
+		      WHERE L.BOARD_NO = B.BOARD_NO
+		  ) >= 0
+		
+		ORDER BY 
+		    (SELECT COUNT(*) 
+		     FROM "RECIPE_BOARD_LIKE" L 
+		     WHERE L.BOARD_NO = B.BOARD_NO) DESC
+		  
+		]]>
+	</select>
 	
 </mapper>

@@ -26,6 +26,7 @@ public interface RecipeBoardMapper {
 	 */
 	List<RecipeBoard> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
 
+
 	/** 레시피 보드에서 삭제되지 않은 인기 게시글 수를 조회
 	 * @return
 	 * @author 재호
@@ -38,4 +39,5 @@ public interface RecipeBoardMapper {
 	 * @author 재호
 	 */
 	List<RecipeBoard> selectPopularBoardList(RowBounds rowBounds);
+
 }

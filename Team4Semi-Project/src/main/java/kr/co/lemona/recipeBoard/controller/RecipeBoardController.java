@@ -93,6 +93,6 @@ public class RecipeBoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		
-		return "recipeBoard/recipeBoardList";		
+		return "board/boardList";		
 	}
 }

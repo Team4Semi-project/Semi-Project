@@ -26,4 +26,5 @@ public interface RecipeBoardMapper {
 	 */
 	List<RecipeBoard> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
 
+
 }

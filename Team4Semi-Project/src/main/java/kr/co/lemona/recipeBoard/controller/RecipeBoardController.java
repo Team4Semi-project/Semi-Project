@@ -44,7 +44,7 @@ public class RecipeBoardController {
 			// 검색 서비스 호출
 			// map = service.serchList(paramMap, cp);
 			
-		}		
+		}
 		
 		// model 에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));

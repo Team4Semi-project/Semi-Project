@@ -1,10 +1,12 @@
 package kr.co.lemona.recipeBoard.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 
 @Mapper
@@ -26,6 +28,7 @@ public interface RecipeBoardMapper {
 	 */
 	List<RecipeBoard> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
 
+
 	/** 레시피 보드에서 삭제되지 않은 인기 게시글 수를 조회
 	 * @return
 	 * @author 재호
@@ -38,4 +41,18 @@ public interface RecipeBoardMapper {
 	 * @author 재호
 	 */
 	List<RecipeBoard> selectPopularBoardList(RowBounds rowBounds);
+
+	/** 레시피 게시글 상세 조회
+	 * @param map
+	 * @return
+	 * @author miae
+	 */
+	RecipeBoard selectOneRecipe(Map<String, Integer> map);
+
+	/** BOARD_STEP 에서 게시글 번호로 조회
+	 * @return
+	 * @author miae
+	 * @param boardNo 
+	 */
+	List<BoardStep> selectBoardStepList(int boardNo);
 }

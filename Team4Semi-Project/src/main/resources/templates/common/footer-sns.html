@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인스타그램 프로필</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: #262626;
+        }
+
+        /* 헤더 스타일 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: white;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .search-bar {
+            background-color: #efefef;
+            border-radius: 8px;
+            padding: 8px 16px;
+            width: 30%;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            margin-left: 8px;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* 프로필 컨테이너 */
+        .container {
+            max-width: 935px;
+            margin: 80px auto 0;
+            padding: 30px 20px;
+        }
+
+        /* 프로필 헤더 부분 */
+        .profile-header {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 44px;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid #dbdbdb;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .username {
+            font-weight: 300;
+            font-size: 28px;
+            margin-right: 20px;
+        }
+
+        .edit-profile, .message {
+            background: transparent;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .settings {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .profile-stats span {
+            font-weight: bold;
+        }
+
+        .profile-bio {
+            margin-bottom: 5px;
+        }
+
+        .profile-name {
+            font-weight: bold;
+        }
+
+        /* 프로필 탭 */
+        .profile-tabs {
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid #dbdbdb;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 15px 0;
+            margin: 0 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #8e8e8e;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .tab.active {
+            border-top: 1px solid #262626;
+            margin-top: -1px;
+            color: #262626;
+        }
+
+        /* 사진 그리드 */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .photo-item:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-stats {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+        }
+
+        /* 푸터 */
+        footer {
+            padding: 20px;
+            text-align: center;
+            color: #8e8e8e;
+            font-size: 12px;
+            margin-top: 40px;
+        }
+
+        footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        footer a {
+            color: #8e8e8e;
+            text-decoration: none;
+        }
+
+        /* 모바일 스타일 */
+        @media (max-width: 767px) {
+            .container {
+                padding: 15px;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .profile-pic {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-top {
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+
+            .profile-stats {
+                justify-content: space-around;
+                gap: 5px;
+                margin-bottom: 10px;
+            }
+
+            .profile-bio {
+                text-align: center;
+            }
+
+            .search-bar {
+                display: none;
+            }
+
+            .photo-grid {
+                gap: 3px;
+            }
+        }
+
+        /* 태블릿 스타일 */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .container {
+                padding: 20px;
+            }
+
+            .profile-pic {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* 스토리 하이라이트 */
+        .story-highlights {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+        }
+
+        .story-pic {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            border: 1px solid #dbdbdb;
+            padding: 3px;
+            margin-bottom: 5px;
+        }
+
+        .story-pic img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .story-name {
+            font-size: 12px;
+            text-align: center;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* 모바일 하단 내비게이션 바 */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px solid #dbdbdb;
+            padding: 10px 0;
+            justify-content: space-around;
+        }
+
+        @media (max-width: 767px) {
+            .mobile-nav {
+                display: flex;
+            }
+
+            .container {
+                margin-bottom: 60px;
+            }
+
+            .nav-icons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <div class="logo"></div>
+        <div class="logo">
+            Instagram
+        </div>
+        <div class="nav-icons">
+            <i class="fas fa-home" style="font-size: 22px;"></i>
+            <i class="far fa-paper-plane" style="font-size: 22px;"></i>
+            <i class="far fa-compass" style="font-size: 22px;"></i>
+            <i class="far fa-heart" style="font-size: 22px;"></i>
+            <img src="/api/placeholder/32/32" alt="프로필" style="width: 25px; height: 25px; border-radius: 50%;">
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+        <!-- 프로필 헤더 -->
+        <div class="profile-header">
+            <img src="/images/lemona-logo.png" alt="프로필 사진" class="profile-pic">
+            
+            <div class="profile-info">
+                <div class="profile-top">
+                    <h1 class="username">lemona_0_</h1>
+                    <button class="edit-profile">프로필 편집</button>
+                    <button class="message">메시지</button>
+                    <button class="settings"><i class="fas fa-cog" style="font-size: 22px;"></i></button>
+                </div>
+                
+                <div class="profile-stats">
+                    <div>게시물 <span>123</span></div>
+                    <div>팔로워 <span>1,234</span></div>
+                    <div>팔로우 <span>567</span></div>
+                </div>
+                
+                <div class="profile-bio">
+                    <div class="profile-name">레시피를 모르는 나! 레모나 :)</div>
+                    <div>안녕하세요! 레모나입니다.</div>
+                    <div>📍 서울, 대한민국</div>
+                    <div>🌐 <a href="http://localhost/" style="color: #00376b; text-decoration: none;">www.lemona.co.kr</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 스토리 하이라이트 -->
+        <div class="story-highlights">
+            <div class="story-item">
+                <div class="story-pic">
+                    <img src="/images/user.png" alt="하이라이트">
+                </div>
+                <div class="story-name">여행</div>
+            </div>
+            <div class="story-item">
+                <div class="story-pic">
+                    <img src="/images/user.png" alt="하이라이트">
+                </div>
+                <div class="story-name">음식</div>
+            </div>
+            <div class="story-item">
+                <div class="story-pic">
+                    <img src="/images/user.png" alt="하이라이트">
+                </div>
+                <div class="story-name">일상</div>
+            </div>
+            <div class="story-item">
+                <div class="story-pic">
+                    <img src="/images/user.png" alt="하이라이트">
+                </div>
+                <div class="story-name">패션</div>
+            </div>
+            <div class="story-item">
+                <div class="story-pic">
+                    <img src="/images/user.png" alt="하이라이트">
+                </div>
+                <div class="story-name">스포츠</div>
+            </div>
+            <div class="story-item">
+                <div class="story-pic">
+                    <img src="/images/user.png" alt="하이라이트">
+                </div>
+                <div class="story-name">친구들</div>
+            </div>
+        </div>
+
+        <!-- 프로필 탭 -->
+        <div class="profile-tabs">
+            <div class="tab active"><i class="fas fa-th" style="font-size: 18px;"></i> 게시물</div>
+            <!-- <div class="tab"><i class="fas fa-tv" style="font-size: 12px;"></i> 릴스</div>
+            <div class="tab"><i class="far fa-bookmark" style="font-size: 12px;"></i> 저장됨</div>
+            <div class="tab"><i class="fas fa-tag" style="font-size: 12px;"></i> 태그됨</div> -->
+        </div>
+
+        <!-- 사진 그리드 -->
+        <div class="photo-grid">
+            <!-- 사진 아이템 1 -->
+            <div class="photo-item">
+                <img src="/images/bibimbap.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>123</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>45</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 사진 아이템 2 -->
+            <div class="photo-item">
+                <img src="/images/spagettie.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>78</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>23</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 사진 아이템 3 -->
+            <div class="photo-item">
+                <img src="/images/gimchisoup.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>432</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>67</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 사진 아이템 4 -->
+            <div class="photo-item">
+                <img src="/images/curry.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>210</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>34</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 사진 아이템 5 -->
+            <div class="photo-item">
+                <img src="/images/hambuger.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>98</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>12</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 사진 아이템 6 -->
+            <div class="photo-item">
+                <img src="/images/sushi.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>345</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>56</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 사진 아이템 7 -->
+            <div class="photo-item">
+                <img src="/images/gogibap.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>176</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>28</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 사진 아이템 8 -->
+            <div class="photo-item">
+                <img src="/images/salmonsalad.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>265</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>42</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 사진 아이템 9 -->
+            <div class="photo-item">
+                <img src="/images/chicken.png" alt="게시물">
+                <div class="photo-overlay">
+                    <div class="photo-stats">
+                        <i class="fas fa-heart"></i>
+                        <span>154</span>
+                    </div>
+                    <div class="photo-stats">
+                        <i class="fas fa-comment"></i>
+                        <span>19</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <footer>
+            <div class="links">
+                <a href="#">소개</a>
+                <a href="#">도움말</a>
+                <a href="#">홍보 센터</a>
+                <a href="#">API</a>
+                <a href="#">채용 정보</a>
+                <a href="#">개인정보처리방침</a>
+                <a href="#">약관</a>
+                <a href="#">위치</a>
+                <a href="#">언어</a>
+                <a href="#">Meta Verified</a>
+            </div>
+            <div>© 2025 Instagram from Meta</div>
+        </footer>
+    </div>
+
+    <!-- 모바일 하단 내비게이션 -->
+    <div class="mobile-nav">
+        <i class="fas fa-home" style="font-size: 22px;"></i>
+        <i class="fas fa-search" style="font-size: 22px;"></i>
+        <i class="far fa-plus-square" style="font-size: 22px;"></i>
+        <i class="far fa-heart" style="font-size: 22px;"></i>
+        <img src="/api/placeholder/32/32" alt="프로필" style="width: 22px; height: 22px; border-radius: 50%;">
+    </div>
+
+    <script>
+        // 탭 전환 기능
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // 실제 서비스에서는 여기에 탭 전환 관련 추가 로직이 들어갈 수 있음
+            });
+        });
+
+        // 반응형 레이아웃 처리
+        function handleResponsive() {
+            if (window.innerWidth <= 767) {
+                // 모바일 화면에 대한 추가 처리
+            } else {
+                // 데스크톱 화면에 대한 추가 처리
+            }
+        }
+
+        // 초기 로드 및 리사이즈 시 반응형 처리
+        window.addEventListener('load', handleResponsive);
+        window.addEventListener('resize', handleResponsive);
+    </script>
+</body>
+</html>

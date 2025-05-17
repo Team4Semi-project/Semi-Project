@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/css/globals.css" />
+  <link rel="stylesheet" href="/css/styleguide.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+
+
+
+  <title>고객센터 소개</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+  <!-- 헤더 프래그먼트 -->
+  <header th:replace="~{common/header :: header}"></header>
+
+  <!-- 상단 영역 -->
+  <header class="bg-white shadow">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold">고객센터 소개</h1>
+    </div>
+  </header>
+
+  <!-- 본문 영역 -->
+  <main class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-10">
+    <section>
+      <h2 class="text-xl font-semibold mb-4">무엇을 도와드릴까요?</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        저희 고객센터는 사용자 여러분의 문의에 신속하고 친절하게 응대해 드리기 위해 항상 노력하고 있습니다.
+        서비스 이용 중 불편한 점이나 궁금한 사항이 있으시면 언제든지 문의해 주세요.
+      </p>
+    </section>
+
+    <section class="mb-6">
+      <h3 class="text-lg font-semibold mb-2">문의 방법</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li><strong>전화 상담:</strong> 1588-0000 (평일 09:00 ~ 18:00)</li>
+        <li><strong>이메일 문의:</strong> support@example.com</li>
+        <li><strong>1:1 문의 게시판:</strong> 마이페이지 &gt; 고객센터 &gt; 문의하기</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3 class="text-lg font-semibold mb-2">자주 묻는 질문</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>배송 기간은 얼마나 걸리나요?</li>
+        <li>회원 탈퇴는 어떻게 하나요?</li>
+        <li>비밀번호를 잊어버렸어요.</li>
+      </ul>
+      <p class="mt-2 text-sm text-blue-600">👉 <a href="/faq" class="hover:underline">전체 FAQ 보기</a></p>
+    </section>
+  </main>
+
+  <!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+
+</body>
+</html>

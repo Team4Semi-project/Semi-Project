@@ -1,215 +1,86 @@
-/* 전체 스타일 초기화 */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+/* 컨테이너 스타일 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
-body {
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+/* 로고 영역 */
+.logo-area {
+    margin-bottom: 20px;
 }
 
-/* 헤더 스타일 */
-.header {
-  padding: 20px;
-  background-color: white;
-  border-bottom: 1px solid #eee;
+.logo-area h1 {
+    margin-top: 5px;
 }
 
-.search-bar {
-  max-width: 720px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 10px;
+/* 폼 컨테이너 */
+.form-container {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 300px;
 }
 
-.logo {
-  width: 100px;
-  margin-left: 20px;
+/* 폼 제목 */
+.form-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
-/* 로고 컨테이너 스타일 */
-.logo-container {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0;
+/* 폼 그룹 (입력 필드 그룹) */
+.form-group {
+    margin-bottom: 15px;
 }
 
-.logo-container .logo {
-  width: 120px;
-  text-align: center;
-  margin-left: 0;
-}
-
-/* 탭 스타일 */
-.tab-container {
-  display: flex;
-  max-width: 450px;
-  margin: 30px auto 0;
-  width: 100%;
-}
-
-.tab {
-  flex: 1;
-  padding: 15px 0;
-  text-align: center;
-  cursor: pointer;
-  background-color: white;
-  border: none;
-}
-
-.tab.active {
-  background-color: #FFDD33;
-  color: #333;
-  font-weight: bold;
-}
-
-/* 로그인 컨테이너 스타일 */
-.login-container {
-  max-width: 450px;
-  margin: 20px auto;
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
-
-/* 아이디/비밀번호 찾기 컨테이너 스타일 */
-.find-container {
-  max-width: 450px;
-  margin: 0 auto 30px;
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
-
-/* 회원가입 컨테이너 스타일 */
-.register-container {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+/* 라벨 스타일 */
+label {
+    display: block;
+    margin-bottom: 5px;
 }
 
 /* 입력 필드 스타일 */
-.input-field {
-  width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
+input[type="text"], 
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }
 
-/* 에러 메시지 스타일 */
-.error-message {
-  color: #e74c3c;
-  font-size: 14px;
-  margin: -10px 0 15px;
-  display: none;
-}
-
-/* 결과 필드 스타일 */
-.result-field {
-  width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  background-color: #f9f9f9;
-  display: none;
+/* 버튼 그룹 */
+.button-group {
+    margin-top: 15px;
 }
 
 /* 버튼 스타일 */
-.button-primary {
-  width: 100%;
-  padding: 12px;
-  background-color: #FFDD33;
-  color: #333;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 15px;
+button {
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 5px;
 }
 
-.button-secondary {
-  width: 100%;
-  padding: 12px;
-  background-color: white;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 15px;
+button:hover {
+    background-color: #e0e0e0;
 }
 
-/* 폼 행 스타일 (회원가입 페이지용) */
-.form-row {
-  display: flex;
-  margin-bottom: 15px;
-  align-items: center;
+/* 전체 너비 버튼 */
+.full-width {
+    width: 100%;
 }
 
-.form-row .input-field {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-.form-row .button {
-  padding: 12px 15px;
-  background-color: #FFDD33;
-  color: #333;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-left: 10px;
-  white-space: nowrap;
-}
-
-/* 링크 컨테이너 스타일 */
-.links-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-}
-
-.link {
-  margin: 0 10px;
-  color: #777;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-/* 푸터 스타일 */
+/* 푸터 */
 .footer {
-  background-color: #333;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  margin-top: auto;
-}
-
-.footer-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.footer-link {
-  color: white;
-  margin: 0 10px;
-  font-size: 14px;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 12px;
+    color: #666;
 }

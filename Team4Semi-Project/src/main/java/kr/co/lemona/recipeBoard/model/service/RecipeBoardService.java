@@ -2,6 +2,8 @@ package kr.co.lemona.recipeBoard.model.service;
 
 import java.util.Map;
 
+import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
+
 public interface RecipeBoardService {
 
 	/** 레시피 게시판 목록 조회
@@ -17,5 +19,13 @@ public interface RecipeBoardService {
 	 * @author 재호
 	 */
 	Map<String, Object> selectPopularBoardList(int cp);
+
+	/** 레시피 게시글 상세 조회
+	 * @param map
+	 * @return
+	 * @author miae
+	 * @param boardNo 
+	 */
+	Map<String, Object> selectOneRecipe(Map<String, Integer> map);
 
 }

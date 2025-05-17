@@ -46,7 +46,7 @@ public class MainController {
 
 	public String mainPage() {
 		
-		return "recipeBoard/content";
+		return "common/main";
 	}
 	
 	/** 로그인이 되어있지 않을 때, 메인페이지로 리다이렉트하는 메서드

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="kr.co.lemona.board.model.mapper.EditDefaultBoardMapper">
+
+	<insert id="defaultBoardInsert">
+		<!-- boardNo 다음 숫자로 넘기고 삽입 -->
+		<selectKey order="BEFORE" resultType="_int"
+			keyProperty="boardNo">
+			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+		</selectKey>
+
+		INSERT INTO "BOARD"
+		VALUES(#{boardNo},
+		#{boardTitle},
+		#{boardContent},
+		DEFAULT, DEFAULT, DEFAULT, DEFAULT,
+		#{boardCode},
+		#{memberNo})
+	</insert>
+</mapper>

@@ -1,0 +1,73 @@
+.container {
+  overflow: visible !important;
+}
+
+.lemona-brand {
+  background-color: #EEB604;
+  padding: 10px 0;
+}
+
+.lemona-logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.chef-hat {
+  margin-right: 5px;
+}
+
+.title-input {
+  background-color: #FFF9E4;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.write-header {
+  background-color: #EEB604;
+  color: #FFF9E4;
+  padding: 15px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.submit-btn {
+  background-color: #EEB604;
+  border: none;
+  color: #FFF9E4;
+  padding: 10px 20px;
+  border-radius: 4px;
+  float: right;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* 서머노트 : '내용을 입력해주세요'*/
+/*.note인 이유 : 서머노트 내부 클래스 네이밍 규칙임 
+    전체 에디터 : summernote-
+    내부 요소   : note- 
+*/
+
+/* 글 작성 textarea 크기 바꾸는 바 삭제 */
+.note-resizebar {
+  display: none !important;
+}
+
+/* 글 내용 폰트 */
+.note-editable {
+  font-family: 'Pretendard', sans-serif !important;
+}
+
+/* placeholder 폰트 */
+.note-placeholder {
+  font-family: var(--ryu-h-2-font-family);
+  font-size: var(--ryu-h-2-font-size);
+  font-weight: var(--ryu-h-2-font-weight);
+  font-style: var(--ryu-h-2-font-style);
+  line-height: var(--ryu-h-2-line-height);
+  letter-spacing: var(--ryu-h-2-letter-spacing);
+}

@@ -47,31 +47,31 @@
             <!-- 레시피 컨테이너 (Cozy View) -->
             <div class="recipe-container cozy-view">
                 <!-- 레시피 없을 때 -->
-                <div th:if="${#lists.isEmpty(recipes)}" class="no-recipes">
+                <div th:if="${#lists.isEmpty(recipeBoardList)}" class="no-recipes">
                     <p>등록된 레시피가 없습니다.</p>
                 </div>
 
                 <!-- 레시피 목록 -->
-                <div th:unless="${#lists.isEmpty(recipes)}" class="recipe-grid">
-                    <div th:each="recipe : ${recipes}" class="recipe-item">
+                <div th:unless="${#lists.isEmpty(recipeBoardList)}" class="recipe-grid">
+                    <div th:each="recipe : ${recipeBoardList}" class="recipe-item">
                         <div class="recipe-image">
                             <img th:src="${recipe.thumbnail}" alt="레시피 이미지">
                         </div>
                         <div class="recipe-info">
                             <h3 class="recipe-title">
-                                <a th:href="@{/recipes/{id}(id=${recipe.id})}" th:text="${recipe.title}">레몬 팬케이크</a>
+                                <a th:href="@{/recipes/{id}(id=${recipe.boardNo})}" th:text="${recipe.boardTitle}">레몬 팬케이크</a>
                                 <span class="comment-count" th:text="'[' + ${recipe.commentCount} + ']'">[0]</span>
                             </h3>
                             <div class="recipe-tags">
-                                <span class="tag" th:each="tag : ${recipe.tags}" th:text="${tag}">#레몬</span>
+                                <span class="tag" th:each="tag : ${recipe.hashTag}" th:text="${tag}">#레몬</span>
                             </div>
                             <div class="recipe-meta">
                                 <div class="author-info">
-                                    <img th:src="${recipe.author.profileImage}" alt="프로필 이미지" class="author-image">
-                                    <span class="author-name" th:text="${recipe.author.nickname}">장미에 님</span>
+                                    <img th:src="${recipe.profileImg}" alt="프로필 이미지" class="author-image">
+                                    <span class="author-name" th:text="${recipe.memberNickname}">장미에 님</span>
                                 </div>
                                 <span class="recipe-date"
-                                    th:text="${#temporals.format(recipe.createdAt, 'yyyy-MM-dd')}">2025-05-09</span>
+                                    th:text="${recipe.boardCreateDate}">2025-05-09</span>
                             </div>
                             <div class="recipe-stats">
                                 <div class="likes">
@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="views">
                                     <i class="fas fa-eye"></i>
-                                    <span th:text="${recipe.viewCount}">36</span>
+                                    <span th:text="${recipe.readCount}">36</span>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
             </div>
 
             <!-- 페이지네이션 -->
-            <div class="pagination-container" th:if="${pagination != null}">
+            <!-- <div class="pagination-container" th:if="${pagination != null}">
                 <ul class="pagination">
                     <li th:if="${pagination.first != true}">
                         <a th:href="@{${#httpServletRequest.requestURI}(page=1, size=${pagination.size})}"
@@ -121,7 +121,84 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
+
+            <!-- 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
+			<div class="pagination-area">
+
+				<!-- 일반 목록 조회 (검색 X )-->
+				<ul class="pagination" th:unless="${param.key}" th:object="${pagination}" >
+
+					<!-- 첫 페이지로 이동 -->
+					<li><a th:href="@{/board/1(cp=1)}">&lt;&lt;</a></li>
+					<!-- << : /board/1?cp=1 -->
+
+					<!-- 이전 목록 마지막 번호로 이동 -->
+					<li><a th:href="@{/board/1(cp=*{prevPage})}">&lt;</a></li>
+					<!-- < : /board/1?cp=10 -->
+
+					<!-- 특정 페이지로 이동 -->
+					
+					<th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+						
+						<!-- 현재 보고있는 페이지 -->
+						<li th:if="${i} == *{currentPage}">
+							<a class="current" th:text="${i}">현재페이지</a>
+						</li>
+						
+						<!-- 보고있지 않은 페이지 -->
+						<li th:unless="${i} == *{currentPage}">
+							<a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})}" 
+								th:text="${i}">이동할 페이지</a>
+						</li>
+					</th:block>
+						
+					<!-- 다음 목록 시작 번호로 이동 -->
+					<li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage})}">&gt;</a></li>
+
+					<!-- 끝 페이지로 이동 -->
+					<li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage})}">&gt;&gt;</a></li>
+				</ul>
+
+
+				<!-- 검색인 경우 -->
+				<ul class="pagination"  th:if="${param.key}" th:object="${pagination}">
+
+					<!-- 첫 페이지로 이동 -->
+					<li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
+
+					<!-- 이전 목록 마지막 번호로 이동 -->
+					<li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+
+					<!-- 특정 페이지로 이동 -->
+					<th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+						
+						<!-- 현재 보고있는 페이지 -->
+						<li th:if="${i} == *{currentPage}">
+							<a class="current" th:text="${i}">현재페이지</a>
+						</li>
+						
+						<!-- 보고있지 않은 페이지 -->
+						<li th:unless="${i} == *{currentPage}">
+							<a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i}, key=${param.key}, query=${param.query})}" 
+								th:text="${i}">이동할 페이지</a>
+						</li>
+					</th:block>
+
+					<!-- 일치하는 게시글이 없을 경우 -->
+					<th:block th:unless="*{startPage lt endPage}">
+						<li>
+							<a class="current">1</a>
+						</li>
+					</th:block>
+						
+					<!-- 다음 목록 시작 번호로 이동 -->
+					<li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
+
+					<!-- 끝 페이지로 이동 -->
+					<li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+				</ul>
+			</div>
 
             <!-- 검색 컨테이너 -->
             <div class="search-container">
@@ -147,12 +224,17 @@
         </section>
     </main>
 
+    <!-- 추가 스크립트 -->
+    <script layout:fragment="script">
+        // 추가 스크립트가 필요한 경우
+    </script>
+
     <!-- 푸터 프래그먼트 -->
     <footer th:replace="~{common/footer :: footer}"></footer>
 
     <!-- 공통 스크립트 -->
     <script th:src="@{/js/recipeBoard/recipeBoardList.js}"></script>
-    <script layout:fragment="script"></script>
+    <!-- <script layout:fragment="script"></script> -->
 </body>
 
 </html>

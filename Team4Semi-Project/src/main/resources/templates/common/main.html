@@ -4,14 +4,14 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="/css/globals.css" />
-  <link rel="stylesheet" href="/css/styleguide.css" />
   <link rel="stylesheet" href="/css/main.css" />
+  <th:block th:replace="~{common/common}"></th:block>
 </head>
 
 <body>
   <!-- 헤더 프래그먼트 -->
   <header th:replace="~{common/header :: header}"></header>
+
 
   <!-- 네비게이션 프래그먼트 -->
   <nav th:replace="~{common/navigation :: navigation}"></nav>
@@ -176,181 +176,54 @@
           </div>
         </div>
       </div>
-      <div class="frame-12">
+      <class="frame-12">
         <div class="session-title">
           <div class="frame-8">
             <div class="text-wrapper-8">최근 레시피</div>
           </div>
           <div class="frame-wrapper">
             <div class="frame-13">
-              <div class="text-wrapper-9">더보기</div>
+              <a href="/board/1" class="header-link" th:text="더보기">더보기</a>
             </div>
           </div>
         </div>
-        <div class="frame-22">
-          <div class="post-frame-default-2">
-            <div class="frame-9">
-              <div class="frame-23">
-                <div class="text-wrapper-15">레몬 탕후루</div>
-                <div class="text-wrapper-16">[0]</div>
-              </div>
-              <div class="frame-18">
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-              </div>
-            </div>
-            <div class="frame-17">
-              <div class="frame-18">
-                <img class="ellipse" src="img/image.png" />
-                <div class="frame-19">
-                  <div class="text-wrapper-13">장미애 님</div>
-                </div>
-                <div class="frame-19">
-                  <div class="text-wrapper-14">2025-05-13</div>
-                </div>
-              </div>
-              <div class="frame-18">
-                <div class="frame-20">
-                  <img class="lemon-solid" src="img/lemon-solid-1-2.svg" />
-                  <div class="element-2">19</div>
-                </div>
-                <div class="frame-21">
-                  <img class="img" src="img/frame-6.svg" />
-                  <div class="element-3">32</div>
-                </div>
-              </div>
-            </div>
+
+        <!-- 게시글 컨테이너 (Agenda View) -->
+        <div class="recipe-container agenda-view">
+          <!-- 게시글 없을 때 -->
+          <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
+            <p>게시글이 없습니다.</p>
           </div>
-          <div class="post-frame-default-2">
-            <div class="frame-9">
-              <div class="frame-23">
-                <div class="text-wrapper-15">레몬 오븐요리</div>
-                <div class="text-wrapper-16">[0]</div>
+
+          <!-- 게시글 목록 -->
+          <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list">
+            <div th:each="board : ${boardList}" class="recipe-item">
+              <div class="recipe-thumbnail">
+                <img th:src="${board.thumbnail}" alt="레시피 이미지">
               </div>
-              <div class="frame-18">
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
+              <div class="recipe-details">
+                <h3 class="recipe-title">
+                  <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                    th:text="${board.boardTitle}">레몬 팬케이크</a>
+                  <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
+                </h3>
+                <div class="recipe-meta">
+                  <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
+                  <span class="recipe-author" th:text="${board.memberNickname}">김아가 님</span>
                 </div>
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
+                <div class="recipe-tags">
+                  <span class="tag" th:each="tag : ${board.hashTag}" th:text="${tag}">#레몬</span>
                 </div>
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-              </div>
-            </div>
-            <div class="frame-17">
-              <div class="frame-18">
-                <img class="ellipse" src="img/ellipse-1-5.png" />
-                <div class="frame-19">
-                  <div class="text-wrapper-13">장미애 님</div>
-                </div>
-                <div class="frame-19">
-                  <div class="text-wrapper-14">2025-05-12</div>
-                </div>
-              </div>
-              <div class="frame-18">
-                <div class="frame-20">
-                  <img class="lemon-solid" src="img/lemon-solid-1-6.svg" />
-                  <div class="element-2">25</div>
-                </div>
-                <div class="frame-21">
-                  <img class="img" src="img/frame-4.svg" />
-                  <div class="element-3">40</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="post-frame-default-2">
-            <div class="frame-9">
-              <div class="frame-23">
-                <div class="text-wrapper-15">레몬 슬라이스</div>
-                <div class="text-wrapper-16">[0]</div>
-              </div>
-              <div class="frame-18">
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-              </div>
-            </div>
-            <div class="frame-17">
-              <div class="frame-18">
-                <img class="ellipse" src="img/ellipse-1-6.png" />
-                <div class="frame-19">
-                  <div class="text-wrapper-13">장미애 님</div>
-                </div>
-                <div class="frame-19">
-                  <div class="text-wrapper-14">2025-05-10</div>
-                </div>
-              </div>
-              <div class="frame-18">
-                <div class="frame-20">
-                  <img class="lemon-solid" src="img/lemon-solid-1-7.svg" />
-                  <div class="element-2">12</div>
-                </div>
-                <div class="frame-21">
-                  <img class="img" src="img/frame-7.svg" />
-                  <div class="element-3">21</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="post-frame-default-2">
-            <div class="frame-9">
-              <div class="frame-23">
-                <div class="text-wrapper-15">레몬 팬케이크</div>
-                <div class="text-wrapper-16">[0]</div>
-              </div>
-              <div class="frame-18">
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-                <div class="frame-24">
-                  <div class="text-wrapper-12">#레몬</div>
-                </div>
-              </div>
-            </div>
-            <div class="frame-17">
-              <div class="frame-18">
-                <img class="ellipse" src="img/ellipse-1.png" />
-                <div class="frame-19">
-                  <div class="text-wrapper-13">장미애 님</div>
-                </div>
-                <div class="frame-19">
-                  <div class="text-wrapper-14">2025-05-09</div>
-                </div>
-              </div>
-              <div class="frame-18">
-                <div class="frame-20">
-                  <img class="lemon-solid" src="img/image.svg" />
-                  <div class="element-2">28</div>
-                </div>
-                <div class="frame-21">
-                  <img class="img" src="img/frame.svg" />
-                  <div class="element-3">36</div>
+                <div class="recipe-stats">
+                  <span class="likes"><i class="fas fa-heart"></i> <span th:text="${board.likeCount}">28</span></span>
+                  <span class="views"><i class="fas fa-eye"></i> <span th:text="${board.readCount}">36</span></span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
+  </div>
   </div>
 
   <!-- 푸터 프래그먼트 -->

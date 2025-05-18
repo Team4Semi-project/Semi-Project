@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEMONA - Recipe Page</title>
+
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/board/recipeBoardDetail.css">
+</head>
+<body>
+    <!-- 헤더 프래그먼트 -->
+    <header th:replace="~{common/header :: header}"></header>
+
+    <!-- 네비게이션 프래그먼트 -->
+    <nav th:replace="~{common/navigation :: navigation}"></nav>
+
+    <!-- Content starts from the big thumbnail image below write button -->
+    <div class="content-container">
+        <!-- Recipe header -->
+        <div class="recipe-header">
+            <div class="recipe-title" th:text="${board.boardTitle}">레몬 팁/후기</div>
+            <div class="recipe-info">
+                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-13</span>
+                <div class="recipe-stats">
+                    <div class="likes">
+                        <img src="/images/like-icon.png" alt="likes">
+                        <span th:text="${board.likeCount}">0</span>
+                    </div>
+                    <div class="views">
+                        <img src="/images/view-icon.png" alt="views">
+                        <span th:text="${board.readCount}">20</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Author information -->
+        <div class="author-section">
+            <div class="author-info">
+                <div class="author-avatar">
+                    <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}" alt="Author profile">
+                </div>
+                <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
+            </div>
+            <div class="action-buttons">
+                <button class="action-button">수정하기</button>
+                <button class="action-button">삭제하기</button>
+            </div>
+        </div>
+        
+        <!-- Main content - Recipe steps -->
+        <div class="recipe-steps">
+            <!-- Loop through recipe steps with Thymeleaf -->
+            <div class="recipe-step" th:each="step, stepStat : ${boardStepList}">
+                <div class="step-content">
+                    <div class="step-number" th:text="${step.stepNo}">1</div>
+                    <br>
+                    <p th:text="${step.stepContent}">레몬을 준비합니다</p>
+                </div>
+                <div class="step-image">
+                    <img th:src="${step.imgPath}" src="/images/lemon-chef.jpg" alt="Recipe step image">
+                </div>
+            </div>
+            
+            <!-- Sample step 1 (will be replaced by the th:each loop above) -->
+           <!--  <div class="recipe-step">
+                <div class="step-content">
+                    <div class="step-number">1</div>
+                    <p>레몬을 준비합니다</p>
+                </div>
+                <div class="step-image">
+                    <img src="/images/lemon-chef.jpg" alt="Lemon chef">
+                </div>
+            </div>
+            
+            
+            <div class="recipe-step">
+                <div class="step-content">
+                    <div class="step-number">2</div>
+                    <p>레몬을 씻어줍니다</p>
+                </div>
+                <div class="step-image">
+                    <img src="/images/lemon-slice.jpg" alt="Lemon slice">
+                </div>
+            </div> -->
+            
+        </div>
+        
+        <!-- Navigation buttons -->
+        <div class="navigation">
+            <a class="nav-button" href="#"><span>← 이전 글</span></a>
+            <a class="nav-button" href="#"><span>목록으로</span></a>
+            <a class="nav-button" href="#"><span>다음 글 →</span></a>
+        </div>
+        
+        <!-- Comments section -->
+        <!-- 나중에 추가 예정 -->
+        </div>
+    </div>
+    
+    <!-- 푸터 프래그먼트 -->
+    <footer th:replace="~{common/footer :: footer}"></footer>
+</body>
+</html>

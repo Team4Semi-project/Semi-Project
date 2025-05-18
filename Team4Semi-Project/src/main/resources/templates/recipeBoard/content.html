@@ -1,4 +1,14 @@
-<main layout:fragment="content">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>레시피 목록</title>
+</head>
+
+<body>
+    <main layout:fragment="content"></main>
+
     <section class="recipe-section">
         <!-- 섹션 헤더 -->
         <div class="section-header">
@@ -27,40 +37,40 @@
         <!-- 레시피 컨테이너 (Cozy View) -->
         <div class="recipe-container cozy-view">
             <!-- 레시피 없을 때 -->
-            <div th:if="${#lists.isEmpty(recipes)}" class="no-recipes">
+            <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
                 <p>등록된 레시피가 없습니다.</p>
             </div>
 
             <!-- 레시피 목록 -->
-            <div th:unless="${#lists.isEmpty(recipes)}" class="recipe-grid">
-                <div th:each="recipe : ${recipes}" class="recipe-item">
+            <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
+                <div th:each="board : ${boardList}" class="recipe-item">
                     <div class="recipe-image">
-                        <img th:src="${recipe.thumbnail}" alt="레시피 이미지">
+                        <img th:src="${board.thumbnail}" alt="레시피 이미지">
                     </div>
                     <div class="recipe-info">
                         <h3 class="recipe-title">
-                            <a th:href="@{/recipes/{id}(id=${recipe.id})}" th:text="${recipe.title}">레몬 팬케이크</a>
-                            <span class="comment-count" th:text="'[' + ${recipe.commentCount} + ']'">[0]</span>
+                            <a th:href="@{/board/{boardNo}(id=${board.boardNo})}" th:text="${board.boardTitle}">레몬
+                                팬케이크</a>
+                            <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
                         </h3>
                         <div class="recipe-tags">
-                            <span class="tag" th:each="tag : ${recipe.tags}" th:text="${tag}">#레몬</span>
+                            <span class="tag" th:each="hashTag : ${board.hashTag}" th:text="${hashTag}">#레몬</span>
                         </div>
                         <div class="recipe-meta">
                             <div class="author-info">
-                                <img th:src="${recipe.author.profileImage}" alt="프로필 이미지" class="author-image">
-                                <span class="author-name" th:text="${recipe.author.nickname}">장미에 님</span>
+                                <img th:src="${board.profileImg}" alt="프로필 이미지" class="author-image">
+                                <span class="author-name" th:text="${board.memberNickname}">장미에 님</span>
                             </div>
-                            <span class="recipe-date"
-                                th:text="${#temporals.format(recipe.createdAt, 'yyyy-MM-dd')}">2025-05-09</span>
+                            <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                         </div>
                         <div class="recipe-stats">
                             <div class="likes">
                                 <i class="fas fa-heart"></i>
-                                <span th:text="${recipe.likeCount}">28</span>
+                                <span th:text="${board.likeCount}">28</span>
                             </div>
                             <div class="views">
                                 <i class="fas fa-eye"></i>
-                                <span th:text="${recipe.viewCount}">36</span>
+                                <span th:text="${board.readCount}">36</span>
                             </div>
                         </div>
                     </div>
@@ -69,39 +79,39 @@
         </div>
 
         <!-- 페이지네이션 -->
-        <div class="pagination-container" th:if="${pagination != null}">
+        <!-- <div class="pagination-container" th:if="${pagination != null}">
             <ul class="pagination">
-                <li th:if="${pagination.first != true}">
-                    <a th:href="@{${#httpServletRequest.requestURI}(page=1, size=${pagination.size})}"
+                <li th:if="${pagination.currentPage != true}">
+                    <a th:href="@{${#httpServletRequest.requestURI}(page=1, size=${pagination.pageSize})}"
                         class="page-first">
                         <i class="fas fa-angle-double-left"></i>
                     </a>
                 </li>
-                <li th:if="${pagination.first != true}">
-                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pagination.number}, size=${pagination.size})}"
+                <li th:if="${pagination.currentPage != true}">
+                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pagination.number}, size=${pagination.pageSize})}"
                         class="page-prev">
                         <i class="fas fa-angle-left"></i>
                     </a>
                 </li>
                 <li th:each="pageNum : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
                     th:class="${pageNum == pagination.number + 1} ? 'active' : ''">
-                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNum}, size=${pagination.size})}"
+                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNum}, size=${pagination.pageSize})}"
                         th:text="${pageNum}">1</a>
                 </li>
                 <li th:if="${pagination.last != true}">
-                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pagination.number + 2}, size=${pagination.size})}"
+                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pagination.number + 2}, size=${pagination.pageSize})}"
                         class="page-next">
                         <i class="fas fa-angle-right"></i>
                     </a>
                 </li>
                 <li th:if="${pagination.last != true}">
-                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pagination.totalPages}, size=${pagination.size})}"
+                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pagination.totalPages}, size=${pagination.pageSize})}"
                         class="page-last">
                         <i class="fas fa-angle-double-right"></i>
                     </a>
                 </li>
             </ul>
-        </div>
+        </div> -->
 
         <!-- 검색 컨테이너 -->
         <div class="search-container">
@@ -125,9 +135,13 @@
             </div>
         </div>
     </section>
-</main>
 
-<!-- 추가 스크립트 -->
-<script layout:fragment="script">
-    // 추가 스크립트가 필요한 경우
-</script>
+    </main>
+
+    <!-- 추가 스크립트 -->
+    <script layout:fragment="script">
+        // 추가 스크립트가 필요한 경우
+    </script>
+</body>
+
+</html>

@@ -55,7 +55,7 @@
             <!-- Loop through recipe steps with Thymeleaf -->
             <div class="recipe-step" th:each="step, stepStat : ${boardStepList}">
                 <div class="step-content">
-                    <div class="step-number" th:text="${step.stepNo}">1</div>
+                    <div class="step-number" th:text="${stepStat.count}">1</div>
                     <br>
                     <p th:text="${step.stepContent}">레몬을 준비합니다</p>
                 </div>

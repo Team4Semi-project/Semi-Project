@@ -52,8 +52,7 @@ public class EditDefaultBoardController {
 	@Autowired
 	private DefaultBoardService boardService;
 
-	/**
-	 * 게시글 작성
+	/** 게시글 작성
 	 * 
 	 * @param inputBoard
 	 * @param ra
@@ -81,15 +80,11 @@ public class EditDefaultBoardController {
 		req.getSession().setAttribute("loginMember", loginMember);
 		// ---------------------------------------------------------------------
 		
-		
-		// !! 파라미터 받아와서 세팅해야함(boardCode, loginMember.memberNo)
-		// inputBoard에 게시글 종류(자유게시판), 회원번호 저장
 		inputBoard.setBoardCode(boardCode);
 		inputBoard.setMemberNo(loginMember.getMemberNo());
 
 		// insert하고 게시글 번호 저장 : 작성한 글의 Detail 페이지로 보내기 위함
 		int boardNo = service.defaultBoardInsert(inputBoard);
-
 		
 		if (boardNo > 0) {
 			ra.addFlashAttribute("message", "게시글이 작성되었습니다");
@@ -99,12 +94,9 @@ public class EditDefaultBoardController {
 			model.addAttribute("board", inputBoard); // 입력값 그대로 보냄
 			return "board/defaultBoardWrite"; // 기존 작성 페이지로 forward
 		}
-
-
 	}
 
-	/**
-	 * 게시글 수정 화면 전환
+	/** 게시글 수정 화면 전환
 	 * 
 	 * @param boarCode    : 게시판 종류 번호
 	 * @param boardNo     : 게시글 번호
@@ -196,9 +188,8 @@ public class EditDefaultBoardController {
 		
 		return "redirect:" + path;
 	}
-	
-	/**
-	 * 이미지 서버에 업로드
+
+	/** 이미지 서버에 업로드
 	 * 
 	 * @param imageFile
 	 * @param request

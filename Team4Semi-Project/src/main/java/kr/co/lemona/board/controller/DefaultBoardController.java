@@ -26,8 +26,9 @@ public class DefaultBoardController {
 
 	@Autowired
 	private DefaultBoardService service;
-	
+
 	/** 상세 조회
+	 * 
 	 * @param boardCode
 	 * @param boardNo
 	 * @param model
@@ -38,33 +39,30 @@ public class DefaultBoardController {
 	 * @return
 	 */
 	@GetMapping("{boardCode:2|3}/{boardNo:[0-9]+}") // 자유, 공지(2,3) 요청만 받기
-	public String defaultBoardDetail(@PathVariable("boardCode") int boardCode,
-			@PathVariable("boardNo") int boardNo,
-			Model model,
-			@SessionAttribute(value="loginMember", required = false) Member loginMember,
-			RedirectAttributes ra,
-			HttpServletRequest req,  // 요청에 담긴 쿠키 얻어오기
+	public String defaultBoardDetail(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
+			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
+			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠키 얻어오기
 			HttpServletResponse resp // 새로운 쿠키 만들어서 응답하기
-			) {
-		
+	) {
+
 		// 게시글 상세 조회 서비스 호출
-		
+
 		// 1) Map으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
-		
+
 		// 로그인 상태인 경우에만 memberNo 추가
-		if(loginMember != null) {
+		if (loginMember != null) {
 			map.put("memberNo", loginMember.getMemberNo());
 		}
-		
+
 		// 2) 서비스 호출
 		Board board = service.selectOne(map);
-		
+
 		model.addAttribute("board", board);
-		
+
 		return "board/defaultBoardDetail";
 	}
-	
+
 }

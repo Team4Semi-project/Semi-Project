@@ -41,7 +41,7 @@ public class MainController {
 //		// model 에 반환 받은 값 등록
 //		model.addAttribute("boardList", map.get("recipeBoardList"));
 
-		return "board/defaultBoardWrite";
+		return "common/main";
   }
 
 	public String mainPage() {

@@ -3,7 +3,7 @@
 }
 
 .lemona-brand {
-  background-color: #EEB604;
+  background-color: #eeb604;
   padding: 10px 0;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .title-input {
-  background-color: #FFF9E4;
+  background-color: #fff9e4;
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -28,17 +28,17 @@
 }
 
 .write-header {
-  background-color: #EEB604;
-  color: #FFF9E4;
+  background-color: #eeb604;
+  color: #fff9e4;
   padding: 15px;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
 .submit-btn {
-  background-color: #EEB604;
+  background-color: #eeb604;
   border: none;
-  color: #FFF9E4;
+  color: #fff9e4;
   padding: 10px 20px;
   border-radius: 4px;
   float: right;
@@ -59,7 +59,7 @@
 
 /* 글 내용 폰트 */
 .note-editable {
-  font-family: 'Pretendard', sans-serif !important;
+  font-family: "Pretendard", sans-serif !important;
 }
 
 /* placeholder 폰트 */

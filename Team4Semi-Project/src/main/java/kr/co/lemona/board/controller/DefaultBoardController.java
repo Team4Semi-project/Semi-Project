@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,28 +27,25 @@ public class DefaultBoardController {
 	@Autowired
 	private DefaultBoardService service;
 	
-	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}")
+	/** 상세 조회
+	 * @param boardCode
+	 * @param boardNo
+	 * @param model
+	 * @param loginMember
+	 * @param ra
+	 * @param req
+	 * @param resp
+	 * @return
+	 */
+	@GetMapping("{boardCode:2|3}/{boardNo:[0-9]+}") // 자유, 공지(2,3) 요청만 받기
 	public String defaultBoardDetail(@PathVariable("boardCode") int boardCode,
 			@PathVariable("boardNo") int boardNo,
 			Model model,
-			// @SessionAttribute(value="loginMember", required = false) Member loginMember,
+			@SessionAttribute(value="loginMember", required = false) Member loginMember,
 			RedirectAttributes ra,
 			HttpServletRequest req,  // 요청에 담긴 쿠키 얻어오기
 			HttpServletResponse resp // 새로운 쿠키 만들어서 응답하기
 			) {
-		
-		// --------------- 세션 구현 안돼서 테스트용 데이터 삽입 ---------------
-		Member loginMember = Member.builder()
-				.memberNo(2)
-				.memberId("user2")
-	            .memberName("이순신")
-	            .memberNickname("순신이")
-	            .memberEmail("user2@example.com")
-	            .memberDelFl("N")
-	            .build();
-		
-		req.getSession().setAttribute("loginMember", loginMember);
-		// ---------------------------------------------------------------------
 		
 		// 게시글 상세 조회 서비스 호출
 		

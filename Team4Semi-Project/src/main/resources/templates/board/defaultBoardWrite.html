@@ -2,18 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LEMONA - 글 작성하기</title>
 
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!----------------------------------------------------------------------------------------->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <!-- Summernote CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css" rel="stylesheet">
 
   <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/board/defaultBoardWrite.css" />
+  <link rel="stylesheet" href="/css/board/defaultBoardWrite.css">
 </head>
 
 <body>
@@ -35,7 +35,7 @@
     <form id="postForm" method="post" action="/editBoard/2/insert">
       <!-- 제목 -->
       <input type="text" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글제목을 입력해주세요"
-        required />
+        required>
 
       <!-- 서머노트(내용) -->
       <textarea id="summernote" name="boardContent" th:text="${board?.boardContent}"></textarea>

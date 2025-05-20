@@ -421,7 +421,7 @@ select {
   -ms-overflow-style: none; /* IE */
 }
 
-*::-webkit-scrollbar {
+body ::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
 
@@ -429,6 +429,6 @@ select {
 .nav-container,
 .menu-list,
 .menu-item,
-.submenu {
+.submenu{
   overflow: visible !important;
 }

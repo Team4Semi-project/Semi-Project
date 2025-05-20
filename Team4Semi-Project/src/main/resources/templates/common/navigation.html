@@ -19,15 +19,22 @@
                 <a th:href="@{/board/1/popular}">인기 레시피</a>
             </li>
             <li class="menu-item" th:classappend="${currentMenu == 'free'} ? 'active' : ''">
-                <a th:href="@{/board/free}">자유 게시판</a>
+                <a th:href="@{/board/2}">자유 게시판</a>
             </li>
             <li class="menu-item" th:classappend="${currentMenu == 'notice'} ? 'active' : ''">
-                <a th:href="@{/board/notice}">공지사항</a>
+                <a th:href="@{/board/3}">공지사항</a>
             </li>
         </ul>
 
+        <!-- 자유게시판 (boardCode == 2) -->
         <div class="write-button-container">
-            <a th:href="@{/write}" class="write-button">Write Button</a>
+            <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">Write Button</a>
+        </div>
+
+        <!-- 레시피 게시판 (boardCode == 1) -->
+        <div class="write-button-container">
+            <a th:if="${boardCode == 1}" th:href="@{/editRecipe/{boardCode}(boardCode=${boardCode})/insert}"
+                class="write-button">Write Button</a>
         </div>
     </div>
 </nav>

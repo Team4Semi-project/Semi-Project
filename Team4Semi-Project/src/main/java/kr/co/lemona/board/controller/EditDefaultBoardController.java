@@ -30,7 +30,7 @@ import kr.co.lemona.member.model.dto.Member;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("editBoard")
+@RequestMapping("editBoard/{boardCode:2}")
 @PropertySource("classpath:/config.properties")
 @Slf4j
 public class EditDefaultBoardController {
@@ -58,8 +58,9 @@ public class EditDefaultBoardController {
 	 * @param ra
 	 * @return
 	 * @throws Exception
+	 * @author 민장
 	 */
-	@PostMapping("{boardCode:2}/insert") // 파라미터 : loginMember
+	@PostMapping("insert") // 파라미터 : loginMember
 	public String defaultBoardInsert(@PathVariable("boardCode") int boardCode, 
 			@ModelAttribute Board inputBoard, 
 			// @SessionAttribute("loginMember") Member loginMember,
@@ -104,8 +105,9 @@ public class EditDefaultBoardController {
 	 * @param model
 	 * @param ra
 	 * @return
+	 * @author 민장
 	 */
-	@GetMapping("{boardCode:2}/{boardNo:[0-9]+}/update")
+	@GetMapping("{boardNo:[0-9]+}/update")
 	public String boardUpdate(@PathVariable("boardCode") int boardCode,
 			@PathVariable("boardNo") int boardNo,
 			@SessionAttribute("loginMember") Member loginMember, 
@@ -154,8 +156,9 @@ public class EditDefaultBoardController {
 	 * @param ra
 	 * @param loginMember
 	 * @return
+	 * @author 민장
 	 */
-	@GetMapping("{boardCode:2}/{boardNo:[0-9]+}/delete")
+	@GetMapping("{boardNo:[0-9]+}/delete")
 	public String boardDelete(@PathVariable("boardCode") int boardCode,
 			@PathVariable("boardNo") int boardNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
@@ -195,6 +198,7 @@ public class EditDefaultBoardController {
 	 * @param request
 	 * @return
 	 * @throws IOException
+	 * @author 민장
 	 */
 	@PostMapping("defaultUploadImage")
 	@ResponseBody

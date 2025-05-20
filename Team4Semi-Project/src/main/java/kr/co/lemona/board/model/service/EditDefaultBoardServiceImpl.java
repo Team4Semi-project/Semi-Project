@@ -19,6 +19,9 @@ public class EditDefaultBoardServiceImpl implements EditDefaultBoardService {
 	@Autowired
 	private EditDefaultBoardMapper mapper;
 
+	/** 게시글 작성
+	 * @author 민장
+	 */
 	@Override
 	public int defaultBoardInsert(Board inputBoard) throws Exception {
 
@@ -35,6 +38,9 @@ public class EditDefaultBoardServiceImpl implements EditDefaultBoardService {
 		return boardNo;
 	}
 
+	/** 게시글 삭제
+	 * @author 민장
+	 */
 	@Override
 	public int boardDelete(Map<String, Integer> map) {
 		return mapper.defaultBoardDelete(map);

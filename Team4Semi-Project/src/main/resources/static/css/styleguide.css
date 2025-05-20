@@ -1,425 +1,427 @@
 :root {
-    --content-color: rgba(163, 163, 163, 1);
-    --button-color: rgba(221, 221, 221, 1);
-    --input-color: rgba(240, 239, 239, 1);
-    --yellow: rgba(238, 182, 4, 1);
-    --lemon: rgba(255, 214, 52, 1);
-    --lightyellow: rgba(250, 231, 154, 1);
-    --deepgreen: rgba(95, 115, 39, 1);
-    --green: rgba(132, 149, 23, 1);
-    --deepbrown: rgba(80, 49, 3, 1);
-    --brown: rgba(171, 113, 34, 1);
-    --lightbrown: var(--variable-collection-lightbrown);
-    --beige: rgba(228, 212, 179, 1);
-    --milk: rgba(255, 249, 228, 1);
-    --darkgray: rgba(49, 49, 49, 1);
-    --deepgray: rgba(94, 94, 94, 1);
-    --gray: rgba(154, 154, 154, 1);
-    --lightgray: rgba(227, 227, 227, 1);
-    --black: rgba(0, 0, 0, 1);
-    --white: rgba(255, 255, 255, 1);
-    --pink: rgba(244, 151, 215, 1);
-    --red: rgba(255, 0, 0, 1);
-    --pre-h-1-font-family: "Pretendard", Helvetica;
-    --pre-h-1-font-weight: 700;
-    --pre-h-1-font-size: 16px;
-    --pre-h-1-letter-spacing: 0px;
-    --pre-h-1-line-height: normal;
-    --pre-h-1-font-style: normal;
-    --pre-p-2-font-family: "Pretendard", Helvetica;
-    --pre-p-2-font-weight: 400;
-    --pre-p-2-font-size: 16px;
-    --pre-p-2-letter-spacing: 0px;
-    --pre-p-2-line-height: normal;
-    --pre-p-2-font-style: normal;
-    --pre-p-3-font-family: "Pretendard", Helvetica;
-    --pre-p-3-font-weight: 400;
-    --pre-p-3-font-size: 20px;
-    --pre-p-3-letter-spacing: 0px;
-    --pre-p-3-line-height: normal;
-    --pre-p-3-font-style: normal;
-    --pre-h-2-font-family: "Pretendard", Helvetica;
-    --pre-h-2-font-weight: 700;
-    --pre-h-2-font-size: 24px;
-    --pre-h-2-letter-spacing: 0px;
-    --pre-h-2-line-height: normal;
-    --pre-h-2-font-style: normal;
-    --ryu-p-1-font-family: "Ownglyph ryuttung", Helvetica;
-    --ryu-p-1-font-weight: 400;
-    --ryu-p-1-font-size: 12px;
-    --ryu-p-1-letter-spacing: 0px;
-    --ryu-p-1-line-height: normal;
-    --ryu-p-1-font-style: normal;
-    --ryu-p-2-font-family: "Ownglyph ryuttung", Helvetica;
-    --ryu-p-2-font-weight: 400;
-    --ryu-p-2-font-size: 16px;
-    --ryu-p-2-letter-spacing: 0px;
-    --ryu-p-2-line-height: normal;
-    --ryu-p-2-font-style: normal;
-    --ryu-p-3-font-family: "Ownglyph ryuttung", Helvetica;
-    --ryu-p-3-font-weight: 400;
-    --ryu-p-3-font-size: 20px;
-    --ryu-p-3-letter-spacing: 0px;
-    --ryu-p-3-line-height: normal;
-    --ryu-p-3-font-style: normal;
-    --ryu-h-2-font-family: "Ownglyph ryuttung", Helvetica;
-    --ryu-h-2-font-weight: 400;
-    --ryu-h-2-font-size: 24px;
-    --ryu-h-2-letter-spacing: 0px;
-    --ryu-h-2-line-height: normal;
-    --ryu-h-2-font-style: normal;
-    --ryu-h-3-font-family: "Ownglyph ryuttung", Helvetica;
-    --ryu-h-3-font-weight: 400;
-    --ryu-h-3-font-size: 32px;
-    --ryu-h-3-letter-spacing: 0px;
-    --ryu-h-3-line-height: normal;
-    --ryu-h-3-font-style: normal;
-    --pre-p-4-font-family: "Pretendard", Helvetica;
-    --pre-p-4-font-weight: 400;
-    --pre-p-4-font-size: 24px;
-    --pre-p-4-letter-spacing: 0px;
-    --pre-p-4-line-height: normal;
-    --pre-p-4-font-style: normal;
-    --pre-p-1-font-family: "Pretendard", Helvetica;
-    --pre-p-1-font-weight: 400;
-    --pre-p-1-font-size: 12px;
-    --pre-p-1-letter-spacing: 0px;
-    --pre-p-1-line-height: normal;
-    --pre-p-1-font-style: normal;
-    --ryu-h-4-font-family: "Ownglyph ryuttung", Helvetica;
-    --ryu-h-4-font-weight: 400;
-    --ryu-h-4-font-size: 96px;
-    --ryu-h-4-letter-spacing: 0px;
-    --ryu-h-4-line-height: normal;
-    --ryu-h-4-font-style: normal;
-    --SHADOW: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
-    --under-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    --variable-collection-img-color: rgba(109, 109, 109, 1);
-    --variable-collection-color: var(--variable-collection-img-color);
-    --variable-collection-lightbrown: rgba(206, 142, 55, 1);
+  --content-color: rgba(163, 163, 163, 1);
+  --button-color: rgba(221, 221, 221, 1);
+  --input-color: rgba(240, 239, 239, 1);
+  --yellow: rgba(238, 182, 4, 1);
+  --lemon: rgba(255, 214, 52, 1);
+  --lightyellow: rgba(250, 231, 154, 1);
+  --deepgreen: rgba(95, 115, 39, 1);
+  --green: rgba(132, 149, 23, 1);
+  --deepbrown: rgba(80, 49, 3, 1);
+  --brown: rgba(171, 113, 34, 1);
+  --lightbrown: var(--variable-collection-lightbrown);
+  --beige: rgba(228, 212, 179, 1);
+  --milk: rgba(255, 249, 228, 1);
+  --darkgray: rgba(49, 49, 49, 1);
+  --deepgray: rgba(94, 94, 94, 1);
+  --gray: rgba(154, 154, 154, 1);
+  --lightgray: rgba(227, 227, 227, 1);
+  --black: rgba(0, 0, 0, 1);
+  --white: rgba(255, 255, 255, 1);
+  --pink: rgba(244, 151, 215, 1);
+  --red: rgba(255, 0, 0, 1);
+  --pre-h-1-font-family: "Pretendard", Helvetica;
+  --pre-h-1-font-weight: 700;
+  --pre-h-1-font-size: 16px;
+  --pre-h-1-letter-spacing: 0px;
+  --pre-h-1-line-height: normal;
+  --pre-h-1-font-style: normal;
+  --pre-p-2-font-family: "Pretendard", Helvetica;
+  --pre-p-2-font-weight: 400;
+  --pre-p-2-font-size: 16px;
+  --pre-p-2-letter-spacing: 0px;
+  --pre-p-2-line-height: normal;
+  --pre-p-2-font-style: normal;
+  --pre-p-3-font-family: "Pretendard", Helvetica;
+  --pre-p-3-font-weight: 400;
+  --pre-p-3-font-size: 20px;
+  --pre-p-3-letter-spacing: 0px;
+  --pre-p-3-line-height: normal;
+  --pre-p-3-font-style: normal;
+  --pre-h-2-font-family: "Pretendard", Helvetica;
+  --pre-h-2-font-weight: 700;
+  --pre-h-2-font-size: 24px;
+  --pre-h-2-letter-spacing: 0px;
+  --pre-h-2-line-height: normal;
+  --pre-h-2-font-style: normal;
+  --ryu-p-1-font-family: "Ownglyph ryuttung", Helvetica;
+  --ryu-p-1-font-weight: 400;
+  --ryu-p-1-font-size: 12px;
+  --ryu-p-1-letter-spacing: 0px;
+  --ryu-p-1-line-height: normal;
+  --ryu-p-1-font-style: normal;
+  --ryu-p-2-font-family: "Ownglyph ryuttung", Helvetica;
+  --ryu-p-2-font-weight: 400;
+  --ryu-p-2-font-size: 16px;
+  --ryu-p-2-letter-spacing: 0px;
+  --ryu-p-2-line-height: normal;
+  --ryu-p-2-font-style: normal;
+  --ryu-p-3-font-family: "Ownglyph ryuttung", Helvetica;
+  --ryu-p-3-font-weight: 400;
+  --ryu-p-3-font-size: 20px;
+  --ryu-p-3-letter-spacing: 0px;
+  --ryu-p-3-line-height: normal;
+  --ryu-p-3-font-style: normal;
+  --ryu-h-2-font-family: "Ownglyph ryuttung", Helvetica;
+  --ryu-h-2-font-weight: 400;
+  --ryu-h-2-font-size: 24px;
+  --ryu-h-2-letter-spacing: 0px;
+  --ryu-h-2-line-height: normal;
+  --ryu-h-2-font-style: normal;
+  --ryu-h-3-font-family: "Ownglyph ryuttung", Helvetica;
+  --ryu-h-3-font-weight: 400;
+  --ryu-h-3-font-size: 32px;
+  --ryu-h-3-letter-spacing: 0px;
+  --ryu-h-3-line-height: normal;
+  --ryu-h-3-font-style: normal;
+  --pre-p-4-font-family: "Pretendard", Helvetica;
+  --pre-p-4-font-weight: 400;
+  --pre-p-4-font-size: 24px;
+  --pre-p-4-letter-spacing: 0px;
+  --pre-p-4-line-height: normal;
+  --pre-p-4-font-style: normal;
+  --pre-p-1-font-family: "Pretendard", Helvetica;
+  --pre-p-1-font-weight: 400;
+  --pre-p-1-font-size: 12px;
+  --pre-p-1-letter-spacing: 0px;
+  --pre-p-1-line-height: normal;
+  --pre-p-1-font-style: normal;
+  --ryu-h-4-font-family: "Ownglyph ryuttung", Helvetica;
+  --ryu-h-4-font-weight: 400;
+  --ryu-h-4-font-size: 96px;
+  --ryu-h-4-letter-spacing: 0px;
+  --ryu-h-4-line-height: normal;
+  --ryu-h-4-font-style: normal;
+  --SHADOW: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  --under-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  --variable-collection-img-color: rgba(109, 109, 109, 1);
+  --variable-collection-color: var(--variable-collection-img-color);
+  --variable-collection-lightbrown: rgba(206, 142, 55, 1);
 }
 
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Ownglyph_ryuttung-Rg';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-2@1.0/Ownglyph_ryuttung-Rg.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Ownglyph_ryuttung-Rg";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2405-2@1.0/Ownglyph_ryuttung-Rg.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: var(--pre-p-2-font-family);
-    font-weight: var(--pre-p-2-font-weight);
-    font-size: var(--pre-p-2-font-size);
-    line-height: var(--pre-p-2-line-height);
-    color: var(--darkgray);
-    background-color: var(--white);
+  font-family: var(--pre-p-2-font-family);
+  font-weight: var(--pre-p-2-font-weight);
+  font-size: var(--pre-p-2-font-size);
+  line-height: var(--pre-p-2-line-height);
+  color: var(--darkgray);
+  background-color: var(--white);
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 button {
-    cursor: pointer;
-    background: none;
-    border: none;
-    outline: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
 }
 
 input,
 select {
-    font-family: var(--pre-p-2-font-family);
-    font-size: var(--pre-p-2-font-size);
+  font-family: var(--pre-p-2-font-family);
+  font-size: var(--pre-p-2-font-size);
 }
 
 /* 헤더 스타일 */
 .header {
-    background-color: var(--white);
-    box-shadow: var(--SHADOW);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  background-color: var(--white);
+  box-shadow: var(--SHADOW);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header-container {
-    min-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    padding: 0 80px;
+  min-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 80px;
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    width: 120px;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  width: 120px;
+  flex-shrink: 0;
 }
 
 .logo img {
-    height: 80px;
-    width: auto;
+  height: 80px;
+  width: auto;
 }
 
 .search-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex: 1;
 
-    margin: 0 40px;
-    gap: 10px;
+  margin: 0 40px;
+  gap: 10px;
 }
 
 .search-dropdown {
-    position: relative;
-    margin-right: 10px;
+  position: relative;
+  margin-right: 10px;
 }
 
 .dropdown-button {
-    background-color: var(--lemon);
-    border-radius: 20px;
-    padding: 8px 30px;
-    font-size: var(--pre-p-1-font-size);
-    font-family: var(--pre-p-1-font-family);
-    font-weight: var(--pre-p-1-font-weight);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--deepbrown);
-    height: 100%;
+  background-color: var(--lemon);
+  border-radius: 20px;
+  padding: 8px 30px;
+  font-size: var(--pre-p-1-font-size);
+  font-family: var(--pre-p-1-font-family);
+  font-weight: var(--pre-p-1-font-weight);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--deepbrown);
+  height: 100%;
 }
 
 .dropdown-button i {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: var(--white);
-    box-shadow: var(--SHADOW);
-    border-radius: 4px;
-    min-width: 120px;
-    z-index: 10;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--white);
+  box-shadow: var(--SHADOW);
+  border-radius: 4px;
+  min-width: 120px;
+  z-index: 10;
 }
 
 .dropdown-content a {
-    display: block;
-    padding: 10px 15px;
-    font-size: var(--pre-p-1-font-size);
-    transition: background-color 0.2s;
-    color: var(--deepgray);
+  display: block;
+  padding: 10px 15px;
+  font-size: var(--pre-p-1-font-size);
+  transition: background-color 0.2s;
+  color: var(--deepgray);
 }
 
 .dropdown-content a:hover {
-    background-color: var(--milk);
-    color: var(--deepbrown);
+  background-color: var(--milk);
+  color: var(--deepbrown);
 }
 
 .search-dropdown:hover .dropdown-content {
-    display: block;
+  display: block;
 }
 
 .search-bar {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    border: 1px solid var(--input-color);
-    border-radius: 20px;
-    overflow: hidden;
-    background-color: var(--input-color);
-    height: 40px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--input-color);
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: var(--input-color);
+  height: 40px;
 }
 
 .search-bar input {
-    flex: 1;
-    padding: 8px 20px;
-    border: none;
-    outline: none;
-    font-size: var(--ryu-p-2-font-size);
-    font-family: var(--ryu-p-2-font-family);
-    background-color: transparent;
+  flex: 1;
+  padding: 8px 20px;
+  border: none;
+  outline: none;
+  font-size: var(--ryu-p-2-font-size);
+  font-family: var(--ryu-p-2-font-family);
+  background-color: transparent;
 }
 
 .search-button {
-    padding: 8px 15px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--gray);
+  padding: 8px 15px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--gray);
 }
 
 .login-button {
-    margin-right: 10px;
-    font-size: var(--pre-p-2-font-size);
-    color: var(--deepgray);
+  margin-right: 10px;
+  font-size: var(--pre-p-2-font-size);
+  color: var(--deepgray);
 }
 
 .user-menu {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
 
-    width: 120px;
+  width: 120px;
 }
 
 .user-menu span {
-    font-size: 40px;
-    cursor: pointer;
-    color: var(--deepgray);
+  font-size: 40px;
+  cursor: pointer;
+  color: var(--deepgray);
 }
 
 /* 네비게이션 스타일 */
 .navigation {
-    background-color: var(--white);
-    border-bottom: 1px solid var(--lightgray);
+  background-color: var(--white);
+  border-bottom: 1px solid var(--lightgray);
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
 }
 
 .menu-list {
-    display: flex;
+  display: flex;
 }
 
 .menu-item {
-    position: relative;
+  position: relative;
 }
 
 .menu-item a {
-    display: block;
-    padding: 15px 20px;
-    font-size: var(--pre-p-2-font-size);
-    font-weight: var(--pre-p-2-font-weight);
-    transition: color 0.2s;
-    color: var(--deepgray);
+  display: block;
+  padding: 15px 20px;
+  font-size: var(--pre-p-2-font-size);
+  font-weight: var(--pre-p-2-font-weight);
+  transition: color 0.2s;
+  color: var(--deepgray);
 }
 
 .menu-item.active a {
-    color: var(--yellow);
-    font-weight: var(--pre-h-1-font-weight);
+  color: var(--yellow);
+  font-weight: var(--pre-h-1-font-weight);
 }
 
-.menu-item:hover>a {
-    color: var(--yellow);
+.menu-item:hover > a {
+  color: var(--yellow);
 }
 
 .submenu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: var(--white);
-    box-shadow: var(--SHADOW);
-    border-radius: 4px;
-    min-width: 150px;
-    z-index: 10;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--white);
+  box-shadow: var(--SHADOW);
+  border-radius: 4px;
+  min-width: 150px;
+  z-index: 10;
 }
 
 .category-list li a {
-    display: block;
-    padding: 10px 15px;
-    font-size: var(--pre-p-1-font-size);
-    transition: background-color 0.2s;
-    color: var(--deepgray);
+  display: block;
+  padding: 10px 15px;
+  font-size: var(--pre-p-1-font-size);
+  transition: background-color 0.2s;
+  color: var(--deepgray);
 }
 
 .category-list li a:hover {
-    background-color: var(--milk);
-    color: var(--deepbrown);
+  background-color: var(--milk);
+  color: var(--deepbrown);
 }
 
 .recipe-menu:hover .submenu {
-    display: block;
+  display: block;
 }
 
 .write-button {
-    display: inline-block;
-    background-color: var(--lemon);
-    color: var(--deepbrown);
-    padding: 8px 20px;
-    border-radius: 4px;
-    font-size: var(--pre-p-2-font-size);
-    font-weight: var(--pre-h-1-font-weight);
-    transition: background-color 0.2s;
-    box-shadow: var(--under-shadow);
+  display: inline-block;
+  background-color: var(--lemon);
+  color: var(--deepbrown);
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-size: var(--pre-p-2-font-size);
+  font-weight: var(--pre-h-1-font-weight);
+  transition: background-color 0.2s;
+  box-shadow: var(--under-shadow);
 }
 
 .write-button:hover {
-    background-color: var(--yellow);
+  background-color: var(--yellow);
 }
 
 /* 푸터 스타일 */
 .footer {
-    background-color: var(--darkgray);
-    color: var(--white);
-    padding: 20px 0;
-    margin-top: 50px;
+  background-color: var(--darkgray);
+  color: var(--white);
+  padding: 20px 0;
+  margin-top: 50px;
 }
 
 .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .footer-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    font-size: var(--pre-p-1-font-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: var(--pre-p-1-font-size);
 }
 
 .footer-links a {
-    color: var(--lightgray);
-    transition: color 0.2s;
+  color: var(--lightgray);
+  transition: color 0.2s;
 }
 
 .footer-links a:hover {
-    color: var(--lightyellow);
+  color: var(--lightyellow);
 }
 
 .copyright {
-    color: var(--gray);
+  color: var(--gray);
 }
 
-* {
+html {
   overflow-y: scroll; /* 세로 스크롤 유지 (보이지 않지만 가능) */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE */
 }
 
-*::-webkit-scrollbar {
+body::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
 

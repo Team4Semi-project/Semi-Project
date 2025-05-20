@@ -26,4 +26,7 @@ public class BoardStep {
 
     // 파일 업로드 시 사용
     private MultipartFile uploadFile;
+    
+    // 썸내일 지정 여부
+    private String thumbnailCheck;
 }

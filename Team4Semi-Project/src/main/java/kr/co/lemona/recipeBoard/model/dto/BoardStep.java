@@ -21,6 +21,8 @@ public class BoardStep {
     private String imgOriginalName; // 업로드한 원본 파일명
     private String imgRename;       // 서버에 저장된 파일명
     private int boardNo;            // 게시글 번호 (PK 또는 FK)
+    private String thumbnailCheck;	// 썸네일
+    
 
     // 파일 업로드 시 사용
     private MultipartFile uploadFile;

@@ -8,6 +8,16 @@ public interface MainService {
 	 * @return
 	 * @author jihyun
 	 */
-	Map<String, Object> mainRecipeBoardList();
+	Map<String, Object> mainRecipeBoardList(int cp);
+
+	/** 전체 게시판 통합 검색하기
+	 * @param paramMap
+	 * @return
+	 */
+	Map<String, Object> AllsearchList(Map<String, Object> paramMap, int cp);
+
+	Map<String, Object> selectRecipeBoardList(int categoryNo, int cp);
+
+	Map<String, Object> selectPopularBoardList(int cp);
 
 }

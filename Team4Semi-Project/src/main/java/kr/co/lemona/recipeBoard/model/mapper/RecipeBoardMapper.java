@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
@@ -27,7 +28,6 @@ public interface RecipeBoardMapper {
 	 * @author miae
 	 */
 	List<RecipeBoard> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
-
 
 	/** 레시피 보드에서 삭제되지 않은 인기 게시글 수를 조회
 	 * @return
@@ -55,4 +55,51 @@ public interface RecipeBoardMapper {
 	 * @param boardNo 
 	 */
 	List<BoardStep> selectBoardStepList(int boardNo);
+
+	/** RECIPE_BOARD에 게시글 제목+카테고리번호+작성자 정보 삽입
+	 * @param inputBoard
+	 * @return
+	 * @author 재호
+	 */
+	int insertRecipeBoard(RecipeBoard inputBoard);
+
+	/** BOARD_STEP에 단계 설명, 단계 순서 삽입
+	 * @param boardStepList
+	 * @return
+	 * @author 재호
+	 */
+	int insertBoardStepContent(@Param("list") List<BoardStep> boardStepList);
+
+	/** BOARD_STEP에 이미지 삽입
+	 * @param boardStepList
+	 * @return
+	 * @author 재호
+	 */
+	int insertBoardStepImage(@Param("list") List<BoardStep> boardStepList);
+
+	/** 해시태그 중복검사 및 삽입
+	 * @param hashTagList
+	 * @return
+	 * @author 재호
+	 */
+	int insertNewHashtagIfNotExists(@Param("list") List<String> hashTagList);
+	
+	/** 해시태그 삽입
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int insertHashTag(@Param("list") Map<String, Object> map);
+
+	/** 이전 글 받아오기
+	 * @param map
+	 * @return
+	 */
+	RecipeBoard selectPrevBoard(Map<String, Integer> map);
+
+	/** 다음 글 받아오기
+	 * @param map
+	 * @return
+	 */
+	RecipeBoard selectNextBoard(Map<String, Integer> map);
 }

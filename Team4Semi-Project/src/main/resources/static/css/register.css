@@ -1,3 +1,13 @@
+* {
+  overflow-y: scroll; /* 세로 스크롤 유지 (보이지 않지만 가능) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -23,13 +33,12 @@
 }
 
 .register-box {
-  background-color: #fff9e6;
   padding: 40px 30px;
-  border: 1px solid #f4e5a8;
+  border: 5px solid #fff9e4;
   border-radius: 15px;
   margin-top: 30px;
-  width: 380px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 650px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .register-header {
@@ -39,38 +48,51 @@
   text-align: center;
 }
 
+/* form layout */
 .input-row {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .input-field {
   flex: 1;
   padding: 10px;
-  margin-right: 6px;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 14px;
-  background-color: #fffdf4;
+  background-color: #fff9e4;
+  height: 45px;
+  box-sizing: border-box;
 }
 
 .btn-sub {
-  padding: 10px;
-  background-color: #ffcc00;
+  width: 130px;
+  height: 45px;
+  padding: 0 10px;
+  background-color: #ffd634;
   border: none;
-  color: #000;
+  color: #5e5e5e;
   border-radius: 6px;
   font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
   white-space: nowrap;
 }
 
+/* 단독 필드 */
+.input-field:not(.input-row .input-field) {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+/* main submit button */
 .btn-main {
   width: 100%;
   margin-top: 16px;
-  padding: 12px;
-  background-color: #ffcc00;
-  color: #000;
+  padding: 14px;
+  background-color: #ffd634;
+  color: #5e5e5e;
   font-weight: bold;
   border: none;
   border-radius: 8px;
@@ -83,6 +105,7 @@
   font-size: 13px;
   margin-bottom: 8px;
   display: block;
+  text-align: left;
 }
 
 .footer {

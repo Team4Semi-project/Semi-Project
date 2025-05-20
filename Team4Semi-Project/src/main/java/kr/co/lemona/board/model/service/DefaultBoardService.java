@@ -6,9 +6,17 @@ import kr.co.lemona.board.model.dto.Board;
 
 public interface DefaultBoardService {
 
+	/** 게시글 리스트 조회
+	 * @param cp
+	 * @return
+	 * @author 민장
+	 */
+	Map<String, Object> selectBoardList(int boardCode, int cp);
+	
 	/** 게시글 상세 조회 서비스
 	 * @param map
 	 * @return
+	 * @author 민장
 	 */
 	Board selectOne(Map<String, Integer> map);
 

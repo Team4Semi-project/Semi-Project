@@ -1,0 +1,360 @@
+/* 페이지 타이틀 영역 */
+.page-title {
+  background-color: var(--lemon);
+  padding: 15px 0;
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: var(--under-shadow);
+}
+
+.page-title h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--deepbrown);
+  font-family: "Ownglyph_ryuttung-Rg", sans-serif;
+}
+
+/* 컨테이너 */
+.container {
+  max-width: 800px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+}
+
+/* 카테고리 및 제목 영역 */
+.form-row {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.category-select {
+  flex: 0 0 150px;
+}
+
+.category-select select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--lightgray);
+  background-color: var(--input-color);
+  cursor: pointer;
+  color: var(--deepgray);
+}
+
+.title-input {
+  flex: 1;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid var(--lightgray);
+  background-color: var(--input-color);
+  font-size: 16px;
+  color: var(--darkgray);
+}
+
+.title-input::placeholder {
+  color: var(--gray);
+}
+
+/* 레시피 스텝 영역 */
+.recipe-steps {
+  margin-bottom: 20px;
+}
+
+.recipe-step {
+  display: flex;
+  margin-bottom: 15px;
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--SHADOW);
+  overflow: hidden;
+}
+
+.step-buttons {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--input-color);
+  padding: 5px;
+}
+
+.step-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin: 2px 0;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  color: var(--deepgray);
+}
+
+.step-btn:hover {
+  background-color: var(--lightyellow);
+  color: var(--deepbrown);
+}
+
+.step-delete:hover {
+  background-color: var(--pink);
+  color: var(--white);
+}
+
+.step-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.step-content {
+  display: flex;
+  flex: 1;
+  padding: 15px;
+  gap: 15px;
+}
+
+.step-content textarea {
+  flex: 1;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid var(--lightgray);
+  border-radius: 5px;
+  resize: vertical;
+  background-color: var(--input-color);
+  color: var(--darkgray);
+}
+
+.step-content textarea::placeholder {
+  color: var(--gray);
+}
+
+.step-image-area {
+  flex: 0 0 200px;
+}
+
+.image-upload {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed var(--lightgray);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 20px 0;
+  transition: border-color 0.2s;
+}
+
+.image-upload:hover {
+  border-color: var(--lemon);
+}
+
+.image-upload label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.upload-icon {
+  font-size: 28px;
+  color: var(--lemon);
+  margin-bottom: 5px;
+}
+
+.step-image-input {
+  display: none;
+}
+
+.image-preview-container {
+  width: 100%;
+}
+
+.image-preview {
+  width: 100%;
+  height: 150px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 1px solid var(--lightgray);
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.thumbnail-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+  color: var(--deepgray);
+  font-size: 14px;
+}
+
+.thumbnail-control input[type="radio"] {
+  margin: 0;
+  accent-color: var(--lemon);
+}
+
+.image-cancel-btn {
+  padding: 5px 10px;
+  background-color: var(--input-color);
+  border: 1px solid var(--lightgray);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+  color: var(--deepgray);
+}
+
+.image-cancel-btn:hover {
+  background-color: var(--lightgray);
+  color: var(--darkgray);
+}
+
+/* 요리과정 추가 버튼 */
+.add-step-container {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.add-step-btn {
+  background-color: var(--lemon);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background-color 0.2s;
+  color: var(--deepbrown);
+  box-shadow: var(--under-shadow);
+}
+
+.add-step-btn:hover {
+  background-color: var(--yellow);
+}
+
+/* 해시태그 영역 */
+.hashtag-section {
+  margin-bottom: 30px;
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: var(--SHADOW);
+}
+
+.hashtag-input-container {
+  margin-bottom: 10px;
+}
+
+#hashTagInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--lightgray);
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: var(--input-color);
+  color: var(--darkgray);
+}
+
+#hashTagInput::placeholder {
+  color: var(--gray);
+}
+
+.hashtag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hashtag {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--lightyellow);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 14px;
+  color: var(--deepbrown);
+}
+
+.delete-hashtag {
+  margin-left: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--lemon);
+  color: var(--deepbrown);
+  transition: background-color 0.2s;
+}
+
+.delete-hashtag:hover {
+  background-color: var(--yellow);
+}
+
+/* 글 작성 완료 버튼 */
+.submit-container {
+  text-align: center;
+}
+
+.submit-btn {
+  background-color: var(--lemon);
+  border: none;
+  padding: 15px 40px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background-color 0.2s;
+  color: var(--deepbrown);
+  box-shadow: var(--under-shadow);
+}
+
+.submit-btn:hover {
+  background-color: var(--yellow);
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .category-select {
+    flex: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .step-content {
+    flex-direction: column;
+  }
+
+  .step-image-area {
+    flex: none;
+    width: 100%;
+  }
+}

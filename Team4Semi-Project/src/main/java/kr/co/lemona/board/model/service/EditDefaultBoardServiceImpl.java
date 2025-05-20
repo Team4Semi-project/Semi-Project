@@ -1,5 +1,7 @@
 package kr.co.lemona.board.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -17,6 +19,9 @@ public class EditDefaultBoardServiceImpl implements EditDefaultBoardService {
 	@Autowired
 	private EditDefaultBoardMapper mapper;
 
+	/** 게시글 작성
+	 * @author 민장
+	 */
 	@Override
 	public int defaultBoardInsert(Board inputBoard) throws Exception {
 
@@ -31,6 +36,14 @@ public class EditDefaultBoardServiceImpl implements EditDefaultBoardService {
 		// 삽입된 게시글의 번호를 변수로 저장 후 리턴
 		int boardNo = inputBoard.getBoardNo();
 		return boardNo;
+	}
+
+	/** 게시글 삭제
+	 * @author 민장
+	 */
+	@Override
+	public int boardDelete(Map<String, Integer> map) {
+		return mapper.defaultBoardDelete(map);
 	}
 
 }

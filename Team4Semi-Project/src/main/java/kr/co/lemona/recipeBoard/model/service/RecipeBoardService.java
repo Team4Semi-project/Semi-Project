@@ -1,6 +1,9 @@
 package kr.co.lemona.recipeBoard.model.service;
 
+import java.util.List;
 import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 
@@ -27,5 +30,18 @@ public interface RecipeBoardService {
 	 * @param boardNo 
 	 */
 	Map<String, Object> selectOneRecipe(Map<String, Integer> map);
+
+	/** 레시피 게시글 작성 서비스
+	 * @param inputBoard
+	 * @param images
+	 * @param stepContent
+	 * @param thumbnailNo
+	 * @return
+	 * @author 재호
+	 */
+	int insertRecipeBoard(RecipeBoard inputBoard,
+						  List<MultipartFile> images,
+						  List<String> inputStepContent,
+						  int thumbnailNo) throws Exception;
 
 }

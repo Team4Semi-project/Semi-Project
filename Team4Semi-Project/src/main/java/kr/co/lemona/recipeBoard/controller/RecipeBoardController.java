@@ -44,8 +44,8 @@ public class RecipeBoardController {
 	 * @return
 	 * @author miae
 	 */
-	@GetMapping("")
-	public String selectRecipeBoardList(@RequestParam(value = "categoryNo", defaultValue = "0") int categoryNo,
+	@GetMapping("{categoryNo:[0-9]+}")
+	public String selectRecipeBoardList(@PathVariable("categoryNo") int categoryNo,
 								@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
 								Model model,
 								@RequestParam Map<String, Object> paramMap) {
@@ -68,6 +68,7 @@ public class RecipeBoardController {
 		// model 에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("recipeBoardList"));
+		model.addAttribute("categoryNo", categoryNo);
 
 		return "board/boardList";
 	}
@@ -117,8 +118,8 @@ public class RecipeBoardController {
 	 * @return
 	 * @author miae
 	 */
-	@GetMapping("{boardNo:[0-9]+}")
-	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo,
+	@GetMapping("{categoryNo:[0-9]+}/{boardNo:[0-9]+}")
+	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("categoryNo") int categoryNo,
 									Model model,
 									@SessionAttribute(value="loginMember", required = false) Member loginMember,
 									RedirectAttributes ra,
@@ -131,6 +132,7 @@ public class RecipeBoardController {
 		// 1) Map 으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardNo", boardNo);
+		map.put("categoryNo", categoryNo);
 		
 		// 로그인 상태인 경우에만 memberNo 추가
 		if(loginMember != null) {
@@ -145,7 +147,7 @@ public class RecipeBoardController {
 		
 		// 조회 결과가 없는 경우
 		if(recipeMap == null) {
-			path = "redirect:/board/1"; // 목록 재요청
+			path = "redirect:/board/1/" + categoryNo; // 목록 재요청
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
 			
 		} else {
@@ -204,12 +206,17 @@ public class RecipeBoardController {
 			
 			RecipeBoard recipeBoard = (RecipeBoard) recipeMap.get("recipeBoard");
 			List<BoardStep> boardStepList = (List<BoardStep>) recipeMap.get("boardStepList");
+			int prevBoardNo = (int) recipeMap.get("prevBoardNo");
+			int nextBoardNo = (int) recipeMap.get("nextBoardNo");		
+			
 			if(recipeBoard != null && boardStepList != null) {
 				path = "board/recipeBoardDetail"; // recipeBoardDetail.html로 forward
 				
 				// board - 게시글 일반 내용 + imageList + commentList
 				model.addAttribute("board", recipeBoard);
 				model.addAttribute("boardStepList", boardStepList);
+				model.addAttribute("prevBoardNo", prevBoardNo);
+				model.addAttribute("nextBoardNo", nextBoardNo);
 				
 				// 조회된 이미지 목록이 있을 경우
 				/*

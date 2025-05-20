@@ -91,5 +91,15 @@ public interface RecipeBoardMapper {
 	 */
 	int insertHashTag(@Param("list") Map<String, Object> map);
 
-	
+	/** 이전 글 받아오기
+	 * @param map
+	 * @return
+	 */
+	RecipeBoard selectPrevBoard(Map<String, Integer> map);
+
+	/** 다음 글 받아오기
+	 * @param map
+	 * @return
+	 */
+	RecipeBoard selectNextBoard(Map<String, Integer> map);
 }

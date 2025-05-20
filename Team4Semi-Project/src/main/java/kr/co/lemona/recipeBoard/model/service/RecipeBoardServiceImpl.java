@@ -63,7 +63,11 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
-
+		
+		for (RecipeBoard recipeBoard : recipeBoardList) {
+			log.info("recipeBoard : "+recipeBoard.getBoardCode());
+		}
+		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
 
@@ -124,10 +128,32 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		boardStepList = mapper.selectBoardStepList(map.get("boardNo"));
 		RecipeBoard recipeBoard = mapper.selectOneRecipe(map);
-
+		
+		// 이전 글 
+		RecipeBoard prevBoard = mapper.selectPrevBoard(map);
+		
+		// 다음 글
+		RecipeBoard nextBoard = mapper.selectNextBoard(map);
+		
+		log.info("map.get(\"boardNo\") : " + map.get("boardNo"));
+		
+		int prevBoardNo = 0;
+		int nextBoardNo = 0;
+		
+		// 이전 글 다음글 목록이 있을때만 값을 받아오기
+		if (prevBoard != null) {
+			prevBoardNo = prevBoard.getBoardNo();
+		}
+		
+		if (nextBoard != null) {
+			nextBoardNo = nextBoard.getBoardNo();
+		}
+				
 		map2.put("recipeBoard", recipeBoard);
 		map2.put("boardStepList", boardStepList);
-
+		map2.put("prevBoardNo", prevBoardNo);
+		map2.put("nextBoardNo", nextBoardNo);
+		
 		return map2;
 	}
 

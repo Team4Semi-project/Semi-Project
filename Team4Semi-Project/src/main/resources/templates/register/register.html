@@ -1,82 +1,137 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LEMONA - 회원가입</title>
+    <link rel="stylesheet" href="/css/register.css" />
+    <style>
+      .error-message {
+        color: red;
+        display: none;
+        font-size: 0.9em;
+        margin-top: 5px;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LEMONA - 회원가입</title>
-  <link rel="stylesheet" href="/css/register.css" />
-  <style>
-    .error-message {
-      color: red;
-      display: none;
-      font-size: 0.9em;
-      margin-top: 5px;
-    }
+      .valid-message {
+        color: green;
+        font-size: 0.9em;
+        display: none;
+      }
+    </style>
+  </head>
 
-    .valid-message {
-      color: green;
-      font-size: 0.9em;
-      display: none;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <div class="logo-container">
-      <a href="/" class="logo-link">
-        <img src="/images/lemona-logo.png" alt="LEMONA Logo" class="logo-img" />
-        <div class="brand-name"></div>
-      </a>
-    </div>
-
-    <div class="register-box">
-      <div class="register-header">회원가입</div>
-      <form id="registerForm">
-        <div class="input-row">
-          <input type="text" name="userId" placeholder="아이디를 입력하세요" class="input-field" />
-          <button type="button" class="btn-sub">아이디 중복 체크</button>
-        </div>
-
-        <div class="input-row">
-          <input type="email" name="email" placeholder="이메일을 입력하세요" class="input-field" />
-          <button type="button" class="btn-sub" id="sendCodeBtn">인증번호받기</button>
-        </div>
-
-        <div class="input-row">
-          <input type="text" name="emailCode" placeholder="인증번호 입력" class="input-field" />
-          <button type="button" class="btn-sub" id="verifyCodeBtn">인증하기</button>
-        </div>
-
-        <input type="password" name="password" placeholder="비밀번호 입력" class="input-field" id="passwordInput" />
-        <div class="error-message" id="passwordError">비밀번호는 8~20자, 숫자/문자/특수문자를 포함해야 합니다.</div>
-
-        <input type="password" name="confirmPassword" placeholder="비밀번호 확인" class="input-field" id="confirmPasswordInput" />
-        <div class="error-message" id="confirmError">비밀번호가 일치하지 않습니다.</div>
-
-        <input type="text" name="username" placeholder="사용자 이름" class="input-field" />
-
-        <div class="input-row">
-          <input type="text" name="nickname" placeholder="닉네임" class="input-field" />
-          <button type="button" class="btn-sub">닉네임 중복 체크</button>
-        </div>
-
-        <button type="submit" class="btn-main">회원가입하기</button>
-      </form>
-    </div>
-
-    <footer class="footer">
-      <div class="footer-links">
-        <span>프로젝트 소개</span>
-        <span>개발자 소개</span>
-        <span>개인정보 처리방침</span>
-        <span>이용약관</span>
-        <span>© Copyright</span>
-        <span>SNS</span>
+  <body>
+    <div class="container">
+      <div class="logo-container">
+        <a href="/" class="logo-link">
+          <img
+            src="/images/lemona-logo.png"
+            alt="LEMONA Logo"
+            class="logo-img"
+          />
+          <div class="brand-name"></div>
+        </a>
       </div>
-    </footer>
-  </div>
-</body>
 
+      <div class="register-box">
+        <div class="register-header">회원가입</div>
+        <form id="registerForm">
+          <div class="input-row">
+            <input
+              type="text"
+              name="userId"
+              id="memberId"
+              placeholder="아이디를 입력하세요"
+              class="input-field"
+            />
+            <button type="button" class="btn-sub">아이디 중복 체크</button>
+          </div>
+
+          <div class="input-row">
+            <span id="idCheckMessage" class="error-message">test11</span>
+          </div>
+
+          <div class="input-row">
+            <input
+              type="email"
+              name="email"
+              placeholder="이메일을 입력하세요"
+              class="input-field"
+            />
+            <button type="button" class="btn-sub" id="sendCodeBtn">
+              인증번호받기
+            </button>
+          </div>
+
+          <div class="input-row">
+            <input
+              type="text"
+              name="emailCode"
+              placeholder="인증번호 입력"
+              class="input-field"
+            />
+            <button type="button" class="btn-sub" id="verifyCodeBtn">
+              인증하기
+            </button>
+          </div>
+
+          <input
+            type="password"
+            name="password"
+            placeholder="비밀번호 입력"
+            class="input-field"
+            id="passwordInput"
+          />
+          <div class="error-message" id="passwordError">
+            비밀번호는 8~20자, 숫자/문자/특수문자를 포함해야 합니다.
+          </div>
+
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="비밀번호 확인"
+            class="input-field"
+            id="confirmPasswordInput"
+          />
+          <div class="error-message" id="confirmError">
+            비밀번호가 일치하지 않습니다.
+          </div>
+
+          <input
+            type="text"
+            name="username"
+            placeholder="사용자 이름"
+            class="input-field"
+          />
+
+          <div class="input-row">
+            <input
+              type="text"
+              name="nickname"
+              placeholder="닉네임"
+              class="input-field"
+            />
+            <button type="button" class="btn-sub">닉네임 중복 체크</button>
+          </div>
+
+          <button type="submit" class="btn-main">회원가입하기</button>
+        </form>
+      </div>
+
+      <footer class="footer">
+        <div class="footer-links">
+          <span>프로젝트 소개</span>
+          <span>개발자 소개</span>
+          <span>개인정보 처리방침</span>
+          <span>이용약관</span>
+          <span>© Copyright</span>
+          <span>SNS</span>
+        </div>
+      </footer>
+    </div>
+
+    <!-- JavaScript 연결 -->
+    <script src="/js/register/register.js" defer></script>
+  </body>
 </html>

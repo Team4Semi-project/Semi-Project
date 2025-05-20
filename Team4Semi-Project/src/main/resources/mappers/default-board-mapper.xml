@@ -3,11 +3,8 @@
 <mapper
 	namespace="kr.co.lemona.board.model.mapper.DefaultBoardMapper">
 
-	<!-- 
-		resultMap 사용 이유 Board 하나에 Comment가 여러 개 있는 경우, 
-		<id>가 없으면 MyBatis가 같은 Board를 다른 객체로 오인해서 
-		중복 객체를 생성할 수 있음. 
-	-->
+	<!-- resultMap 사용 이유 Board 하나에 Comment가 여러 개 있는 경우, <id>가 없으면 MyBatis가 같은 
+		Board를 다른 객체로 오인해서 중복 객체를 생성할 수 있음. -->
 	<resultMap type="Board" id="board_rm">
 
 		<id property="boardNo" column="BOARD_NO" />
@@ -19,29 +16,67 @@
 
 	</resultMap>
 
+	<!-- 게시글 수 조회 -->
+	<select id="getListCount">
+		SELECT COUNT(*)
+		FROM "BOARD"
+		WHERE BOARD_DEL_FL = 'N'
+		AND BOARD_CODE = #{boardCode}
+	</select>
 
+	<!-- 게시글 조회 -->
+	<select id="selectBoardList">
+		SELECT BOARD_NO, BOARD_TITLE, READ_COUNT, MEMBER_NICKNAME, BOARD_CODE,
+		(SELECT COUNT(*) FROM "DEFAULT_COMMENT" C WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT,
+		(SELECT COUNT(*) FROM "DEFAULT_BOARD_LIKE" L WHERE L.BOARD_NO = B.BOARD_NO) LIKE_COUNT,
+		
+		<![CDATA[
+			CASE 
+				WHEN SYSDATE - BOARD_CREATE_DATE < 1 / 24 / 60
+				THEN FLOOR((SYSDATE - BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+				
+				WHEN SYSDATE - BOARD_CREATE_DATE < 1 / 24
+				THEN FLOOR((SYSDATE - BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+				
+				WHEN SYSDATE - BOARD_CREATE_DATE < 1 
+				THEN FLOOR((SYSDATE - BOARD_CREATE_DATE) * 24) || '시간 전'
+			ELSE TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD')
+			END BOARD_CREATE_DATE
+		]]>
+
+		FROM "BOARD" B
+		JOIN "MEMBER" M ON(B.MEMBER_NO = M.MEMBER_NO)
+		WHERE
+		BOARD_DEL_FL = 'N'
+		AND BOARD_CODE = #{boardCode}
+		ORDER BY BOARD_NO DESC
+	</select>
 
 	<!-- 게시글 상세 조회 -->
-	<select id="selectOne" > <!-- resultMap="board_rm" 댓글 구현 후 추가해야함 -->
+	<select id="selectOne"> <!-- resultMap="board_rm" 댓글 구현 후 추가해야함 -->
 		SELECT BOARD_NO, BOARD_TITLE,
 		BOARD_CONTENT, BOARD_CODE, READ_COUNT,
 		MEMBER_NO, MEMBER_NICKNAME,
 		PROFILE_IMG,
-		TO_CHAR(BOARD_CREATE_DATE, 'YYYY"년" MM"월" DD"일"
+		TO_CHAR(BOARD_CREATE_DATE,
+		'YYYY"년" MM"월" DD"일"
 		HH24:MI:SS') BOARD_CREATE_DATE,
 		TO_CHAR(BOARD_UPDATE_DATE, 'YYYY"년"
 		MM"월" DD"일"
-		HH24:MI:SS') BOARD_UPDATE_DATE,
+		HH24:MI:SS')
+		BOARD_UPDATE_DATE,
 
 		(SELECT COUNT(*)
 		FROM
 		"DEFAULT_BOARD_LIKE"
-		WHERE BOARD_NO =
+		WHERE
+		BOARD_NO =
 		#{boardNo}) LIKE_COUNT,
 
 		(SELECT
 		COUNT(*)
-		FROM "DEFAULT_BOARD_LIKE"
+		FROM
+		"DEFAULT_BOARD_LIKE"
 		WHERE BOARD_NO =
 		#{boardNo}
 		AND MEMBER_NO =

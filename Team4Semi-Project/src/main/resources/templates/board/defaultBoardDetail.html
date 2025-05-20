@@ -9,9 +9,11 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/styleguide.css" />
   <link rel="stylesheet" href="/css/board/defaultBoardDetail.css">
+  <th:block th:replace="~{common/common}"></th:block>
 
+  <!-- 아이콘 -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 
 <body>
@@ -20,26 +22,63 @@
 
   <!-- 네비게이션 프래그먼트 -->
   <nav th:replace="~{common/navigation :: navigation}"></nav>
-  
-  <div class="container mt-5">
-    <h2 th:text="${board.boardTitle}">게시글 제목</h2>
 
-    <div class="mt-4" th:utext="${board.boardContent}">
-      <!-- 서머노트로 저장된 HTML 내용이 들어감 -->
+  <!-- 컨텐츠 -->
+  <section class="board-detail">
+    <!-- 제목, 작성일, 조회수-->
+    <div class="container-title">
+      <div class="container-inner">
+        <div class="text-left">
+          <span th:text="${board.boardTitle}" class="board-title">게시글 제목</span>
+          <span class="board-update" th:text="${board.boardCreateDate}">작성일</span>
+        </div>
+        <div class="text-right">
+          <span class="material-symbols-outlined align-middle">visibility</span>
+          <span th:text="${board.readCount}" class="align-middle">조회수</span>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- jQuery -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- 작성자 -->
+    <div class="container-member">
+      <div class="container-inner">
+        <div class="member">
+          <!-- 프로필 이미지가 없으면 기본 이미지 출력 -->
+          <img th:unless="${board.profileImg}" th:src="@{/images/user.png}" />
+          <img th:if="${board.profileImg}" th:src="*${board.profileImg}" />
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+          <span th:text="${board.memberNickname}">작성자 닉네임</span>
+        </div>
 
+        <!-- 게시글 작성자라면 수정, 삭제 버튼 보임-->
+        <div class="button-container">
+          <th:block th:if="${board.memberNo == session.loginMember?.memberNo}">
+            <button class="updateBtn">수정 버튼</button>
+            <button class="deleteBtn">삭제 버튼</button>
+          </th:block>
+        </div>
+      </div>
+    </div>
 
+    <!-- 내용 -->
+    <div class="container-content">
+      <div class="container-inner">
+        <!-- 서머노트로 저장된 HTML 내용이 들어감 -->
+        <div class="mt-4" th:utext="${board.boardContent}">게시글 내용</div>
+      </div>
+    </div>
 
+    <div class="container-page">
+      <a href="#"><span class="material-symbols-outlined align-middle">chevron_left</span>이전 글</a>
+      <a href="#">목록으로</a>
+      <a href="#">다음 글<span class="material-symbols-outlined align-middle">chevron_right</span></a>
+    </div>
+  </section>
 
   <!-- 푸터 프래그먼트 -->
   <footer th:replace="~{common/footer :: footer}"></footer>
+
+  <script src="/js/board/defaultBoardDetail.js"></script>
 </body>
 
 </html>

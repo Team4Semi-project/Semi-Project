@@ -2,69 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEMONA - 글 작성하기</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEMONA - 글 작성하기</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Summernote CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css" rel="stylesheet">
+  <!-- Summernote CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/styleguide.css" />
-    <link rel="stylesheet" href="/css/board/defaultBoardWrite.css">
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/board/defaultBoardWrite.css">
 </head>
 
 <body>
-    <!-- 헤더 프래그먼트 -->
-    <header th:replace="~{common/header :: header}"></header>
+  <!-- 헤더 프래그먼트 -->
+  <header th:replace="~{common/header :: header}"></header>
 
-    <!-- 네비게이션 프래그먼트 -->
-    <nav th:replace="~{common/navigation :: navigation}"></nav>
+  <!-- 네비게이션 프래그먼트 -->
+  <nav th:replace="~{common/navigation :: navigation}"></nav>
 
-    <div class="container mt-3">
-        <div class="write-header">
-            글 작성하기
-        </div>
+  <div class="container mt-3">
+    <div class="write-header">글 작성하기</div>
 
-        <!-- 메시지 출력 -->
-        <script th:if="${message != null}" th:inline="javascript">
-            alert('[[${ message }]]');
-        </script>
+    <!-- 메시지 출력 -->
+    <script th:if="${message != null}" th:inline="javascript">
+      alert("[[${ message }]]");
+    </script>
 
+    <!-- <form th:action="@{/editBoard/{boardCode}/insert(boardCode=${boardCode})}"  -->
+    <form id="postForm" method="post" action="/editBoard/2/insert">
+      <!-- 제목 -->
+      <input type="text" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글제목을 입력해주세요"
+        required>
 
-        <!-- <form th:action="@{/editBoard/{boardCode}/insert(boardCode=${boardCode})}"  -->
-        <form id="postForm" method="post" action="/editBoard/2/insert">
-            <!-- 제목 -->
-            <input type="text" name="boardTitle" th:value="${board?.boardTitle}" class="title-input"
-                placeholder="글제목을 입력해주세요" required>
+      <!-- 서머노트(내용) -->
+      <textarea id="summernote" name="boardContent" th:text="${board?.boardContent}"></textarea>
 
-            <!-- 서머노트(내용) -->
-            <textarea id="summernote" name="boardContent" th:text="${board?.boardContent}"></textarea>
+      <!-- 작성 완료 버튼 -->
+      <button type="submit" class="submit-btn">작성 완료</button>
+    </form>
+  </div>
 
-            <!-- 작성 완료 버튼 -->
-            <button type="submit" class="submit-btn">작성 완료</button>
-        </form>
-    </div>
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <!-- jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Summernote JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.js"></script>
 
-    <!-- Summernote JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.js"></script>
+  <!-- 툴바 한글 번역 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/lang/summernote-ko-KR.min.js"></script>
 
-    <!-- 툴바 한글 번역 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/lang/summernote-ko-KR.min.js"></script>
+  <!-- js -->
+  <script src="/js/board/defaultBoardWrite.js"></script>
 
-    <!-- js -->
-    <script src="/js/board/defaultBoardWrite.js"></script>
-
-    <!-- 푸터 프래그먼트 -->
-    <footer th:replace="~{common/footer :: footer}"></footer>
+  <!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
 </body>
 
 </html>

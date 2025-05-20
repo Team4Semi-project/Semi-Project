@@ -40,7 +40,7 @@
 
       <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
       <th:block th:if="${session.loginMember != null}" class="user-menu">
-        <a th:text="${session.loginMember.nickname}" th:href="@{/mypage}"
+        <a th:text="${session.loginMember.memberNickname}" th:href="@{/mypage}"
           >사용자명</a
         >
         <a th:href="@{/logout}">

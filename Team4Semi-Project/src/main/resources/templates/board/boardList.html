@@ -10,56 +10,88 @@
 </head>
 
 <body>
-    <!-- 헤더 프래그먼트 -->
-    <header th:replace="~{common/header :: header}"></header>
+  <!-- 헤더 프래그먼트 -->
+  <header th:replace="~{common/header :: header}"></header>
 
-    <!-- 네비게이션 프래그먼트 -->
-    <nav th:replace="~{common/navigation :: navigation}"></nav>
+  <!-- 네비게이션 프래그먼트 -->
+  <nav th:replace="~{common/navigation :: navigation}"></nav>
 
-    <!-- 메인 콘텐츠 영역 -->
-    <main class="main-list">
-        <section class="recipe-section">
-            <!-- 섹션 헤더 -->
-            <div class="section-header">
-                <h2 class="section-title">게시글 목록</h2>
+  <!-- 메인 콘텐츠 영역 -->
+  <main class="main-list">
+    <section class="recipe-section">
+      <!-- 섹션 헤더 -->
+      <div class="section-header">
+        <h2 class="section-title">게시글 목록</h2>
 
-                <div class="options-container">
-                    <div class="view-options">
-                        <div class="background-indicator"></div>
+        <div class="options-container">
+          <div class="view-options">
+            <div class="background-indicator"></div>
 
-                        <button class="view-toggle agenda" data-view="agenda">
-                            <span class="material-symbols-outlined">
-                                view_agenda
-                            </span>
-                        </button>
-                        <button class="view-toggle cozy active" data-view="cozy">
-                            <span class="material-symbols-outlined">
-                                view_cozy
-                            </span>
-                        </button>
-                    </div>
+            <button class="view-toggle agenda" data-view="agenda">
+              <span class="material-symbols-outlined"> view_agenda </span>
+            </button>
+            <button class="view-toggle cozy active" data-view="cozy">
+              <span class="material-symbols-outlined"> view_cozy </span>
+            </button>
+          </div>
 
-                    <div class="sort-options">
-                        <select class="sort-select" id="sortSelect">
-                            <option value="latest">최신순</option>
-                            <option value="oldest">오래된순</option>
-                            <option value="popular">인기순</option>
-                            <option value="views">조회수순</option>
-                        </select>
-                        <i class="fas fa-caret-down"></i>
-                    </div>
-                </div>
+          <div class="sort-options">
+            <select class="sort-select" id="sortSelect">
+              <option value="latest">최신순</option>
+              <option value="oldest">오래된순</option>
+              <option value="popular">인기순</option>
+              <option value="views">조회수순</option>
+            </select>
+            <i class="fas fa-caret-down"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 게시글 컨테이너 (Cozy View) -->
+      <div class="recipe-container cozy-view" id="cozy">
+        <!-- 게시글 없을 때 -->
+        <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
+          <p>등록된 게시글이 없습니다.</p>
+        </div>
+
+        <!-- 게시글 목록 -->
+        <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
+          <div th:each="board : ${boardList}" class="recipe-item">
+            <div class="recipe-image">
+              <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
+              <a th:if="${board.boardCode == 1}"
+                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+                <!-- 레시피 게시판 썸네일 -->
+                <img
+                  th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
+                  alt="레시피 이미지" />
+              </a>
+              <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
+                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
+                <!-- 자유 또는 공지 게시판 썸네일 -->
+                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/user.png' : board.profileImg}"
+                  alt="게시판 이미지">
+              </a>
             </div>
+
+            <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
-                  th:text="${board.boardTitle}">레몬 팬케이크</a>
-                <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">
-                  [0]
-                </span>
+                <a th:if="${board.boardCode == 1}"
+                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                  th:text="${board.boardTitle}">레몬 팬케이크
+                </a>
+
+                <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
+                  th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                  th:text="${board.boardTitle}">레몬 팬케이크
+                </a>
+                <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
-              <div class="recipe-tags">
-                <span class="tag" th:each="tag : ${board.hashTag}" th:text="${tag}">
+
+              <!-- 레시피 게시판 해시태그 -->
+              <div th:if="${board.boardCode == 1}" class="recipe-tags">
+                <span class="tag" th:each="tag : ${board.hashTagList}" th:text="${tag}">
                   #레몬
                 </span>
 
@@ -70,99 +102,16 @@
                     alt="프로필 이미지" class="author-image" />
                   <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
                 </div>
-
-                <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-                <!-- 게시글 목록 -->
-                <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
-                    <div th:each="board : ${boardList}" class="recipe-item">
-                        <div class="recipe-image">
-                            <!-- 레시피 게시판 썸네일 -->
-                            <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
-                            <img th:if="${board.boardCode == 1}"
-                                th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.profileImg}"
-                                alt="레시피 이미지">
-                            <!-- 자유 또는 공지 게시판 썸네일 -->
-                            <img th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                                th:src="${#strings.isEmpty(board.thumbnail) ? '/images/user.png' : board.profileImg}"
-                                alt="게시판 이미지">
-                        </div>
-                        <div class="recipe-info">
-                            <h3 class="recipe-title">
-                                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
-                                    th:text="${board.boardTitle}">레몬 팬케이크</a>
-                                <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
-                            </h3>
-                            <!-- 레시피 게시판 해시태그 -->
-                            <div th:if="${board.boardCode == 1}" class="recipe-tags">
-                                <span class="tag" th:each="tag : ${board.hashTag}" th:text="${tag}">#레몬</span>
-                            </div>
-                            <div class="recipe-meta">
-                                <div class="author-info">
-                                    <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                                        alt="프로필 이미지" class="author-image">
-                                    <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
-                                </div>
-                                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
-                            </div>
-                            <div class="recipe-stats">
-                                <div class="likes">
-                                    <i class="fas fa-heart"></i>
-                                    <span th:text="${board.likeCount}">28</span>
-                                </div>
-                                <div class="views">
-                                    <i class="fas fa-eye"></i>
-                                    <span th:text="${board.readCount}">36</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
+              </div>
+              <div class="recipe-stats">
+                <div class="likes">
+                  <i class="fas fa-heart"></i>
+                  <span th:text="${board.likeCount}">28</span>
                 </div>
-            </div>
-              
-
-            <!-- 게시글 컨테이너 (Agenda View) -->
-            <div class="recipe-container agenda-view" id="agenda" style="display: none;">
-                <!-- 게시글 없을 때 -->
-                <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
-                    <p>등록된 게시글이 없습니다.</p>
-                </div>
-
-                <!-- 게시글 목록 -->
-                <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list">
-                    <div th:each="board : ${boardList}" class="recipe-item">
-                        <div class="recipe-thumbnail">
-                            <!-- 레시피 게시판 썸네일 -->
-                            <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
-                            <img th:if="${board.boardCode == 1}"
-                                th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.profileImg}"
-                                style="height: 100px; object-fit: cover;" alt="레시피 이미지">
-                            <!-- 자유 또는 공지 게시판 썸네일 -->
-                            <img th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                                th:src="${#strings.isEmpty(board.thumbnail) ? '/images/user.png' : board.profileImg}"
-                                style="height: 100px; object-fit: cover;" alt="게시판 이미지">
-                        </div>
-                        <div class="recipe-details">
-                            <h3 class="recipe-title">
-                                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
-                                    th:text="${board.boardTitle}">레몬 팬케이크</a>
-                                <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
-                            </h3>
-                            <div class="recipe-meta">
-                                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
-                                <span class="recipe-author" th:text="${board.memberNickname}">김아가 님</span>
-                            </div>
-                            <!-- 레시피 게시판 해시태그 -->
-                            <div th:if="${board.boardCode == 1}" class="recipe-tags">
-                                <span class="tag" th:each="tag : ${board.hashTag}" th:text="${tag}">#레몬</span>
-                            </div>
-                            <div class="recipe-stats">
-                                <span class="likes"><i class="fas fa-heart"></i> <span
-                                        th:text="${board.likeCount}">28</span></span>
-                                <span class="views"><i class="fas fa-eye"></i> <span
-                                        th:text="${board.readCount}">36</span></span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="views">
+                  <i class="fas fa-eye"></i>
+                  <span th:text="${board.readCount}">36</span>
                 </div>
               </div>
             </div>
@@ -180,20 +129,35 @@
         <!-- 게시글 목록 -->
         <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list">
           <div th:each="board : ${boardList}" class="recipe-item">
-            <div class="recipe-thumbnail">
+            <div class="recipe-image">
               <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
-              <a
+              <!-- 레시피 게시판 썸네일 -->
+              <a th:if="${board.boardCode == 1}"
                 th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+                <!-- 레시피 게시판 썸네일 -->
                 <img
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
-                  style="height: 100px; object-fit: cover" alt="레시피 이미지" />
+                  alt="레시피 이미지" />
+              </a>
+              <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
+                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
+                <!-- 자유 또는 공지 게시판 썸네일 -->
+                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/user.png' : board.profileImg}"
+                  alt="게시판 이미지">
               </a>
             </div>
+
+            <!-- 글 제목 클릭 시 이동-->
             <div class="recipe-details">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
-                  th:text="${board.boardTitle}">
-                  레몬 팬케이크
+                <a th:if="${board.boardCode == 1}"
+                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                  th:text="${board.boardTitle}">레몬 팬케이크
+                </a>
+
+                <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
+                  th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                  th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
@@ -201,8 +165,9 @@
                 <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                 <span class="recipe-author" th:text="${board.memberNickname}">김아가 님</span>
               </div>
-              <div class="recipe-tags">
-                <span class="tag" th:each="tag : ${board.hashTag}" th:text="${tag}">#레몬</span>
+              <!-- 레시피 게시판 해시태그 -->
+              <div th:if="${board.boardCode == 1}" class="recipe-tags">
+                <span class="tag" th:each="tag : ${board.hashTagList}" th:text="${tag}">#레몬</span>
               </div>
               <div class="recipe-stats">
                 <span class="likes"><i class="fas fa-heart"></i>

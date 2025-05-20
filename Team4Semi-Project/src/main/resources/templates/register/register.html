@@ -5,20 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LEMONA - 회원가입</title>
     <link rel="stylesheet" href="/css/register.css" />
-    <style>
-      .error-message {
-        color: red;
-        display: none;
-        font-size: 0.9em;
-        margin-top: 5px;
-      }
-
-      .valid-message {
-        color: green;
-        font-size: 0.9em;
-        display: none;
-      }
-    </style>
   </head>
 
   <body>
@@ -47,15 +33,12 @@
             />
             <button type="button" class="btn-sub">아이디 중복 체크</button>
           </div>
-
-          <div class="input-row">
-            <span id="idCheckMessage" class="error-message">test11</span>
-          </div>
-
+          <span id="idCheckMessage" class="error"></span>
           <div class="input-row">
             <input
               type="email"
               name="email"
+              id="emailId"
               placeholder="이메일을 입력하세요"
               class="input-field"
             />
@@ -83,9 +66,7 @@
             class="input-field"
             id="passwordInput"
           />
-          <div class="error-message" id="passwordError">
-            비밀번호는 8~20자, 숫자/문자/특수문자를 포함해야 합니다.
-          </div>
+          <div class="error" id="passwordError"></div>
 
           <input
             type="password"
@@ -94,9 +75,7 @@
             class="input-field"
             id="confirmPasswordInput"
           />
-          <div class="error-message" id="confirmError">
-            비밀번호가 일치하지 않습니다.
-          </div>
+          <div class="error" id="confirmError"></div>
 
           <input
             type="text"

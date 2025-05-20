@@ -100,14 +100,21 @@
   cursor: pointer;
 }
 
-.error-message {
+.error {
   color: red;
   font-size: 13px;
   margin-bottom: 8px;
   display: block;
   text-align: left;
 }
-
+.confirm {
+  color: green;
+  font-size: 13px;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  display: block;
+  text-align: left;
+}
 .footer {
   margin-top: auto;
   padding: 20px;

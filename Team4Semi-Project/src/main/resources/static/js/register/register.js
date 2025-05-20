@@ -77,7 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault(); // 폼 제출 막기
       return;
     }
-
+    // 아이디 중복체크 적용 함
+    // 여기부터 다시 하자!
     // 그 외에도 비밀번호 등 추가 검증을 여기에 넣으면 됨
   });
 });

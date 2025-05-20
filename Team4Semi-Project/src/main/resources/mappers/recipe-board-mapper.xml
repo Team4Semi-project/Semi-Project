@@ -167,4 +167,86 @@
 		FROM BOARD_STEP
 		WHERE BOARD_NO = #{boardNo}
 	</select>
+	
+	<!-- RECIPE_BOARD에 게시글 제목+카테고리번호+작성자 정보 삽입 -->
+	<!-- 재호 -->
+	<insert id="insertRecipeBoard" useGeneratedKeys="true">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
+			SELECT SEQ_RECIPE_BOARD_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "RECIPE_BOARD"
+		VALUES(#{boardNo},
+			   #{boardTitle},
+			   default, default, default, null,
+			   #{memberNo}, 1,
+			   #{categoryNo})
+	</insert>
+	
+	<!-- BOARD_STEP에 단계 설명, 단계 순서 삽입 -->
+	<!-- 재호 -->
+	<insert id="insertBoardStepContent">
+	  INSERT ALL
+	  <foreach collection="list" item="step">
+	    INTO BOARD_STEP (
+	      STEP_NO,
+	      STEP_ORDER,
+	      STEP_CONTENT,
+	      IMG_PATH,
+	      IMG_ORIGINAL_NAME,
+	      IMG_RENAME,
+	      BOARD_NO,
+	      THUMBNAIL_CHECK
+	    ) VALUES (
+	      NEXT_STEP_NO(),
+	      #{step.stepOrder},
+	      #{step.stepContent},
+	      NULL,
+	      NULL,
+	      NULL,
+	      #{step.boardNo},
+	      'N'
+	    )
+	  </foreach>
+	  SELECT * FROM DUAL
+	</insert>
+	
+	<!-- BOARD_STEP에 이미지 삽입 -->
+	<!-- 재호 -->
+	<update id="insertBoardStepImage">
+		<foreach collection="list" item="img" separator=";">
+			UPDATE "BOARD_STEP"
+			SET IMG_PATH = #{img.imgPath},
+				IMG_ORIGINAL_NAME = #{img.imgOriginalName},
+				IMG_RENAME = #{img.imgRename}
+				THUMBNAIL_CHECK = #{img.thumbnailCheck}
+			WHERE BOARD_NO = #{boardNo}
+			AND STEP_ORDER = #{stepOrder}
+		</foreach>
+	</update>
+	
+	<!-- 해시태그 중복검사 및 삽입 -->
+	<!-- 재호 -->
+	<insert id="insertNewHashtagIfNotExists">
+	    <foreach collection="hashTagList" item="tag" separator=";">
+	        MERGE INTO HASHTAG H
+	        USING (SELECT #{tag} AS TAG_NAME FROM DUAL) T
+	        ON (H.TAG_NAME = T.TAG_NAME)
+	        WHEN NOT MATCHED THEN
+	        INSERT (TAG_NO, TAG_NAME)
+	        VALUES (SEQ_TAG_NO.NEXTVAL, T.TAG_NAME)
+	    </foreach>
+	</insert>
+	
+	<!-- 해쉬태그 삽입 -->
+	<!-- 재호 -->
+	<insert id="insertHashTag">
+	    INSERT INTO BOARD_HASHTAG (BOARD_NO, TAG_NO)
+	    <foreach collection="list" item="tag" separator="UNION ALL">
+	        SELECT #{boardNo}, (
+	            SELECT TAG_NO FROM HASHTAG WHERE TAG_NAME = #{tag}
+	        ) FROM DUAL
+	    </foreach>
+	</insert>
+	
 </mapper>

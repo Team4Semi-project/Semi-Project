@@ -26,15 +26,12 @@
             </li>
         </ul>
 
-        <!-- 자유게시판 (boardCode == 2) -->
-        <div class="write-button-container">
-            <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">Write Button</a>
-        </div>
-
-        <!-- 레시피 게시판 (boardCode == 1) -->
-        <div class="write-button-container">
+        <div th:if="${loginMember !=null}" class="write-button-container">
+            <!-- 레시피 게시판 (boardCode == 1) -->
             <a th:if="${boardCode == 1}" th:href="@{/editRecipe/{boardCode}(boardCode=${boardCode})/insert}"
                 class="write-button">Write Button</a>
+            <!-- 자유게시판 (boardCode == 2) -->
+            <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">Write Button</a>
         </div>
     </div>
 </nav>

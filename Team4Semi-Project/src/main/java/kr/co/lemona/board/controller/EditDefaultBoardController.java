@@ -52,6 +52,16 @@ public class EditDefaultBoardController {
 	@Autowired
 	private DefaultBoardService boardService;
 
+	/** 게시글 작성 화면 전환
+	 * @param boardCode
+	 * @return
+	 * @author 민장
+	 */
+	@GetMapping("insert")
+	public String defaultBoardInsert(@PathVariable("boardCode") int boardCode) {
+		return "board/defaultBoardWrite";
+	}
+	
 	/** 게시글 작성
 	 * 
 	 * @param inputBoard

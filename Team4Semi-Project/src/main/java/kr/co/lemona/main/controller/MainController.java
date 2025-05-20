@@ -26,7 +26,7 @@ public class MainController {
 			Model model,
 			@RequestParam Map<String, Object> paramMap) {
 
-		// 조회 서비스 호출 후 결과 반환 받기.
+		// 조회 서비스 호출 후 결과 반환 받기
 		Map<String, Object> map = null;
 		Map<String, Object> popularMap = null;
 

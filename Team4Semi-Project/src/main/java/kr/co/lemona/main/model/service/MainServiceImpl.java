@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.main.model.mapper.MainMapper;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class MainServiceImpl implements MainService {
 
 	@Autowired
@@ -49,7 +51,7 @@ public class MainServiceImpl implements MainService {
 		// -> 두번째 매개변수 -> RowBounds 객체 전달
 		List<RecipeBoard> recipeBoardList = mapper.mainRecipeBoardList(rowBounds);
 
-		// log.debug("boardList 결과 : {}", boardList);
+//		 log.debug("recipeBoardList 결과 : {}", recipeBoardList);
 
 		// 4. 목록 조회 결과를 Map으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();

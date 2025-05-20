@@ -37,7 +37,9 @@ public class RecipeBoard {
 	private String profileImg;		// 작성자 프로필 이미지
 	
 	// 썸네일 - <input type="radio" name="checkThumbnail">:checked
-	private String thumbnail;		
+	private String thumbnailCheck;
+	private String thumbnailImgPath;
+	private String thumbnailImgRename;
 	
 	// 게시글에 달린 댓글 리스트
 	private List<DefaultComment> commentList;

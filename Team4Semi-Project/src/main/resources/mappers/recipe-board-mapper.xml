@@ -305,4 +305,19 @@
 	    </foreach>
 	</insert>
 	
+	<!-- 조회수 1 증가 -->
+	<!-- 미애 -->
+	<update id="updateReadCount">
+		UPDATE "RECIPE_BOARD" SET
+		READ_COUNT = READ_COUNT + 1
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<!-- 조회수 조회 -->
+	<!-- 미애 -->	
+	<select id="selectReadCount">
+		SELECT READ_COUNT
+		FROM "RECIPE_BOARD"
+		WHERE BOARD_NO = #{boardNo} 
+	</select>	
 </mapper>

@@ -269,4 +269,23 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		
 		return boardNo;
 	}
+
+	
+	/** 레시피 게시글 조회수 증가
+	 * boardNo : 게시글 번호
+	 *@author miae
+	 */
+	@Override
+	public int updateReadCount(int boardNo) {
+		// 1, 조회수 1 증가 (UPDATE)
+		int result = mapper.updateReadCount(boardNo);
+		
+		// 2. 현재 조회 수 조회
+		if(result > 0) {
+			return mapper.selectReadCount(boardNo);
+		}
+		
+		// 실패한 경우 -1 반환
+		return -1;
+	}
 }

@@ -19,35 +19,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MainController {
 	
-	/** 메인페이지 매핑 메서드
-	 * @return
-	 */
+	@Autowired
+	private MainService service;
+	
 	@RequestMapping("/")
-	public String mainPage(Model model, @RequestParam Map<String, Object> paramMap) {
+	public String mainPage(@RequestParam(value = "categoryNo", defaultValue = "0") int categoryNo,
+			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+			Model model,
+			@RequestParam Map<String, Object> paramMap) {
 
-//		// 조회 서비스 호출 후 결과 반환 받기.
-//		Map<String, Object> map = null;
-//
-//		if (paramMap.get("key") == null) { // 검색이 아닌 경우
-//
-//			// 게시글 목록 조회 서비스 호출
-//			map = service.mainRecipeBoardList();
-//
-//		} else { // 검색인 경우 --> paramMap
-//
-//			// 검색 서비스 호출
-//			// map = service.serchList(paramMap, cp);
-//
-//		}
-//
-//		// model 에 반환 받은 값 등록
-//		model.addAttribute("boardList", map.get("recipeBoardList"));
+		// 조회 서비스 호출 후 결과 반환 받기
+		Map<String, Object> map = null;
+		Map<String, Object> popularMap = null;
 
-		return "common/main";
-  }
+		if (paramMap.get("key") == null) { // 검색이 아닌 경우
 
-	public String mainPage() {
-		
+			// 최근 레시피 게시글 목록 조회 서비스 호출
+			map = service.selectRecipeBoardList(categoryNo, cp);
+			
+			// 인기 게시글 목록 조회 서비스 호출
+			popularMap = service.selectPopularBoardList(cp);
+
+		} 
+
+		// model 에 반환 받은 값 등록
+		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("recipeBoardList", map.get("recipeBoardList"));
+		model.addAttribute("popularBoardList", popularMap.get("popularBoardList"));
+		model.addAttribute("categoryNo", categoryNo);
 		return "common/main";
 	}
 	
@@ -61,35 +60,27 @@ public class MainController {
 		
 		return "redirect:/";
 	}
-
-	@Autowired
-	private MainService service;
 	
-  
-//	@GetMapping("/")
-//	public String selectRecipeBoardList(Model model,
-//								@RequestParam Map<String, Object> paramMap) {
-//		
-//		// 조회 서비스 호출 후 결과 반환 받기.
-//		Map<String, Object> map = null;
-//		
-//		if(paramMap.get("key") == null) { // 검색이 아닌 경우
-//			
-//			// 게시글 목록 조회 서비스 호출
-//			map = service.mainRecipeBoardList();
-//			
-//		} else { // 검색인 경우 --> paramMap
-//			 			
-//			// 검색 서비스 호출
-//			// map = service.serchList(paramMap, cp);
-//			
-//		}
-//		
-//		// model 에 반환 받은 값 등록
-//		model.addAttribute("boardList", map.get("recipeBoardList"));
-//
-//		return "common/main";
-//	}
+	/** 메인페이지 매핑 메서드
+	 * @return
+	 */
+	@RequestMapping("search")
+	public String mainPage(@RequestParam(value="cp", required=false, defaultValue = "1") int cp,
+										Model model, @RequestParam Map<String, Object> paramMap) {
+
+		// 조회 서비스 호출 후 결과 반환 받기
+		Map<String, Object> map = null;
+			
+			// 검색인 경우 --> paramMap = {"query"="짱구", "key"="tc"}
+
+			// 검색 서비스 호출
+			map = service.AllsearchList(paramMap, cp);
+
+		// model 에 반환 받은 값 등록
+		model.addAttribute("boardList", map.get("boardList"));
+
+		return "common/search";
+  }
 
 
 }

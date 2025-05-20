@@ -4,7 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>LEMONA - 아이디 찾기</title>
+<<<<<<< HEAD
   <link rel="stylesheet" href="/css/find-id.css" />
+=======
+  <link rel="stylesheet" href="/css/find-id.css">
+  <script src="/js/find-id.js" defer></script> <!-- JS 연결 추가 -->
+>>>>>>> 0a80346a46d9c773f5d63b997649d1aba3fb0b45
 </head>
 
 <body>
@@ -18,15 +23,23 @@
 		</div>
     </header>
 
+<<<<<<< HEAD
     <nav class="tabs">
       <a href="findid" id="findIdTab" class="tab active">아이디 찾기</a>
       <a href="findpw" id="findPwTab" class="tab">비밀번호 찾기</a>
+=======
+    <!-- 탭 메뉴 -->
+    <nav class="tabs">
+      <a href="#" id="findIdTab" class="tab active">아이디 찾기</a>
+      <a href="#" id="findPwTab" class="tab">비밀번호 찾기</a>
+>>>>>>> 0a80346a46d9c773f5d63b997649d1aba3fb0b45
     </nav>
 
     <main>
       <div class="find-box">
         <h2>아이디 찾기</h2>
         <form id="findIdForm">
+<<<<<<< HEAD
           <input type="text" id="nameInput" placeholder="이름을 입력하세요" required />
           <input type="email" id="emailInput" placeholder="이메일을 입력하세요" required />
           <input type="text" id="foundId" placeholder="아이디" readonly />
@@ -42,8 +55,25 @@
           <div class="bottom-buttons" id="resultButtons" style="display: none;">
             <a href="findpw" class="join-link" id="findPwLink">비밀번호 찾기</a>
             <a href="login" class="join-link" id="loginButton">로그인 하기</a>
+=======
+          <input type="text" placeholder="이름을 입력하세요" required>
+          <input type="email" placeholder="이메일을 입력하세요" required>
+          <input type="text" id="foundId" placeholder="아이디" readonly>
+
+          <!-- 버튼 영역 -->
+          <div class="bottom-buttons" id="initialButtons">
+          <a href="register" class="join-link">회원가입</a>
+            <button type="submit">아이디 찾기</button>
+>>>>>>> 0a80346a46d9c773f5d63b997649d1aba3fb0b45
+          </div>
+
+          <!-- 결과 버튼 영역 (숨김 처리 기본) -->
+          <div class="bottom-buttons" id="resultButtons" style="display: none;">
+            <a href="login" class="join-link">로그인</a>
+            <a href="find-password" class="join-link">비밀번호 찾기</a>
           </div>
         </form>
+        <p id="idResult" style="display: none; font-weight: bold; margin-top: 10px;"></p>
       </div>
     </main>
 

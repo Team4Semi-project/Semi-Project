@@ -46,7 +46,7 @@ public class MainController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("recipeBoardList", map.get("recipeBoardList"));
 		model.addAttribute("popularBoardList", popularMap.get("popularBoardList"));
-		
+		model.addAttribute("categoryNo", categoryNo);
 		return "common/main";
 	}
 	

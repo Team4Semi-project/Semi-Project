@@ -1,37 +1,41 @@
 <!-- 네비게이션 프래그먼트 -->
 <nav th:fragment="navigation" class="navigation">
-    <div class="nav-container">
-        <ul class="menu-list">
-            <li class="menu-item recipe-menu" th:classappend="${currentMenu == 'recipe'} ? 'active' : ''">
-                <a th:href="@{/board/1/0}">레시피</a>
-                <!-- 레시피 메뉴 호버 시 나타나는 서브 메뉴 -->
-                <div class="submenu">
-                    <ul class="category-list">
-                        <li><a th:href="@{/board/1/0}">전체</a></li>
-                        <li><a th:href="@{/board/1/1}">한식</a></li>
-                        <li><a th:href="@{/board/1/2}">중식</a></li>
-                        <li><a th:href="@{/board/1/3}">양식</a></li>
-                        <li><a th:href="@{/board/1/4}">일식</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="menu-item" th:classappend="${currentMenu == 'popular'} ? 'active' : ''">
-                <a th:href="@{/board/1/popular}">인기 레시피</a>
-            </li>
-            <li class="menu-item" th:classappend="${currentMenu == 'free'} ? 'active' : ''">
-                <a th:href="@{/board/2}">자유 게시판</a>
-            </li>
-            <li class="menu-item" th:classappend="${currentMenu == 'notice'} ? 'active' : ''">
-                <a th:href="@{/board/3}">공지사항</a>
-            </li>
-        </ul>
-
-        <div th:if="${loginMember !=null}" class="write-button-container">
-            <!-- 레시피 게시판 (boardCode == 1) -->
-            <a th:if="${boardCode == 1}" th:href="@{/editRecipe/{boardCode}(boardCode=${boardCode})/insert}"
-                class="write-button">Write Button</a>
-            <!-- 자유게시판 (boardCode == 2) -->
-            <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">Write Button</a>
+  <div class="nav-container">
+    <ul class="menu-list">
+      <li class="menu-item recipe-menu" th:classappend="${currentMenu == 'recipe'} ? 'active' : ''">
+        <a th:href="@{/board/1/0}">레시피</a>
+        <!-- 레시피 메뉴 호버 시 나타나는 서브 메뉴 -->
+        <div class="submenu">
+          <ul class="category-list">
+            <li><a th:href="@{/board/1/0}">전체</a></li>
+            <li><a th:href="@{/board/1/1}">한식</a></li>
+            <li><a th:href="@{/board/1/2}">중식</a></li>
+            <li><a th:href="@{/board/1/3}">양식</a></li>
+            <li><a th:href="@{/board/1/4}">일식</a></li>
+          </ul>
         </div>
+      </li>
+      <li class="menu-item" th:classappend="${currentMenu == 'popular'} ? 'active' : ''">
+        <a th:href="@{/board/1/popular}">인기 레시피</a>
+      </li>
+      <li class="menu-item" th:classappend="${currentMenu == 'free'} ? 'active' : ''">
+        <a th:href="@{/board/2}">자유 게시판</a>
+      </li>
+      <li class="menu-item" th:classappend="${currentMenu == 'notice'} ? 'active' : ''">
+        <a th:href="@{/board/3}">공지사항</a>
+      </li>
+    </ul>
+
+    <div th:if="${loginMember !=null}" class="write-button-container">
+      <!-- 레시피 게시판 (boardCode == 1) -->
+      <a th:if="${boardCode == 1}" th:href="@{/editRecipe/{boardCode}(boardCode=${boardCode})/insert}"
+        class="write-button">Write Button</a>
+      <!-- 자유게시판 (boardCode == 2) -->
+      <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">Write Button</a>
     </div>
+
+    <div class="write-button-container">
+      <a th:href="@{board/1/insert}" class="write-button">Write Button</a>
+    </div>
+  </div>
 </nav>

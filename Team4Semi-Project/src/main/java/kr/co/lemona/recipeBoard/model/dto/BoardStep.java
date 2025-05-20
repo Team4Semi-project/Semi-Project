@@ -23,10 +23,6 @@ public class BoardStep {
     private int boardNo;            // 게시글 번호 (PK 또는 FK)
     private String thumbnailCheck;	// 썸네일
     
-
     // 파일 업로드 시 사용
     private MultipartFile uploadFile;
-    
-    // 썸내일 지정 여부
-    private String thumbnailCheck;
 }

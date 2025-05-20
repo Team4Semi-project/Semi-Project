@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
@@ -67,28 +68,28 @@ public interface RecipeBoardMapper {
 	 * @return
 	 * @author 재호
 	 */
-	int insertBoardStepContent(List<BoardStep> boardStepList);
+	int insertBoardStepContent(@Param("list") List<BoardStep> boardStepList);
 
 	/** BOARD_STEP에 이미지 삽입
 	 * @param boardStepList
 	 * @return
 	 * @author 재호
 	 */
-	int insertBoardStepImage(List<BoardStep> boardStepList);
+	int insertBoardStepImage(@Param("list") List<BoardStep> boardStepList);
 
 	/** 해시태그 중복검사 및 삽입
 	 * @param hashTagList
 	 * @return
 	 * @author 재호
 	 */
-	int insertNewHashtagIfNotExists(List<String> hashTagList);
+	int insertNewHashtagIfNotExists(@Param("list") List<String> hashTagList);
 	
 	/** 해시태그 삽입
 	 * @param map
 	 * @return
 	 * @author 재호
 	 */
-	int insertHashTag(Map<String, Object> map);
+	int insertHashTag(@Param("list") Map<String, Object> map);
 
 	
 }

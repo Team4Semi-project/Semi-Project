@@ -264,11 +264,11 @@ public class RecipeBoardController {
 		inputBoard.setHashTagList(hashTagList);
 		// memberNo title categoryNo hashTag
 		
-		log.debug("boardTitle : ", inputBoard.getBoardTitle());
-		log.debug("images : ", images);
-		log.debug("stepContent : ", inputStepContent);
-		log.debug("thumbnailNo : ", thumbnailNo);
-		log.debug("hashTagList : ", hashTagList);
+		log.debug("boardTitle {}: ", inputBoard.getBoardTitle());
+		log.debug("images : {}", images);
+		log.debug("stepContent : {}", inputStepContent);
+		log.debug("thumbnailNo : {}", thumbnailNo);
+		log.debug("hashTagList : {}", hashTagList);
 		
 		// 2. 서비스 메서드 호출 후 결과 반환 받기
 		int boardNo = service.insertRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo);
@@ -289,6 +289,6 @@ public class RecipeBoardController {
 		
 		ra.addFlashAttribute("message",message);
 		
-		return "/" + path;
+		return "redirect:" + path;
 	}
 }

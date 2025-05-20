@@ -228,14 +228,16 @@
 	<!-- 해시태그 중복검사 및 삽입 -->
 	<!-- 재호 -->
 	<insert id="insertNewHashtagIfNotExists">
-	    <foreach collection="hashTagList" item="tag" separator=";">
-	        MERGE INTO HASHTAG H
-	        USING (SELECT #{tag} AS TAG_NAME FROM DUAL) T
-	        ON (H.TAG_NAME = T.TAG_NAME)
-	        WHEN NOT MATCHED THEN
-	        INSERT (TAG_NO, TAG_NAME)
-	        VALUES (SEQ_TAG_NO.NEXTVAL, T.TAG_NAME)
+	  INSERT INTO HASHTAG (TAG_NO, TAG_NAME)
+	  SELECT SEQ_TAG_NO.NEXTVAL, tagName
+	  FROM (
+	    <foreach collection="list" item="tag" separator="UNION ALL">
+	      SELECT #{tag} AS tagName FROM DUAL
 	    </foreach>
+	  ) T
+	  WHERE NOT EXISTS (
+	    SELECT 1 FROM HASHTAG H WHERE H.TAG_NAME = T.tagName
+	  )
 	</insert>
 	
 	<!-- 해쉬태그 삽입 -->

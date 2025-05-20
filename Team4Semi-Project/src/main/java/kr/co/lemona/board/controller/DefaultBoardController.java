@@ -38,7 +38,7 @@ public class DefaultBoardController {
 	 * @author 민장
 	 */
 	@GetMapping("")
-	public String selectRecipeBoardList(@PathVariable("boardCode") int boardCode,
+	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 								@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
 								@RequestParam Map<String, Object> paramMap,
 								Model model) {

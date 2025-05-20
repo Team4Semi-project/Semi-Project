@@ -44,9 +44,7 @@
       <div class="container-inner">
         <div class="member">
           <!-- 프로필 이미지가 없으면 기본 이미지 출력 -->
-          <img th:unless="${board.profileImg}" th:src="@{/images/user.png}" />
-          <img th:if="${board.profileImg}" th:src="*${board.profileImg}" />
-
+          <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}" alt="프로필 이미지">
           <span th:text="${board.memberNickname}">작성자 닉네임</span>
         </div>
 

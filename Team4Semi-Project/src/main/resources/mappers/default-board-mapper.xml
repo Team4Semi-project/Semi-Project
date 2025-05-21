@@ -53,7 +53,7 @@
 	</select>
 
 	<!-- 게시글 상세 조회 -->
-	<select id="selectOne"> <!-- resultMap="board_rm" 댓글 구현 후 추가해야함 -->
+	<select id="selectOne" resultMap="board_rm">
 		SELECT BOARD_NO, BOARD_TITLE,
 		BOARD_CONTENT, BOARD_CODE, READ_COUNT,
 		MEMBER_NO, MEMBER_NICKNAME,
@@ -70,17 +70,14 @@
 		FROM
 		"DEFAULT_BOARD_LIKE"
 		WHERE
-		BOARD_NO =
-		#{boardNo}) LIKE_COUNT,
+		BOARD_NO = #{boardNo}) LIKE_COUNT,
 
 		(SELECT
 		COUNT(*)
 		FROM
 		"DEFAULT_BOARD_LIKE"
-		WHERE BOARD_NO =
-		#{boardNo}
-		AND MEMBER_NO =
-		#{memberNo}) LIKE_CHECK
+		WHERE BOARD_NO = #{boardNo}
+		AND MEMBER_NO = #{memberNo}) LIKE_CHECK
 
 		FROM "BOARD"
 		JOIN
@@ -88,10 +85,26 @@
 		USING(MEMBER_NO)
 		WHERE
 		BOARD_DEL_FL = 'N'
-		AND BOARD_NO =
-		#{boardNo}
+		AND BOARD_NO = #{boardNo}
 		AND
-		BOARD_CODE =
-		#{boardCode}
+		BOARD_CODE = #{boardCode}
+	</select>
+	
+	<!-- 상세 조회한 게시글의 댓글 목록 조회 -->
+	<select id="selectCommentList" resultType="DefaultComment">
+		SELECT LEVEL, C.* FROM
+		(SELECT COMMENT_NO, COMMENT_CONTENT,
+		TO_CHAR(COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE,
+		BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_COMMENT_NO, COMMENT_DEL_FL
+		FROM "DEFAULT_COMMENT"
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE BOARD_NO = #{boardNo}) C
+		WHERE COMMENT_DEL_FL = 'N'
+		OR 0 != (SELECT COUNT(*) FROM "DEFAULT_COMMENT" SUB
+						WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO
+						AND COMMENT_DEL_FL = 'N')
+		START WITH PARENT_COMMENT_NO IS NULL
+		CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
+		ORDER SIBLINGS BY COMMENT_NO
 	</select>
 </mapper>

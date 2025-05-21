@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 글 작성 완료 버튼 이벤트
-  submitBtn.addEventListener("click", function () {
-    submitRecipe();
+  submitBtn.addEventListener("click", function (e) {
+    submitRecipe(e);
   });
 
   // 초기 스텝 설정
@@ -346,44 +346,74 @@ document.addEventListener("DOMContentLoaded", function () {
   /**
    * 레시피 작성 완료
    */
-  function submitRecipe() {
+  function submitRecipe(e) {
     // 폼 데이터 수집 및 제출 로직
     const formData = new FormData();
 
     // 카테고리 수집
     const categoryNo = document.getElementById("categorySelect").value;
+    if (!categoryNo) { // 카테고리가 없다면
+      alert("레시피 카테고리를 지정해주세요!")
+      e.preventDefault(); // 제출 취소
+      return;
+    }
     formData.append("categoryNo", categoryNo);
 
     // 제목 수집
     const boardTitle = document.getElementById("boardTitle").value;
+    if (!boardTitle) { // 제목이 없다면
+      alert("레시피 제목을 작성해주세요!");
+      document.getElementById("boardTitle").focus();
+      e.preventDefault(); // 제출 취소
+      return;
+    }
     formData.append("boardTitle", boardTitle);
 
+    // 대표 이미지 선택 여부
+    let thumbnailSelected = false;
     // 요리과정 수집
     const steps = document.querySelectorAll(".recipe-step");
     steps.forEach((step, index) => {
       const stepContent = step.querySelector("textarea").value;
+      if (!stepContent) { // 설명이 비어있는 단계가 있다면
+        alert("작성되지 않은 레시피 과정이 있어요!");
+        step.querySelector("textarea").focus();
+        e.preventDefault(); // 제출 취소
+        return;
+      }
       formData.append("stepContents", stepContent);
 
       // 이미지 수집
       const imageInput = step.querySelector(".step-image-input");
       if (imageInput.files.length > 0) {
         formData.append("images", imageInput.files[0]);
+      } else { // 이미지가 없다면
+        formData.append("images", new File([""], ""));
       }
 
       // 썸네일 설정 확인
       const isThumbnail = step.querySelector('input[type="radio"]').checked;
       if (isThumbnail) {
         formData.append("thumbnailNo", index + 1);
+        thumbnailSelected = true;
       }
     });
 
+    // 대표 이미지가 선택되지 않았다면
+    if (!thumbnailSelected) {
+      alert("대표 이미지를 선택해주세요!");
+      e.preventDefault(); // 제출 취소
+      return;
+    }
+
     // 해시태그 수집
-    hashTags.forEach((tag, index) => {
-      formData.append("hashTags", tag);
-    });
+    if (hashTags.length != 0) {
+      hashTags.forEach((tag, index) => {
+        formData.append("hashTags", tag);
+      });
+    }
 
     // 레시피 제출
-
     // 제출할 데이터를 formData에 업로드
     formData.forEach((key, value) => {
       console.log(key, value);
@@ -402,6 +432,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((result) => {
         console.log("응답 성공:", result);
         // 예: "/board/1/0/123" 같은 경로를 서버가 돌려줬다고 가정
+        alert("레시피를 등록했습니다!");
         location.href = result;
       })
       .catch((error) => {

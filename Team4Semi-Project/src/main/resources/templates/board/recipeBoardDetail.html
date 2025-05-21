@@ -8,6 +8,9 @@
 
     <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/board/recipeBoardDetail.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=visibility" />
+
 </head>
 
 <body>
@@ -28,11 +31,11 @@
                 <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-13</span>
                 <div class="recipe-stats">
                     <div class="likes">
-                        <img src="/images/like-icon.png" alt="likes">
+                        <i class="fa-solid fa-lemon" style="color: #FFD43B;"></i>
                         <span th:text="${board.likeCount}">0</span>
                     </div>
                     <div class="views">
-                        <img src="/images/view-icon.png" alt="views">
+                        <span class="material-symbols-outlined">visibility</span>
                         <span th:text="${board.readCount}">20</span>
                     </div>
                 </div>
@@ -43,7 +46,8 @@
         <div class="author-section">
             <div class="author-info">
                 <div class="author-avatar">
-                    <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                    <img onerror="this.onerror=null; this.src='/images/user.png';"
+                        th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                         alt="Author profile">
                 </div>
                 <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
@@ -64,7 +68,8 @@
                     <p th:text="${step.stepContent}">레몬을 준비합니다</p>
                 </div>
                 <div class="step-image">
-                    <img th:src="|${step.imgPath}${step.imgRename}|" alt="Recipe step image" />
+                    <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                        th:src="|${step.imgPath}${step.imgRename}|" alt="Recipe step image" />
                     <!-- <img th:src="${step.imgPath}" src="/images/lemon-chef.jpg" alt="Recipe step image"> -->
                 </div>
             </div>

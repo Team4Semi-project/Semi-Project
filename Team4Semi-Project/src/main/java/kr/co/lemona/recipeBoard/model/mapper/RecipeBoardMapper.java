@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 
@@ -109,4 +110,19 @@ public interface RecipeBoardMapper {
 	 * @author miae
 	 */
 	int selectReadCount(int boardNo);
+
+	/** 검색 결과 게시글 갯수 조회
+	 * @param paramMap
+	 * @return
+	 * @author jihyun
+	 */
+	int getSearchCount(Map<String, Object> paramMap);
+
+	/** 검색 결과 게시글 목록 조회
+	 * @param paramMap
+	 * @param rowBounds
+	 * @return
+	 * @author jihyun
+	 */
+	List<Board> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 }

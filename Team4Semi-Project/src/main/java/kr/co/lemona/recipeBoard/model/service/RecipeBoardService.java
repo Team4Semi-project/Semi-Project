@@ -51,4 +51,12 @@ public interface RecipeBoardService {
 	 */
 	int updateReadCount(int boardNo);
 
+	/** 레시피 게시글 전용 검색 결과 조회
+	 * @param paramMap
+	 * @param cp
+	 * @return
+	 * @author jihyun
+	 */
+	Map<String, Object> serchList(Map<String, Object> paramMap, int cp);
+
 }

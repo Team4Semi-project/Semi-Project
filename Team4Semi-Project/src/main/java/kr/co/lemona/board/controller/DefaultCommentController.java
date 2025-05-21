@@ -22,12 +22,12 @@ public class DefaultCommentController {
 	 * @param boardNo
 	 * @return
 	 */
-	@GetMapping("")
-	public List<DefaultComment> select(@RequestParam("boardNo") int boardNo) {
-		// List<Comment> (Java의 자료형 List)
-		// HttpMessageConvert가
-		// List -> JSON(문자열) 로 변환해서 응답 -> JS
-		return service.select(boardNo);
-	}
+//	@GetMapping("")
+//	public List<DefaultComment> select(@RequestParam("boardNo") int boardNo) {
+//		// List<Comment> (Java의 자료형 List)
+//		// HttpMessageConvert가
+//		// List -> JSON(문자열) 로 변환해서 응답 -> JS
+//		return service.select(boardNo);
+//	}
 	
 }

@@ -44,4 +44,11 @@ public interface RecipeBoardService {
 						  List<String> inputStepContent,
 						  int thumbnailNo) throws Exception;
 
+	/** 레시피 게시글 조회수 증가
+	 * @param boardNo
+	 * @return
+	 * @author miae
+	 */
+	int updateReadCount(int boardNo);
+
 }

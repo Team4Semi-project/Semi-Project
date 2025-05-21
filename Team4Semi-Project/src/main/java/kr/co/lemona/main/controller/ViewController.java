@@ -13,7 +13,6 @@ public class ViewController {
 
 	@GetMapping("/login")
 	public String loginPage() {
-
 		return "login/login"; // templates/login/login.html 반환
 	}
 

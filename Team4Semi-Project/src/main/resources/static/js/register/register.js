@@ -1,84 +1,99 @@
-// HTML 문서가 모두 로드된 후 실행
 document.addEventListener("DOMContentLoaded", () => {
-  // 아이디 입력창 요소 선택
   const memberId = document.getElementById("memberId");
-
-  // 아이디 중복 검사 버튼 요소 선택
-  const idCheckBtn = document.querySelector(".btn-sub");
-
-  // 아이디 중복 결과 메시지를 표시할 요소 선택
+  const idCheckBtn = document.getElementById("idCheckBtn");
   const idCheckMessage = document.getElementById("idCheckMessage");
 
-  // 아이디 중복 검사 통과 여부를 저장할 변수
-  let isIdChecked = false;
+  const emailInput = document.getElementById("emailId");
+  const sendCodeBtn = document.getElementById("sendCodeBtn");
+  const emailMessage = document.getElementById("emailMessage");
 
-  // 아이디 중복 검사 버튼 클릭 이벤트 리스너
+  const emailCodeInput = document.getElementById("emailCodeInput");
+  const verifyCodeBtn = document.getElementById("verifyCodeBtn");
+  const authCodeMessage = document.getElementById("authCodeMessage");
+
+  const passwordInput = document.getElementById("passwordInput");
+  const confirmPasswordInput = document.getElementById("confirmPasswordInput");
+  const passwordMessage = document.getElementById("passwordMessage");
+  const confirmPasswordMessage = document.getElementById("confirmPasswordMessage");
+
+  const nicknameInput = document.getElementById("nicknameInput");
+  const nicknameCheckBtn = document.getElementById("nicknameCheckBtn");
+  const nicknameMessage = document.getElementById("nicknameMessage");
+
+  // 아이디 중복 체크
   idCheckBtn.addEventListener("click", () => {
-    console.log("------------");
-    // 입력된 아이디 값 앞뒤 공백 제거
-    const idValue = memberId.value.trim();
-    console.log(idValue.length);
-
-    // 아이디가 입력되지 않았을 경우 메시지 출력 후 종료
-    if (idValue.length === 0) {
-      idCheckMessage.innerText = "아이디를 입력해주세요.";
-      idCheckMessage.classList.add("error"); // 에러 스타일 추가
-      idCheckMessage.classList.remove("confirm"); // 성공 스타일 제거
-      isIdChecked = false; // 체크 실패 상태로 설정
+    const id = memberId.value.trim();
+    if (id.length === 0) {
+      idCheckMessage.textContent = "아이디를 입력해주세요.";
+      idCheckMessage.className = "message error";
       return;
     }
-
-    // 아이디 형식 정규식: 영문 또는 숫자, 4~12자
-    const regExp = /^[a-zA-Z0-9]{4,12}$/;
-
-    // 형식이 맞지 않으면 메시지 출력 후 종료
-    if (!regExp.test(idValue)) {
-      idCheckMessage.innerText = "아이디는 4~12자의 영문 또는 숫자여야 합니다.";
-      idCheckMessage.classList.add("error");
-      idCheckMessage.classList.remove("confirm");
-      isIdChecked = false;
-      return;
-    }
-
-    // 서버에 아이디 중복 검사 요청 (GET 방식)
-    fetch(`/member/checkId?memberId=${idValue}`)
-      .then((resp) => resp.text()) // 응답을 텍스트로 변환
+    //  아이디 중복 확인 서버 요청
+    fetch(`/member/checkId?memberId=${id}`)
+      .then((resp) => resp.text())
       .then((count) => {
-        // 서버 응답이 1이면 이미 사용 중인 아이디
         if (count == 1) {
-          idCheckMessage.innerText = "이미 사용중인 아이디입니다.";
-          idCheckMessage.classList.add("error");
-          idCheckMessage.classList.remove("confirm");
-          isIdChecked = false;
-          return;
+          idCheckMessage.textContent = "이미 사용 중인 아이디입니다.";
+          idCheckMessage.className = "message error";
+        } else {
+          idCheckMessage.textContent = "사용 가능한 아이디입니다.";
+          idCheckMessage.className = "message confirm";
         }
-
-        // 사용 가능한 아이디
-        idCheckMessage.innerText = "사용 가능한 아이디입니다.";
-        idCheckMessage.classList.add("confirm");
-        idCheckMessage.classList.remove("error");
-        isIdChecked = true;
       })
       .catch(() => {
-        // 통신 오류 시 메시지 출력
-        idCheckMessage.innerText = "서버와 통신 중 오류가 발생했습니다.";
-        idCheckMessage.classList.add("error");
-        idCheckMessage.classList.remove("confirm");
-        isIdChecked = false;
+        idCheckMessage.textContent = "서버와의 통신에 실패했습니다.";
+        idCheckMessage.className = "message error";
       });
   });
 
-  // 가입 폼 제출 시 아이디 중복 검사가 완료되었는지 확인
-  const registerForm = document.getElementById("registerForm");
-  registerForm.addEventListener("submit", (e) => {
-    // 중복 체크가 되지 않았으면 제출 막기
-    if (!isIdChecked) {
-      alert("아이디 중복 체크를 해주세요.");
-      e.preventDefault(); // 폼 제출 막기
+  // 이메일 유효성 검사
+  sendCodeBtn.addEventListener("click", () => {
+    const email = emailInput.value.trim();
+    const reg = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,6}$/;
+    if (!reg.test(email)) {
+      emailMessage.textContent = "올바른 이메일 형식을 입력해주세요.";
+      emailMessage.className = "message error";
       return;
     }
-    // 아이디 중복체크 적용 함
-    // 여기부터 다시 하자!
-    // 그 외에도 비밀번호 등 추가 검증을 여기에 넣으면 됨
+    emailMessage.textContent =
+      "인증번호가 전송되었습니다. 메일함을 확인해주세요.";
+    emailMessage.className = "message confirm";
+    // 서버 전송 로직 추가
+  });
+
+  // 인증번호 확인
+  verifyCodeBtn.addEventListener("click", () => {
+    const code = emailCodeInput.value.trim();
+    if (code === "123456") {
+      authCodeMessage.textContent = "인증에 성공했습니다.";
+      authCodeMessage.className = "message confirm";
+    } else {
+      authCodeMessage.textContent = "인증번호가 일치하지 않습니다.";
+      authCodeMessage.className = "message error";
+    }
+  });
+
+  // 비밀번호 확인
+  confirmPasswordInput.addEventListener("blur", () => {
+    if (passwordInput.value !== confirmPasswordInput.value) {
+      confirmPasswordMessage.textContent = "비밀번호가 일치하지 않습니다.";
+      confirmPasswordMessage.className = "message error";
+    } else {
+      confirmPasswordMessage.textContent = "비밀번호가 일치합니다.";
+      confirmPasswordMessage.className = "message confirm";
+    }
+	// const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/; 
+  });
+
+  // 닉네임 중복 체크 (예시)
+  nicknameCheckBtn.addEventListener("click", () => {
+    const nickname = nicknameInput.value.trim();
+    if (nickname.length < 2) {
+      nicknameMessage.textContent = "닉네임은 2자 이상이어야 합니다.";
+      nicknameMessage.className = "message error";
+    } else {
+      nicknameMessage.textContent = "사용 가능한 닉네임입니다.";
+      nicknameMessage.className = "message confirm";
+    }
   });
 });

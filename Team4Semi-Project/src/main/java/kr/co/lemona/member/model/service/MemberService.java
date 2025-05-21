@@ -6,7 +6,6 @@ public interface MemberService {
 
 	/**
 	 * 로그인 서비스
-	 * 
 	 * @param inputMember
 	 * @return loginMember(Member)
 	 */
@@ -14,7 +13,6 @@ public interface MemberService {
 
 	/**
 	 * 이메일 중복검사 서비스
-	 * 
 	 * @param memberEmail
 	 * @return
 	 */
@@ -22,7 +20,6 @@ public interface MemberService {
 
 	/**
 	 * 닉네임 중복검사 서비스
-	 * 
 	 * @param memberNickname
 	 * @return
 	 */
@@ -30,7 +27,6 @@ public interface MemberService {
 
 	/**
 	 * 회원 가입 서비스
-	 * 
 	 * @param inputMember
 	 * @param memberAddress
 	 * @return

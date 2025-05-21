@@ -1,116 +1,80 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LEMONA - 회원가입</title>
-    <link rel="stylesheet" href="/css/register.css" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LEMONA - 회원가입</title>
+  <link rel="stylesheet" href="/css/register.css"/>
+</head>
 
-  <body>
-    <div class="container">
-      <div class="logo-container">
-        <a href="/" class="logo-link">
-          <img
-            src="/images/lemona-logo.png"
-            alt="LEMONA Logo"
-            class="logo-img"
-          />
-          <div class="brand-name"></div>
-        </a>
-      </div>
-
-      <div class="register-box">
-        <div class="register-header">회원가입</div>
-        <form id="registerForm">
-          <div class="input-row">
-            <input
-              type="text"
-              name="userId"
-              id="memberId"
-              placeholder="아이디를 입력하세요"
-              class="input-field"
-            />
-            <button type="button" class="btn-sub">아이디 중복 체크</button>
-          </div>
-          <span id="idCheckMessage" class="error"></span>
-          <div class="input-row">
-            <input
-              type="email"
-              name="email"
-              id="emailId"
-              placeholder="이메일을 입력하세요"
-              class="input-field"
-            />
-            <button type="button" class="btn-sub" id="sendCodeBtn">
-              인증번호받기
-            </button>
-          </div>
-
-          <div class="input-row">
-            <input
-              type="text"
-              name="emailCode"
-              placeholder="인증번호 입력"
-              class="input-field"
-            />
-            <button type="button" class="btn-sub" id="verifyCodeBtn">
-              인증하기
-            </button>
-          </div>
-
-          <input
-            type="password"
-            name="password"
-            placeholder="비밀번호 입력"
-            class="input-field"
-            id="passwordInput"
-          />
-          <div class="error" id="passwordError"></div>
-
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="비밀번호 확인"
-            class="input-field"
-            id="confirmPasswordInput"
-          />
-          <div class="error" id="confirmError"></div>
-
-          <input
-            type="text"
-            name="username"
-            placeholder="사용자 이름"
-            class="input-field"
-          />
-
-          <div class="input-row">
-            <input
-              type="text"
-              name="nickname"
-              placeholder="닉네임"
-              class="input-field"
-            />
-            <button type="button" class="btn-sub">닉네임 중복 체크</button>
-          </div>
-
-          <button type="submit" class="btn-main">회원가입하기</button>
-        </form>
-      </div>
-
-      <footer class="footer">
-        <div class="footer-links">
-          <span>프로젝트 소개</span>
-          <span>개발자 소개</span>
-          <span>개인정보 처리방침</span>
-          <span>이용약관</span>
-          <span>© Copyright</span>
-          <span>SNS</span>
-        </div>
-      </footer>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <a href="/" class="logo-link">
+        <img src="/images/lemona-logo.png" alt="LEMONA Logo" class="logo-img"/>
+      </a>
     </div>
 
-    <!-- JavaScript 연결 -->
-    <script src="/js/register/register.js" defer></script>
-  </body>
+    <div class="register-box">
+      <div class="register-header">회원가입</div>
+      <form id="registerForm">
+
+        <!-- 아이디 -->
+        <div class="input-row">
+          <input type="text" name="userId" id="memberId" placeholder="아이디를 입력하세요" class="input-field" />
+          <button type="button" class="btn-sub" id="idCheckBtn">아이디 중복 체크</button>
+        </div>
+        <span id="idCheckMessage" class="message"></span>
+
+        <!-- 이메일 -->
+        <div class="input-row">
+          <input type="email" name="email" id="emailId" placeholder="이메일을 입력하세요" class="input-field" />
+          <button type="button" class="btn-sub" id="sendCodeBtn">인증번호 받기</button>
+        </div>
+        <span id="emailMessage" class="message"></span>
+
+        <!-- 인증번호 -->
+        <div class="input-row">
+          <input type="text" name="emailCode" id="emailCodeInput" placeholder="인증번호 입력" class="input-field" />
+          <button type="button" class="btn-sub" id="verifyCodeBtn">인증하기</button>
+        </div>
+        <span id="authCodeMessage" class="message"></span>
+
+        <!-- 비밀번호 입력 -->
+		<span>영문, 숫자, 특수문자 포함 6~20자</span>
+        <input type="password" name="password" placeholder="비밀번호 입력" class="input-field" id="passwordInput" />
+  
+        <!-- 비밀번호 확인 -->
+        <input type="password" name="confirmPassword" placeholder="비밀번호 확인" class="input-field" id="confirmPasswordInput" />
+        <span class="message" id="confirmPasswordMessage"></span>
+
+        <!-- 사용자 이름 -->
+        <input type="text" name="username" placeholder="사용자 이름" class="input-field" />
+
+        <!-- 닉네임 -->
+        <div class="input-row">
+          <input type="text" name="nickname" id="nicknameInput" placeholder="닉네임" class="input-field" />
+          <button type="button" class="btn-sub" id="nicknameCheckBtn">닉네임 중복 체크</button>
+        </div>
+        <span id="nicknameMessage" class="message"></span>
+
+        <button type="submit" class="btn-main">회원가입하기</button>
+      </form>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <span>프로젝트 소개</span>
+        <span>개발자 소개</span>
+        <span>개인정보 처리방침</span>
+        <span>이용약관</span>
+        <span>© Copyright</span>
+        <span>SNS</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- JS 연결 -->
+  <script src="/js/register/register.js" defer></script>
+</body>
 </html>

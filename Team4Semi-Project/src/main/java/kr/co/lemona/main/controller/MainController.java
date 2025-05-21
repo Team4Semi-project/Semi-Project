@@ -81,6 +81,4 @@ public class MainController {
 
 		return "common/search";
   }
-
-
 }

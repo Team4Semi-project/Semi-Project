@@ -1,13 +1,18 @@
+/* 모든 요소에 대해 세로 스크롤 항상 표시 (숨김 처리) */
+/* Firefox용 스크롤바 숨기기 */
 * {
-  overflow-y: scroll; /* 세로 스크롤 유지 (보이지 않지만 가능) */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE */
+  overflow-y: scroll; /* 세로 스크롤 항상 유지 */
+  scrollbar-width: none; /* Firefox 브라우저용 스크롤바 숨기기 */
+  -ms-overflow-style: none; /* IE 브라우저용 스크롤바 숨기기 */
 }
 
+/* 크롬, 사파리용 스크롤바 숨기기 */
 *::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 
+/* 페이지 전체 컨테이너 설정 */
+/* 세로 방향으로 쌓이고, 가운데 정렬, 최소 높이 화면 전체 */
 .container {
   display: flex;
   flex-direction: column;
@@ -15,16 +20,22 @@
   min-height: 100vh;
 }
 
+/* 로고 영역 컨테이너 */
+/* 텍스트 가운데 정렬, 위쪽 여백 */
 .logo-container {
   text-align: center;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
+/* 로고 이미지 스타일 */
+/* 너비 100px, 높이는 자동 비율 유지 */
 .logo-img {
   width: 100px;
   height: auto;
 }
 
+/* 브랜드 이름 텍스트 스타일 */
+/* 글자 크기, 굵기, 색상, 위쪽 여백 */
 .brand-name {
   font-size: 32px;
   font-weight: bold;
@@ -32,15 +43,27 @@
   margin-top: 10px;
 }
 
+/* 회원가입 박스 영역 */
+/* 내부 여백, 흰색 계열 테두리, 둥근 모서리, 위쪽 여백, 너비 고정, 그림자 효과 */
 .register-box {
-  padding: 40px 30px;
+  padding: 10px 40px;
   border: 5px solid #fff9e4;
   border-radius: 15px;
-  margin-top: 30px;
+  margin-top: 20px;
   width: 650px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.message {
+  display: block;
+  min-height: 18px; /* 메시지가 없어도 공간 확보 */
+  margin-bottom: 8px; /* 줄여서 입력칸 사이 좁게 유지 */
+  font-size: 13px;
+  text-align: left;
+}
+
+/* 회원가입 제목 헤더 스타일 */
+/* 글자 크기, 굵기, 아래 여백, 가운데 정렬 */
 .register-header {
   font-size: 22px;
   font-weight: 600;
@@ -48,13 +71,16 @@
   text-align: center;
 }
 
-/* form layout */
+/* 입력 필드 행 레이아웃 */
+/* 가로 플렉스 박스, 항목 사이 간격, 아래 여백 */
 .input-row {
   display: flex;
   gap: 10px;
   margin-bottom: 12px;
 }
 
+/* 입력 필드 공통 스타일 */
+/* 가로 공간 채우기, 내부 여백, 테두리, 둥근 모서리, 글자 크기, 배경색, 높이, 박스 크기 계산 방식 */
 .input-field {
   flex: 1;
   padding: 10px;
@@ -66,6 +92,8 @@
   box-sizing: border-box;
 }
 
+/* 서브 버튼 스타일 */
+/* 고정 너비, 높이, 배경색, 테두리 없앰, 글자색, 둥근 모서리, 글자 굵기, 크기, 커서 포인터, 공백 줄바꿈 방지 */
 .btn-sub {
   width: 130px;
   height: 45px;
@@ -80,13 +108,15 @@
   white-space: nowrap;
 }
 
-/* 단독 필드 */
+/* 단독 입력 필드 너비 설정 */
+/* 부모가 .input-row가 아닌 input-field는 너비 100%, 아래 여백 */
 .input-field:not(.input-row .input-field) {
   width: 100%;
   margin-bottom: 12px;
 }
 
-/* main submit button */
+/* 메인 제출 버튼 스타일 */
+/* 너비 100%, 위쪽 여백, 내부 여백, 배경색, 글자색, 굵기, 테두리 없음, 둥근 모서리, 글자 크기, 커서 포인터 */
 .btn-main {
   width: 100%;
   margin-top: 16px;
@@ -100,6 +130,8 @@
   cursor: pointer;
 }
 
+/* 에러 메시지 스타일 */
+/* 빨간색, 폰트 크기, 아래 여백, 블록 레벨 요소, 왼쪽 정렬 */
 .error {
   color: red;
   font-size: 13px;
@@ -107,6 +139,9 @@
   display: block;
   text-align: left;
 }
+
+/* 확인 메시지 스타일 */
+/* 초록색, 폰트 크기, 아래 여백, 블록 레벨 요소, 왼쪽 정렬 */
 .confirm {
   color: green;
   font-size: 13px;
@@ -115,6 +150,9 @@
   display: block;
   text-align: left;
 }
+
+/* 페이지 하단 푸터 영역 */
+/* 위쪽 마진 자동(위 공간 채우기), 내부 여백, 배경 검정, 글자 흰색, 글자 크기, 너비 100%, 가운데 정렬 */
 .footer {
   margin-top: auto;
   padding: 20px;
@@ -125,6 +163,7 @@
   text-align: center;
 }
 
+/* 푸터 내 링크들의 좌우 간격 */
 .footer-links span {
   margin: 0 10px;
 }

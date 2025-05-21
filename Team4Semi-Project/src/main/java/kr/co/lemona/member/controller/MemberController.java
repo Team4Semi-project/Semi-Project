@@ -143,7 +143,7 @@ public class MemberController {
 	 * @return 중복 1, 아님 0
 	 */
 	@ResponseBody
-	@GetMapping("checkNickname")
+	@PostMapping("checkNickname")
 	public int checkNickname(@RequestParam("memberNickname") String memberNickname) {
 		return service.checkNickname(memberNickname);
 	}

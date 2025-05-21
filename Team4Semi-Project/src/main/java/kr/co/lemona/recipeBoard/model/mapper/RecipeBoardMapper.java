@@ -63,19 +63,12 @@ public interface RecipeBoardMapper {
 	 */
 	int insertRecipeBoard(RecipeBoard inputBoard);
 
-	/** BOARD_STEP에 단계 설명, 단계 순서 삽입
+	/** BOARD_STEP 삽입
 	 * @param boardStepList
 	 * @return
 	 * @author 재호
 	 */
 	int insertBoardStepContent(@Param("list") List<BoardStep> boardStepList);
-
-	/** BOARD_STEP에 이미지 삽입
-	 * @param boardStepList
-	 * @return
-	 * @author 재호
-	 */
-	int insertBoardStepImage(@Param("list") List<BoardStep> boardStepList);
 
 	/** 해시태그 중복검사 및 삽입
 	 * @param hashTagList
@@ -89,7 +82,7 @@ public interface RecipeBoardMapper {
 	 * @return
 	 * @author 재호
 	 */
-	int insertHashTag(@Param("list") Map<String, Object> map);
+	int insertHashTag(Map<String, Object> map);
 
 	/** 이전 글 받아오기
 	 * @param map

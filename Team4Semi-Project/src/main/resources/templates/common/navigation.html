@@ -26,7 +26,10 @@
       </li>
     </ul>
 
-    <div th:if="${loginMember !=null}" class="write-button-container">
+    <!-- boarCode 확인용
+     <p th:text="'현재 boardCode: ' + ${boardCode}">boardCode 없음</p> 
+     -->
+    <div th:if="${session.loginMember !=null}" class="write-button-container">
       <!-- 레시피 게시판 (boardCode == 1) -->
       <a th:if="${boardCode == 1}" th:href="@{/editRecipe/{boardCode}(boardCode=${boardCode})/insert}"
         class="write-button">Write Button</a>

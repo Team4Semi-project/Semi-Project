@@ -46,7 +46,8 @@
         <div class="author-section">
             <div class="author-info">
                 <div class="author-avatar">
-                    <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                    <img onerror="this.onerror=null; this.src='/images/user.png';"
+                        th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                         alt="Author profile">
                 </div>
                 <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
@@ -67,7 +68,8 @@
                     <p th:text="${step.stepContent}">레몬을 준비합니다</p>
                 </div>
                 <div class="step-image">
-                    <img th:src="|${step.imgPath}${step.imgRename}|" alt="Recipe step image" />
+                    <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                        th:src="|${step.imgPath}${step.imgRename}|" alt="Recipe step image" />
                     <!-- <img th:src="${step.imgPath}" src="/images/lemon-chef.jpg" alt="Recipe step image"> -->
                 </div>
             </div>

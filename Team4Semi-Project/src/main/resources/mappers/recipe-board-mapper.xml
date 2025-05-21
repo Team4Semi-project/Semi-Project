@@ -243,7 +243,7 @@
 	<insert id="insertBoardStepContent">
 	  INSERT ALL
 	  <foreach collection="list" item="step">
-	    INTO BOARD_STEP (
+	    INTO "BOARD_STEP" (
 	      STEP_NO,
 	      STEP_ORDER,
 	      STEP_CONTENT,
@@ -256,34 +256,20 @@
 	      NEXT_STEP_NO(),
 	      #{step.stepOrder},
 	      #{step.stepContent},
-	      NULL,
-	      NULL,
-	      NULL,
+		  #{step.imgPath},
+		  #{step.imgOriginalName},
+		  #{step.imgRename},
 	      #{step.boardNo},
-	      'N'
+	      #{step.thumbnailCheck}
 	    )
 	  </foreach>
 	  SELECT * FROM DUAL
 	</insert>
 	
-	<!-- BOARD_STEP에 이미지 삽입 -->
-	<!-- 재호 -->
-	<update id="insertBoardStepImage">
-		<foreach collection="list" item="img" separator=";">
-			UPDATE "BOARD_STEP"
-			SET IMG_PATH = #{img.imgPath},
-				IMG_ORIGINAL_NAME = #{img.imgOriginalName},
-				IMG_RENAME = #{img.imgRename}
-				THUMBNAIL_CHECK = #{img.thumbnailCheck}
-			WHERE BOARD_NO = #{boardNo}
-			AND STEP_ORDER = #{stepOrder}
-		</foreach>
-	</update>
-	
 	<!-- 해시태그 중복검사 및 삽입 -->
 	<!-- 재호 -->
 	<insert id="insertNewHashtagIfNotExists">
-	  INSERT INTO HASHTAG (TAG_NO, TAG_NAME)
+	  INSERT INTO "HASHTAG" (TAG_NO, TAG_NAME)
 	  SELECT SEQ_TAG_NO.NEXTVAL, tagName
 	  FROM (
 	    <foreach collection="list" item="tag" separator="UNION ALL">
@@ -298,8 +284,8 @@
 	<!-- 해쉬태그 삽입 -->
 	<!-- 재호 -->
 	<insert id="insertHashTag">
-	    INSERT INTO BOARD_HASHTAG (BOARD_NO, TAG_NO)
-	    <foreach collection="list" item="tag" separator="UNION ALL">
+	    INSERT INTO "BOARD_HASHTAG" (BOARD_NO, TAG_NO)
+	    <foreach collection="hashTagList" item="tag" separator="UNION ALL">
 	        SELECT #{boardNo}, (
 	            SELECT TAG_NO FROM HASHTAG WHERE TAG_NAME = #{tag}
 	        ) FROM DUAL

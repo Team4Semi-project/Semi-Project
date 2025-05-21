@@ -95,4 +95,18 @@ public interface RecipeBoardMapper {
 	 * @return
 	 */
 	RecipeBoard selectNextBoard(Map<String, Integer> map);
+
+	/** 레시피 게시글 조회수 증가
+	 * @param boardNo
+	 * @return
+	 * @author miae
+	 */
+	int updateReadCount(int boardNo);
+
+	/** 현재 게시글 조회수 조회
+	 * @param boardNo
+	 * @return
+	 * @author miae
+	 */
+	int selectReadCount(int boardNo);
 }

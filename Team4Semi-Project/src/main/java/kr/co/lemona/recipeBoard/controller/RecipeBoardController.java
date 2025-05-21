@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -258,12 +259,13 @@ public class RecipeBoardController {
 	 * @author 재호
 	 */
 	@PostMapping("insert")
+	@ResponseBody
 	public String insertRecipeBoard(RecipeBoard inputBoard,
 									@SessionAttribute(value = "loginMember", required = false) Member loginMember,
 									@RequestParam(value = "images", required = false) List<MultipartFile> images,
 									@RequestParam("stepContents") List<String> inputStepContent,
-									@RequestParam("thumbnailNo") int thumbnailNo,
-									@RequestParam("hashTags") List<String> hashTagList,
+									@RequestParam(value="thumbnailNo", required = false) int thumbnailNo,
+									@RequestParam(value="hashTags", required = false) List<String> hashTagList,
 									RedirectAttributes ra) throws Exception {
 		
 		// 1. 로그인한 회원번호 세팅
@@ -271,16 +273,8 @@ public class RecipeBoardController {
 		inputBoard.setHashTagList(hashTagList);
 		// memberNo title categoryNo hashTag
 		
-		log.debug("boardTitle {}: ", inputBoard.getBoardTitle());
-		log.debug("images : {}", images);
-		log.debug("stepContent : {}", inputStepContent);
-		log.debug("thumbnailNo : {}", thumbnailNo);
-		log.debug("hashTagList : {}", hashTagList);
-		
 		// 2. 서비스 메서드 호출 후 결과 반환 받기
 		int boardNo = service.insertRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo);
-		
-		log.debug("boardNo : ", boardNo);
 		
 		// 3. 서비스 결과에 따라 message, 리다이렉트 경로 지정
 		String message = null;
@@ -288,14 +282,14 @@ public class RecipeBoardController {
 		
 		if(boardNo > 0) {
 			message = "레시피가 등록되었습니다.";
-			path = "board/1/0/" + boardNo;
+			path = "/board/1/0/" + boardNo;
 		} else {
 			message = "레시피 등록에 실패했습니다.";
-			path = "insert";
+			path = "/board/1/insert";
 		}
 		
 		ra.addFlashAttribute("message",message);
 		
-		return "redirect:" + path;
+		return path;
 	}
 }

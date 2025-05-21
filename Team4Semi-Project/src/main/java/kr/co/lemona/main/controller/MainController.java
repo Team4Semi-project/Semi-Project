@@ -64,7 +64,7 @@ public class MainController {
 	/** 메인페이지 매핑 메서드
 	 * @return
 	 */
-	@RequestMapping("search")
+	@GetMapping("search")
 	public String mainPage(@RequestParam(value="cp", required=false, defaultValue = "1") int cp,
 										Model model, @RequestParam Map<String, Object> paramMap) {
 
@@ -77,7 +77,8 @@ public class MainController {
 			map = service.AllsearchList(paramMap, cp);
 
 		// model 에 반환 받은 값 등록
-		model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("searchAllBoardList", map.get("searchAllBoardList"));
+		model.addAttribute("pagination", map.get("pagination"));
 
 		return "common/search";
   }

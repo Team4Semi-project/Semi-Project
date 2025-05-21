@@ -275,21 +275,21 @@
     </form>
 </div>
 </div> -->
-
-    <!-- 최종 검색창 화면 -->
-    <form th:action="@{/search}" method="get" id="boardSearch">
-      <div class="select-container">
-        <select name="key" id="searchKey">
-          <option value="t">제목</option>
-          <option value="c">내용</option>
-          <option value="tc">제목+내용</option>
-          <option value="w">작성자</option>
-        </select>
-        <div class="select-box">
-          <span id="selectBoxText">제목 + 내용</span>
-          <span class="arrow"></span>
-        </div>
-      </div>
+    
+<!-- 최종 검색창 화면 -->
+<form th:action="@{/search}" method="get" id="boardSearch">
+  <div class="select-container">
+    <select name="key" id="searchKey">
+      <option value="t">제목</option>
+      <option value="c">내용</option>
+      <option value="tc">제목+내용</option>
+      <option value="w">작성자</option>
+    </select>
+    <div class="select-box">
+      <span id="selectBoxText">제목</span>
+      <span class="arrow"></span>
+    </div>
+  </div>
 
       <input type="text" name="query" id="searchQuery" placeholder="내용을 입력하세요.">
 
@@ -365,7 +365,7 @@
             selectBoxText.textContent = '작성자';
             break;
           default:
-            selectBoxText.textContent = '제목 + 내용';
+            selectBoxText.textContent = '제목';
         }
       }
 

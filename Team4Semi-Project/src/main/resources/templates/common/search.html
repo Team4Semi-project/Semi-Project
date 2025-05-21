@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">레모나</title>
-    <link rel="stylesheet" th:href="@{/css/styleguide.css}">
-    <link rel="stylesheet" th:href="@{/css/recipeBoard/recipeBoardList.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
+    <th:block th:replace="~{common/common}"></th:block>
 </head>
 
 <body>
@@ -21,39 +21,43 @@
     <main layout:fragment="content">
         <section class="recipe-section">
             <!-- 섹션 헤더 -->
-            <div class="section-header">
-                <h2 class="section-title">게시글 목록</h2>
+      <div class="section-header">
+        <h2 class="section-title">게시글 목록</h2>
 
-                <div class="view-options">
-                    <button class="view-toggle agenda" data-view="agenda">
-                        <i class="fas fa-list"></i>
-                    </button>
-                    <button class="view-toggle cozy active" data-view="cozy">
-                        <i class="fas fa-th"></i>
-                    </button>
-                </div>
+        <div class="options-container">
+          <div class="view-options">
+            <div class="background-indicator"></div>
 
-                <div class="sort-options">
-                    <select class="sort-select" id="sortSelect">
-                        <option value="latest">최신순</option>
-                        <option value="oldest">오래된순</option>
-                        <option value="popular">인기순</option>
-                        <option value="views">조회수순</option>
-                    </select>
-                    <i class="fas fa-caret-down"></i>
-                </div>
-            </div>
+            <button class="view-toggle agenda" data-view="agenda">
+              <span class="material-symbols-outlined"> view_agenda </span>
+            </button>
+            <button class="view-toggle cozy active" data-view="cozy">
+              <span class="material-symbols-outlined"> view_cozy </span>
+            </button>
+          </div>
+
+          <div class="sort-options">
+            <select class="sort-select" id="sortSelect">
+              <option value="latest">최신순</option>
+              <option value="oldest">오래된순</option>
+              <option value="popular">인기순</option>
+              <option value="views">조회수순</option>
+            </select>
+            <i class="fas fa-caret-down"></i>
+          </div>
+        </div>
+      </div>
 
             <!-- 레시피 컨테이너 (Cozy View) -->
             <div class="recipe-container cozy-view">
                 <!-- 레시피 없을 때 -->
-                <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
+                <div th:if="${#lists.isEmpty(searchAllBoardList)}" class="no-recipes">
                     <p>등록된 레시피가 없습니다.</p>
                 </div>
 
                 <!-- 레시피 목록 -->
-                <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
-                    <div th:each="recipe : ${boardList}" class="recipe-item">
+                <div th:unless="${#lists.isEmpty(searchAllBoardList)}" class="recipe-grid">
+                    <div th:each="recipe : ${searchAllBoardList}" class="recipe-item">
                         <div class="recipe-image">
                             <img th:src="${recipe.thumbnail}" alt="레시피 이미지">
                         </div>
@@ -222,20 +226,15 @@
                 </div>
             </div>
         </section>
-    </main>
-
-    <!-- 추가 스크립트 -->
-    <script layout:fragment="script">
-        // 추가 스크립트가 필요한 경우
-    </script>
+    </main><a href="#" data-type="all">제목 + 내용</a>
 
     <!-- 푸터 프래그먼트 -->
     <footer th:replace="~{common/footer :: footer}"></footer>
 
     <!-- 공통 스크립트 -->
-    <script th:src="@{/js/recipeBoard/recipeBoardList.js}"></script>
+    <script th:src="@{/js/board/boardList.js}"></script>
     <th:block th:replace="~{common/header :: search-header-js}"></th:block>
-    <!-- <script layout:fragment="script"></script> -->
+    <script layout:fragment="script"></script>
 </body>
 
 </html>

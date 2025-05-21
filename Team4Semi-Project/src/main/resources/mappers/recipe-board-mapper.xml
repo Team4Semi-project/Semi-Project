@@ -95,6 +95,7 @@
 		    B.BOARD_NO, 
 		    B.BOARD_TITLE, 
 		    B.READ_COUNT,
+		    B.BOARD_CODE,
 		    M.MEMBER_NICKNAME, 
 		    M.PROFILE_IMG,
 		    

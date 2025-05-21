@@ -89,6 +89,7 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("popular")
 	public String selectPopularBoardList(@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value = "categoryNo", required = false, defaultValue = "0") int categoryNo,
 			Model model, @RequestParam Map<String, Object> paramMap) {
 
 		// 조회 서비스 호출 후 결과 반환 받기.
@@ -108,6 +109,7 @@ public class RecipeBoardController {
 		// model 에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("categoryNo", categoryNo);
 
 		return "board/boardList";
 	}

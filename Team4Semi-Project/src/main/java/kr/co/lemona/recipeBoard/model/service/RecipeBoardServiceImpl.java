@@ -135,8 +135,6 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		// 다음 글
 		RecipeBoard nextBoard = mapper.selectNextBoard(map);
 		
-		log.info("map.get(\"boardNo\") : " + map.get("boardNo"));
-		
 		int prevBoardNo = 0;
 		int nextBoardNo = 0;
 		

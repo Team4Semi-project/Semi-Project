@@ -73,24 +73,10 @@ public class EditDefaultBoardController {
 	@PostMapping("insert") // 파라미터 : loginMember
 	public String defaultBoardInsert(@PathVariable("boardCode") int boardCode, 
 			@ModelAttribute Board inputBoard, 
-			// @SessionAttribute("loginMember") Member loginMember,
-			HttpServletRequest req, // 세션 로그인 구현 후 필요 없음
+			@SessionAttribute("loginMember") Member loginMember,
 			Model model, RedirectAttributes ra)
 			throws Exception {
 
-		// --------------- 세션 구현 안돼서 테스트용 데이터 삽입 ---------------
-		Member loginMember = Member.builder()
-				.memberNo(2)
-				.memberId("user2")
-	            .memberName("이순신")
-	            .memberNickname("순신이")
-	            .memberEmail("user2@example.com")
-	            .memberDelFl("N")
-	            .build();
-		
-		req.getSession().setAttribute("loginMember", loginMember);
-		// ---------------------------------------------------------------------
-		
 		inputBoard.setBoardCode(boardCode);
 		inputBoard.setMemberNo(loginMember.getMemberNo());
 

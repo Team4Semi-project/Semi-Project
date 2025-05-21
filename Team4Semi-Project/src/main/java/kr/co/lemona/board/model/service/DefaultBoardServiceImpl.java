@@ -3,6 +3,8 @@ package kr.co.lemona.board.model.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.board.model.mapper.DefaultBoardMapper;
-import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -22,8 +23,6 @@ public class DefaultBoardServiceImpl implements DefaultBoardService{
 
 	@Autowired
 	private DefaultBoardMapper mapper;
-	
-
 
 	/** 게시글 리스트 조회
 	 * @author 민장
@@ -44,6 +43,22 @@ public class DefaultBoardServiceImpl implements DefaultBoardService{
 		// 게시글 조회
 		List<Board> boardList = mapper.selectBoardList(boardCode, rowBounds);
 
+	    // 썸네일 추출 추가
+	    for (Board board : boardList) {
+	    	// 글 내용만 가져옴
+	        String content = board.getBoardContent();
+	        if (content != null) {
+	            // 글 내용에서 img 태그의 src 속성 값을 추출하는 정규식을 Patter에 정의 
+	        	// 그 정규식으로 matcher 객체 생성
+	            Matcher matcher = Pattern.compile("<img[^>]+src=[\"']([^\"']+)[\"']").matcher(content);
+	            // matcher에서 패턴에 정의 된 정규식에 맞는 첫번째 문자열을 찾음
+	            if (matcher.find()) {
+	            	// 문자열을 board의 thumbnail에 세팅  // 0 : img src 태그 전체
+	                board.setThumbnail(matcher.group(1)); // 1 : "또는'이 나오기 전까지의 모든 문자(첫번째 ()의 내용인 [^\"']+) 
+	            }
+	        }
+	    }
+		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
 

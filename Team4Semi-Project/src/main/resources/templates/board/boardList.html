@@ -62,14 +62,14 @@
               <a th:if="${board.boardCode == 1}"
                 th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
                 <!-- 레시피 게시판 썸네일 -->
-                <img
+                <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
                   alt="레시피 이미지" />
               </a>
               <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
                 th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
                 <!-- 자유 또는 공지 게시판 썸네일 -->
-                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/user.png' : board.profileImg}"
+                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
                   alt="게시판 이미지">
               </a>
             </div>
@@ -135,14 +135,14 @@
               <a th:if="${board.boardCode == 1}"
                 th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
                 <!-- 레시피 게시판 썸네일 -->
-                <img
+                <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
                   alt="레시피 이미지" />
               </a>
               <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
                 th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
                 <!-- 자유 또는 공지 게시판 썸네일 -->
-                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/user.png' : board.profileImg}"
+                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
                   alt="게시판 이미지">
               </a>
             </div>

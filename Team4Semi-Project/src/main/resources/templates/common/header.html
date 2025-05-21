@@ -1,7 +1,7 @@
 <!-- 헤더 프래그먼트 -->
 <header th:fragment="header" class="header">
 
-    <style>
+  <style>
     * {
       margin: 0;
       padding: 0;
@@ -116,105 +116,105 @@
     }
 
     /* 검색 폼 스타일 */
-#boardSearch {
-  display: flex;
-  align-items: center;
-  max-width: 1100px;
-  margin: 20px auto;
-  gap: 10px;
-}
+    #boardSearch {
+      display: flex;
+      align-items: center;
+      max-width: 1100px;
+      margin: 20px auto;
+      gap: 10px;
+    }
 
-/* 셀렉트 박스 스타일링 */
-.select-container {
-  position: relative;
-  min-width: 155px;
-}
+    /* 셀렉트 박스 스타일링 */
+    .select-container {
+      position: relative;
+      min-width: 155px;
+    }
 
-#searchKey {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 2;
-}
+    #searchKey {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
 
-.select-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #FFCF39;
-  color: #000;
-  padding: 12px 20px;
-  border-radius: 30px;
-  font-weight: 500;
-  width: 100%;
-  box-sizing: border-box;
-}
+    .select-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #FFCF39;
+      color: #000;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 500;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-.select-box .arrow {
-  border-style: solid;
-  border-width: 6px 5px 0 5px;
-  border-color: #000 transparent transparent transparent;
-  margin-left: 10px;
-}
+    .select-box .arrow {
+      border-style: solid;
+      border-width: 6px 5px 0 5px;
+      border-color: #000 transparent transparent transparent;
+      margin-left: 10px;
+    }
 
-/* 검색어 입력 필드 */
-#searchQuery {
-  flex-grow: 1;
-  padding: 12px 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 30px;
-  outline: none;
-  font-size: 14px;
-  width: 600px;
-}
+    /* 검색어 입력 필드 */
+    #searchQuery {
+      flex-grow: 1;
+      padding: 12px 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 30px;
+      outline: none;
+      font-size: 14px;
+      width: 600px;
+    }
 
-#searchQuery:focus {
-  border-color: #FFCF39;
-}
+    #searchQuery:focus {
+      border-color: #FFCF39;
+    }
 
-/* 검색 버튼 */
-.search-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 12px;
-}
+    /* 검색 버튼 */
+    .search-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 12px;
+    }
 
-.search-icon {
-  width: 24px;
-  height: 24px;
-  fill: #555;
-}
+    .search-icon {
+      width: 24px;
+      height: 24px;
+      fill: #555;
+    }
 
-/* 반응형 스타일 */
-@media (max-width: 768px) {
-  #boardSearch {
-    flex-wrap: wrap;
-  }
-  
-  .select-container {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  
-  #searchQuery {
-    width: 100%;
-  }
-}
+    /* 반응형 스타일 */
+    @media (max-width: 768px) {
+      #boardSearch {
+        flex-wrap: wrap;
+      }
+
+      .select-container {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      #searchQuery {
+        width: 100%;
+      }
+    }
   </style>
 
-    <!-- <th:block th:replace="common/header-search :: search-header-css"></th:block> -->
+  <!-- <th:block th:replace="common/header-search :: search-header-css"></th:block> -->
 
-    <div class="header-container">
-        <div class="logo">
-            <a th:href="@{/}">
-                <img src="/images/lemona-logo.png" alt="레모나">
-            </a>
-        </div>
+  <div class="header-container">
+    <div class="logo">
+      <a th:href="@{/}">
+        <img src="/images/lemona-logo.png" alt="레모나">
+      </a>
+    </div>
 
-        <!-- <div class="search-container">
+    <!-- <div class="search-container">
             <div class="search-dropdown">
                 <button class="dropdown-button">
                     <span>제목 + 내용</span>
@@ -239,7 +239,7 @@
         </div> -->
 
     <!-- 또 다른 검색창 화면-->
-        <!-- <div class="header-container">
+    <!-- <div class="header-container">
     <div class="header-content">
       <form
         id="searchForm"
@@ -275,7 +275,7 @@
     </form>
 </div>
 </div> -->
-
+    
 <!-- 최종 검색창 화면 -->
 <form th:action="@{/search}" method="get" id="boardSearch">
   <div class="select-container">
@@ -291,93 +291,92 @@
     </div>
   </div>
 
-  <input type="text" name="query" id="searchQuery" placeholder="내용을 입력하세요.">
+      <input type="text" name="query" id="searchQuery" placeholder="내용을 입력하세요.">
 
-  <button type="submit" class="search-button">
-    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      <path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/>
-    </svg>
-  </button>
-</form>
+      <button type="submit" class="search-button">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path
+            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
+        </svg>
+      </button>
+    </form>
 
-<!-- 로그인 되어있는 계정이 없을때, {로그인,회원가입} -->
-<div class="user-menu">
-    <th:block th:if="${session.loginMember == null}">
-                <!-- <button
+    <!-- 로그인 되어있는 계정이 없을때, {로그인,회원가입} -->
+    <div class="user-menu">
+      <th:block th:if="${session.loginMember == null}">
+        <!-- <button
                   type="button"
                   class="login-button"
                   th:onclick="|location.href='@{/login}'|">
                   로그인
                 </button> -->
-                <a th:href="@{/login}">
-                    <span class="material-symbols-outlined">
-                        login
-                    </span>
-                </a>
-                <a th:href="@{/signup}">회원가입</a>
-            </th:block>
+        <a th:href="@{/login}">
+          <span class="material-symbols-outlined">
+            login
+          </span>
+        </a>
+        <a th:href="@{/signup}">회원가입</a>
+      </th:block>
 
-            <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
-            <th:block th:if="${session.loginMember != null}" class="user-menu">
-                <a th:text="${session.loginMember.nickname}" th:href="@{/mypage}">사용자명</a>
-                <a th:href="@{/logout}">
-                    <span class="material-symbols-outlined">
-                        logout
-                    </span>
-                </a>
-            </th:block>
-        </div>
+      <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
+      <th:block th:if="${session.loginMember != null}" class="user-menu">
+        <a th:text="${session.loginMember.memberNickname}" th:href="@{/mypage}">사용자명</a>
+        <a th:href="@{/logout}">
+          <span class="material-symbols-outlined">
+            logout
+          </span>
+        </a>
+      </th:block>
     </div>
+  </div>
 </header>
-    
-    <!-- CSS와 JavaScript 포함 -->
-    <!-- <th:block th:replace="common/header-search :: search-header-js"></th:block> -->
-     <th:block th:fragment="search-header-js">
-<script>
-        // 검색폼 자바스크립트
-document.addEventListener('DOMContentLoaded', function() {
-  // 셀렉트 박스 커스텀 구현
-  const searchKey = document.getElementById('searchKey');
-  const selectBoxText = document.getElementById('selectBoxText');
-  
-  // 초기 텍스트 설정
-  updateSelectBoxText(searchKey.value);
-  
-  // 값이 변경될 때 텍스트 업데이트
-  searchKey.addEventListener('change', function() {
-    updateSelectBoxText(this.value);
-  });
-  
-  // 선택된 값에 따라 표시 텍스트 업데이트
-  function updateSelectBoxText(value) {
-    switch(value) {
-      case 't':
-        selectBoxText.textContent = '제목';
-        break;
-      case 'c':
-        selectBoxText.textContent = '내용';
-        break;
-      case 'tc':
-        selectBoxText.textContent = '제목 + 내용';
-        break;
-      case 'w':
-        selectBoxText.textContent = '작성자';
-        break;
-      default:
-        selectBoxText.textContent = '제목';
-    }
-  }
-  
-  // 폼 제출 시 빈 검색어 검증
-  document.getElementById('boardSearch').addEventListener('submit', function(e) {
-    const query = document.getElementById('searchQuery').value.trim();
-    if (!query) {
-      e.preventDefault();
-      alert('검색어를 입력해주세요.');
-    }
-  });
-});
-    </script>
-    </th:block>
 
+<!-- CSS와 JavaScript 포함 -->
+<!-- <th:block th:replace="common/header-search :: search-header-js"></th:block> -->
+<th:block th:fragment="search-header-js">
+  <script>
+    // 검색폼 자바스크립트
+    document.addEventListener('DOMContentLoaded', function () {
+      // 셀렉트 박스 커스텀 구현
+      const searchKey = document.getElementById('searchKey');
+      const selectBoxText = document.getElementById('selectBoxText');
 
+      // 초기 텍스트 설정
+      updateSelectBoxText(searchKey.value);
+
+      // 값이 변경될 때 텍스트 업데이트
+      searchKey.addEventListener('change', function () {
+        updateSelectBoxText(this.value);
+      });
+
+      // 선택된 값에 따라 표시 텍스트 업데이트
+      function updateSelectBoxText(value) {
+        switch (value) {
+          case 't':
+            selectBoxText.textContent = '제목';
+            break;
+          case 'c':
+            selectBoxText.textContent = '내용';
+            break;
+          case 'tc':
+            selectBoxText.textContent = '제목 + 내용';
+            break;
+          case 'w':
+            selectBoxText.textContent = '작성자';
+            break;
+          default:
+            selectBoxText.textContent = '제목';
+        }
+      }
+
+      // 폼 제출 시 빈 검색어 검증
+      document.getElementById('boardSearch').addEventListener('submit', function (e) {
+        const query = document.getElementById('searchQuery').value.trim();
+        if (!query) {
+          e.preventDefault();
+          alert('검색어를 입력해주세요.');
+        }
+      });
+    });
+  </script>
+</th:block>

@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData();
     formData.append("image", file);
 
-    fetch("/editBoard/defaultUploadImage", {
+    fetch("/editBoard/2/defaultUploadImage", {
       method: "POST",
       body: formData,
     })

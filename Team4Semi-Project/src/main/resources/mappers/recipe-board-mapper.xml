@@ -99,6 +99,9 @@
 		    M.MEMBER_NICKNAME, 
 		    M.PROFILE_IMG,
 		    
+		    S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+		    S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		    
 		    (SELECT COUNT(*) 
 		     FROM "RECIPE_COMMENT" C 
 		     WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
@@ -122,6 +125,12 @@
 		
 		FROM "RECIPE_BOARD" B
 		JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
+		
+		LEFT JOIN (
+		    SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+		    FROM BOARD_STEP
+		    WHERE THUMBNAIL_CHECK = 'Y'
+		) S ON B.BOARD_NO = S.BOARD_NO
 		
 		WHERE B.BOARD_DEL_FL = 'N'
 		  AND B.READ_COUNT >= 20
@@ -200,11 +209,20 @@
 	<!-- 이전 글 번호 조회 -->
 	<select id="selectPrevBoard">
 		SELECT *
-		FROM RECIPE_BOARD
+		FROM RECIPE_BOARD B
 		WHERE BOARD_NO &lt; ${boardNo}
 		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
 		<if test="categoryNo != 0">
 			AND CATEGORY_NO = ${categoryNo}
+		</if>
+		<if test="popular == 1">
+			  AND READ_COUNT &gt;= 20
+			  AND MONTHS_BETWEEN(SYSDATE, BOARD_CREATE_DATE) &lt;= 1
+			  AND (
+			      SELECT COUNT(*) 
+			      FROM RECIPE_BOARD_LIKE L 
+			      WHERE L.BOARD_NO = B.BOARD_NO
+			  ) &gt;= 0
 		</if>
 		ORDER BY BOARD_NO DESC
 		FETCH FIRST 1 ROWS ONLY
@@ -213,11 +231,20 @@
 	<!-- 다음 글 번호 조회 -->
 	<select id="selectNextBoard">
 		SELECT *
-		FROM RECIPE_BOARD
+		FROM RECIPE_BOARD B
 		WHERE BOARD_NO &gt; ${boardNo}
 		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
 		<if test="categoryNo != 0">
 			AND CATEGORY_NO = ${categoryNo}
+		</if>
+		<if test="popular == 1">
+			  AND READ_COUNT &gt;= 20
+			  AND MONTHS_BETWEEN(SYSDATE, BOARD_CREATE_DATE) &lt;= 1
+			  AND (
+			      SELECT COUNT(*) 
+			      FROM RECIPE_BOARD_LIKE L 
+			      WHERE L.BOARD_NO = B.BOARD_NO
+			  ) &gt;= 0
 		</if>
 		ORDER BY BOARD_NO
 		FETCH FIRST 1 ROWS ONLY

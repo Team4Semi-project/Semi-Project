@@ -39,7 +39,10 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	private String folderPath;
 	// C:/lemonaFiles/recipeBoard/
 
-	// 레시피 게시판 목록 조회
+	/** 레시피 게시판 목록 조회
+	 * 
+	 * @author miae
+	 */
 	@Override
 	public Map<String, Object> selectRecipeBoardList(int categoryNo, int cp) {
 
@@ -55,10 +58,6 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
-
-		for (RecipeBoard recipeBoard : recipeBoardList) {
-			log.info("recipeBoard : " + recipeBoard.getBoardCode());
-		}
 
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();

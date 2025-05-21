@@ -38,10 +38,11 @@ public class DefaultBoardController {
 	 * @author 민장
 	 */
 	@GetMapping("")
-	public String selectRecipeBoardList(@PathVariable("boardCode") int boardCode,
+	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 								@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
 								@RequestParam Map<String, Object> paramMap,
-								Model model) {
+								Model model,
+								HttpServletRequest req) {
 		
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
@@ -60,7 +61,18 @@ public class DefaultBoardController {
 			// map = service.serchList(paramMap, cp);
 
 		}		
+		// --------------- 세션 구현 안돼서 테스트용 데이터 삽입 ---------------
+		Member loginMember = Member.builder()
+				.memberNo(2)
+				.memberId("user2")
+	            .memberName("이순신")
+	            .memberNickname("순신이")
+	            .memberEmail("user2@example.com")
+	            .memberDelFl("N")
+	            .build();
 		
+		req.getSession().setAttribute("loginMember", loginMember);
+		// ---------------------------------------------------------------------
 		// model 에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));

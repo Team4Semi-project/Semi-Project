@@ -53,7 +53,9 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("{categoryNo:[0-9]+}")
 	public String selectRecipeBoardList(@PathVariable("categoryNo") int categoryNo,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value = "popular", required = false, defaultValue = "0") int popular,
+			Model model,
 			@RequestParam Map<String, Object> paramMap) {
 
 		// 조회 서비스 호출 후 결과 반환 받기.
@@ -75,6 +77,7 @@ public class RecipeBoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("recipeBoardList"));
 		model.addAttribute("categoryNo", categoryNo);
+		model.addAttribute("popular", popular);
 
 		return "board/boardList";
 	}
@@ -111,6 +114,7 @@ public class RecipeBoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("categoryNo", categoryNo);
+		model.addAttribute("popular", 1);
 
 		return "board/boardList";
 	}
@@ -127,6 +131,7 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("{categoryNo:[0-9]+}/{boardNo:[0-9]+}")
 	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("categoryNo") int categoryNo,
+									@RequestParam(value = "popular", required = false, defaultValue = "0") int popular,
 									Model model,
 									@SessionAttribute(value="loginMember", required = false) Member loginMember,
 									RedirectAttributes ra,
@@ -140,6 +145,7 @@ public class RecipeBoardController {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardNo", boardNo);
 		map.put("categoryNo", categoryNo);
+		map.put("popular", popular);
 		
 		// 로그인 상태인 경우에만 memberNo 추가
 		if(loginMember != null) {

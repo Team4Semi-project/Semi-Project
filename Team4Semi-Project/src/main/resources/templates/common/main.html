@@ -41,7 +41,8 @@
             <div th:each="board : ${popularBoardList}" class="recipe-item">
               <div class="recipe-image">
                 <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
-                <a th:href="@{/board/1/{categoryNo}/{boardNo}(categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+                <a
+                  th:href="@{/board/1/{categoryNo}/{boardNo}(categoryNo=${categoryNo}, boardNo=${board.boardNo})}+'?popular=1'">
                   <!-- 레시피 게시판 썸네일 -->
                   <img
                     th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -52,7 +53,7 @@
               <!-- 글 제목 클릭 시 이동 -->
               <div class="recipe-info">
                 <h3 class="recipe-title">
-                  <a th:href="@{/board/1/{categoryNo}/{boardNo}(categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                  <a th:href="@{/board/1/{categoryNo}/{boardNo}(categoryNo=${categoryNo}, boardNo=${board.boardNo})}+'?popular=1'"
                     th:text="${board.boardTitle}">레몬 팬케이크
                   </a>
                   <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>

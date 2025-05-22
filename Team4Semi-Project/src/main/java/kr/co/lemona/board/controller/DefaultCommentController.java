@@ -1,6 +1,8 @@
 package kr.co.lemona.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,25 +16,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.lemona.board.model.dto.DefaultComment;
 import kr.co.lemona.board.model.service.DefaultCommentService;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("defaultComments")
+@Slf4j
 public class DefaultCommentController {
 	
 	@Autowired
 	private DefaultCommentService service;
 
-	/** 댓글 목록 조회
+	/** 댓글 목록, 수 조회
 	 * @param boardNo
 	 * @return
 	 * @author 민장
 	 */
 	@GetMapping("")
-	public List<DefaultComment> select(@RequestParam("boardNo") int boardNo) {
-		// List<Comment> (Java의 자료형 List)
-		// HttpMessageConvert가
-		// List -> JSON(문자열) 로 변환해서 응답 -> JS
-		return service.select(boardNo);
+	public Map<String, Object> select(@RequestParam("boardNo") int boardNo) {
+	    List<DefaultComment> commentList = service.select(boardNo);
+	    int commentCount = service.count(boardNo);
+
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("commentList", commentList);
+	    map.put("commentCount", commentCount);
+
+	    return map;
 	}
 	
 	/** 댓글/답글 등록

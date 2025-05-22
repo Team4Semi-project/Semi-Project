@@ -109,7 +109,9 @@ public class MainController {
 				if ("t".equals(searchKey) || "tc".equals(searchKey)) {
 					String title = board.getBoardTitle();
 					if (title != null && title.contains(query)) {
-						board.setBoardTitle(title.replace(query, "<span style='background-color:yellow; font-weight:bold; color:red;'>" + query + "</span>"));
+						board.setBoardTitle(title.replace(query,
+								"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+										+ "</span>"));
 					}
 				}
 
@@ -117,8 +119,9 @@ public class MainController {
 				if ("w".equals(searchKey)) {
 					String nickname = board.getMemberNickname();
 					if (nickname != null && nickname.contains(query)) {
-						board.setMemberNickname(
-								nickname.replace(query, "<span style='background-color:yellow; font-weight:bold; color:red;'>" + query + "</span>"));
+						board.setMemberNickname(nickname.replace(query,
+								"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+										+ "</span>"));
 					}
 				}
 

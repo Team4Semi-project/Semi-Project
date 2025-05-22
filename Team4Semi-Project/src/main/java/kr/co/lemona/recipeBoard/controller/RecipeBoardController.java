@@ -106,7 +106,7 @@ public class RecipeBoardController {
 		} else { // 검색인 경우 --> paramMap
 
 			// 검색 서비스 호출
-			// map = service.serchList(paramMap, cp);
+			 map = service.serchPopularList(paramMap, cp);
 		}
 
 		// model 에 반환 받은 값 등록

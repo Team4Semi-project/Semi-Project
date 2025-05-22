@@ -124,5 +124,21 @@ public interface RecipeBoardMapper {
 	 * @return
 	 * @author jihyun
 	 */
-	List<Board> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+	List<RecipeBoard> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	/** 검색 결과 인기 게시글 갯수 조회
+	 * @param paramMap
+	 * @return
+	 * @author jihyun
+	 */
+	int getPopularSearchCount(Map<String, Object> paramMap);
+
+	/** 검색 결과 인기 게시글 목록 조회
+	 * @param paramMap
+	 * @param rowBounds
+	 * @author jihyun
+	 * @return
+	 */
+	List<RecipeBoard> selectPopularSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
 }

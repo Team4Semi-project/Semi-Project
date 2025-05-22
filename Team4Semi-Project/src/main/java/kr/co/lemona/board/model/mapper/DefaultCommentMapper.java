@@ -8,7 +8,14 @@ import kr.co.lemona.board.model.dto.DefaultComment;
 
 @Mapper
 public interface DefaultCommentMapper {
-
+	
+	/** 댓글 수 조회
+	 * @param boardNo
+	 * @return
+	 * @author 민장
+	 */
+	int count(int boardNo);
+	
 	/** 댓글 목록 조회
 	 * @param boardNo
 	 * @return

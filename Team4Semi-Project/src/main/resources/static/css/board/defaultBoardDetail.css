@@ -1,3 +1,9 @@
+/* 밑줄 제거, hover 시 파란색 말고 노란색으로 */
+a:hover {
+  text-decoration: none;
+  color: var(--lemon);
+}
+
 /* 전체 섹션 스타일 */
 .board-detail {
   width: 100%;
@@ -103,9 +109,10 @@
 }
 
 /* 버튼 스타일 */
-.updateBtn, .deleteBtn {
-  background-color: #FFD43B;
-  color: #333;
+.updateBtn,
+.deleteBtn {
+  background-color: var(--lemon);
+  color: var(--darkgray);
   border: none;
   border-radius: 20px;
   padding: 8px 20px;
@@ -114,8 +121,9 @@
   transition: background-color 0.2s;
 }
 
-.updateBtn:hover, .deleteBtn:hover {
-  background-color: #FFC107;
+.updateBtn:hover,
+.deleteBtn:hover {
+  background-color: var(--yellow);
 }
 
 /* 내용 컨테이너 */
@@ -140,9 +148,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #333;
+  color: var(--darkgray);
   text-decoration: none;
-  background-color: #FFD43B;
+  background-color: var(--lemon);
   padding: 10px 0;
   border-radius: 5px;
   font-weight: 500;
@@ -152,7 +160,7 @@
 }
 
 .container-page a:hover {
-  background-color: #FFC107;
+  background-color: var(--yellow);
 }
 
 .container-page .material-symbols-outlined {
@@ -165,24 +173,24 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .text-right {
     margin-top: 10px;
   }
-  
+
   .container-member {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .member {
     margin-bottom: 10px;
   }
-  
+
   .container-page {
     flex-wrap: wrap;
   }
-  
+
   .container-page a {
     margin: 5px 0;
   }

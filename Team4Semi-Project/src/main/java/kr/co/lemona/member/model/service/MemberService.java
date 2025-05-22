@@ -22,13 +22,13 @@ public interface MemberService {
 	 * 닉네임 중복검사 서비스
 	 * @param memberNickname
 	 * @return
-	 */
+	 */	
 	int checkNickname(String memberNickname);
+	int checkId(String memberId); // 추가
 
 	/**
 	 * 회원 가입 서비스
 	 * @param inputMember
-	 * @param memberAddress
 	 * @return
 	 */
 	int register(Member inputMember);

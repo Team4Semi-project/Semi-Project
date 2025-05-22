@@ -1,4 +1,15 @@
 <div id="commentArea">
+  <!-- 댓글 수 -->
+  <div class="comment-count-area">
+    <p><span>댓글</span><span th:text="${board.commentCount}">0</span></p>
+  </div>
+  <!-- 댓글 작성 부분 -->
+  <div class="comment-write-area">
+    <textarea id="commentContent" placeholder="댓글을 입력하세요"></textarea>
+    <button id="addComment">
+      댓글 쓰기
+    </button>
+  </div>
   <!-- 댓글 목록 -->
   <div class="comment-list-area">
 
@@ -25,6 +36,15 @@
 
           <p class="comment-content" th:text="*{commentContent}">댓글 내용</p>
 
+          <!-- 좋아요 하트 -->
+          <span class="like-area">
+            <!-- 좋아요 누른적이 있으면 fa-solid, 없으면 fa-regular 클래스 추가 -->
+            <i class="fa-lemon" id="commentLike" th:classappend="*{likeCheck == 1} ? fa-solid : fa-regular"></i>
+
+            <!-- 좋아요 개수 -->
+            <span th:text="*{likeCount}">0</span>
+          </span>
+
           <!-- 버튼 영역 -->
           <div class="comment-btn-area">
             <button th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
@@ -37,20 +57,7 @@
 
           </div>
         </th:block>
-
       </li>
-
     </ul>
   </div>
-
-
-  <!-- 댓글 작성 부분 -->
-  <div class="comment-write-area">
-    <textarea id="commentContent"></textarea>
-    <button id="addComment">
-      댓글<br>
-      등록
-    </button>
-  </div>
-
 </div>

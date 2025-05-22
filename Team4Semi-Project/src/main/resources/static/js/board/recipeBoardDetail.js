@@ -2,7 +2,7 @@ const goToListBtn = document.querySelector("#goToListBtn"); // 목록으로 버�
 const goToPrev = document.querySelector("#goToPrev"); // 이전글 버튼
 const goToNext = document.querySelector("#goToNext"); // 다음글 버튼
 const urlParams = new URLSearchParams(window.location.search);
-const popular = urlParams.get('popular');
+//const popular = urlParams.get('popular');
 
 // 목록으로 버튼 클릭 시 이동
 goToListBtn.addEventListener("click", () => {
@@ -10,10 +10,10 @@ goToListBtn.addEventListener("click", () => {
   const segments = pathname.split("/"); // ['', 'board', '1', '0', '3']
   const categoryNo = segments[3]; // 인덱스 3에 있는 게 바로 '0'
 
-  if(popular == 1){
+/*   if(popular == 1){
     location.href = `/board/1/popular`;
     return;
-  }
+  } */
   location.href = `/board/1/${categoryNo}`;
 });
 
@@ -29,10 +29,10 @@ goToPrev.addEventListener("click", () => {
   const pathname = window.location.pathname;
   const segments = pathname.split("/");
   const categoryNo = segments[3];
-  if(popular == 1){
+/*   if(popular == 1){
     location.href = `/board/1/${categoryNo}/${prevBoardNo}?popular=1`;
     return;
-  }
+  } */
   location.href = `/board/1/${categoryNo}/${prevBoardNo}`;
 });
 
@@ -49,9 +49,9 @@ goToNext.addEventListener("click", () => {
   const pathname = window.location.pathname;
   const segments = pathname.split("/");
   const categoryNo = segments[3];
-  if(popular == 1){
+/*   if(popular == 1){
     location.href = `/board/1/${categoryNo}/${nextBoardNo}?popular=1`;
     return;
-  }
+  } */
   location.href = `/board/1/${categoryNo}/${nextBoardNo}`;
 });

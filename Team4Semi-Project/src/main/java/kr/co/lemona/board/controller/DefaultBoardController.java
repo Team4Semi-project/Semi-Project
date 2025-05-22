@@ -57,7 +57,7 @@ public class DefaultBoardController {
 		} else { // 검색인 경우 --> paramMap
 			 		
 			// boardCode를 paramMap에 추가
-			paramMap.put("boardCode", boardCode);
+			// paramMap.put("boardCode", boardCode);
 			
 			// 검색 서비스 호출
 			 map = service.serchList(paramMap, cp);

@@ -136,6 +136,5 @@ public class MainController {
 		model.addAttribute("key", key);
 
 		return "common/search";
-	}
-
+  }
 }

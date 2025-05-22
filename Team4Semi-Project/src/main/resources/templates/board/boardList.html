@@ -60,7 +60,9 @@
             <div class="recipe-image">
               <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <a th:if="${board.boardCode == 1}"
-                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+                th:href="${popular != 0} ?
+                  @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '?popular=' + ${popular} :
+                  @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -78,7 +80,9 @@
             <div class="recipe-info">
               <h3 class="recipe-title">
                 <a th:if="${board.boardCode == 1}"
-                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                  th:href="${popular != 0} ?
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '?popular=' + ${popular} :
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
 
@@ -133,7 +137,9 @@
               <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <!-- 레시피 게시판 썸네일 -->
               <a th:if="${board.boardCode == 1}"
-                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+                th:href="${popular != 0} ?
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '?popular=' + ${popular} :
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -151,7 +157,9 @@
             <div class="recipe-details">
               <h3 class="recipe-title">
                 <a th:if="${board.boardCode == 1}"
-                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                  th:href="${popular != 0} ?
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '?popular=' + ${popular} :
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
 

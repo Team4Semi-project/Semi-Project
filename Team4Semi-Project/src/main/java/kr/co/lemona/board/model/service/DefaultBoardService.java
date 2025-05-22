@@ -20,4 +20,12 @@ public interface DefaultBoardService {
 	 */
 	Board selectOne(Map<String, Integer> map);
 
+	/** 해당 게시판 검색 조회 서비스
+	 * @param paramMap
+	 * @param cp
+	 * @return
+	 * @author jihyun
+	 */
+	Map<String, Object> serchList(Map<String, Object> paramMap, int cp);
+
 }

@@ -49,14 +49,15 @@ public class RecipeBoardController {
 	 * @param model      : 서버에서 나온 결과값 화면단으로 전달
 	 * @param paramMap   : 검색기능 개발 시 사용 예정
 	 * @return
-	 * @author miae
+	 * @author miae, jihyun(search)
 	 */
 	@GetMapping("{categoryNo:[0-9]+}")
 	public String selectRecipeBoardList(@PathVariable("categoryNo") int categoryNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			@RequestParam(value = "popular", required = false, defaultValue = "0") int popular,
 			Model model,
-			@RequestParam Map<String, Object> paramMap) {
+			@RequestParam Map<String, Object> paramMap,
+      @RequestParam(value = "key", required = false) String key) {
 
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
@@ -68,8 +69,8 @@ public class RecipeBoardController {
 
 		} else { // 검색인 경우 --> paramMap
 
-			// 검색 서비스 호출, 추후 개발 예정
-			// map = service.serchList(paramMap, cp);
+			// 검색 서비스 호출
+			 map = service.serchList(paramMap, cp);
 
 		}
 
@@ -77,6 +78,7 @@ public class RecipeBoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("recipeBoardList"));
 		model.addAttribute("categoryNo", categoryNo);
+		model.addAttribute("key", key);
 		model.addAttribute("popular", popular);
 
 		return "board/boardList";
@@ -107,7 +109,7 @@ public class RecipeBoardController {
 		} else { // 검색인 경우 --> paramMap
 
 			// 검색 서비스 호출
-			// map = service.serchList(paramMap, cp);
+			 map = service.serchPopularList(paramMap, cp);
 		}
 
 		// model 에 반환 받은 값 등록

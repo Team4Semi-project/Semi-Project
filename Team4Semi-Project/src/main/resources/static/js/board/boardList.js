@@ -70,6 +70,65 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+
+  /* 좋아요 기능 */
+  const likes = document.querySelectorAll(".likes");
+  if (likes) {
+
+    // obj 객체를 서버로 비동기 요청
+    likes.forEach((likesBtn) => {
+      likesBtn.addEventListener("click", function (e) {
+        const loginMemberNo = this.dataset.loginMemberNo;
+        const boardCode = this.dataset.boardCode;
+        let likeCheck = Number(this.dataset.likeCheck);
+
+        if (!loginMemberNo || loginMemberNo === "null") {
+          alert("로그인 후 이용해주세요");
+          return;
+        }
+
+        const obj = {
+          memberNo: loginMemberNo,
+          boardCode: boardCode,
+          likeCheck: likeCheck
+        };
+
+        fetch(`board/${boardCode}/like`, {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(obj)
+        })
+          .then(resp => resp.text())
+          .then(count => {
+            if (count == -1) {
+              console.log("좋아요 처리 실패");
+              return;
+            }
+
+            // 상태 토글 및 반영
+            likeCheck = likeCheck === 0 ? 1 : 0;
+            this.dataset.likeCheck = likeCheck;
+
+            // 아이콘 클래스 토글
+            const icon = this.querySelector("i");
+            if (icon) {
+              icon.classList.toggle("fa-regular");
+              icon.classList.toggle("fa-solid");
+            }
+
+            // 좋아요 수 변경
+            const countSpan = this.querySelector("span");
+            if (countSpan) {
+              countSpan.innerText = count;
+            }
+          })
+          .catch(err => {
+            console.error("좋아요 처리 중 오류:", err);
+          });
+      });
+    });
+  };
+
   /**
    * 뷰 토글 (아젠다/코지) 초기화
    */

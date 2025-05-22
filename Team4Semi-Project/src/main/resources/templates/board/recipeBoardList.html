@@ -66,12 +66,6 @@
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
                   alt="레시피 이미지" />
               </a>
-              <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
-                <!-- 자유 또는 공지 게시판 썸네일 -->
-                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
-                  alt="게시판 이미지">
-              </a>
             </div>
 
             <!-- 글 제목 클릭 시 이동 -->
@@ -79,11 +73,6 @@
               <h3 class="recipe-title">
                 <a th:if="${board.boardCode == 1}"
                   th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
-                  th:text="${board.boardTitle}">레몬 팬케이크
-                </a>
-
-                <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                  th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -141,12 +130,6 @@
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
                   alt="레시피 이미지" />
               </a>
-              <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
-                <!-- 자유 또는 공지 게시판 썸네일 -->
-                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
-                  alt="게시판 이미지">
-              </a>
             </div>
 
             <!-- 글 제목 클릭 시 이동-->
@@ -154,11 +137,6 @@
               <h3 class="recipe-title">
                 <a th:if="${board.boardCode == 1}"
                   th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
-                  th:text="${board.boardTitle}">레몬 팬케이크
-                </a>
-
-                <a th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                  th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>

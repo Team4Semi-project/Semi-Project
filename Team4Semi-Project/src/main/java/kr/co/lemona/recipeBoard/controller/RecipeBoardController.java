@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Controller
 @Slf4j
-@RequestMapping("board/1")
+@RequestMapping("board/{boardCode:1}")
 public class RecipeBoardController {
 
 	@Autowired
@@ -53,8 +53,9 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("{categoryNo:[0-9]+}")
 	public String selectRecipeBoardList(@PathVariable("categoryNo") int categoryNo,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
-			@RequestParam Map<String, Object> paramMap) {
+										@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
+										Model model,
+										@RequestParam Map<String, Object> paramMap) {
 
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
@@ -75,8 +76,9 @@ public class RecipeBoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("recipeBoardList"));
 		model.addAttribute("categoryNo", categoryNo);
+		model.addAttribute("boardCode", 1);
 
-		return "board/boardList";
+		return "board/recipeBoardList";
 	}
 
 	/**
@@ -90,8 +92,9 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("popular")
 	public String selectPopularBoardList(@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			@RequestParam(value = "categoryNo", required = false, defaultValue = "0") int categoryNo,
-			Model model, @RequestParam Map<String, Object> paramMap) {
+										 @RequestParam(value = "categoryNo", required = false, defaultValue = "0") int categoryNo,
+										 Model model, 
+										 @RequestParam Map<String, Object> paramMap) {
 
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
@@ -111,8 +114,9 @@ public class RecipeBoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("categoryNo", categoryNo);
+		model.addAttribute("boardCode", 1);
 
-		return "board/boardList";
+		return "board/recipeBoardList";
 	}
 
 	/** 레시피 게시글 상세 조회

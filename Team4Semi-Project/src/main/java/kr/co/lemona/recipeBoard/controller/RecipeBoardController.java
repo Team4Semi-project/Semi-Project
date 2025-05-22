@@ -79,7 +79,7 @@ public class RecipeBoardController {
 		model.addAttribute("categoryNo", categoryNo);
 		model.addAttribute("popular", popular);
 
-		return "board/boardList";
+		return "board/recipeBoardList";
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class RecipeBoardController {
 		model.addAttribute("categoryNo", categoryNo);
 		model.addAttribute("popular", 1);
 
-		return "board/boardList";
+		return "board/recipeBoardList";
 	}
 
 	/** 레시피 게시글 상세 조회

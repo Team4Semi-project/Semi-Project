@@ -17,11 +17,15 @@
   flex-basis: 7%;
   height: 85px;
 
-  font-weight: bold;
   border: 0;
+  border-radius: 5px;
   background-color: var(--lemon);
-  color: white;
+  color: var(--darkgray);
   cursor: pointer;
+}
+
+.comment-write-area>button:hover {
+  background-color: var(--yellow);
 }
 
 #commentList {
@@ -46,7 +50,7 @@
 
 .comment-date {
   font-size: 0.8em;
-  color: #aaa;
+  color: var(--gray);
 }
 
 
@@ -61,18 +65,16 @@
   height: 30px;
   margin-left: 10px;
 
-  font-weight: bold;
   border: 0;
+  border-radius: 5px;
   background-color: var(--lemon);
-  color: white;
+  color: var(--darkgray);
 
   cursor: pointer;
 }
 
 .comment-btn-area button:hover {
-  background-color: white;
-  color: var(--lemon);
-  border: 2px solid var(--lemon);
+  background-color: var(--yellow);
 }
 
 .update-textarea {

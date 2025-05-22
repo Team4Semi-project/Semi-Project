@@ -6,34 +6,41 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 
 @Mapper
 public interface MainMapper {
 
-	/** 메인페이지 레시피 최신 게시글 조회
+	/** 메인화면에 출력될 최근 4개 레시피 게시글 조회
+	 * @param categoryNo
 	 * @return
+	 * @author jihyun
 	 */
-	List<RecipeBoard> mainRecipeBoardList(RowBounds rowBounds);
-
-	/** 삭제되지 않은 게시글 갯수 조회
-	 * @return
-	 */
-	int getListCount();
-
-	/** 검색조건에 맞으면서 삭제되지 않은 게시글 갯수 조회
-	 * @param paramMap
-	 * @return
-	 */
-	int getSearchCount(Map<String, Object> paramMap);
-
-	int getRecipeBoardListCount(int categoryNo);
-
-	List<RecipeBoard> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
+	List<RecipeBoard> selectRecipeBoardList(int categoryNo);
 
 	int getPopularListCount();
 
-	List<RecipeBoard> selectPopularBoardList(RowBounds rowBounds);
+	/** 메인화면에 출력될 최근 4개 인기 게시글 조회
+	 * @return
+	 * @author jihyun
+	 */
+	List<RecipeBoard> selectPopularBoardList();
+
+	/** 검색 조건에 맞으면서 삭제되지 않은 게시글 갯수 조회
+	 * @param paramMap
+	 * @return
+	 * @author jihyun
+	 */
+	int getSearchCount(Map<String, Object> paramMap);
+	
+	/** 전체 게시판 통합 검색 조회 결과
+	 * @param paramMap
+	 * @param rowBounds
+	 * @return
+	 * @author jihyun
+	 */
+	List<Board> searchAllBoardList(Map<String, Object> paramMap, RowBounds rowBounds);
 
 	
 

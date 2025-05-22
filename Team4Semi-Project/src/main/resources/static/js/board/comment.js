@@ -1,8 +1,15 @@
-const fetchUrl = boardCode == 1 ? "/recipeComments" : "/defaultComments";
+// 레시피, 자유 나누기
+let fetchUrl;
+if (boardCode === 1) {
+  fetchUrl = "/recipeComments";
+} else if (boardCode === 2 || boardCode === 3) {
+  fetchUrl = "/defaultComments";
+}
+
 
 // 댓글 목록 조회
 const selectCommentList = () => {
-  fetch("/defaultComments?boardNo=" + boardNo / `${fetchUrl}?boardNo=${boardNo}`) // GET 방식 요청
+  fetch(`${fetchUrl}?boardNo=${boardNo}`) // GET 방식 요청
     .then(resp => resp.json())
     .then(commentList => {
       // console.log(commentList);
@@ -144,7 +151,7 @@ addComment.addEventListener("click", () => {
     "boardNo": boardNo
   };
 
-  fetch("/comments", {
+  fetch(`${fetchUrl}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
@@ -156,7 +163,7 @@ addComment.addEventListener("click", () => {
 
         alert("댓글이 등록 되었습니다");
         selectCommentList(); // 댓글 목록 다시 조회해서 화면에 출력
-        commentContent.value == ""; // 작성한 댓글 내용 지우기
+        commentContent.value = ""; // 작성한 댓글 내용 지우기
 
       } else {
         alert("댓글 등록 실패");
@@ -238,7 +245,7 @@ const insertChildComment = (parentCommentNo, btn) => {
     "parentCommentNo": parentCommentNo      // 어느 댓글에 달린 답글인가?
   };
 
-  fetch("/comments", {
+  fetch(`${fetchUrl}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
@@ -267,7 +274,7 @@ const deleteComment = (commentNo) => {
   // 취소 선택 시
   if (!confirm("삭제 하시겠습니까?")) return;
 
-  fetch("/comments", {
+  fetch(`${fetchUrl}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(commentNo)
@@ -384,7 +391,7 @@ const updateComment = (commentNo, btn) => {
     "commentContent": textarea.value
   }
 
-  fetch("/comments", {
+  fetch(`${fetchUrl}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)

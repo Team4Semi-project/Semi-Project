@@ -59,8 +59,10 @@
           <div th:each="board : ${boardList}" class="recipe-item">
             <div class="recipe-image">
               <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
-              <a th:if="${board.boardCode == 1}"
-                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+              <a
+                th:href="${popular != 0} ?
+                  @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '?popular=' + ${popular} :
+                  @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -71,19 +73,19 @@
             <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:if="${board.boardCode == 1}"
-                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                <a th:href="${popular != 0} ?
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '?popular=' + ${popular} :
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
 
               <!-- 레시피 게시판 해시태그 -->
-              <div th:if="${board.boardCode == 1}" class="recipe-tags">
+              <div class="recipe-tags">
                 <span class="tag" th:each="tag : ${board.hashTagList}" th:text="${tag}">
                   #레몬
                 </span>
-
               </div>
               <div class="recipe-meta">
                 <div class="author-info">
@@ -123,8 +125,10 @@
             <div class="recipe-image">
               <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <!-- 레시피 게시판 썸네일 -->
-              <a th:if="${board.boardCode == 1}"
-                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+              <a
+                th:href="${popular != 0} ?
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '?popular=' + ${popular} :
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -135,8 +139,9 @@
             <!-- 글 제목 클릭 시 이동-->
             <div class="recipe-details">
               <h3 class="recipe-title">
-                <a th:if="${board.boardCode == 1}"
-                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                <a th:href="${popular != 0} ?
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '?popular=' + ${popular} :
+                      @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -146,7 +151,7 @@
                 <span class="recipe-author" th:text="${board.memberNickname}">김아가 님</span>
               </div>
               <!-- 레시피 게시판 해시태그 -->
-              <div th:if="${board.boardCode == 1}" class="recipe-tags">
+              <div class="recipe-tags">
                 <span class="tag" th:each="tag : ${board.hashTagList}" th:text="${tag}">#레몬</span>
               </div>
               <div class="recipe-stats">
@@ -166,18 +171,17 @@
         <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
           <!-- 첫 페이지로 이동 -->
           <li>
-            <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1)}">&lt;&lt;</a>
+            <a th:href="@{/board/1(cp=1)}">&lt;&lt;</a>
           </li>
           <!-- << : /board/1?cp=1 -->
 
           <!-- 이전 목록 마지막 번호로 이동 -->
           <li>
-            <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage})}">&lt;</a>
+            <a th:href="@{/board/1(cp=*{prevPage})}">&lt;</a>
           </li>
           <!-- < : /board/1?cp=10 -->
 
           <!-- 특정 페이지로 이동 -->
-
           <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
             <!-- 현재 보고있는 페이지 -->
             <li th:if="${i} == *{currentPage}">
@@ -186,18 +190,18 @@
 
             <!-- 보고있지 않은 페이지 -->
             <li th:unless="${i} == *{currentPage} or ${i} == 0">
-              <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})}" th:text="${i}">이동할 페이지</a>
+              <a th:href="@{/board/1(cp=${i})}" th:text="${i}">이동할 페이지</a>
             </li>
           </th:block>
 
           <!-- 다음 목록 시작 번호로 이동 -->
           <li>
-            <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage})}">&gt;</a>
+            <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage})}">&gt;</a>
           </li>
 
           <!-- 끝 페이지로 이동 -->
           <li>
-            <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage})}">&gt;&gt;</a>
+            <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage})}">&gt;&gt;</a>
           </li>
         </ul>
 
@@ -206,13 +210,13 @@
           <!-- 첫 페이지로 이동 -->
           <li>
             <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a>
           </li>
 
           <!-- 이전 목록 마지막 번호로 이동 -->
           <li>
             <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a>
           </li>
 
           <!-- 특정 페이지로 이동 -->
@@ -224,7 +228,7 @@
 
             <!-- 보고있지 않은 페이지 -->
             <li th:unless="${i} == *{currentPage}">
-              <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i}, key=${param.key}, query=${param.query})}"
+              <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=${i}, key=${param.key}, query=${param.query})}"
                 th:text="${i}">이동할 페이지</a>
             </li>
           </th:block>
@@ -239,13 +243,13 @@
           <!-- 다음 목록 시작 번호로 이동 -->
           <li>
             <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a>
           </li>
 
           <!-- 끝 페이지로 이동 -->
           <li>
             <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a>
           </li>
         </ul>
       </div>

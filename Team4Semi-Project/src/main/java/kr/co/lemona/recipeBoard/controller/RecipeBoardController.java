@@ -49,13 +49,15 @@ public class RecipeBoardController {
 	 * @param model      : 서버에서 나온 결과값 화면단으로 전달
 	 * @param paramMap   : 검색기능 개발 시 사용 예정
 	 * @return
-	 * @author miae
+	 * @author miae, jihyun(search)
 	 */
 	@GetMapping("{categoryNo:[0-9]+}")
 	public String selectRecipeBoardList(@PathVariable("categoryNo") int categoryNo,
-										@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, 
-										Model model,
-										@RequestParam Map<String, Object> paramMap) {
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value = "popular", required = false, defaultValue = "0") int popular,
+			Model model,
+			@RequestParam Map<String, Object> paramMap,
+      @RequestParam(value = "key", required = false) String key) {
 
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
@@ -67,8 +69,8 @@ public class RecipeBoardController {
 
 		} else { // 검색인 경우 --> paramMap
 
-			// 검색 서비스 호출, 추후 개발 예정
-			// map = service.serchList(paramMap, cp);
+			// 검색 서비스 호출
+			 map = service.serchList(paramMap, cp);
 
 		}
 
@@ -76,7 +78,9 @@ public class RecipeBoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("recipeBoardList"));
 		model.addAttribute("categoryNo", categoryNo);
-		model.addAttribute("boardCode", 1);
+		model.addAttribute("key", key);
+		model.addAttribute("popular", popular);
+
 
 		return "board/recipeBoardList";
 	}
@@ -107,14 +111,14 @@ public class RecipeBoardController {
 		} else { // 검색인 경우 --> paramMap
 
 			// 검색 서비스 호출
-			// map = service.serchList(paramMap, cp);
+			 map = service.serchPopularList(paramMap, cp);
 		}
 
 		// model 에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("categoryNo", categoryNo);
-		model.addAttribute("boardCode", 1);
+		model.addAttribute("popular", 1);
 
 		return "board/recipeBoardList";
 	}
@@ -131,6 +135,7 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("{categoryNo:[0-9]+}/{boardNo:[0-9]+}")
 	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("categoryNo") int categoryNo,
+									@RequestParam(value = "popular", required = false, defaultValue = "0") int popular,
 									Model model,
 									@SessionAttribute(value="loginMember", required = false) Member loginMember,
 									RedirectAttributes ra,
@@ -144,6 +149,7 @@ public class RecipeBoardController {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardNo", boardNo);
 		map.put("categoryNo", categoryNo);
+		map.put("popular", popular);
 		
 		// 로그인 상태인 경우에만 memberNo 추가
 		if(loginMember != null) {

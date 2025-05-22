@@ -256,27 +256,15 @@ main {
 
 .likes i {
   font-size: 20px;
-}
-
-.likeUnChecked {
-  border: 1px solid var(--yellow);
-  background-color: var(--white);
-}
-
-.likeUnChecked span {
-  color: var(--darkgray);
-}
-
-.likeUnChecked i {
   color: var(--yellow);
 }
 
-.likeChecked {
-  background-color: var(--yellow);
+.likes {
+  border: 1px solid var(--yellow);
 }
 
-.likeChecked span, .likeChecked i {
-  color: var(--white);
+.likes span {
+  color: var(--darkgray);
 }
 
 .likes span, .views span {

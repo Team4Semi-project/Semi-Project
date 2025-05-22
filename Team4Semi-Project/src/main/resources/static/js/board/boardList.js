@@ -79,8 +79,11 @@ document.addEventListener("DOMContentLoaded", function () {
     likes.forEach((likesBtn) => {
       likesBtn.addEventListener("click", function (e) {
         const loginMemberNo = this.dataset.loginMemberNo;
+        const boardNo = this.dataset.boardNo;
         const boardCode = this.dataset.boardCode;
-        let likeCheck = Number(this.dataset.likeCheck);
+        let likeCK = Number(this.dataset.likeCheck);
+
+        console.log(loginMemberNo, boardNo, likeCK, `${boardCode}`);
 
         if (!loginMemberNo || loginMemberNo === "null") {
           alert("로그인 후 이용해주세요");
@@ -89,25 +92,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const obj = {
           memberNo: loginMemberNo,
-          boardCode: boardCode,
-          likeCheck: likeCheck
+          boardNo: boardNo,
+          likeCheck: likeCK
         };
 
-        fetch(`board/${boardCode}/like`, {
+        fetch(`/board/${boardCode}/like`, {
           method: "post",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(obj)
         })
           .then(resp => resp.text())
           .then(count => {
+
             if (count == -1) {
               console.log("좋아요 처리 실패");
               return;
             }
 
             // 상태 토글 및 반영
-            likeCheck = likeCheck === 0 ? 1 : 0;
-            this.dataset.likeCheck = likeCheck;
+            likeCK = likeCK === 0 ? 1 : 0;
+            this.dataset.likeCheck = likeCK;
 
             // 아이콘 클래스 토글
             const icon = this.querySelector("i");

@@ -97,9 +97,10 @@
               </div>
               <div class="recipe-stats">
                 <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
-                  th:data-board-code="${board.boardCode}" th:data-like-check="${board.likeCheck}"
+                  th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                  th:data-like-check="${board.likeCheck}"
                   th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
-                  <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-regular : fa-solid"></i>
+                  <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
                   <span th:text="${board.likeCount}">28</span>
                 </button>
                 <div class="views">

@@ -28,7 +28,7 @@ public interface RecipeBoardMapper {
 	 * @return
 	 * @author miae
 	 */
-	List<RecipeBoard> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
+	List<RecipeBoard> selectRecipeBoardList(Map<String, Integer> inputMap, RowBounds rowBounds);
 
 	/** 레시피 보드에서 삭제되지 않은 인기 게시글 수를 조회
 	 * @return
@@ -41,7 +41,7 @@ public interface RecipeBoardMapper {
 	 * @return
 	 * @author 재호
 	 */
-	List<RecipeBoard> selectPopularBoardList(RowBounds rowBounds);
+	List<RecipeBoard> selectPopularBoardList(Map<String, Integer> inputMap, RowBounds rowBounds);
 
 	/** 레시피 게시글 상세 조회
 	 * @param map
@@ -140,5 +140,26 @@ public interface RecipeBoardMapper {
 	 * @return
 	 */
 	List<RecipeBoard> selectPopularSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	/** 좋아요 해제
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int decreaseLikeCount(Map<String, Integer> map);
+
+	/** 좋아요 체크
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int increaseLikeCount(Map<String, Integer> map);
+
+	/** 좋아요 갯수 갱신
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int updateLikeCount(Map<String, Integer> map);
 
 }

@@ -18,6 +18,14 @@ public class DefaultCommentServiceImpl implements DefaultCommentService{
 	@Autowired
 	private DefaultCommentMapper mapper;
 	
+	/** 댓글 수 조회 서비스
+	 *	@author 민장
+	 */
+	@Override
+	public int count(int boardNo) {
+		return mapper.count(boardNo);
+	}
+	
 	/** 댓글 목록 조회 서비스
 	 * @author 민장
 	 */

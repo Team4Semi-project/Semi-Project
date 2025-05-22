@@ -11,14 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('password');
     const loginError = document.getElementById('loginError');
     const loginBtn = document.getElementById('loginBtn');
-    const signupBtn = document.getElementById('signupBtn');
+    const registerBtn = document.getElementById('registerBtn');
     const findIdBtn = document.getElementById('findIdBtn');
     const findPwBtn = document.getElementById('findPwBtn');
     
-    console.log("로그인 버튼:", loginBtn);
-    console.log("회원가입 버튼:", signupBtn);
-    console.log("아이디 찾기 버튼:", findIdBtn);
-    console.log("비밀번호 찾기 버튼:", findPwBtn);
+
 
     // Login form submission
     loginForm.addEventListener('submit', function(e) {
@@ -47,15 +44,10 @@ document.addEventListener('DOMContentLoaded', function() {
         loginError.style.display = 'none';
     });
 
-    // Button event handlers
-    signupBtn.addEventListener('click', function() {
-        window.location.href = 'register.html';
-    });
-
     // 회원가입 버튼 이벤트
-    signupBtn.addEventListener('click', function() {
+    registerBtn.addEventListener('click', function() {
         console.log("회원가입 버튼 클릭됨!");
-        window.location.href = 'register.html';
+        window.location.href = 'register';
     });
 
     // 아이디 찾기 버튼 이벤트

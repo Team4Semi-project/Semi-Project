@@ -9,7 +9,10 @@
 		SELECT COUNT(*)
 		FROM "RECIPE_BOARD"
 		WHERE BOARD_DEL_FL='N'
-		AND CATEGORY_NO = #{categoryNo}
+		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+		<if test="categoryNo != 0">
+			AND CATEGORY_NO = #{categoryNo}
+		</if>
 	</select>
 	
 	<!-- 특정 카테고리의 레시피 게시판 지정된 페이지 목록 조회 -->
@@ -38,6 +41,12 @@
 		
 		    S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		    S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		    
+		    <!-- 해시태그 -->
+		    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		    FROM BOARD_HASHTAG BH
+		    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
 		
 		<![CDATA[
 		    CASE
@@ -55,6 +64,7 @@
 		FROM RECIPE_BOARD B
 		JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
 		
+		<!-- 썸네일 -->
 		LEFT JOIN (
 		    SELECT BOARD_NO, IMG_PATH, IMG_RENAME
 		    FROM BOARD_STEP
@@ -111,7 +121,12 @@
 		
 		    S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		    S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
-		
+
+		    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		    FROM BOARD_HASHTAG BH
+		    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
+
 		    (SELECT COUNT(*) 
 		     FROM RECIPE_COMMENT C 
 		     WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
@@ -157,11 +172,13 @@
 		WHERE B.BOARD_DEL_FL = 'N'
 		  AND B.READ_COUNT >= 20
 		  AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
-		
-		ORDER BY 
-		    (SELECT COUNT(*) 
-		     FROM RECIPE_BOARD_LIKE L 
-		     WHERE L.BOARD_NO = B.BOARD_NO) DESC
+
+	    ORDER BY 
+    (SELECT COUNT(*) 
+     FROM RECIPE_BOARD_LIKE L 
+     WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+     B.READ_COUNT DESC,
+     B.BOARD_NO DESC
 		]]>
 	</select>
 	
@@ -204,7 +221,12 @@
 		(SELECT COUNT(*)
 		FROM RECIPE_BOARD_LIKE 
 		WHERE BOARD_NO = #{boardNo}
-		AND MEMBER_NO = #{memberNo}) LIKE_CHECK
+		AND MEMBER_NO = #{memberNo}) LIKE_CHECK,
+		
+		(SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+	    FROM BOARD_HASHTAG BH
+	    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+	    WHERE BH.BOARD_NO = RECIPE_BOARD.BOARD_NO) AS TAGS
 		
 		FROM "RECIPE_BOARD"
 		JOIN "MEMBER" USING(MEMBER_NO)
@@ -381,7 +403,7 @@
 			</when>
 			<when test='key == "tc"'>
 				AND (
-				B.BOARD_TITLE LIKE '%' || #{query} || '%'
+				B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
 				OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
 				)
 			</when>
@@ -470,7 +492,7 @@
 			</when>
 			<when test='key == "tc"'>
 				AND (
-				B.BOARD_TITLE LIKE '%' || #{query} || '%'
+				B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
 				OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
 				)
 			</when>

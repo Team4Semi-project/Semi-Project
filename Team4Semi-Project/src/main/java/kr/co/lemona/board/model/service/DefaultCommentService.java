@@ -6,6 +6,13 @@ import kr.co.lemona.board.model.dto.DefaultComment;
 
 public interface DefaultCommentService {
 
+	/** 댓글 수 조회
+	 * @param boardNo
+	 * @return
+	 * @author 민장
+	 */
+	int count(int boardNo);
+	
 	/** 댓글목록 조회 서비스
 	 * @param boardNo
 	 * @return
@@ -33,4 +40,5 @@ public interface DefaultCommentService {
 	 * @author 민장
 	 */
 	int update(DefaultComment comment);
+
 }

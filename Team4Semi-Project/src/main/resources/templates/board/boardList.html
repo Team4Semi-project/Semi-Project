@@ -1,41 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">레모나</title>
+    <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
+    <th:block th:replace="~{common/common}"></th:block>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">레모나</title>
-  <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
-  <th:block th:replace="~{common/common}"></th:block>
-</head>
+  <body>
+    <!-- 헤더 프래그먼트 -->
+    <header th:replace="~{common/header :: header}"></header>
 
-<body>
-  <!-- 헤더 프래그먼트 -->
-  <header th:replace="~{common/header :: header}"></header>
+    <!-- 네비게이션 프래그먼트 -->
+    <nav th:replace="~{common/navigation :: navigation}"></nav>
 
-  <!-- 네비게이션 프래그먼트 -->
-  <nav th:replace="~{common/navigation :: navigation}"></nav>
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="main-list">
+      <section class="recipe-section">
+        <!-- 섹션 헤더 -->
+        <div class="section-header">
+          <h2 class="section-title">게시글 목록</h2>
 
-  <!-- 메인 콘텐츠 영역 -->
-  <main class="main-list">
-    <section class="recipe-section">
-      <!-- 섹션 헤더 -->
-      <div class="section-header">
-        <h2 class="section-title">게시글 목록</h2>
+          <div class="options-container">
+            <div class="view-options">
+              <div class="background-indicator"></div>
 
-        <div class="options-container">
-          <div class="view-options">
-            <div class="background-indicator"></div>
+              <button class="view-toggle agenda" data-view="agenda">
+                <span class="material-symbols-outlined"> view_agenda </span>
+              </button>
+              <button class="view-toggle cozy active" data-view="cozy">
+                <span class="material-symbols-outlined"> view_cozy </span>
+              </button>
+            </div>
 
-            <button class="view-toggle agenda" data-view="agenda">
-              <span class="material-symbols-outlined"> view_agenda </span>
-            </button>
-            <button class="view-toggle cozy active" data-view="cozy">
-              <span class="material-symbols-outlined"> view_cozy </span>
-            </button>
-          </div>
-
-          <div class="sort-options">
+            <div class="sort-options">
             <select class="sort-select" id="sortSelect">
               <option value="latest">최신순</option>
               <option value="oldest">오래된순</option>
@@ -44,21 +46,14 @@
             </select>
             <i class="fas fa-caret-down"></i>
           </div>
+          </div>
         </div>
-      </div>
-
-      <!-- 게시글 컨테이너 (Cozy View) -->
-      <div class="recipe-container cozy-view" id="cozy">
-        <!-- 게시글 없을 때 -->
-        <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
-          <p>등록된 게시글이 없습니다.</p>
-        </div>
-
         <!-- 게시글 목록 -->
         <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
           <div th:each="board : ${boardList}" class="recipe-item">
             <div class="recipe-image">
-              <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
+              <a
+                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
                 <!-- 자유 또는 공지 게시판 썸네일 -->
                 <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
                   alt="게시판 이미지">
@@ -68,7 +63,7 @@
             <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -79,37 +74,53 @@
                     alt="프로필 이미지" class="author-image" />
                   <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
                 </div>
-                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
-              </div>
-              <div class="recipe-stats">
-                <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
-                  th:data-board-code="${board.boardCode}" th:data-like-check="${board.likeCheck}"
-                  th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
-                  <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-regular : fa-solid"></i>
-                  <span th:text="${board.likeCount}">28</span>
-                </button>
-                <div class="views">
-                  <i class="fas fa-eye"></i>
-                  <span th:text="${board.readCount}">36</span>
+                
+                <div class="recipe-meta">
+                  <div class="author-info">
+                    <img
+                      th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                      alt="프로필 이미지"
+                      class="author-image"
+                    />
+                    <span class="author-name" th:text="${board.memberNickname}"
+                      >장미애 님</span
+                    >
+                  </div>
+                  <span class="recipe-date" th:text="${board.boardCreateDate}"
+                    >2025-05-09</span
+                  >
+                </div>
+                <div class="recipe-stats">
+                  <div class="likes">
+                    <i class="fas fa-heart"></i>
+                    <span th:text="${board.likeCount}">28</span>
+                  </div>
+                  <div class="views">
+                    <i class="fas fa-eye"></i>
+                    <span th:text="${board.readCount}">36</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 게시글 컨테이너 (Agenda View) -->
-      <div class="recipe-container agenda-view" id="agenda" style="display: none">
-        <!-- 게시글 없을 때 -->
-        <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
-          <p>등록된 게시글이 없습니다.</p>
-        </div>
-
+        <!-- 게시글 컨테이너 (Agenda View) -->
+        <div
+          class="recipe-container agenda-view"
+          id="agenda"
+          style="display: none"
+        >
+          <!-- 게시글 없을 때 -->
+          <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
+            <p>등록된 게시글이 없습니다.</p>
+          </div>
         <!-- 게시글 목록 -->
         <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list">
           <div th:each="board : ${boardList}" class="recipe-item">
             <div class="recipe-image">
-              <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
+              <a
+                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
                 <!-- 자유 또는 공지 게시판 썸네일 -->
                 <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
                   alt="게시판 이미지">
@@ -119,7 +130,7 @@
             <!-- 글 제목 클릭 시 이동-->
             <div class="recipe-details">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -133,104 +144,105 @@
                   <span th:text="${board.likeCount}">28</span></span>
                 <span class="views"><i class="fas fa-eye"></i>
                   <span th:text="${board.readCount}">36</span></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+				  </div>
+				              </div>
+				            </div>
+				          </div>
+				        </div>
 
-      <!-- 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
-      <div class="pagination-area">
-        <!-- 일반 목록 조회 (검색 X )-->
-        <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
-          <!-- 첫 페이지로 이동 -->
-          <li>
-            <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1)}">&lt;&lt;</a>
-          </li>
-          <!-- << : /board/1?cp=1 -->
+		<!-- 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
+		<div class="pagination-area">
+		  <!-- 일반 목록 조회 (검색 X )-->
+		  <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
+		    <!-- 첫 페이지로 이동 -->
+		    <li>
+		      <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1)}">&lt;&lt;</a>
+		    </li>
+		    <!-- << : /board/1?cp=1 -->
 
-          <!-- 이전 목록 마지막 번호로 이동 -->
-          <li>
-            <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage})}">&lt;</a>
-          </li>
-          <!-- < : /board/1?cp=10 -->
+		    <!-- 이전 목록 마지막 번호로 이동 -->
+		    <li>
+		      <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage})}">&lt;</a>
+		    </li>
+		    <!-- < : /board/1?cp=10 -->
 
-          <!-- 특정 페이지로 이동 -->
+		    <!-- 특정 페이지로 이동 -->
 
-          <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-            <!-- 현재 보고있는 페이지 -->
-            <li th:if="${i} == *{currentPage}">
-              <a class="current" th:text="${i}">현재페이지</a>
-            </li>
+		    <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+		      <!-- 현재 보고있는 페이지 -->
+		      <li th:if="${i} == *{currentPage}">
+		        <a class="current" th:text="${i}">현재페이지</a>
+		      </li>
 
-            <!-- 보고있지 않은 페이지 -->
-            <li th:unless="${i} == *{currentPage} or ${i} == 0">
-              <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})}" th:text="${i}">이동할 페이지</a>
-            </li>
-          </th:block>
+		      <!-- 보고있지 않은 페이지 -->
+		      <li th:unless="${i} == *{currentPage} or ${i} == 0">
+		        <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})}" th:text="${i}">이동할 페이지</a>
+		      </li>
+		    </th:block>
 
-          <!-- 다음 목록 시작 번호로 이동 -->
-          <li>
-            <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage})}">&gt;</a>
-          </li>
+		    <!-- 다음 목록 시작 번호로 이동 -->
+		    <li>
+		      <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage})}">&gt;</a>
+		    </li>
 
-          <!-- 끝 페이지로 이동 -->
-          <li>
-            <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage})}">&gt;&gt;</a>
-          </li>
-        </ul>
+		    <!-- 끝 페이지로 이동 -->
+		    <li>
+		      <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage})}">&gt;&gt;</a>
+		    </li>
+		  </ul>
 
-        <!-- 검색인 경우 -->
-        <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
-          <!-- 첫 페이지로 이동 -->
-          <li>
-            <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a>
-          </li>
+		  <!-- 검색인 경우 -->
+		  <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
+		    <!-- 첫 페이지로 이동 -->
+		    <li>
+		      <a
+		        th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a>
+		    </li>
 
-          <!-- 이전 목록 마지막 번호로 이동 -->
-          <li>
-            <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a>
-          </li>
+		    <!-- 이전 목록 마지막 번호로 이동 -->
+		    <li>
+		      <a
+		        th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a>
+		    </li>
 
-          <!-- 특정 페이지로 이동 -->
-          <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
-            <!-- 현재 보고있는 페이지 -->
-            <li th:if="${i} == *{currentPage}">
-              <a class="current" th:text="${i}">현재페이지</a>
-            </li>
+		    <!-- 특정 페이지로 이동 -->
+		    <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+		      <!-- 현재 보고있는 페이지 -->
+		      <li th:if="${i} == *{currentPage}">
+		        <a class="current" th:text="${i}">현재페이지</a>
+		      </li>
 
-            <!-- 보고있지 않은 페이지 -->
-            <li th:unless="${i} == *{currentPage}">
-              <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i}, key=${param.key}, query=${param.query})}"
-                th:text="${i}">이동할 페이지</a>
-            </li>
-          </th:block>
+		      <!-- 보고있지 않은 페이지 -->
+		      <li th:unless="${i} == *{currentPage}">
+		        <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i}, key=${param.key}, query=${param.query})}"
+		          th:text="${i}">이동할 페이지</a>
+		      </li>
+		    </th:block>
 
-          <!-- 일치하는 게시글이 없을 경우 -->
-          <th:block th:unless="*{startPage lt endPage}">
-            <li>
-              <a class="current">1</a>
-            </li>
-          </th:block>
+		    <!-- 일치하는 게시글이 없을 경우 -->
+		    <th:block th:unless="*{startPage lt endPage}">
+		      <li>
+		        <a class="current">1</a>
+		      </li>
+		    </th:block>
 
-          <!-- 다음 목록 시작 번호로 이동 -->
-          <li>
-            <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a>
-          </li>
+		    <!-- 다음 목록 시작 번호로 이동 -->
+		    <li>
+		      <a
+		        th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a>
+		    </li>
 
-          <!-- 끝 페이지로 이동 -->
-          <li>
-            <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a>
-          </li>
-        </ul>
-      </div>
+		    <!-- 끝 페이지로 이동 -->
+		    <li>
+		      <a
+		        th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a>
+		    </li>
+		  </ul>
+		</div>
+
 
       <!-- 검색 컨테이너 -->
-      <!-- <div class="search-container">
+      <div class="search-container">
         <div class="search-dropdown">
           <button class="dropdown-button">
             <span>제목 + 내용</span>
@@ -250,50 +262,17 @@
             <span class="material-symbols-outlined"> search </span>
           </button>
         </div>
-      </div> -->
-
-      <!-- 검색창 -->
-			<form th:action="@{{boardCode}(boardCode=${boardCode})}" method="get" id="boardSearch">
-  <div class="select-container">
-    <select name="key" id="searchKey">
-  <option value="t" th:selected="${key == 't'}">제목</option>
-  <option value="c" th:selected="${key == 'c'}">내용</option>
-  <option value="tc" th:selected="${key == 'tc'}">제목+내용</option>
-  <option value="w" th:selected="${key == 'w'}">작성자</option>
-  <option value="h" th:selected="${key == 'h'}">해시태그</option>
-</select>
-
-    <div class="select-box">
-      <span id="selectBoxText">제목</span>
-      <span class="arrow"></span>
-    </div>
-  </div>
-
-      <input type="text" name="queryb" id="searchQuery" placeholder="내용을 입력하세요." th:value="${param.queryb}">
-
-      <button type="submit" class="search-button">
-        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <path
-            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
-        </svg>
-      </button>
-			</form>
-      
-
-
-
-
-
+      </div>
     </section>
   </main>
 
-  <!-- 푸터 프래그먼트 -->
-  <footer th:replace="~{common/footer :: footer}"></footer>
+    <!-- 푸터 프래그먼트 -->
+    <footer th:replace="~{common/footer :: footer}"></footer>
 
-  <!-- 공통 스크립트 -->
-  <script th:src="@{/js/board/boardList.js}"></script>
-  <script layout:fragment="script"></script>
-  <th:block th:replace="~{common/header :: search-header-js}"></th:block>
-</body>
+    <!-- 공통 스크립트 -->
+    <th:block th:replace="~{common/header :: search-header-js}"></th:block>
+    <script th:src="@{/js/board/boardList.js}"></script>
+    <script layout:fragment="script"></script>
 
+  </body>
 </html>

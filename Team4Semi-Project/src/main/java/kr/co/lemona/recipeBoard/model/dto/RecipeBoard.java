@@ -45,5 +45,6 @@ public class RecipeBoard {
 	private List<DefaultComment> commentList;
 	
 	// 게시글에 포함된 해쉬태그
+	private String tags;
 	private List<String> hashTagList;
 }

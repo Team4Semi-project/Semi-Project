@@ -57,7 +57,7 @@ public class RecipeBoardController {
 			@RequestParam(value = "popular", required = false, defaultValue = "0") int popular, Model model,
 			@RequestParam Map<String, Object> paramMap, @RequestParam(value = "key", required = false) String key,
 			@SessionAttribute(value="loginMember", required = false) Member loginMember) {
-		
+    
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
 		
@@ -88,7 +88,6 @@ public class RecipeBoardController {
 		model.addAttribute("boardList", map.get("recipeBoardList"));
 		model.addAttribute("categoryNo", categoryNo);
 		model.addAttribute("key", key);
-		model.addAttribute("popular", popular);
 
 		return "board/recipeBoardList";
 	}
@@ -100,7 +99,7 @@ public class RecipeBoardController {
 	 * @param model
 	 * @param paramMap
 	 * @return
-	 * @author 재호
+	 * @author 재호 miae(글목록 이동)
 	 */
 	@GetMapping("popular")
 	public String selectPopularBoardList(@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
@@ -137,16 +136,14 @@ public class RecipeBoardController {
 		// model 에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
-		model.addAttribute("categoryNo", categoryNo);
-		model.addAttribute("popular", 1);
+		model.addAttribute("categoryNo", "popular");
 
 		return "board/recipeBoardList";
 	}
 
-	/**
-	 * 레시피 게시글 상세 조회
-	 * 
-	 * @param boardNo     : 게시글 번호
+	/** 레시피 게시글 상세 조회
+	 * @param boardNo : 게시글 번호
+	 * @param category : categoryNo 또는 "popular" 들어올 수 있음. 
 	 * @param model
 	 * @param loginMember : 현재 로그인한 사용자가 있을 경우 사용
 	 * @param ra
@@ -155,21 +152,33 @@ public class RecipeBoardController {
 	 * @return
 	 * @author miae
 	 */
-	@GetMapping("{categoryNo:[0-9]+}/{boardNo:[0-9]+}")
-	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("categoryNo") int categoryNo,
-			@RequestParam(value = "popular", required = false, defaultValue = "0") int popular, Model model,
-			@SessionAttribute(value = "loginMember", required = false) Member loginMember, RedirectAttributes ra,
-			HttpServletRequest req, // 요청에 담긴 쿠기 얻어오기
-			HttpServletResponse resp // 새로운 쿠기 만들어서 응답하기
-	) {
-
+	@GetMapping("{category}/{boardNo:[0-9]+}")
+	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("category") String category,
+									Model model,
+									@SessionAttribute(value="loginMember", required = false) Member loginMember,
+									RedirectAttributes ra,
+									HttpServletRequest req,		// 요청에 담긴 쿠기 얻어오기
+									HttpServletResponse resp 	// 새로운 쿠기 만들어서 응답하기
+									) {
+		
 		// 게시글 상세 조회 서비스 호출
-
+		
+		
 		// 1) Map 으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
+		
+		// caterogy에 인기글(popular) 이 들어올 경우 categoryNo를 0으로 하고
+		// 그렇지 않을 경우에는 int형으로 변환 후 categoryNo값 넘겨줌
+		if(!category.equals("popular")) {
+			int categoryNo = 0;
+			categoryNo = Integer.parseInt(category);
+			map.put("categoryNo", categoryNo);
+		} else {
+			map.put("popular", 1);
+			map.put("categoryNo", 0);
+		}
 		map.put("boardNo", boardNo);
-		map.put("categoryNo", categoryNo);
-		map.put("popular", popular);
+		// categoryNo 자리에 들어오는 값 확인
 
 		// 로그인 상태인 경우에만 memberNo 추가
 		if (loginMember != null) {
@@ -182,8 +191,8 @@ public class RecipeBoardController {
 		String path = null;
 
 		// 조회 결과가 없는 경우
-		if (recipeMap == null) {
-			path = "redirect:/board/1/" + categoryNo; // 목록 재요청
+		if(recipeMap == null) {
+			path = "redirect:/board/1/" + category; // 목록 재요청
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
 
 		} else {
@@ -213,7 +222,6 @@ public class RecipeBoardController {
 							c = temp;
 							break;
 						}
-
 					}
 				}
 				int result = 0; // 조회수 증가 결과를 저장할 변수
@@ -234,7 +242,6 @@ public class RecipeBoardController {
 						c.setValue(c.getValue() + "[" + boardNo + "]");
 						result = service.updateReadCount(boardNo);
 					}
-
 				}
 
 				// 조회 수 증가 성공 / 조회 성공 시

@@ -83,4 +83,9 @@ public class MemberServiceImpl implements MemberService {
 
 	}
 
+	@Override
+	public int checkId(String memberId) {
+		return 0;
+	}
+
 }

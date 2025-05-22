@@ -11,8 +11,12 @@ if (boardCode === 1) {
 const selectCommentList = () => {
   fetch(`${fetchUrl}?boardNo=${boardNo}`) // GET 방식 요청
     .then(resp => resp.json())
-    .then(commentList => {
-      // console.log(commentList);
+    .then(data => {
+      const commentList = data.commentList;
+      const commentCount = data.commentCount;
+
+      // 댓글 수 출력
+      document.querySelector(".comment-count-area p span:nth-child(2)").innerText = commentCount;
 
       // 화면에 존재하는 기존 댓글 목록 삭제 후 
       // 조회된 commentList를 이용해서 새로운 댓글 목록 출력

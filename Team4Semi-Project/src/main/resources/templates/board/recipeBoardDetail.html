@@ -74,7 +74,11 @@
                 </div>
             </div>
         </div>
-
+        <!-- 레시피 게시판 해시태그 -->
+        <div class="recipe-tags">
+            <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}"
+                style="cursor: pointer;">#레몬</span>
+        </div>
         <!-- Navigation buttons -->
         <div class="navigation" id="naviBtn"
             th:attr="data-prev-board-no=${prevBoardNo}, data-next-board-no=${nextBoardNo}">
@@ -92,6 +96,16 @@
     <footer th:replace="~{common/footer :: footer}"></footer>
     <th:block th:replace="~{common/header :: search-header-js}"></th:block>
     <script th:src="@{/js/board/recipeBoardDetail.js}"></script>
+    <script>
+        document.querySelectorAll(".tag").forEach((tag) => {
+            tag.addEventListener("click", () => {
+                const keyword = tag.textContent.replace("#", ""); // # 제거
+                window.location.href = `/search?key=h&querys=${encodeURIComponent(
+                    keyword
+                )}`;
+            });
+        });
+    </script>
 </body>
 
 </html>

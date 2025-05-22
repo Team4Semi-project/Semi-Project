@@ -141,10 +141,12 @@
 		      WHERE L.BOARD_NO = B.BOARD_NO
 		  ) >= 0
 		
-		ORDER BY 
-		    (SELECT COUNT(*) 
-		     FROM "RECIPE_BOARD_LIKE" L 
-		     WHERE L.BOARD_NO = B.BOARD_NO) DESC
+	    ORDER BY 
+    (SELECT COUNT(*) 
+     FROM RECIPE_BOARD_LIKE L 
+     WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+     B.READ_COUNT DESC,
+     B.BOARD_NO DESC
 		  
 		]]>
 	</select>
@@ -365,7 +367,7 @@
 			</when>
 			<when test='key == "tc"'>
 				AND (
-				B.BOARD_TITLE LIKE '%' || #{query} || '%'
+				B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
 				OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
 				)
 			</when>
@@ -449,7 +451,7 @@
 			</when>
 			<when test='key == "tc"'>
 				AND (
-				B.BOARD_TITLE LIKE '%' || #{query} || '%'
+				B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
 				OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
 				)
 			</when>

@@ -57,9 +57,11 @@
 	      ) >= 0
 	    
 	    ORDER BY 
-	        (SELECT COUNT(*) 
-	         FROM "RECIPE_BOARD_LIKE" L 
-	         WHERE L.BOARD_NO = B.BOARD_NO) DESC
+    (SELECT COUNT(*) 
+     FROM RECIPE_BOARD_LIKE L 
+     WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+     B.READ_COUNT DESC,
+     B.BOARD_NO DESC
 	)
 	WHERE ROWNUM <= 4
 	]]>

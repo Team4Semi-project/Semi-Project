@@ -3,9 +3,11 @@ package kr.co.lemona.recipeBoard.model.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,17 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
 
+		// 해시태그 받아오는 부분
+		for (RecipeBoard recipeBoard : recipeBoardList) {
+			String tags = recipeBoard.getTags();
+			if(tags != null && !tags.isEmpty()) {
+				 List<String> tagList = Arrays.stream(tags.split(","))
+                         .map(String::trim)
+                         .collect(Collectors.toList());
+				 recipeBoard.setHashTagList(tagList);
+			}
+		}
+		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
 
@@ -91,6 +104,17 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		List<RecipeBoard> PopularBoardList = mapper.selectPopularBoardList(rowBounds);
 
+		// 해시태그 받아오는 부분
+		for (RecipeBoard recipeBoard : PopularBoardList) {
+			String tags = recipeBoard.getTags();
+			if(tags != null && !tags.isEmpty()) {
+				 List<String> tagList = Arrays.stream(tags.split(","))
+                         .map(String::trim)
+                         .collect(Collectors.toList());
+				 recipeBoard.setHashTagList(tagList);
+			}
+		}
+				
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
 
@@ -120,7 +144,16 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		boardStepList = mapper.selectBoardStepList(map.get("boardNo"));
 		RecipeBoard recipeBoard = mapper.selectOneRecipe(map);
-
+		
+		// 해시태그 받아오는 부분
+		String tags = recipeBoard.getTags();
+		if(tags != null && !tags.isEmpty()) {
+			 List<String> tagList = Arrays.stream(tags.split(","))
+                     .map(String::trim)
+                     .collect(Collectors.toList());
+			 recipeBoard.setHashTagList(tagList);
+		}
+		
 		// 이전 글
 		RecipeBoard prevBoard = mapper.selectPrevBoard(map);
 

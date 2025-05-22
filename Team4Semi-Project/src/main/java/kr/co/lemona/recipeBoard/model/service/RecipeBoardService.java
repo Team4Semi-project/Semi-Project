@@ -14,14 +14,14 @@ public interface RecipeBoardService {
 	 * @param cp : 현재 페이지
 	 * @return
 	 */
-	Map<String, Object> selectRecipeBoardList(int categoryNo, int cp);
+	Map<String, Object> selectRecipeBoardList(int categoryNo, Map<String, Integer> inputMap);
 
 	/** 인기 게시판 목록 조회 서비스
 	 * @param cp : 현재 페이지
 	 * @return
 	 * @author 재호
 	 */
-	Map<String, Object> selectPopularBoardList(int cp);
+	Map<String, Object> selectPopularBoardList(Map<String, Integer> inputMap);
 
 	/** 레시피 게시글 상세 조회
 	 * @param map
@@ -57,7 +57,7 @@ public interface RecipeBoardService {
 	 * @return
 	 * @author jihyun
 	 */
-	Map<String, Object> serchList(Map<String, Object> paramMap, int cp);
+	Map<String, Object> serchList(Map<String, Object> paramMap, Map<String, Integer> inputMap);
 
 	/** 인기 게시글 전용 검색 결과 조회
 	 * @param paramMap
@@ -66,5 +66,11 @@ public interface RecipeBoardService {
 	 * @author jihyunE
 	 */
 	Map<String, Object> serchPopularList(Map<String, Object> paramMap, int cp);
+
+	/** 좋아요 기능
+	 * @return
+	 * @author 재호
+	 */
+	int updateLikeCount(Map<String, Integer> map);
 
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.common.util.Utility;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
@@ -39,7 +40,10 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	private String folderPath;
 	// C:/lemonaFiles/recipeBoard/
 
-	// 레시피 게시판 목록 조회
+	/** 레시피 게시판 목록 조회
+	 * 
+	 * @author miae
+	 */
 	@Override
 	public Map<String, Object> selectRecipeBoardList(int categoryNo, int cp) {
 
@@ -55,10 +59,6 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(categoryNo, rowBounds);
-
-		for (RecipeBoard recipeBoard : recipeBoardList) {
-			log.info("recipeBoard : " + recipeBoard.getBoardCode());
-		}
 
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
@@ -267,5 +267,83 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		
 		// 실패한 경우 -1 반환
 		return -1;
+	}
+
+	/** 레시피 게시판 전용 검색 결과 목록 조회
+	 * @author jihyun
+	 */
+	@Override
+	public Map<String, Object> serchList(Map<String, Object> paramMap, int cp) {
+		// paramMap (key, query, boardCode)
+
+		// 1. 지정된 게시판(boardCode)에서
+		// 검색 조건에 맞으면서
+		// 삭제되지 않은 게시글 수 조회
+
+		int listCount = mapper.getSearchCount(paramMap);
+
+		// 2. 1번의 결과 + cp를 이용해서
+		// Pagination 객체 생성
+		Pagination pagination = new Pagination(cp, listCount);
+
+		// 3. 특정 게시판의 지정된 페이지 목록 조회
+		int limit = pagination.getLimit(); // 10개씩 조회
+		int offset = (cp - 1) * limit; // cp : 현재 페이지
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		// mapper 메서드 호출 코드 수행
+		// -> Mapper 메서드 호출 시 전달할 수 있는 매개변수 1개
+		// -> 2개를 전달할 수 있는 경우가 있음
+		// RowBounds를 이용할 때
+		// 1번째 : sql에 전달할 파라미터
+		// 2번째 : RowBounds 객체
+		List<RecipeBoard> recipeBoardList = mapper.selectSearchList(paramMap, rowBounds);
+
+		// 4. 목록 조회 결과 + Paginaion 객체를 Map으로 묶음
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("pagination", pagination);
+		map.put("recipeBoardList", recipeBoardList);
+
+		return map;
+	}
+
+	/** 인기 게시판 전용 검색 결과 목록 조회
+	 * @author jihyun
+	 */
+	@Override
+	public Map<String, Object> serchPopularList(Map<String, Object> paramMap, int cp) {
+		// paramMap (key, query, boardCode)
+
+		// 1. 지정된 게시판(boardCode)에서
+		// 검색 조건에 맞으면서
+		// 삭제되지 않은 게시글 수 조회
+
+		int listCount = mapper.getPopularSearchCount(paramMap);
+
+		// 2. 1번의 결과 + cp를 이용해서
+		// Pagination 객체 생성
+		Pagination pagination = new Pagination(cp, listCount);
+
+		// 3. 특정 게시판의 지정된 페이지 목록 조회
+		int limit = pagination.getLimit(); // 10개씩 조회
+		int offset = (cp - 1) * limit; // cp : 현재 페이지
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		// mapper 메서드 호출 코드 수행
+		// -> Mapper 메서드 호출 시 전달할 수 있는 매개변수 1개
+		// -> 2개를 전달할 수 있는 경우가 있음
+		// RowBounds를 이용할 때
+		// 1번째 : sql에 전달할 파라미터
+		// 2번째 : RowBounds 객체
+		List<RecipeBoard> popularBoardList = mapper.selectPopularSearchList(paramMap, rowBounds);
+
+		// 4. 목록 조회 결과 + Paginaion 객체를 Map으로 묶음
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("pagination", pagination);
+		map.put("boardList", popularBoardList);
+
+		return map;
 	}
 }

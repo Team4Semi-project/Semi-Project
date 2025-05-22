@@ -32,4 +32,18 @@ public interface DefaultBoardMapper {
 	 * @author 민장
 	 */
 	Board selectOne(Map<String, Integer> map);
+
+	/** 해당 게시판 검색 결과 갯수 조회
+	 * @param paramMap
+	 * @return
+	 * @author jihyun
+	 */
+	int getSearchCount(Map<String, Object> paramMap);
+
+	/** 해당 게시판 검색 결과 목록 조회
+	 * @param paramMap
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Board> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 }

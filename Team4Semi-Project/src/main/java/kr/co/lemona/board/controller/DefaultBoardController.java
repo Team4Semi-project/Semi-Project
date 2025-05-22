@@ -35,14 +35,15 @@ public class DefaultBoardController {
 	 * @param paramMap
 	 * @param model
 	 * @return
-	 * @author 민장
+	 * @author 민장, 지현(검색기능)
 	 */
 	@GetMapping("")
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 								@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
 								@RequestParam Map<String, Object> paramMap,
 								Model model,
-								HttpServletRequest req) {
+								HttpServletRequest req,
+								@RequestParam(value = "key", required = false) String key) {
 		
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
@@ -58,7 +59,7 @@ public class DefaultBoardController {
 			// paramMap.put("boardCode", boardCode);
 			
 			// 검색 서비스 호출
-			// map = service.serchList(paramMap, cp);
+			 map = service.serchList(paramMap, cp);
 
 		}		
 		// --------------- 세션 구현 안돼서 테스트용 데이터 삽입 ---------------
@@ -76,6 +77,7 @@ public class DefaultBoardController {
 		// model 에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("key", key);
 
 		return "board/boardList";
 	}

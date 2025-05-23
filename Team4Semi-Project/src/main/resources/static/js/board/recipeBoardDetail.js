@@ -2,6 +2,7 @@ const goToListBtn = document.querySelector("#goToListBtn"); // 목록으로 버�
 const goToPrev = document.querySelector("#goToPrev"); // 이전글 버튼
 const goToNext = document.querySelector("#goToNext"); // 다음글 버튼
 const urlParams = new URLSearchParams(window.location.search);
+const cp = urlParams.get("cp") || 1;
 //const popular = urlParams.get('popular');
 
 // 목록으로 버튼 클릭 시 이동
@@ -14,7 +15,7 @@ goToListBtn.addEventListener("click", () => {
     location.href = `/board/1/popular`;
     return;
   } */
-  location.href = `/board/1/${categoryNo}`;
+  location.href = `/board/1/${categoryNo}?cp=${cp}`;
 });
 
 // 이전글 버튼
@@ -55,3 +56,23 @@ goToNext.addEventListener("click", () => {
   } */
   location.href = `/board/1/${categoryNo}/${nextBoardNo}`;
 });
+
+const deleteBtn = document.querySelector("#deleteBtn");
+// 삭제 버튼 존재 시
+if (deleteBtn != null) {
+
+  deleteBtn.addEventListener("click", () => {
+    if (!confirm("삭제하시겠습니까?")) {
+      return;
+    }
+
+    // 현재 : /board/1/2004?cp=1
+    // 목표 : /board/1/2004/delete?cp=1
+    const url = location.pathname + "/delete";
+    console.log(url);
+    const queryString = location.search; 
+
+    location.href = url + queryString;
+
+  });
+}

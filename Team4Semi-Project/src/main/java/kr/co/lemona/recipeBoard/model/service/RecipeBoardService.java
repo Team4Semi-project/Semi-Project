@@ -73,4 +73,10 @@ public interface RecipeBoardService {
 	 */
 	int updateLikeCount(Map<String, Integer> map);
 
+	/** 레시피 글 삭제
+	 * @param boardNo
+	 * @return
+	 */
+	int deleteRecipeBoard(int boardNo);
+
 }

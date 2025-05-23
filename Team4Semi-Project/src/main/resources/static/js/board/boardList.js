@@ -152,14 +152,9 @@ document.addEventListener("DOMContentLoaded", function () {
             cozy.style.display = "none";
             agenda.style.display = "block";
 
-            // AJAX로 아젠다 뷰 데이터 요청
-            //fetchAgendaView();
           } else {
             agenda.style.display = "none";
             cozy.style.display = "block";
-
-            // AJAX로 코지 뷰 데이터 요청
-            //fetchCozyView();
           }
         }
       });
@@ -201,57 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  /**
-   * 아젠다 뷰 데이터 가져오기
-   */
-  function fetchAgendaView() {
-    // 현재 URL 정보 가져오기
-    const url = new URL(window.location.href);
-
-    // 뷰 모드 파라미터 추가
-    url.searchParams.set("viewMode", "agenda");
-
-    // AJAX 요청
-    fetch(url.toString(), {
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-      },
-    })
-      .then((response) => response.text())
-      .then((html) => {
-        // 컨테이너 내용 교체
-        recipeContainer.innerHTML = html;
-      })
-      .catch((error) => {
-        console.error("아젠다 뷰 로딩 실패:", error);
-      });
-  }
-
-  /**
-   * 코지 뷰 데이터 가져오기
-   */
-  function fetchCozyView() {
-    // 현재 URL 정보 가져오기
-    const url = new URL(window.location.href);
-
-    // 뷰 모드 파라미터 추가
-    url.searchParams.set("viewMode", "cozy");
-
-    // AJAX 요청
-    fetch(url.toString(), {
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-      },
-    })
-      .then((response) => response.text())
-      .then((html) => {
-        // 컨테이너 내용 교체
-        recipeContainer.innerHTML = html;
-      })
-      .catch((error) => {
-        console.error("코지 뷰 로딩 실패:", error);
-      });
-  }
 
   /**
    * 드롭다운 초기화

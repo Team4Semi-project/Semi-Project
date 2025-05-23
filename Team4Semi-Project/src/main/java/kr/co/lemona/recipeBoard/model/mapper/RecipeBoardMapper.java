@@ -22,26 +22,26 @@ public interface RecipeBoardMapper {
 	 */
 	int getRecipeBoardListCount(int categoryNo);
 
-	/** 
+	/** 특정 카테고리의 레시피 게시판 지정된 페이지 목록 조회
 	 * @param categoryNo
 	 * @param rowBounds
 	 * @return
 	 * @author miae
 	 */
-	List<RecipeBoard> selectRecipeBoardList(Map<String, Integer> inputMap, RowBounds rowBounds);
+	List<RecipeBoard> selectRecipeBoardList(Map<String, Object> inputMap, RowBounds rowBounds);
 
 	/** 레시피 보드에서 삭제되지 않은 인기 게시글 수를 조회
 	 * @return
 	 * @author 재호
 	 */
 	int getPopularListCount();
-
+	
 	/** 인기 게시판 중 지정된 페이지 목록 조회
 	 * @param rowBounds
 	 * @return
 	 * @author 재호
 	 */
-	List<RecipeBoard> selectPopularBoardList(Map<String, Integer> inputMap, RowBounds rowBounds);
+	List<RecipeBoard> selectPopularBoardList(Map<String, Object> inputMap, RowBounds rowBounds);
 
 	/** 레시피 게시글 상세 조회
 	 * @param map
@@ -161,5 +161,17 @@ public interface RecipeBoardMapper {
 	 * @author 재호
 	 */
 	int updateLikeCount(Map<String, Integer> map);
+
+	/** 인기글 ON
+	 * @return
+	 * @author 재호
+	 */
+	int updatePopularStateToY();
+	
+	/** 인기글 OFF
+	 * @return
+	 * @author 재호
+	 */
+	int updatePopularStateToN();
 
 }

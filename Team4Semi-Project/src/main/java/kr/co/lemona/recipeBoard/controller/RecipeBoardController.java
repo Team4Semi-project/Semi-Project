@@ -51,36 +51,40 @@ public class RecipeBoardController {
 	 * @return
 	 * @author miae, jihyun(search)
 	 */
-	@GetMapping("{categoryNo:[0-9]+}")
-	public String selectRecipeBoardList(@PathVariable("categoryNo") int categoryNo,
+	@GetMapping("{categoryNo}")
+	public String selectRecipeBoardList(@PathVariable("categoryNo") String categoryNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			@RequestParam(value = "popular", required = false, defaultValue = "0") int popular, Model model,
-			@RequestParam Map<String, Object> paramMap, @RequestParam(value = "key", required = false) String key,
-			@SessionAttribute(value="loginMember", required = false) Member loginMember) {
+			@SessionAttribute(value="loginMember", required = false) Member loginMember,
+			Model model,
+			@RequestParam(value = "key", required = false) String key,
+			@RequestParam Map<String, Object> paramMap) {
     
-		// 조회 서비스 호출 후 결과 반환 받기.
-		Map<String, Object> map = null;
-		
-		// 로그인 정보와 cp를 받아서 넘기는 맵
-		Map<String, Integer> inputMap = new HashMap<>();
+		// 조회 대상의 정보를 담는 맵 객체
+		Map<String, Object> inputMap = new HashMap<>();
 		
 		// 로그인 중이라면 로그인 계정 정보 삽입
 		if(loginMember != null) {
 			inputMap.put("memberNo", loginMember.getMemberNo());
-			log.debug("loginMember : {}",loginMember.getMemberNo());
 		}
-		
 		inputMap.put("cp", cp);
+		inputMap.put("categoryNo", categoryNo);
+		
+		// 조회 서비스 호출 후 결과 반환 받기.
+		Map<String, Object> map = null;
 
 		if (paramMap.get("key") == null) { // 검색이 아닌 경우
 
 			// 게시글 목록 조회 서비스 호출
-			map = service.selectRecipeBoardList(categoryNo, inputMap);
+			map = service.selectRecipeBoardList(inputMap);
 
 		} else { // 검색인 경우 --> paramMap
 
 			// 검색 서비스 호출
-			map = service.serchList(paramMap, inputMap);
+			if(categoryNo.equals("poupular")) {
+				map = service.searchPopularList(paramMap, cp);
+			} else {				
+				map = service.searchList(paramMap, inputMap);
+			}
 		}
 
 		// model 에 반환 받은 값 등록
@@ -88,55 +92,6 @@ public class RecipeBoardController {
 		model.addAttribute("boardList", map.get("recipeBoardList"));
 		model.addAttribute("categoryNo", categoryNo);
 		model.addAttribute("key", key);
-
-		return "board/recipeBoardList";
-	}
-
-	/**
-	 * 인기 게시판 조회
-	 * 
-	 * @param cp
-	 * @param model
-	 * @param paramMap
-	 * @return
-	 * @author 재호 miae(글목록 이동)
-	 */
-	@GetMapping("popular")
-	public String selectPopularBoardList(@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			@RequestParam(value = "categoryNo", required = false, defaultValue = "0") int categoryNo, Model model,
-			@RequestParam Map<String, Object> paramMap,
-			@SessionAttribute(value="loginMember", required = false) Member loginMember) {
-
-		// 조회 서비스 호출 후 결과 반환 받기.
-		Map<String, Object> map = null;
-		
-		// 로그인 정보와 cp를 받아서 넘기는 맵
-		Map<String, Integer> inputMap = new HashMap<>();
-		
-		// 로그인 중이라면 로그인 계정 정보 삽입
-		if(loginMember != null) {
-			inputMap.put("memberNo", loginMember.getMemberNo());
-			paramMap.put("memberNo", loginMember.getMemberNo());
-			log.debug("loginMemberNo : {}",loginMember.getMemberNo());
-		}
-		
-		inputMap.put("cp", cp);
-
-		if (paramMap.get("key") == null) { // 검색이 아닌 경우
-
-			// 게시글 목록 조회 서비스 호출
-			map = service.selectPopularBoardList(inputMap);
-
-		} else { // 검색인 경우 --> paramMap
-
-			// 검색 서비스 호출
-			map = service.serchPopularList(paramMap, cp);
-		}
-
-		// model 에 반환 받은 값 등록
-		model.addAttribute("pagination", map.get("pagination"));
-		model.addAttribute("boardList", map.get("boardList"));
-		model.addAttribute("categoryNo", "popular");
 
 		return "board/recipeBoardList";
 	}

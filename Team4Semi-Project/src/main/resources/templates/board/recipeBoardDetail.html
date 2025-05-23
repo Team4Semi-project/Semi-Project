@@ -23,7 +23,10 @@
     <!-- Content starts from the big thumbnail image below write button -->
     <div class="content-container">
         <!-- 썸네일 이미지 띄워주기 -->
+        <div class="recipe-thumbnail" th:each="step : ${boardStepList}" th:if="${step.thumbnailCheck} == 'Y'">
 
+            <img th:src="@{${step.imgPath + step.imgRename}}" alt="썸네일 이미지" />
+        </div>
         <!-- Recipe header -->
         <div class="recipe-header">
             <div class="recipe-title" th:text="${board.boardTitle}">레몬 팁/후기</div>
@@ -54,7 +57,7 @@
             </div>
             <div class="action-buttons">
                 <button class="action-button">수정하기</button>
-                <button class="action-button">삭제하기</button>
+                <button class="action-button" id="deleteBtn">삭제하기</button>
             </div>
         </div>
 
@@ -74,10 +77,14 @@
                 </div>
             </div>
         </div>
-
+        <!-- 레시피 게시판 해시태그 -->
+        <div class="recipe-tags">
+            <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}"
+                style="cursor: pointer;">#레몬</span>
+        </div>
         <!-- Navigation buttons -->
         <div class="navigation" id="naviBtn"
-            th:attr="data-prev-board-no=${prevBoardNo}, data-next-board-no=${nextBoardNo}">
+            th:attr="data-prev-board-no=${prevBoardNo}, data-next-board-no=${nextBoardNo}, data-cp=${cp}">
             <a class="nav-button" id="goToPrev"><span>← 이전 글</span></a>
             <a class="nav-button" id="goToListBtn"><span>목록으로</span></a>
             <a class="nav-button" id="goToNext"><span>다음 글 →</span></a>
@@ -92,6 +99,16 @@
     <footer th:replace="~{common/footer :: footer}"></footer>
     <th:block th:replace="~{common/header :: search-header-js}"></th:block>
     <script th:src="@{/js/board/recipeBoardDetail.js}"></script>
+    <script>
+        document.querySelectorAll(".tag").forEach((tag) => {
+            tag.addEventListener("click", () => {
+                const keyword = tag.textContent.replace("#", ""); // # 제거
+                window.location.href = `/search?key=h&querys=${encodeURIComponent(
+                    keyword
+                )}`;
+            });
+        });
+    </script>
 </body>
 
 </html>

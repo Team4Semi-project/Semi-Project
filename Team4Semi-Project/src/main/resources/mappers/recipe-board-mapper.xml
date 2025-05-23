@@ -9,7 +9,10 @@
 		SELECT COUNT(*)
 		FROM "RECIPE_BOARD"
 		WHERE BOARD_DEL_FL='N'
-		AND CATEGORY_NO = #{categoryNo}
+		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+		<if test="categoryNo != 0">
+			AND CATEGORY_NO = #{categoryNo}
+		</if>
 	</select>
 	
 	<!-- 특정 카테고리의 레시피 게시판 지정된 페이지 목록 조회 -->
@@ -30,9 +33,20 @@
 		    (SELECT COUNT(*) 
 		     FROM RECIPE_BOARD_LIKE L
 		     WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+		     
+		    CASE 
+		        WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+		        ELSE 0
+		    END AS LIKE_CHECK,
 		
 		    S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		    S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		    
+		    <!-- 해시태그 -->
+		    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		    FROM BOARD_HASHTAG BH
+		    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
 		
 		<![CDATA[
 		    CASE
@@ -50,11 +64,18 @@
 		FROM RECIPE_BOARD B
 		JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
 		
+		<!-- 썸네일 -->
 		LEFT JOIN (
 		    SELECT BOARD_NO, IMG_PATH, IMG_RENAME
 		    FROM BOARD_STEP
 		    WHERE THUMBNAIL_CHECK = 'Y'
 		) S ON B.BOARD_NO = S.BOARD_NO
+		
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM RECIPE_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
 		
 		WHERE B.BOARD_DEL_FL = 'N'
 		
@@ -69,28 +90,15 @@
 	<!-- 인기 게시글 수 조회 -->
 	<!-- 재호 -->
 	<select id="getPopularListCount">
-		<![CDATA[
-		
 		SELECT COUNT(*)
-		FROM "RECIPE_BOARD" B
-		JOIN (
-		    SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
-		    FROM "RECIPE_BOARD_LIKE"
-		    GROUP BY BOARD_NO
-		    HAVING COUNT(*) >= 0) L
-		    ON B.BOARD_NO = L.BOARD_NO
-		WHERE B.BOARD_DEL_FL = 'N'
-		  AND B.READ_COUNT >= 20
-		  AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
-		  
-		]]>
+		FROM RECIPE_BOARD
+		WHERE POPULAR_CHECK = 'Y'
+		AND BOARD_DEL_FL = 'N'
 	</select>
 	
 	<!-- 인기 게시판 중 지정된 페이지 목록 조회 -->
 	<!-- 재호 -->
 	<select id="selectPopularBoardList">
-		<![CDATA[
-		
 		SELECT 
 		    B.BOARD_NO, 
 		    B.BOARD_TITLE, 
@@ -98,18 +106,29 @@
 		    B.BOARD_CODE,
 		    M.MEMBER_NICKNAME, 
 		    M.PROFILE_IMG,
-		    
+		
 		    S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		    S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
-		    
+		
+		    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		     FROM "BOARD_HASHTAG" BH
+		     JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		     WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
+		
 		    (SELECT COUNT(*) 
 		     FROM "RECIPE_COMMENT" C 
 		     WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
 		
 		    (SELECT COUNT(*) 
-		     FROM "RECIPE_BOARD_LIKE" L 
+		     FROM RECIPE_BOARD_LIKE L 
 		     WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
 		
+		    CASE 
+		        WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+		        ELSE 0
+		    END AS LIKE_CHECK,
+		    
+				<![CDATA[
 		    CASE
 		        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60
 		        THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
@@ -122,9 +141,11 @@
 		        
 		        ELSE TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
 		    END AS BOARD_CREATE_DATE
+		    		]]>
 		
-		FROM "RECIPE_BOARD" B
-		JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
+		FROM RECIPE_BOARD B
+		
+		JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
 		
 		LEFT JOIN (
 		    SELECT BOARD_NO, IMG_PATH, IMG_RENAME
@@ -132,21 +153,19 @@
 		    WHERE THUMBNAIL_CHECK = 'Y'
 		) S ON B.BOARD_NO = S.BOARD_NO
 		
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM RECIPE_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
+		
 		WHERE B.BOARD_DEL_FL = 'N'
-		  AND B.READ_COUNT >= 20
-		  AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
-		  AND (
-		      SELECT COUNT(*) 
-		      FROM "RECIPE_BOARD_LIKE" L 
-		      WHERE L.BOARD_NO = B.BOARD_NO
-		  ) >= 0
+		  AND B.POPULAR_CHECK = 'Y'
 		
 		ORDER BY 
-		    (SELECT COUNT(*) 
-		     FROM "RECIPE_BOARD_LIKE" L 
-		     WHERE L.BOARD_NO = B.BOARD_NO) DESC
-		  
-		]]>
+		  B.BOARD_CREATE_DATE DESC,
+		  B.READ_COUNT DESC,
+		  B.BOARD_NO DESC
 	</select>
 	
 	<!-- 레시피 게시글 상세 조회 -->
@@ -188,7 +207,12 @@
 		(SELECT COUNT(*)
 		FROM RECIPE_BOARD_LIKE 
 		WHERE BOARD_NO = #{boardNo}
-		AND MEMBER_NO = #{memberNo}) LIKE_CHECK
+		AND MEMBER_NO = #{memberNo}) LIKE_CHECK,
+		
+		(SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+	    FROM BOARD_HASHTAG BH
+	    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+	    WHERE BH.BOARD_NO = RECIPE_BOARD.BOARD_NO) AS TAGS
 		
 		FROM "RECIPE_BOARD"
 		JOIN "MEMBER" USING(MEMBER_NO)
@@ -211,6 +235,7 @@
 		SELECT *
 		FROM RECIPE_BOARD B
 		WHERE BOARD_NO &lt; ${boardNo}
+		AND BOARD_DEL_FL='N'
 		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
 		<if test="categoryNo != 0">
 			AND CATEGORY_NO = ${categoryNo}
@@ -233,6 +258,7 @@
 		SELECT *
 		FROM RECIPE_BOARD B
 		WHERE BOARD_NO &gt; ${boardNo}
+		AND BOARD_DEL_FL='N'
 		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
 		<if test="categoryNo != 0">
 			AND CATEGORY_NO = ${categoryNo}
@@ -333,5 +359,364 @@
 		SELECT READ_COUNT
 		FROM "RECIPE_BOARD"
 		WHERE BOARD_NO = #{boardNo} 
+	</select>
+	
+	<!-- 검색 조건이 맞는 게시글 수 조회 -->
+	<!-- 지현 -->
+ 	<select id="getSearchCount">
+		SELECT COUNT(*)
+		FROM "RECIPE_BOARD" B
+
+		<if test='key == "w"'>
+			JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
+		</if>
+
+		<if test='key == "c" or key == "tc"'>
+			LEFT JOIN (
+			SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO)
+			AS STEP_CONTENTS
+			FROM BOARD_STEP
+			GROUP BY BOARD_NO
+			) STEP ON B.BOARD_NO = STEP.BOARD_NO
+		</if>
+
+		WHERE B.BOARD_DEL_FL = 'N'
+
+		<choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+				OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND EXISTS (
+				SELECT 1
+				FROM BOARD_HASHTAG BH
+				JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+				WHERE BH.BOARD_NO = B.BOARD_NO
+				AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+				)
+			</when>
+		</choose>
+ 	</select>
+ 	
+ 	<!-- 검색 결과 목록 조회 -->
+ 	<!-- 지현 -->
+ 	<select id="selectSearchList">
+		SELECT
+		B.BOARD_NO,
+		B.BOARD_TITLE,
+		B.READ_COUNT,
+		M.MEMBER_NICKNAME,
+		B.BOARD_CODE,
+		M.PROFILE_IMG,
+
+		(SELECT COUNT(*) FROM RECIPE_COMMENT C WHERE C.BOARD_NO = B.BOARD_NO) AS
+		COMMENT_COUNT,
+		(SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) AS
+		LIKE_COUNT,
+		
+		(SELECT COUNT(*)
+		FROM "RECIPE_BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+		AND MEMBER_NO = #{memberNo}) LIKE_CHECK,
+
+		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+
+		B.BOARD_CREATE_DATE AS RAW_DATE,
+
+    <![CDATA[
+    CASE
+        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN 
+            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN 
+            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN 
+            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+        ELSE 
+            TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+    END
+    ]]>
+		AS BOARD_CREATE_DATE,
+
+		'RECIPE' AS BOARD_TYPE
+
+		FROM RECIPE_BOARD B
+
+		JOIN MEMBER M ON (B.MEMBER_NO = M.MEMBER_NO)
+
+		LEFT JOIN (
+		SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+		FROM BOARD_STEP
+		WHERE THUMBNAIL_CHECK = 'Y'
+		) S ON (B.BOARD_NO = S.BOARD_NO)
+
+		LEFT JOIN (
+		SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO)
+		AS STEP_CONTENTS
+		FROM BOARD_STEP
+		GROUP BY BOARD_NO
+		) STEP ON (B.BOARD_NO = STEP.BOARD_NO)
+
+		WHERE B.BOARD_DEL_FL = 'N'
+
+		<choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+				OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND EXISTS (
+				SELECT 1
+				FROM BOARD_HASHTAG BH
+				JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+				WHERE BH.BOARD_NO = B.BOARD_NO
+				AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+				)
+			</when>
+		</choose>
+		
+		ORDER BY BOARD_NO DESC
 	</select>	
+	
+	<!-- 검색 조건이 맞는 인기 게시글 수 조회 -->
+	<!-- 지현 -->
+ 	<select id="getPopularSearchCount">
+		SELECT COUNT(*)
+		FROM "RECIPE_BOARD" B
+
+		<if test='key == "w"'>
+			JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
+		</if>
+
+		<if test='key == "c" or key == "tc"'>
+			LEFT JOIN (
+			SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO)
+			AS STEP_CONTENTS
+			FROM BOARD_STEP
+			GROUP BY BOARD_NO
+			) STEP ON B.BOARD_NO = STEP.BOARD_NO
+		</if>
+
+		WHERE B.BOARD_DEL_FL = 'N'
+		AND B.READ_COUNT >= 20
+		AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) &lt;= 1
+
+		<choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{query} || '%'
+				OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND EXISTS (
+				SELECT 1
+				FROM BOARD_HASHTAG BH
+				JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+				WHERE BH.BOARD_NO = B.BOARD_NO
+				AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+				)
+			</when>
+		</choose>
+ 	</select>
+ 	
+ 	<!-- 검색 결과 인기 게시글 목록 조회 -->
+ 	<!-- 지현 -->
+ 	<select id="selectPopularSearchList">
+		SELECT
+		B.BOARD_NO,
+		B.BOARD_TITLE,
+		B.READ_COUNT,
+		M.MEMBER_NICKNAME,
+		B.BOARD_CODE,
+		M.PROFILE_IMG,
+
+		(SELECT COUNT(*) FROM RECIPE_COMMENT C WHERE C.BOARD_NO = B.BOARD_NO) AS
+		COMMENT_COUNT,
+		(SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) AS
+		LIKE_COUNT,
+		
+		(SELECT COUNT(*)
+		FROM "RECIPE_BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+		AND MEMBER_NO = #{memberNo}) LIKE_CHECK,
+
+		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+
+		B.BOARD_CREATE_DATE AS RAW_DATE,
+
+    <![CDATA[
+    CASE
+        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN 
+            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN 
+            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN 
+            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+        ELSE 
+            TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+    END
+    ]]>
+		AS BOARD_CREATE_DATE,
+
+		'RECIPE' AS BOARD_TYPE
+
+		FROM RECIPE_BOARD B
+
+		JOIN MEMBER M ON (B.MEMBER_NO = M.MEMBER_NO)
+
+		LEFT JOIN (
+		SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+		FROM BOARD_STEP
+		WHERE THUMBNAIL_CHECK = 'Y'
+		) S ON (B.BOARD_NO = S.BOARD_NO)
+
+		LEFT JOIN (
+		SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO)
+		AS STEP_CONTENTS
+		FROM BOARD_STEP
+		GROUP BY BOARD_NO
+		) STEP ON (B.BOARD_NO = STEP.BOARD_NO)
+
+		WHERE B.BOARD_DEL_FL = 'N'
+		AND B.READ_COUNT >= 20
+		AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) &lt;= 1
+		AND (
+		      SELECT COUNT(*) 
+		      FROM "RECIPE_BOARD_LIKE" L 
+		      WHERE L.BOARD_NO = B.BOARD_NO
+		  ) >= 0
+
+		<choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{query} || '%'
+				OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND EXISTS (
+				SELECT 1
+				FROM BOARD_HASHTAG BH
+				JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+				WHERE BH.BOARD_NO = B.BOARD_NO
+				AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+				)
+			</when>
+		</choose>
+		
+		ORDER BY 
+		    (SELECT COUNT(*) 
+		     FROM "RECIPE_BOARD_LIKE" L 
+		     WHERE L.BOARD_NO = B.BOARD_NO) DESC
+	</select>	
+	
+	<!-- 좋아요 해제 -->
+	<!-- 재호 -->
+	<delete id="decreaseLikeCount">
+		DELETE FROM "RECIPE_BOARD_LIKE"
+		WHERE MEMBER_NO = #{memberNo}
+		AND BOARD_NO = #{boardNo}
+	</delete>
+	
+	<!-- 촣아요 체크 -->
+	<!-- 재호 -->
+	<insert id="increaseLikeCount">
+		INSERT INTO "RECIPE_BOARD_LIKE"
+		VALUES(#{memberNo},#{boardNo})
+	</insert>
+	
+	<!-- 좋아요 갯수 갱신 -->
+	<!-- 재호 -->
+	<select id="updateLikeCount">
+		SELECT COUNT(*) FROM "RECIPE_BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- 인기글 ON -->
+	<!-- 재호 -->
+	<update id="updatePopularStateToY">
+		<![CDATA[
+			UPDATE "RECIPE_BOARD" B
+			SET POPULAR_CHECK = 'Y'
+			WHERE B.READ_COUNT >= 20
+	  		AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
+	  		AND (
+	    		SELECT COUNT(*)
+	    		FROM "RECIPE_BOARD_LIKE" L
+		    	WHERE L.BOARD_NO = B.BOARD_NO
+	  		) >= 0
+	  	]]>
+	</update>
+	
+	<!-- 인기글 OFF -->
+	<!-- 재호 -->
+	<update id="updatePopularStateToN">
+		<![CDATA[
+			UPDATE "RECIPE_BOARD" B
+			SET POPULAR_CHECK = 'N'
+			WHERE B.BOARD_NO NOT IN (
+  				SELECT BOARD_NO
+  				FROM "RECIPE_BOARD" B2
+  				WHERE B2.READ_COUNT >= 20
+    			AND MONTHS_BETWEEN(SYSDATE, B2.BOARD_CREATE_DATE) <= 1
+    			AND (
+					SELECT COUNT(*)
+					FROM "RECIPE_BOARD_LIKE" L
+				WHERE L.BOARD_NO = B2.BOARD_NO
+				) >= 0
+			)
+	  	]]>
+	</update>
+
+	<!-- 레시피 삭제 -->
+	<!-- 미애 -->
+	<update id="deleteRecipeBoard">
+		UPDATE "RECIPE_BOARD"
+		SET BOARD_DEL_FL = 'Y'
+		WHERE BOARD_NO= ${boardNo}
+	</update>
+
 </mapper>

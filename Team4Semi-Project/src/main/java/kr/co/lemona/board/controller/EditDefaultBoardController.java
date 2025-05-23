@@ -117,27 +117,31 @@ public class EditDefaultBoardController {
 		map.put("boardNo", boardNo);
 
 		// BoardService.selectOne(map) 호출
-		Board board = boardService.selectOne(map);
+		Map<String, Object> boardMap = boardService.selectOne(map);
 
 		String message = null;
 		String path = null;
 
-		if (board == null) {
+		if (boardMap == null) {
 			message = "해당 게시글이 존재하지 않습니다";
 			path = "redirect:/"; // 메인페이지로 리다이렉트
 
 			ra.addFlashAttribute("message", message);
 
-		} else if (board.getMemberNo() != loginMember.getMemberNo()) {
-			message = "자신이 작성한 글만 수정 가능합니다!";
-
-			// 해당 글 상세조회 리다이렉트 (/board/1/2000)
-			path = String.format("redirect:/board/%d/%d", boardCode, boardNo);
-
-			ra.addFlashAttribute("message", message);
-
 		} else {
+			Board board = (Board) boardMap.get("board");
+			
+			if (board.getMemberNo() != loginMember.getMemberNo()) {
+				message = "자신이 작성한 글만 수정 가능합니다!";
 
+				// 해당 글 상세조회 리다이렉트 (/board/1/2000)
+				path = String.format("redirect:/board/%d/%d", boardCode, boardNo);
+
+				ra.addFlashAttribute("message", message);
+				
+				return path;
+			}
+			
 			path = "board/defaultBoardWrite"; // templates/board/defaultBoardUpdate.html로 forward
 			model.addAttribute("board", board);
 		}

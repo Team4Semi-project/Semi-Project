@@ -70,6 +70,69 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+
+  /* 좋아요 기능 */
+  const likes = document.querySelectorAll(".likes");
+  if (likes) {
+
+    // obj 객체를 서버로 비동기 요청
+    likes.forEach((likesBtn) => {
+      likesBtn.addEventListener("click", function (e) {
+        const loginMemberNo = this.dataset.loginMemberNo;
+        const boardNo = this.dataset.boardNo;
+        const boardCode = this.dataset.boardCode;
+        let likeCK = Number(this.dataset.likeCheck);
+
+        console.log(loginMemberNo, boardNo, likeCK, `${boardCode}`);
+
+        if (!loginMemberNo || loginMemberNo === "null") {
+          alert("로그인 후 이용해주세요");
+          return;
+        }
+
+        const obj = {
+          memberNo: loginMemberNo,
+          boardNo: boardNo,
+          likeCheck: likeCK
+        };
+
+        fetch(`/board/${boardCode}/like`, {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(obj)
+        })
+          .then(resp => resp.text())
+          .then(count => {
+
+            if (count == -1) {
+              console.log("좋아요 처리 실패");
+              return;
+            }
+
+            // 상태 토글 및 반영
+            likeCK = likeCK === 0 ? 1 : 0;
+            this.dataset.likeCheck = likeCK;
+
+            // 아이콘 클래스 토글
+            const icon = this.querySelector("i");
+            if (icon) {
+              icon.classList.toggle("fa-regular");
+              icon.classList.toggle("fa-solid");
+            }
+
+            // 좋아요 수 변경
+            const countSpan = this.querySelector("span");
+            if (countSpan) {
+              countSpan.innerText = count;
+            }
+          })
+          .catch(err => {
+            console.error("좋아요 처리 중 오류:", err);
+          });
+      });
+    });
+  };
+
   /**
    * 뷰 토글 (아젠다/코지) 초기화
    */
@@ -89,14 +152,9 @@ document.addEventListener("DOMContentLoaded", function () {
             cozy.style.display = "none";
             agenda.style.display = "block";
 
-            // AJAX로 아젠다 뷰 데이터 요청
-            //fetchAgendaView();
           } else {
             agenda.style.display = "none";
             cozy.style.display = "block";
-
-            // AJAX로 코지 뷰 데이터 요청
-            //fetchCozyView();
           }
         }
       });
@@ -138,57 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  /**
-   * 아젠다 뷰 데이터 가져오기
-   */
-  function fetchAgendaView() {
-    // 현재 URL 정보 가져오기
-    const url = new URL(window.location.href);
-
-    // 뷰 모드 파라미터 추가
-    url.searchParams.set("viewMode", "agenda");
-
-    // AJAX 요청
-    fetch(url.toString(), {
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-      },
-    })
-      .then((response) => response.text())
-      .then((html) => {
-        // 컨테이너 내용 교체
-        recipeContainer.innerHTML = html;
-      })
-      .catch((error) => {
-        console.error("아젠다 뷰 로딩 실패:", error);
-      });
-  }
-
-  /**
-   * 코지 뷰 데이터 가져오기
-   */
-  function fetchCozyView() {
-    // 현재 URL 정보 가져오기
-    const url = new URL(window.location.href);
-
-    // 뷰 모드 파라미터 추가
-    url.searchParams.set("viewMode", "cozy");
-
-    // AJAX 요청
-    fetch(url.toString(), {
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-      },
-    })
-      .then((response) => response.text())
-      .then((html) => {
-        // 컨테이너 내용 교체
-        recipeContainer.innerHTML = html;
-      })
-      .catch((error) => {
-        console.error("코지 뷰 로딩 실패:", error);
-      });
-  }
 
   /**
    * 드롭다운 초기화
@@ -245,19 +252,23 @@ document.addEventListener("DOMContentLoaded", function () {
   /**
    * 정렬 기능 초기화
    */
+  document.addEventListener("DOMContentLoaded", function () {
+    initSorting();
+  });
+
   function initSorting() {
+    const sortSelect = document.getElementById("sortSelect");
+
     if (sortSelect) {
       sortSelect.addEventListener("change", function () {
-        // 현재 URL 정보 가져오기
         const url = new URL(window.location.href);
 
         // 정렬 파라미터 설정
         url.searchParams.set("sort", this.value);
 
-        // 페이지 파라미터 초기화
-        url.searchParams.set("page", "1");
+        // 페이지 파라미터 초기화 (선택사항)
+        // url.searchParams.set("page", "1");
 
-        // 페이지 이동
         window.location.href = url.toString();
       });
     }

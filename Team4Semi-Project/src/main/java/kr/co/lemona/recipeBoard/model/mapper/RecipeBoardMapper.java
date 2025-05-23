@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 
@@ -21,26 +22,26 @@ public interface RecipeBoardMapper {
 	 */
 	int getRecipeBoardListCount(int categoryNo);
 
-	/** 
+	/** 특정 카테고리의 레시피 게시판 지정된 페이지 목록 조회
 	 * @param categoryNo
 	 * @param rowBounds
 	 * @return
 	 * @author miae
 	 */
-	List<RecipeBoard> selectRecipeBoardList(int categoryNo, RowBounds rowBounds);
+	List<RecipeBoard> selectRecipeBoardList(Map<String, Object> inputMap, RowBounds rowBounds);
 
 	/** 레시피 보드에서 삭제되지 않은 인기 게시글 수를 조회
 	 * @return
 	 * @author 재호
 	 */
 	int getPopularListCount();
-
+	
 	/** 인기 게시판 중 지정된 페이지 목록 조회
 	 * @param rowBounds
 	 * @return
 	 * @author 재호
 	 */
-	List<RecipeBoard> selectPopularBoardList(RowBounds rowBounds);
+	List<RecipeBoard> selectPopularBoardList(Map<String, Object> inputMap, RowBounds rowBounds);
 
 	/** 레시피 게시글 상세 조회
 	 * @param map
@@ -109,4 +110,73 @@ public interface RecipeBoardMapper {
 	 * @author miae
 	 */
 	int selectReadCount(int boardNo);
+
+	/** 검색 결과 게시글 갯수 조회
+	 * @param paramMap
+	 * @return
+	 * @author jihyun
+	 */
+	int getSearchCount(Map<String, Object> paramMap);
+
+	/** 검색 결과 게시글 목록 조회
+	 * @param paramMap
+	 * @param rowBounds
+	 * @return
+	 * @author jihyun
+	 */
+	List<RecipeBoard> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	/** 검색 결과 인기 게시글 갯수 조회
+	 * @param paramMap
+	 * @return
+	 * @author jihyun
+	 */
+	int getPopularSearchCount(Map<String, Object> paramMap);
+
+	/** 검색 결과 인기 게시글 목록 조회
+	 * @param paramMap
+	 * @param rowBounds
+	 * @author jihyun
+	 * @return
+	 */
+	List<RecipeBoard> selectPopularSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	/** 좋아요 해제
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int decreaseLikeCount(Map<String, Integer> map);
+
+	/** 좋아요 체크
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int increaseLikeCount(Map<String, Integer> map);
+
+	/** 좋아요 갯수 갱신
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int updateLikeCount(Map<String, Integer> map);
+
+	/** 인기글 ON
+	 * @return
+	 * @author 재호
+	 */
+	int updatePopularStateToY();
+	
+	/** 인기글 OFF
+	 * @return
+	 * @author 재호
+	 */
+	int updatePopularStateToN();
+
+	/** 레시피 글 삭제
+	 * @param boardNo
+	 * @return
+	 */
+	int deleteRecipeBoard(int boardNo);
 }

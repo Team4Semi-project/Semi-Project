@@ -1,3 +1,7 @@
+const goToListBtn = document.querySelector("#goToListBtn"); // 목록으로 버튼
+const goToPrev = document.querySelector("#goToPrev"); // 이전글 버튼
+const goToNext = document.querySelector("#goToNext"); // 다음글 버튼
+
 // 게시글 수정 버튼
 const updateBtn = document.querySelector(".updateBtn");
 
@@ -42,3 +46,34 @@ if (deleteBtn != null) {
       location.search;
   });
 }
+
+
+// 목록으로 버튼 클릭 시 이동
+goToListBtn.addEventListener("click", () => {
+  location.href = `/board/${boardCode}?cp=${cp}`;
+  return;
+});
+
+// 이전글 버튼
+goToPrev.addEventListener("click", () => {
+  const naviBtn = document.querySelector("#naviBtn");
+  const prevBoardNo = naviBtn.dataset.prevBoardNo;
+  if (prevBoardNo == 0) {
+    alert("이전 글이 없습니다.");
+    return;
+  }
+
+  location.href = `/board/${boardCode}/${prevBoardNo}?cp=${cp}`;
+});
+
+// 다음글 버튼
+goToNext.addEventListener("click", () => {
+  const naviBtn = document.querySelector("#naviBtn");
+  const nextBoardNo = naviBtn.dataset.nextBoardNo;
+  if (nextBoardNo == 0) {
+    alert("다음 글이 없습니다.");
+    return;
+  }
+
+  location.href = `/board/${boardCode}/${nextBoardNo}?cp=${cp}`;
+});

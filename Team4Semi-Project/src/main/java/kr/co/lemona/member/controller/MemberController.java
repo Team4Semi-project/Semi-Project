@@ -28,12 +28,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemberController {
 
-	@Autowired
-	private MemberService service;
+	@Autowired // 의존성 주입
+	private MemberService service; 
 
-	@PostMapping("login")
+	@PostMapping("login") // Post 방식 로그인
 	public String login(Member inputMember, RedirectAttributes ra, Model model,
 			@RequestParam(value = "saveId", required = false) String saveId, HttpServletResponse resp) {
+
 
 		// 서비스 계층에서 로그인 시도 (이메일로 사용자 조회 후 비밀번호 비교)
 		Member loginMember = service.login(inputMember);
@@ -47,10 +48,11 @@ public class MemberController {
 			model.addAttribute("loginMember", loginMember);
 
 		    // 쿠키 생성 (이메일 저장용)
-			Cookie cookie = new Cookie("saveId", loginMember.getMemberEmail());
-			cookie.setPath("/");
 
-			if (saveId != null) {
+			Cookie cookie = new Cookie("saveId", loginMember.getMemberEmail());
+			cookie.setPath("/"); // 전체 경로 
+
+			if (saveId != null) { 
 				cookie.setMaxAge(60 * 60 * 24 * 30); // 30일
 			} else {
 				cookie.setMaxAge(0); // 즉시 삭제
@@ -59,21 +61,23 @@ public class MemberController {
 			resp.addCookie(cookie);
 		}
 
-		return "redirect:/";
+		return "redirect:/"; // 메인 페이지로 리다이렉트
 	}
 
-	// 로그아웃
+	// 로그아웃 처리
 	@GetMapping("logout")
 	public String logout(SessionStatus status) {
 		status.setComplete();
-		return "redirect:/";
+		return "redirect:/"; // 메인 페이지로 리다이렉트
 	}
 
-	// 회원가입
+
+	// 회원가입 페이지로 이동
 	@GetMapping("register")
 	public String registerPage() {
 		return "register/register"; // templates/register/register.html을 가리킴
 	}
+
 
 	// 이메일 중복체크
 	@ResponseBody
@@ -96,30 +100,28 @@ public class MemberController {
 		return service.checkId(memberId);
 	}
 
-	// 회원가입 서비스 호출
+
+	// 회원가입
 	@PostMapping("register")
 	@ResponseBody
 	public String register(Member inputMember, RedirectAttributes ra) {
 
-		// log.debug("inputMember: " + inputMember);
-		// log.debug("memberAddress: " + memberAddress.toString());
-
 		// 회원가입 서비스 호출
 		int result = service.register(inputMember);
 
-		String path = null;
-		String message = null;
+		String path = null; // 리다이렉트 경로 저장
+		String message = null; // 메시지 보여줌
 
 		if (result > 0) { // 성공 시
 			message = inputMember.getMemberNickname() + "님의 가입을 환영합니다!";
-			path = "/";
+			path = "/"; // 메인 페이지로 이동
 
-		} else { // 실패
+		} else { // 실패 시
 			message = "회원 가입 실패..";
 			path = "register";
 		}
 
-		ra.addFlashAttribute("message", message);
+		ra.addFlashAttribute("message", message); 
 
 		return path;
 		// 성공 -> redirect:/

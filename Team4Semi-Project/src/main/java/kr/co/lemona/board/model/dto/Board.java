@@ -40,4 +40,15 @@ public class Board {
 	
 	// 게시글에 달린 댓글 리스트
 	private List<DefaultComment> commentList;
+	
+	
+	// 검색 기능 때문에 지현이가 추가한 부분
+	private int categoryNo; 		// 카테고리 번호
+	// 썸네일 - <input type="radio" name="checkThumbnail">:checked
+	private String thumbnailCheck;
+	private String thumbnailImgPath;
+	private String thumbnailImgRename;
+	// 게시글에 포함된 해쉬태그
+	private String tags;
+	private List<String> hashTagList;
 }

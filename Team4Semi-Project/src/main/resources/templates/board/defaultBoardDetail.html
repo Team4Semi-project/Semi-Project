@@ -34,8 +34,14 @@
           <span class="board-update" th:text="${board.boardCreateDate}">작성일</span>
         </div>
         <div class="text-right">
-          <span class="material-symbols-outlined align-middle">visibility</span>
-          <span th:text="${board.readCount}" class="align-middle">조회수</span>
+          <div class="likes">
+            <i class="fa-solid fa-lemon" style="color: #FFD43B;"></i>
+            <span th:text="${board.likeCount}">좋아요</span>
+          </div>
+          <div>
+            <i class="material-symbols-outlined align-middle">visibility</i>
+            <span th:text="${board.readCount}" class="align-middle">조회수</span>
+          </div>
         </div>
       </div>
     </div>
@@ -67,10 +73,13 @@
       </div>
     </div>
 
-    <div class="container-page">
-      <a href="#"><span class="material-symbols-outlined align-middle">chevron_left</span>이전 글</a>
-      <a href="#">목록으로</a>
-      <a href="#">다음 글<span class="material-symbols-outlined align-middle">chevron_right</span></a>
+    <div class="container-page" id="naviBtn"
+      th:attr="data-prev-board-no=${prevBoardNo}, data-next-board-no=${nextBoardNo}">
+      <a id="goToPrev"><span class="material-symbols-outlined align-middle">chevron_left</span><span>이전 글</span></a>
+      <a id="goToListBtn"><span>목록으로</span></a>
+      <a id="goToNext">
+        <sapn>다음 글</sapn><span class="material-symbols-outlined align-middle">chevron_right</span>
+      </a>
     </div>
   </section>
 
@@ -80,6 +89,25 @@
   <!-- 푸터 프래그먼트 -->
   <footer th:replace="~{common/footer :: footer}"></footer>
   <th:block th:replace="~{common/header :: search-header-js}"></th:block>
+
+
+  <script th:inline="javascript">
+
+    // 페이지 네이션 cp
+    const urlParams = new URLSearchParams(location.search);
+    const cp = urlParams.get("cp") || 1;
+
+    const boardCode = /*[[${board.boardCode}]]*/ 0;
+
+    // - loginMember가 null 인 경우 null 반환
+    const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+    // 현재 게시글 번호를 전역 변수로 저장
+    const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
+
+    const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+
+  </script>
 
   <script src="/js/board/defaultBoardDetail.js"></script>
   <script src="/js/board/comment.js"></script>

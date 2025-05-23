@@ -14,14 +14,7 @@ public interface RecipeBoardService {
 	 * @param cp : 현재 페이지
 	 * @return
 	 */
-	Map<String, Object> selectRecipeBoardList(int categoryNo, int cp);
-
-	/** 인기 게시판 목록 조회 서비스
-	 * @param cp : 현재 페이지
-	 * @return
-	 * @author 재호
-	 */
-	Map<String, Object> selectPopularBoardList(int cp);
+	Map<String, Object> selectRecipeBoardList(Map<String, Object> inputMap);
 
 	/** 레시피 게시글 상세 조회
 	 * @param map
@@ -51,4 +44,43 @@ public interface RecipeBoardService {
 	 */
 	int updateReadCount(int boardNo);
 
+	/** 레시피 게시글 전용 검색 결과 조회
+	 * @param paramMap
+	 * @param cp
+	 * @return
+	 * @author jihyun
+	 */
+	Map<String, Object> searchList(Map<String, Object> paramMap, Map<String, Object> inputMap);
+
+	/** 인기 게시글 전용 검색 결과 조회
+	 * @param paramMap
+	 * @param cp
+	 * @return
+	 * @author jihyunE
+	 */
+	Map<String, Object> searchPopularList(Map<String, Object> paramMap, int cp);
+
+	/** 좋아요 기능
+	 * @return
+	 * @author 재호
+	 */
+	int updateLikeCount(Map<String, Integer> map);
+
+	/** 인기글 ON
+	 * @return
+	 * @author 재호
+	 */
+	int updatePopularStateToY();
+	
+	/** 인기글 OFF
+	 * @return
+	 * @author 재호
+	 */
+	int updatePopularStateToN();
+
+	/** 레시피 글 삭제
+	 * @param boardNo
+	 * @return
+	 */
+	int deleteRecipeBoard(int boardNo);
 }

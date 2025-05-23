@@ -284,6 +284,22 @@ body {
     font-size: 12px;
 }
 
+/* 해시태그 */
+.recipe-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.tag {
+  font-size: var(--pre-p-1-font-size);
+  color: var(--brown);
+  background-color: var(--lightyellow);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
 /* Media queries */
 @media (max-width: 768px) {
     .recipe-step {

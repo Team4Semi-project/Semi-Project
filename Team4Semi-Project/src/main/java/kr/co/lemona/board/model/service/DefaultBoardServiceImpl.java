@@ -1,10 +1,13 @@
 package kr.co.lemona.board.model.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.board.model.mapper.DefaultBoardMapper;
+import kr.co.lemona.recipeBoard.model.dto.BoardStep;
+import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -73,8 +78,90 @@ public class DefaultBoardServiceImpl implements DefaultBoardService{
 	 * @author 민장
 	 */
 	@Override
-	public Board selectOne(Map<String, Integer> map) {
-		// 
-		return mapper.selectOne(map);
+	public Map<String, Object> selectOne(Map<String, Integer> map) {
+		
+		Map<String, Object> map2 = new HashMap<>();
+
+		Board board = mapper.selectOne(map);
+		
+		// 이전 글
+		Board prevBoard = mapper.selectPrevBoard(map);
+
+		// 다음 글
+		Board nextBoard = mapper.selectNextBoard(map);
+
+		int prevBoardNo = 0;
+		int nextBoardNo = 0;
+
+		// 이전 글 다음글 목록이 있을때만 값을 받아오기
+		if (prevBoard != null) {
+			prevBoardNo = prevBoard.getBoardNo();
+		}
+
+		if (nextBoard != null) {
+			nextBoardNo = nextBoard.getBoardNo();
+		}
+
+		map2.put("board", board);
+		map2.put("prevBoardNo", prevBoardNo);
+		map2.put("nextBoardNo", nextBoardNo);
+
+		return map2;
+	}
+
+	/** 해당 게시판 검색 결과 조회
+	 * @author jihyun
+	 */
+	@Override
+	public Map<String, Object> serchList(Map<String, Object> paramMap, int cp) {
+		// paramMap (key, query, boardCode)
+
+		// 1. 지정된 게시판(boardCode)에서
+		// 검색 조건에 맞으면서
+		// 삭제되지 않은 게시글 수 조회
+
+		int listCount = mapper.getSearchCount(paramMap);
+
+		// 2. 1번의 결과 + cp를 이용해서
+		// Pagination 객체 생성
+		Pagination pagination = new Pagination(cp, listCount);
+
+		// 3. 특정 게시판의 지정된 페이지 목록 조회
+		int limit = pagination.getLimit(); // 10개씩 조회
+		int offset = (cp - 1) * limit; // cp : 현재 페이지
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		// mapper 메서드 호출 코드 수행
+		// -> Mapper 메서드 호출 시 전달할 수 있는 매개변수 1개
+		// -> 2개를 전달할 수 있는 경우가 있음
+		// RowBounds를 이용할 때
+		// 1번째 : sql에 전달할 파라미터
+		// 2번째 : RowBounds 객체
+		List<Board> boardList = mapper.selectSearchList(paramMap, rowBounds);
+
+		// 4. 목록 조회 결과 + Paginaion 객체를 Map으로 묶음
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("pagination", pagination);
+		map.put("boardList", boardList);
+
+		return map;
+	}
+
+	/** 레시피 게시글 조회수 증가
+	 * boardNo : 게시글 번호
+	 */
+	@Override
+	public int updateReadCount(int boardNo) {
+		// 1, 조회수 1 증가 (UPDATE)
+				int result = mapper.updateReadCount(boardNo);
+				
+				// 2. 현재 조회 수 조회
+				if(result > 0) {
+					return mapper.selectReadCount(boardNo);
+				}
+				
+				// 실패한 경우 -1 반환
+				return -1;
 	}
 }

@@ -2,6 +2,7 @@ package kr.co.lemona.recipeBoard.model.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -47,24 +48,43 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	 * @author miae
 	 */
 	@Override
-	public Map<String, Object> selectRecipeBoardList(int categoryNo, Map<String, Integer> inputMap) {
-
-		// 1. 지정된 카테고리(categoryNo)에서 삭제 되지 않은 게시글 수를 조회
-		int listCount = mapper.getRecipeBoardListCount(categoryNo);
+	public Map<String, Object> selectRecipeBoardList(Map<String, Object> inputMap) {
+		
+		// 지역 변수 설정
+		int listCount = 0;
+		int cp = (int)inputMap.get("cp");
+		boolean popularFl = false;
+		List<RecipeBoard> recipeBoardList = null;
+		
+		if(((String)inputMap.get("categoryNo")).equals("popular")) {
+			// 조회 대상이 인기 레시피 게시글
+			listCount = mapper.getPopularListCount();
+			popularFl = true;
+		} else {
+			// 조회 대상이 일반 레시피 게시글
+			int categoryNo = Integer.parseInt((String)inputMap.get("categoryNo"));
+			
+			// 1. 지정된 카테고리(categoryNo)에서 삭제 되지 않은 게시글 수를 조회
+			listCount = mapper.getRecipeBoardListCount(categoryNo);
+		}
 
 		// 2. 1번의 결과 + cp 를 이용해서 Pagination 객체를 생성
-		int cp = inputMap.get("cp");
-		
 		Pagination pagination = new Pagination(cp, listCount);
 
 		// 3. 특정 게시판의 지정된 페이지 목록 조회
 		int limit = pagination.getLimit(); // 한 페이지 내에 보여줄 게시글 수
 		int offset = (cp - 1) * limit; // 보여줄 페이지의 앞에 건너뛸 게시글 개수
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		
-		inputMap.put("categoryNo", categoryNo);
 
-		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(inputMap, rowBounds);
+		if(popularFl) {
+			
+			recipeBoardList = mapper.selectPopularBoardList(inputMap,rowBounds);
+			
+		} else {
+			
+			// 조회 결과를 리스트에 저장
+			recipeBoardList = mapper.selectRecipeBoardList(inputMap, rowBounds);
+		}
 
 		// 해시태그 받아오는 부분
 		for (RecipeBoard recipeBoard : recipeBoardList) {
@@ -82,53 +102,6 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		map.put("pagination", pagination);
 		map.put("recipeBoardList", recipeBoardList);
-
-		// 5. 결과 반환
-		return map;
-	}
-
-	/**
-	 * 인기 게시판 조회 서비스
-	 * 
-	 * @author 재호
-	 */
-	@Override
-	public Map<String, Object> selectPopularBoardList(Map<String, Integer> inputMap) {
-
-		// 1. 레시피 보드에서 삭제되지 않은 인기 게시글 수를 조회
-		int listCount = mapper.getPopularListCount();
-
-		// 2. 1번의 결과 + cp 를 이용해서 Pagination 객체를 생성
-		int cp = inputMap.get("cp");
-		log.debug("cp : {}",cp);
-		
-		Pagination pagination = new Pagination(cp, listCount);
-
-		// 3. 인기 게시판 중 지정된 페이지 목록 조회
-		int limit = pagination.getLimit(); // 한 페이지 내에 보여줄 게시글 수
-		int offset = (cp - 1) * limit; // 보여줄 페이지의 앞에 건너뛸 게시글 개수
-		RowBounds rowBounds = new RowBounds(offset, limit);
-
-		log.debug("memberNo : {}",inputMap.get("memberNo"));
-		
-		List<RecipeBoard> PopularBoardList = mapper.selectPopularBoardList(inputMap,rowBounds);
-
-		// 해시태그 받아오는 부분
-		for (RecipeBoard recipeBoard : PopularBoardList) {
-			String tags = recipeBoard.getTags();
-			if(tags != null && !tags.isEmpty()) {
-				 List<String> tagList = Arrays.stream(tags.split(","))
-                         .map(String::trim)
-                         .collect(Collectors.toList());
-				 recipeBoard.setHashTagList(tagList);
-			}
-		}
-				
-		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
-		Map<String, Object> map = new HashMap<>();
-
-		map.put("pagination", pagination);
-		map.put("boardList", PopularBoardList);
 
 		// 5. 결과 반환
 		return map;
@@ -315,14 +288,14 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	 * @author jihyun
 	 */
 	@Override
-	public Map<String, Object> serchList(Map<String, Object> paramMap, Map<String, Integer> inputMap) {
+	public Map<String, Object> searchList(Map<String, Object> paramMap, Map<String, Object> inputMap) {
 		// paramMap (key, query, boardCode)
 
 		// 1. 지정된 게시판(boardCode)에서
 		// 검색 조건에 맞으면서
 		// 삭제되지 않은 게시글 수 조회
 		
-		int cp = inputMap.get("cp");
+		int cp = (int)inputMap.get("cp");
 
 		int listCount = mapper.getSearchCount(paramMap);
 
@@ -356,7 +329,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	 * @author jihyun
 	 */
 	@Override
-	public Map<String, Object> serchPopularList(Map<String, Object> paramMap, int cp) {
+	public Map<String, Object> searchPopularList(Map<String, Object> paramMap, int cp) {
 		// paramMap (key, query, boardCode)
 
 		// 1. 지정된 게시판(boardCode)에서
@@ -414,6 +387,21 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		}
 		return -1;
 	}
+	
+	/** 인기글 ON
+	 * @author 재호
+	 */
+	@Override
+	public int updatePopularStateToY() {
+		return mapper.updatePopularStateToY();
+	}
+	
+	/** 인기글 OFF
+	 * @author 재호
+	 */
+	@Override
+	public int updatePopularStateToN() {
+		return mapper.updatePopularStateToN();
 
 	@Override
 	public int deleteRecipeBoard(int boardNo) {

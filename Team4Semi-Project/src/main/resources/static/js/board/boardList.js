@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /**
    * 정렬 기능 초기화
    */
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     initSorting();
   });
 

@@ -56,7 +56,7 @@
                 <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
             </div>
             <div class="action-buttons">
-                <button class="action-button">수정하기</button>
+                <button class="action-button" id="updateBtn" th:data-board-no=${board.boardNo}>수정하기</button>
                 <button class="action-button" id="deleteBtn">삭제하기</button>
             </div>
         </div>

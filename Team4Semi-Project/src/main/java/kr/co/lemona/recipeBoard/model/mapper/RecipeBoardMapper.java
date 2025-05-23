@@ -179,4 +179,25 @@ public interface RecipeBoardMapper {
 	 * @return
 	 */
 	int deleteRecipeBoard(int boardNo);
+
+	/** 레시피 게시글 수정/{제목,카테고리번호,수정일}
+	 * @param inputBoard
+	 * @return
+	 * @author 재호
+	 */
+	int updateRecipeBoard(RecipeBoard inputBoard);
+
+	/** 기존의 게시글 스텝 삭제/신규 스텝 추가는 기존 SQL 활용
+	 * @param inputBoard
+	 * @return
+	 * @author 재호
+	 */
+	int deleteBoardHashtagByBoardNo(RecipeBoard inputBoard);
+
+	/** 기존의 게시글 해시태그 삭제/신규 해시태그 추가는 기존 SQL 활용
+	 * @param inputBoard
+	 * @return
+	 * @author 재호
+	 */
+	int deleteBoardStepByBoardNo(RecipeBoard inputBoard);
 }

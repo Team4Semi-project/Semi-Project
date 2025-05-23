@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const hashTagContainer = document.getElementById("hashTagContainer");
   const submitBtn = document.getElementById("submitBtn");
 
+  // 게시글 번호 수집
+  const pathname = window.location.pathname;
+  const segments = pathname.split("/");
+  const boardNo = segments[4];
+
   // 스텝 카운터
   let stepCounter = 1;
 
@@ -17,6 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
     addNewStep();
   });
 
+  document.querySelectorAll("#hashTagContainer .hashtag span:first-child").forEach((span) => {
+    const text = span.textContent.replace(/^#/, "");
+    hashTags.push(text);
+  });
+
   // 해시태그 입력 이벤트
   hashTagInput.addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
@@ -25,8 +35,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // 글 작성 완료 버튼 이벤트
+  // 글 수정 완료 버튼 이벤트
   submitBtn.addEventListener("click", function (e) {
+    if (!confirm("레시피를 수정하시겠습니까?")) {
+      alert("수정이 취소되었습니다.");
+
+      location.href = `/board/1/${categoryNo}/${boardNo}`;
+    }
     submitRecipe(e);
   });
 
@@ -358,6 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     formData.append("categoryNo", categoryNo);
+    formData.append("boardNo", boardNo);
 
     // 제목 수집
     const boardTitle = document.getElementById("boardTitle").value;
@@ -426,7 +442,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(key, value);
     });
 
-    fetch("/board/1/insert", {
+    fetch("/board/1/update", {
       method: "POST",
       // ✅ AJAX 요청임을 명시!
       headers: { "X-Requested-With": "XMLHttpRequest" },
@@ -454,12 +470,12 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((result) => {
         console.log("응답 성공:", result);
-        alert("레시피를 등록했습니다!");
+        alert("레시피를 수정했습니다!");
         location.href = result;
       })
       .catch((error) => {
         console.error("에러 발생:", error);
-        alert("레시피 등록에 실패했습니다.");
+        alert("레시피 수정에 실패했습니다.");
       });
   }
 });

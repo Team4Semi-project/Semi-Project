@@ -2,9 +2,12 @@ package kr.co.lemona.recipeBoard.controller;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -144,8 +147,6 @@ public class RecipeBoardController {
 			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠기 얻어오기
 			HttpServletResponse resp // 새로운 쿠기 만들어서 응답하기
 	) {
-
-		// 게시글 상세 조회 서비스 호출
 
 		// 1) Map 으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
@@ -393,4 +394,100 @@ public class RecipeBoardController {
 
 		return "redirect:" + path;
 	}
+
+	/** 업데이트 페이지 출력
+	 * @param boardNo
+	 * @param model
+	 * @return
+	 * @author 재호
+	 */
+	@GetMapping("{category}/{boardNo:[1-9]+}/update")
+	public String updateRecipeBoard(@PathVariable("category") Object category, @PathVariable("boardNo") int boardNo,
+			Model model,
+			RedirectAttributes ra) {
+
+		// 1) Map 으로 전달할 파라미터 묶기
+		Map<String, Integer> map = new HashMap<>();
+
+		// caterogy에 인기글(popular) 이 들어올 경우 categoryNo를 0으로 하고
+		// 그렇지 않을 경우에는 int형으로 변환 후 categoryNo값 넘겨줌
+		if (!((String)category).equals("popular")) {
+			int categoryNo = 0;
+			categoryNo = Integer.parseInt((String)category);
+			map.put("categoryNo", categoryNo);
+		} else {
+			map.put("popular", 1);
+			map.put("categoryNo", 0);
+		}
+		map.put("boardNo", boardNo);
+		// categoryNo 자리에 들어오는 값 확인
+
+		// 2) 서비스 호출
+		Map<String, Object> recipeMap = service.selectOneRecipe(map);
+
+		// 조회 결과가 없는 경우
+		if (recipeMap == null) {
+			
+			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
+			return String.format("redirect:/board/1/%s/%d", category, boardNo);
+
+		} else {
+
+			// 조회 결과가 있는 경우
+
+			RecipeBoard recipeBoard = (RecipeBoard) recipeMap.get("recipeBoard");
+			List<BoardStep> boardStepList = (List<BoardStep>) recipeMap.get("boardStepList");
+
+			if (recipeBoard != null && boardStepList != null) {
+				// board - 게시글 일반 내용 + imageList + commentList
+				model.addAttribute("board", recipeBoard);
+				model.addAttribute("boardStepList", boardStepList);
+			}
+		}
+		return "board/recipeBoardUpdate";
+	}
+	
+	@PostMapping("update")
+	@ResponseBody
+	public String updateRecipeBoard(RecipeBoard inputBoard,
+	        @RequestParam(value = "images", required = false) List<MultipartFile> images,
+	        @RequestParam("stepContents") List<String> inputStepContent,
+	        @RequestParam(value = "thumbnailNo", required = false) int thumbnailNo,
+	        @RequestParam(value = "hashTags", required = false) List<String> hashTagList,
+	        @RequestParam(value = "deleteOrderList", required = false) String deleteOrderListStr,
+	        RedirectAttributes ra,
+	        @RequestParam("boardNo") int boardNo,
+	        @RequestParam("categoryNo") String category) throws Exception {
+
+	    inputBoard.setHashTagList(hashTagList);
+	    inputBoard.setBoardNo(boardNo);
+
+	    // 삭제된 이미지 순서 처리
+	    List<Integer> deleteOrderList = new ArrayList<>();
+	    if (deleteOrderListStr != null && !deleteOrderListStr.isEmpty()) {
+	        deleteOrderList = Arrays.stream(deleteOrderListStr.split(","))
+	                                .map(String::trim)
+	                                .map(Integer::parseInt)
+	                                .collect(Collectors.toList());
+	    }
+
+	    int result = service.updateRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo, deleteOrderList);
+
+	    String message;
+	    String path;
+
+	    if (result > 0) {
+	        message = "레시피가 수정되었습니다.";
+	        path = String.format("/board/1/%s/%d", category, boardNo);
+	    } else {
+	        message = "레시피 수정에 실패했습니다.";
+	        path = String.format("/board/1/%s/%d/update", category, boardNo);
+	    }
+
+	    ra.addFlashAttribute("message", message);
+	    return path;
+	}
+
+
+
 }

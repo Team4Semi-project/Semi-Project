@@ -73,7 +73,8 @@
       </div>
     </div>
 
-    <div class="container-page">
+    <div class="container-page" id="naviBtn"
+      th:attr="data-prev-board-no=${prevBoardNo}, data-next-board-no=${nextBoardNo}">
       <a id="goToPrev"><span class="material-symbols-outlined align-middle">chevron_left</span><span>이전 글</span></a>
       <a id="goToListBtn"><span>목록으로</span></a>
       <a id="goToNext">

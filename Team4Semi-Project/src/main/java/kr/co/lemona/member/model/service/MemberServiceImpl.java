@@ -34,10 +34,10 @@ public class MemberServiceImpl implements MemberService {
 
 		// bcrypt.matches(평문, 암호화): 평문과 암호화가 일치하면 true, 아니면 false 반환
 
-		// 1. 이메일이 일치하면서 탈퇴하지 않은 회원 조회
-		Member loginMember = mapper.login(inputMember.getMemberEmail());
+		// 1. 아이디가 일치하면서 탈퇴하지 않은 회원 조회
+		Member loginMember = mapper.login(inputMember.getMemberId());
 
-		// 2. 만약에 일치하는 이메일이 없어서 조회 결과가 null 인 경우
+		// 2. 만약에 일치하는 아이디 없어서 조회 결과가 null 인 경우
 		if (loginMember == null)
 			return null;
 

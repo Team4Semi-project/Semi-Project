@@ -12,7 +12,7 @@ public interface MemberMapper {
 	 * @param memberEmail
 	 * @return
 	 */
-	Member login(String memberEmail);
+	Member login(String memberId);
 
 	/**
 	 * 이메일 중복검사

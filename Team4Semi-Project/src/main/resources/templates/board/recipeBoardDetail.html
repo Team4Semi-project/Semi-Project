@@ -23,7 +23,10 @@
     <!-- Content starts from the big thumbnail image below write button -->
     <div class="content-container">
         <!-- 썸네일 이미지 띄워주기 -->
+        <div class="recipe-thumbnail" th:each="step : ${boardStepList}" th:if="${step.thumbnailCheck} == 'Y'">
 
+            <img th:src="@{${step.imgPath + step.imgRename}}" alt="썸네일 이미지" />
+        </div>
         <!-- Recipe header -->
         <div class="recipe-header">
             <div class="recipe-title" th:text="${board.boardTitle}">레몬 팁/후기</div>
@@ -54,7 +57,7 @@
             </div>
             <div class="action-buttons">
                 <button class="action-button">수정하기</button>
-                <button class="action-button">삭제하기</button>
+                <button class="action-button" id="deleteBtn">삭제하기</button>
             </div>
         </div>
 
@@ -81,7 +84,7 @@
         </div>
         <!-- Navigation buttons -->
         <div class="navigation" id="naviBtn"
-            th:attr="data-prev-board-no=${prevBoardNo}, data-next-board-no=${nextBoardNo}">
+            th:attr="data-prev-board-no=${prevBoardNo}, data-next-board-no=${nextBoardNo}, data-cp=${cp}">
             <a class="nav-button" id="goToPrev"><span>← 이전 글</span></a>
             <a class="nav-button" id="goToListBtn"><span>목록으로</span></a>
             <a class="nav-button" id="goToNext"><span>다음 글 →</span></a>

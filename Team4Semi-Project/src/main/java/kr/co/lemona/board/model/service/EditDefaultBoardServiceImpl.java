@@ -46,4 +46,12 @@ public class EditDefaultBoardServiceImpl implements EditDefaultBoardService {
 		return mapper.defaultBoardDelete(map);
 	}
 
+	/** 게시글 수정
+	 * @author 민장
+	 */
+	@Override
+	public int defaultBoardUpdate(Board inputBoard) {
+		return mapper.defaultBoardUpdate(inputBoard);
+	}
+
 }

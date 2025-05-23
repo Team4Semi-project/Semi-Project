@@ -23,4 +23,10 @@ public interface EditDefaultBoardMapper {
 	 */
 	int defaultBoardDelete(Map<String, Integer> map);
 
+	/** 게시글 수정
+	 * @param inputBoard
+	 * @return
+	 */
+	int defaultBoardUpdate(Board board);
+
 }

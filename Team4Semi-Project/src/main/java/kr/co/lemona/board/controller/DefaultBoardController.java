@@ -98,8 +98,8 @@ public class DefaultBoardController {
 
 		}
 		// --------------- 세션 구현 안돼서 테스트용 데이터 삽입 ---------------
-		Member loginMember = Member.builder().memberNo(2).memberId("user2").memberName("이순신").memberNickname("순신이")
-				.memberEmail("user2@example.com").memberDelFl("N").build();
+		Member loginMember = Member.builder().memberNo(3).memberId("user3").memberName("신사임당").memberNickname("사임당")
+				.memberEmail("user3@example.com").memberDelFl("N").build();
 
 		req.getSession().setAttribute("loginMember", loginMember);
 		// ---------------------------------------------------------------------

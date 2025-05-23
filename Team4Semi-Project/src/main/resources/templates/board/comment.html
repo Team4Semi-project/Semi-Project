@@ -17,44 +17,49 @@
 
       <!-- 대댓글(자식)인 경우 child-comment 클래스 추가 -->
       <li class="comment-row" th:each="comment : ${board.commentList}"
-        th:classappend="${comment.parentCommentNo} != 0 ? child-comment" th:object="${comment}">
+        th:classappend="${comment.parentCommentNo} != 0 ? child-comment">
 
-        <th:block th:if="*{commentDelFl} == 'Y'">
+        <th:block th:if="${comment.commentDelFl} == 'Y'">
           삭제된 댓글 입니다
         </th:block>
 
-        <th:block th:if="*{commentDelFl} == 'N'">
+        <th:block th:if="${comment.commentDelFl} == 'N'">
           <p class="comment-writer">
             <!-- 프로필 이미지 없을 경우 -->
-            <img th:unless="*{profileImg}" th:src="#{user.default.image}">
+            <img th:unless="${comment.profileImg}" th:src="#{user.default.image}">
             <!-- 프로필 이미지 있을 경우 -->
-            <img th:if="*{profileImg}" th:src="*{profileImg}">
+            <img th:if="${comment.profileImg}" th:src="${comment.profileImg}">
 
-            <span th:text="*{memberNickname}">닉네임</span>
-            <span class="comment-date" th:text="*{commentWriteDate}">작성일</span>
+            <span th:text="${comment.memberNickname}">닉네임</span>
+            <span class="comment-date" th:text="${comment.commentWriteDate}">작성일</span>
           </p>
 
-          <p class="comment-content" th:text="*{commentContent}">댓글 내용</p>
+          <p class="comment-content" th:text="${comment.commentContent}">댓글 내용</p>
 
           <!-- 좋아요 하트 -->
-          <span class="like-area">
+          <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+            th:data-comment-no="${comment.commentNo}" th:data-like-check="${comment.likeCheck}"
+            th:classappend="${comment.likeCheck == 1} ? likeChecked : likeUnChecked">
             <!-- 좋아요 누른적이 있으면 fa-solid, 없으면 fa-regular 클래스 추가 -->
-            <i class="fa-lemon" id="commentLike" th:classappend="*{likeCheck == 1} ? fa-solid : fa-regular"></i>
+            <i class="fa-lemon" th:classappend="${comment.likeCheck == 1} ? 'fa-solid' : 'fa-regular'"></i>
 
             <!-- 좋아요 개수 -->
-            <span th:text="*{likeCount}">0</span>
-          </span>
+            <span th:text="${comment.likeCount}">0</span>
+          </button>
 
           <!-- 버튼 영역 -->
           <div class="comment-btn-area">
-            <button th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
+            <th:block th:if="${session.loginMember != null}">
+              <button th:onclick="|showInsertComment(${comment.commentNo}, this)|">답글</button>
 
-            <th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
-              <button th:onclick="|showUpdateComment(*{commentNo}, this)|">수정</button>
-              <button th:onclick="|deleteComment(*{commentNo})|">삭제</button>
+              <!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
+              <th:block th:with="writerNo=${comment.memberNo}">
+                <th:block th:if="${session.loginMember.memberNo == writerNo}">
+                  <button th:onclick="|showUpdateComment(${comment.commentNo}, this)|">수정</button>
+                  <button th:onclick="|deleteComment(${comment.commentNo})|">삭제</button>
+                </th:block>
+              </th:block>
             </th:block>
-            <!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
-
           </div>
         </th:block>
       </li>

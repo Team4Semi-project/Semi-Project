@@ -149,6 +149,33 @@ public class EditDefaultBoardController {
 		return path;
 	}
 	
+	@PostMapping("{boardNo:[0-9]+}/update")
+	public String boardUpdate(
+	        @PathVariable("boardCode") int boardCode,
+	        @PathVariable("boardNo") int boardNo,
+	        @ModelAttribute Board inputBoard,
+	        @SessionAttribute("loginMember") Member loginMember,
+	        RedirectAttributes ra) throws Exception {
+
+	    inputBoard.setBoardCode(boardCode);
+	    inputBoard.setBoardNo(boardNo);
+	    inputBoard.setMemberNo(loginMember.getMemberNo());
+
+	    int result = service.defaultBoardUpdate(inputBoard);
+
+	    String path;
+	    if (result > 0) {
+	        ra.addFlashAttribute("message", "게시글이 수정되었습니다.");
+	        path = String.format("/board/%d/%d", boardCode, boardNo);
+	    } else {
+	        ra.addFlashAttribute("message", "게시글 수정 실패");
+	        path = String.format("/editBoard/%d/%d/update", boardCode, boardNo);
+	    }
+
+	    return "redirect:" + path;
+	}
+
+	
 	/** 게시글 삭제
 	 * @param boardCode
 	 * @param boardNo

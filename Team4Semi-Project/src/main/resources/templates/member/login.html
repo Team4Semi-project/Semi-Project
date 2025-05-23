@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LEMONA - 로그인</title>
+  <link rel="stylesheet" href="/css/login/login.css"/>
+</head>
+<body>
+  <div class="container">
+    <!-- member 안에 login -->
+    <!-- 로고 클릭 시 main.html로 이동 -->
+    <a href="../common/main.html" class="logo-link">
+      <div class="logo-container">
+        <img src="/images/logo.png" alt="LEMONA 로고" class="logo"/>
+        <div class="brand-name">LEMONA</div>
+      </div>
+    </a>
+
+    <div class="login-container">
+      <div class="login-header">로그인</div>
+      
+      <form id="loginForm">
+        <div class="input-group">
+          <input type="text" class="input-field" id="username" placeholder="아이디를 입력하세요"/>
+        </div>
+        
+        <div class="input-group">
+          <input type="password" class="input-field" id="password" placeholder="비밀번호를 입력하세요"/>
+        </div>
+        
+        <div class="error-message" id="loginError">아이디 또는 비밀번호가 일치하지 않습니다.</div>
+        
+        <div class="button-group">
+          <button type="button" id="signupBtn" class="button-secondary">회원가입</button>
+          <button type="submit" id="loginBtn" class="button-primary">로그인</button>
+        </div>
+      </form>
+      
+      <div class="find-buttons-container">
+        <button type="button" id="findIdBtn" class="find-button">아이디 찾기</button>
+        <button type="button" id="findPwBtn" class="find-button">비밀번호 찾기</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <span class="footer-link">프라이버시 정책</span>
+        <span class="footer-link">개인정보 처리방침</span>
+        <span class="footer-link">서비스 이용약관</span>
+        <span class="footer-link">마케팅</span>
+        <span class="footer-link">© Copyright</span>
+        <span class="footer-link">Q&A</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/js/login/login.js"></script>
+</body>
+</html>

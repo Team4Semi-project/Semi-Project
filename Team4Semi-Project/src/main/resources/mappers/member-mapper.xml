@@ -12,7 +12,7 @@
 	</select>
 
 	<!-- 이메일 중복 검사 -->
-	<select id="checkEmail" resultType="int">
+	<select id="checkEmail" resultType="_int">
 		SELECT COUNT(*)
 		FROM "MEMBER"
 		WHERE MEMBER_EMAIL = #{memberEmail}

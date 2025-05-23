@@ -1,64 +1,22 @@
-// LEMONA Login JavaScript
-console.log("로그인 스크립트가 로드되었습니다!");
+// /js/login/login.js
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById("loginForm");
+  const username = document.getElementById("username");
+  const password = document.getElementById("password");
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM이 로드되었습니다!");
+  loginForm.addEventListener("submit", function (e) {
+    if (username.value.trim() === "") {
+      alert("아이디를 입력하세요.");
+      username.focus();
+      e.preventDefault();
+      return;
+    }
 
-    // 버튼 요소 선택
-    console.log("버튼 요소 선택 시도...");
-    const loginForm = document.getElementById('loginForm');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const loginError = document.getElementById('loginError');
-    const loginBtn = document.getElementById('loginBtn');
-    const registerBtn = document.getElementById('registerBtn');
-    const findIdBtn = document.getElementById('findIdBtn');
-    const findPwBtn = document.getElementById('findPwBtn');
-    
-
-
-    // Login form submission
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Validate inputs
-        if (!usernameInput.value.trim() || !passwordInput.value.trim()) {
-            loginError.style.display = 'block';
-            return;
-        }
-        
-        // Simulating login - In a real app, you would send an API request here
-        // For demonstration, we'll just show the error message
-        loginError.style.display = 'block';
-        
-        // In a real app, you would redirect on success:
-        // window.location.href = 'dashboard.html';
-    });
-
-    // Clear error message when inputs change
-    usernameInput.addEventListener('input', function() {
-        loginError.style.display = 'none';
-    });
-    
-    passwordInput.addEventListener('input', function() {
-        loginError.style.display = 'none';
-    });
-
-    // 회원가입 버튼 이벤트
-    registerBtn.addEventListener('click', function() {
-        console.log("회원가입 버튼 클릭됨!");
-        window.location.href = 'register';
-    });
-
-    // 아이디 찾기 버튼 이벤트
-    findIdBtn.addEventListener('click', function() {
-        console.log("아이디 찾기 버튼 클릭됨!");
-        window.location.href = 'find-id.html';
-    });
-
-    // 비밀번호 찾기 버튼 이벤트
-    findPwBtn.addEventListener('click', function() {
-        console.log("비밀번호 찾기 버튼 클릭됨!");
-        window.location.href = 'find-password.html';
-    });
+    if (password.value.trim() === "") {
+      alert("비밀번호를 입력하세요.");
+      password.focus();
+      e.preventDefault();
+      return;
+    }
+  });
 });

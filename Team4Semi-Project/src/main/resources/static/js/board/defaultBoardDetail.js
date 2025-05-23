@@ -63,32 +63,17 @@ goToPrev.addEventListener("click", () => {
     return;
   }
 
-  const pathname = window.location.pathname;
-  const segments = pathname.split("/");
-  const categoryNo = segments[3];
-  if (popular == 1) {
-    location.href = `/board/1/${categoryNo}/${prevBoardNo}?popular=1`;
-    return;
-  }
-  location.href = `/board/1/${categoryNo}/${prevBoardNo}`;
+  location.href = `/board/${boardCode}/${prevBoardNo}?cp=${cp}`;
 });
 
 // 다음글 버튼
 goToNext.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const nextBoardNo = naviBtn.dataset.nextBoardNo;
-  console.log(nextBoardNo);
   if (nextBoardNo == 0) {
     alert("다음 글이 없습니다.");
     return;
   }
 
-  const pathname = window.location.pathname;
-  const segments = pathname.split("/");
-  const categoryNo = segments[3];
-  if (popular == 1) {
-    location.href = `/board/1/${categoryNo}/${nextBoardNo}?popular=1`;
-    return;
-  }
-  location.href = `/board/1/${categoryNo}/${nextBoardNo}`;
+  location.href = `/board/${boardCode}/${nextBoardNo}?cp=${cp}`;
 });

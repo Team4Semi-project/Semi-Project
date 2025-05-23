@@ -408,4 +408,40 @@ public class RecipeBoardController {
 
 		return count;
 	}
+	
+	
+	/**
+	 * @param category : 카테고리 확인(레시피 / 인기 레시피)
+	 * @param boardNo : 글 번호
+	 * @param loginMember
+	 * @param model
+	 * @param ra
+	 * @param req
+	 * @param resp
+	 * @return
+	 * @author miae
+	 */
+	@GetMapping("{category}/{boardNo:[0-9]+}/delete")
+	public String deleteRecipeBoard(@PathVariable("category") String category, @PathVariable("boardNo") int boardNo,
+									@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+								@SessionAttribute(value="loginMember", required = false) Member loginMember,
+									Model model, RedirectAttributes ra) {
+		
+		int result = service.deleteRecipeBoard(boardNo);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = "/board/1/" + category;
+			message = "레시피가 삭제되었어요.";
+		} else {
+			path = "/board/1/" + category + boardNo +"?cp=" + cp;
+			message = "삭제 실패! 관리자에게 문의하세요.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" +  path;
+	}
 }

@@ -60,7 +60,7 @@
             <div class="recipe-image">
               <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <a
-                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -71,8 +71,8 @@
             <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
-                  th:utext="${board.boardTitle}">레몬 팬케이크
+                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                  th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
@@ -121,7 +121,7 @@
               <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <!-- 레시피 게시판 썸네일 -->
               <a
-                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}">
+                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -132,8 +132,9 @@
             <!-- 글 제목 클릭 시 이동-->
             <div class="recipe-details">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
-                  th:utext="${board.boardTitle}">레몬 팬케이크
+
+                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                  th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>

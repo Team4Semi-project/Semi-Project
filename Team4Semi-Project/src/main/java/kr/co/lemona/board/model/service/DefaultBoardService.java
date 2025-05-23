@@ -18,7 +18,7 @@ public interface DefaultBoardService {
 	 * @return
 	 * @author 민장
 	 */
-	Board selectOne(Map<String, Integer> map);
+	Map<String, Object> selectOne(Map<String, Integer> map);
 
 	/** 해당 게시판 검색 조회 서비스
 	 * @param paramMap
@@ -27,5 +27,11 @@ public interface DefaultBoardService {
 	 * @author jihyun
 	 */
 	Map<String, Object> serchList(Map<String, Object> paramMap, int cp);
+
+	/** 게시글 조회수 증가
+	 * @param boardNo
+	 * @return
+	 */
+	int updateReadCount(int boardNo);
 
 }

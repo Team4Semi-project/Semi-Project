@@ -19,9 +19,9 @@
 
 		<div class="login-box">
 			<div class="login-header">로그인</div>
-			<form id="loginForm">
-				<input type="text" class="input-field" id="username" placeholder="아이디를 입력하세요"/>
-				<input type="password" class="input-field" id="password" placeholder="비밀번호를 입력하세요"/>
+			<form id="loginForm" action="/member/login" method="post">
+				<input type="text" class="input-field" id="username"  name="memberId" placeholder="아이디를 입력하세요"/>
+				<input type="password" class="input-field" id="password" name="memberPw" placeholder="비밀번호를 입력하세요"/>
 				<div class="error-message" id="loginError">
 					아이디 또는 비밀번호가 일치하지 않습니다.
 				</div>
@@ -50,6 +50,10 @@
 		</footer>
 	</div>
 
+	<!-- 푸터 프래그먼트 -->
+	<footer th:replace="~{common/footer :: footer}"></footer>
+	<!-- 로그인 입력 안 하면 X-->
+	<script src="/js/main.js"></script>
 	<script src="/js/login/login.js"></script>
 </body>
 

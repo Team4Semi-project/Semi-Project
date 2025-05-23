@@ -32,12 +32,19 @@ public class MemberController {
 	private MemberService service; 
 
 	@PostMapping("login") // Post 방식 로그인
-	public String login(Member inputMember, RedirectAttributes ra, Model model,
-			@RequestParam(value = "saveId", required = false) String saveId, HttpServletResponse resp) {
+	public String login(Member inputMember, 
+						RedirectAttributes ra, 
+						Model model,
+						@RequestParam(value = "saveId", required = false) String saveId, 
+						HttpServletResponse resp) {
 
+		// 로그인 서비스 호출
 		Member loginMember = service.login(inputMember); // inputMember로 로그인 시도
+		log.debug("inputMember : {} ",inputMember);
+		log.debug("loginMember : {} ",loginMember);
 
-		if (loginMember == null) { // 로그인 실패 시
+		// 로그인 실패 시
+		if (loginMember == null) { 
 			ra.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
 
 		} else { // 로그인 성공 시

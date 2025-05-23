@@ -55,21 +55,19 @@ public class RecipeBoardController {
 	@GetMapping("{categoryNo}")
 	public String selectRecipeBoardList(@PathVariable("categoryNo") String categoryNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			@SessionAttribute(value="loginMember", required = false) Member loginMember,
-			Model model,
-			@RequestParam(value = "key", required = false) String key,
-			@RequestParam Map<String, Object> paramMap) {
-    
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember, Model model,
+			@RequestParam(value = "key", required = false) String key, @RequestParam Map<String, Object> paramMap) {
+
 		// 조회 대상의 정보를 담는 맵 객체
 		Map<String, Object> inputMap = new HashMap<>();
-		
+
 		// 로그인 중이라면 로그인 계정 정보 삽입
-		if(loginMember != null) {
+		if (loginMember != null) {
 			inputMap.put("memberNo", loginMember.getMemberNo());
 		}
 		inputMap.put("cp", cp);
 		inputMap.put("categoryNo", categoryNo);
-		
+
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
 
@@ -81,36 +79,37 @@ public class RecipeBoardController {
 		} else { // 검색인 경우 --> paramMap
 
 			// 검색 서비스 호출
-			if(categoryNo.equals("poupular")) {
+			if (categoryNo.equals("poupular")) {
 				map = service.searchPopularList(paramMap, cp);
-			} else {				
-			map = service.serchList(paramMap, inputMap);
-			
-			// 검색어 강조 처리
-			String query = (String) paramMap.get("queryb");
-			String searchKey = (String) paramMap.get("key");
+			} else {
+				map = service.searchList(paramMap, inputMap);
 
-			if (query != null && !query.trim().isEmpty()) {
-				List<RecipeBoard> boardList = (List<RecipeBoard>) map.get("recipeBoardList");
+				// 검색어 강조 처리
+				String query = (String) paramMap.get("queryb");
+				String searchKey = (String) paramMap.get("key");
 
-				for (RecipeBoard board : boardList) {
-					// 제목 강조
-					if ("t".equals(searchKey) || "tc".equals(searchKey)) {
-						String title = board.getBoardTitle();
-						if (title != null && title.contains(query)) {
-							board.setBoardTitle(title.replace(query,
-									"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
-											+ "</span>"));
+				if (query != null && !query.trim().isEmpty()) {
+					List<RecipeBoard> boardList = (List<RecipeBoard>) map.get("recipeBoardList");
+
+					for (RecipeBoard board : boardList) {
+						// 제목 강조
+						if ("t".equals(searchKey) || "tc".equals(searchKey)) {
+							String title = board.getBoardTitle();
+							if (title != null && title.contains(query)) {
+								board.setBoardTitle(title.replace(query,
+										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+												+ "</span>"));
+							}
 						}
-					}
 
-					// 작성자 강조
-					if ("w".equals(searchKey)) {
-						String nickname = board.getMemberNickname();
-						if (nickname != null && nickname.contains(query)) {
-							board.setMemberNickname(nickname.replace(query,
-									"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
-											+ "</span>"));
+						// 작성자 강조
+						if ("w".equals(searchKey)) {
+							String nickname = board.getMemberNickname();
+							if (nickname != null && nickname.contains(query)) {
+								board.setMemberNickname(nickname.replace(query,
+										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+												+ "</span>"));
+							}
 						}
 					}
 				}
@@ -126,9 +125,11 @@ public class RecipeBoardController {
 		return "board/recipeBoardList";
 	}
 
-	/** 레시피 게시글 상세 조회
-	 * @param boardNo : 게시글 번호
-	 * @param category : categoryNo 또는 "popular" 들어올 수 있음. 
+	/**
+	 * 레시피 게시글 상세 조회
+	 * 
+	 * @param boardNo     : 게시글 번호
+	 * @param category    : categoryNo 또는 "popular" 들어올 수 있음.
 	 * @param model
 	 * @param loginMember : 현재 로그인한 사용자가 있을 경우 사용
 	 * @param ra
@@ -139,22 +140,19 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("{category}/{boardNo:[0-9]+}")
 	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("category") String category,
-									Model model,
-									@SessionAttribute(value="loginMember", required = false) Member loginMember,
-									RedirectAttributes ra,
-									HttpServletRequest req,		// 요청에 담긴 쿠기 얻어오기
-									HttpServletResponse resp 	// 새로운 쿠기 만들어서 응답하기
-									) {
-		
+			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
+			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠기 얻어오기
+			HttpServletResponse resp // 새로운 쿠기 만들어서 응답하기
+	) {
+
 		// 게시글 상세 조회 서비스 호출
-		
-		
+
 		// 1) Map 으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
-		
+
 		// caterogy에 인기글(popular) 이 들어올 경우 categoryNo를 0으로 하고
 		// 그렇지 않을 경우에는 int형으로 변환 후 categoryNo값 넘겨줌
-		if(!category.equals("popular")) {
+		if (!category.equals("popular")) {
 			int categoryNo = 0;
 			categoryNo = Integer.parseInt(category);
 			map.put("categoryNo", categoryNo);
@@ -176,7 +174,7 @@ public class RecipeBoardController {
 		String path = null;
 
 		// 조회 결과가 없는 경우
-		if(recipeMap == null) {
+		if (recipeMap == null) {
 			path = "redirect:/board/1/" + category; // 목록 재요청
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
 
@@ -360,11 +358,10 @@ public class RecipeBoardController {
 
 		return count;
 	}
-	
-	
+
 	/**
-	 * @param category : 카테고리 확인(레시피 / 인기 레시피)
-	 * @param boardNo : 글 번호
+	 * @param category    : 카테고리 확인(레시피 / 인기 레시피)
+	 * @param boardNo     : 글 번호
 	 * @param loginMember
 	 * @param model
 	 * @param ra
@@ -375,25 +372,25 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("{category}/{boardNo:[0-9]+}/delete")
 	public String deleteRecipeBoard(@PathVariable("category") String category, @PathVariable("boardNo") int boardNo,
-									@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-								@SessionAttribute(value="loginMember", required = false) Member loginMember,
-									Model model, RedirectAttributes ra) {
-		
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember, Model model,
+			RedirectAttributes ra) {
+
 		int result = service.deleteRecipeBoard(boardNo);
-		
+
 		String path = null;
 		String message = null;
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			path = "/board/1/" + category;
 			message = "레시피가 삭제되었어요.";
 		} else {
-			path = "/board/1/" + category + boardNo +"?cp=" + cp;
+			path = "/board/1/" + category + boardNo + "?cp=" + cp;
 			message = "삭제 실패! 관리자에게 문의하세요.";
 		}
-		
+
 		ra.addFlashAttribute("message", message);
-		
-		return "redirect:" +  path;
+
+		return "redirect:" + path;
 	}
 }

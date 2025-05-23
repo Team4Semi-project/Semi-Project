@@ -402,6 +402,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	@Override
 	public int updatePopularStateToN() {
 		return mapper.updatePopularStateToN();
+	}
 
 	@Override
 	public int deleteRecipeBoard(int boardNo) {

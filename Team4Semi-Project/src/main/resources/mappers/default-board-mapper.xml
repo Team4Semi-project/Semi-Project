@@ -18,7 +18,7 @@
 			javaType="java.util.ArrayList" ofType="Comment" />
 
 	</resultMap>
-
+	
 	<!-- 게시글 수 조회 -->
 	<select id="getListCount">
 		SELECT COUNT(*)
@@ -72,8 +72,10 @@
 		HH24:MI:SS')
 		BOARD_UPDATE_DATE,
 
-		(SELECT COUNT(*) FROM DEFAULT_COMMENT WHERE BOARD_NO = #{boardNo} AND
-		COMMENT_DEL_FL = 'N') AS COMMENT_COUNT,
+		(SELECT COUNT(*) FROM
+		DEFAULT_COMMENT WHERE BOARD_NO = #{boardNo} AND
+		COMMENT_DEL_FL = 'N')
+		AS COMMENT_COUNT,
 
 		(SELECT COUNT(*)
 		FROM
@@ -87,7 +89,8 @@
 		"DEFAULT_BOARD_LIKE"
 		WHERE BOARD_NO = #{boardNo}
 		AND
-		MEMBER_NO = #{memberNo}) LIKE_CHECK
+		MEMBER_NO =
+		#{memberNo}) LIKE_CHECK
 
 		FROM "BOARD"
 		JOIN
@@ -97,9 +100,48 @@
 		BOARD_DEL_FL = 'N'
 		AND BOARD_NO = #{boardNo}
 		AND
-		BOARD_CODE = #{boardCode}
+		BOARD_CODE =
+		#{boardCode}
 	</select>
 
+	<!-- 이전 글 번호 조회 -->
+	<select id="selectPrevBoard">
+		SELECT *
+		FROM BOARD B
+		WHERE BOARD_NO &lt; #{boardNo}
+		AND BOARD_CODE = #{boardCode}
+		AND BOARD_DEL_FL = 'N'
+		ORDER BY BOARD_NO DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<!-- 다음 글 번호 조회 -->
+	<select id="selectNextBoard">
+		SELECT *
+		FROM BOARD B
+		WHERE BOARD_NO &gt; #{boardNo}
+		AND BOARD_CODE = #{boardCode}
+		AND BOARD_DEL_FL = 'N'
+		ORDER BY BOARD_NO
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<!-- 조회수 1 증가 -->
+	<!-- 미애 -->
+	<update id="updateReadCount">
+		UPDATE "BOARD" SET
+		READ_COUNT = READ_COUNT + 1
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<!-- 조회수 조회 -->
+	<!-- 미애 -->	
+	<select id="selectReadCount">
+		SELECT READ_COUNT
+		FROM "BOARD"
+		WHERE BOARD_NO = #{boardNo} 
+	</select>
+	
 	<!-- 상세 조회한 게시글의 댓글 수 조회 -->
 	<select id="commentCount" resultType="int">
 		SELECT COUNT(*) AS

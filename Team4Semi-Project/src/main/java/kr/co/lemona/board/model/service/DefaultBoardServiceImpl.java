@@ -1,10 +1,13 @@
 package kr.co.lemona.board.model.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.board.model.mapper.DefaultBoardMapper;
+import kr.co.lemona.recipeBoard.model.dto.BoardStep;
+import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -73,9 +78,35 @@ public class DefaultBoardServiceImpl implements DefaultBoardService{
 	 * @author 민장
 	 */
 	@Override
-	public Board selectOne(Map<String, Integer> map) {
-		// 
-		return mapper.selectOne(map);
+	public Map<String, Object> selectOne(Map<String, Integer> map) {
+		
+		Map<String, Object> map2 = new HashMap<>();
+
+		Board board = mapper.selectOne(map);
+		
+		// 이전 글
+		Board prevBoard = mapper.selectPrevBoard(map);
+
+		// 다음 글
+		Board nextBoard = mapper.selectNextBoard(map);
+
+		int prevBoardNo = 0;
+		int nextBoardNo = 0;
+
+		// 이전 글 다음글 목록이 있을때만 값을 받아오기
+		if (prevBoard != null) {
+			prevBoardNo = prevBoard.getBoardNo();
+		}
+
+		if (nextBoard != null) {
+			nextBoardNo = nextBoard.getBoardNo();
+		}
+
+		map2.put("board", board);
+		map2.put("prevBoardNo", prevBoardNo);
+		map2.put("nextBoardNo", nextBoardNo);
+
+		return map2;
 	}
 
 	/** 해당 게시판 검색 결과 조회
@@ -115,5 +146,22 @@ public class DefaultBoardServiceImpl implements DefaultBoardService{
 		map.put("boardList", boardList);
 
 		return map;
+	}
+
+	/** 레시피 게시글 조회수 증가
+	 * boardNo : 게시글 번호
+	 */
+	@Override
+	public int updateReadCount(int boardNo) {
+		// 1, 조회수 1 증가 (UPDATE)
+				int result = mapper.updateReadCount(boardNo);
+				
+				// 2. 현재 조회 수 조회
+				if(result > 0) {
+					return mapper.selectReadCount(boardNo);
+				}
+				
+				// 실패한 경우 -1 반환
+				return -1;
 	}
 }

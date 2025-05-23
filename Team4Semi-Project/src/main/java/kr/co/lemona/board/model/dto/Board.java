@@ -49,5 +49,6 @@ public class Board {
 	private String thumbnailImgPath;
 	private String thumbnailImgRename;
 	// 게시글에 포함된 해쉬태그
+	private String tags;
 	private List<String> hashTagList;
 }

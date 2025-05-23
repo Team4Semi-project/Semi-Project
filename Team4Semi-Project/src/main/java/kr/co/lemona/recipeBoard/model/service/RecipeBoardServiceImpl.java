@@ -125,13 +125,16 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		RecipeBoard recipeBoard = mapper.selectOneRecipe(map);
 		
 		// 해시태그 받아오는 부분
-		String tags = recipeBoard.getTags();
-		if(tags != null && !tags.isEmpty()) {
-			 List<String> tagList = Arrays.stream(tags.split(","))
-                     .map(String::trim)
-                     .collect(Collectors.toList());
-			 recipeBoard.setHashTagList(tagList);
+		if(recipeBoard != null) {
+			String tags = recipeBoard.getTags();
+			if(tags != null && !tags.isEmpty()) {
+				 List<String> tagList = Arrays.stream(tags.split(","))
+	                     .map(String::trim)
+	                     .collect(Collectors.toList());
+				 recipeBoard.setHashTagList(tagList);
+			}
 		}
+		
 		
 		// 이전 글
 		RecipeBoard prevBoard = mapper.selectPrevBoard(map);
@@ -399,5 +402,10 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	@Override
 	public int updatePopularStateToN() {
 		return mapper.updatePopularStateToN();
+
+	@Override
+	public int deleteRecipeBoard(int boardNo) {
+		
+		return mapper.deleteRecipeBoard(boardNo);
 	}
 }

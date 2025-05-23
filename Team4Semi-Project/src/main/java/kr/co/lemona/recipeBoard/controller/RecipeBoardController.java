@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
@@ -83,7 +84,36 @@ public class RecipeBoardController {
 			if(categoryNo.equals("poupular")) {
 				map = service.searchPopularList(paramMap, cp);
 			} else {				
-				map = service.searchList(paramMap, inputMap);
+			map = service.serchList(paramMap, inputMap);
+			
+			// 검색어 강조 처리
+			String query = (String) paramMap.get("queryb");
+			String searchKey = (String) paramMap.get("key");
+
+			if (query != null && !query.trim().isEmpty()) {
+				List<RecipeBoard> boardList = (List<RecipeBoard>) map.get("recipeBoardList");
+
+				for (RecipeBoard board : boardList) {
+					// 제목 강조
+					if ("t".equals(searchKey) || "tc".equals(searchKey)) {
+						String title = board.getBoardTitle();
+						if (title != null && title.contains(query)) {
+							board.setBoardTitle(title.replace(query,
+									"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+											+ "</span>"));
+						}
+					}
+
+					// 작성자 강조
+					if ("w".equals(searchKey)) {
+						String nickname = board.getMemberNickname();
+						if (nickname != null && nickname.contains(query)) {
+							board.setMemberNickname(nickname.replace(query,
+									"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+											+ "</span>"));
+						}
+					}
+				}
 			}
 		}
 
@@ -329,5 +359,41 @@ public class RecipeBoardController {
 		log.debug("count : {}", count);
 
 		return count;
+	}
+	
+	
+	/**
+	 * @param category : 카테고리 확인(레시피 / 인기 레시피)
+	 * @param boardNo : 글 번호
+	 * @param loginMember
+	 * @param model
+	 * @param ra
+	 * @param req
+	 * @param resp
+	 * @return
+	 * @author miae
+	 */
+	@GetMapping("{category}/{boardNo:[0-9]+}/delete")
+	public String deleteRecipeBoard(@PathVariable("category") String category, @PathVariable("boardNo") int boardNo,
+									@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+								@SessionAttribute(value="loginMember", required = false) Member loginMember,
+									Model model, RedirectAttributes ra) {
+		
+		int result = service.deleteRecipeBoard(boardNo);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = "/board/1/" + category;
+			message = "레시피가 삭제되었어요.";
+		} else {
+			path = "/board/1/" + category + boardNo +"?cp=" + cp;
+			message = "삭제 실패! 관리자에게 문의하세요.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" +  path;
 	}
 }

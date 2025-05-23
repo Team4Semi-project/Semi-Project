@@ -235,6 +235,7 @@
 		SELECT *
 		FROM RECIPE_BOARD B
 		WHERE BOARD_NO &lt; ${boardNo}
+		AND BOARD_DEL_FL='N'
 		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
 		<if test="categoryNo != 0">
 			AND CATEGORY_NO = ${categoryNo}
@@ -257,6 +258,7 @@
 		SELECT *
 		FROM RECIPE_BOARD B
 		WHERE BOARD_NO &gt; ${boardNo}
+		AND BOARD_DEL_FL='N'
 		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
 		<if test="categoryNo != 0">
 			AND CATEGORY_NO = ${categoryNo}
@@ -708,4 +710,13 @@
 			)
 	  	]]>
 	</update>
+
+	<!-- 레시피 삭제 -->
+	<!-- 미애 -->
+	<update id="deleteRecipeBoard">
+		UPDATE "RECIPE_BOARD"
+		SET BOARD_DEL_FL = 'Y'
+		WHERE BOARD_NO= ${boardNo}
+	</update>
+
 </mapper>

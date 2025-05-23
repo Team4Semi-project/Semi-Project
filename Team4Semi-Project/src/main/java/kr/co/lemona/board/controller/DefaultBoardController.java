@@ -59,10 +59,42 @@ public class DefaultBoardController {
 		} else { // 검색인 경우 --> paramMap
 
 			// boardCode를 paramMap에 추가
-			// paramMap.put("boardCode", boardCode);
-
+			 paramMap.put("boardCode", boardCode);
+			
 			// 검색 서비스 호출
-			map = service.serchList(paramMap, cp);
+			 map = service.serchList(paramMap, cp);
+			 
+				// 검색어 강조 처리
+				String query = (String) paramMap.get("queryb");
+				String searchKey = (String) paramMap.get("key");
+
+				if (query != null && !query.trim().isEmpty()) {
+					List<Board> boardList = (List<Board>) map.get("boardList");
+
+					for (Board board : boardList) {
+						// 제목 강조
+						if ("t".equals(searchKey) || "tc".equals(searchKey)) {
+							String title = board.getBoardTitle();
+							if (title != null && title.contains(query)) {
+								board.setBoardTitle(title.replace(query,
+										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+												+ "</span>"));
+							}
+						}
+
+						// 작성자 강조
+						if ("w".equals(searchKey)) {
+							String nickname = board.getMemberNickname();
+							if (nickname != null && nickname.contains(query)) {
+								board.setMemberNickname(nickname.replace(query,
+										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+												+ "</span>"));
+							}
+						}
+
+					}
+
+				}
 
 		}
 		// --------------- 세션 구현 안돼서 테스트용 데이터 삽입 ---------------

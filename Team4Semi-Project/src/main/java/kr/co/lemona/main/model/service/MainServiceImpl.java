@@ -1,8 +1,10 @@
 package kr.co.lemona.main.model.service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,17 @@ public class MainServiceImpl implements MainService {
 		// 4. 조회 결과 Board 객체 형태로 List에 담기
 		// 레시피 게시판과 그 외의 게시판에서 검색어 조회 후 해당 게시글들 담기
 		 List<Board> searchAllBoardList = mapper.searchAllBoardList(paramMap, rowBounds);
+		 
+		// 해시태그 받아오는 부분
+			for (Board recipeBoard : searchAllBoardList) {
+				String tags = recipeBoard.getTags();
+				if(tags != null && !tags.isEmpty()) {
+					 List<String> tagList = Arrays.stream(tags.split(","))
+	                         .map(String::trim)
+	                         .collect(Collectors.toList());
+					 recipeBoard.setHashTagList(tagList);
+				}
+			}
 
 		// 5. 목록 조회 결과 + Paginaion 객체를 Map으로 묶음
 		Map<String, Object> map = new HashMap<>();

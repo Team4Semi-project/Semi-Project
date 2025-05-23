@@ -1,31 +1,42 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">레모나</title>
+    <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
+    <th:block th:replace="~{common/common}"></th:block>
+    
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">레모나</title>
-  <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
-  <th:block th:replace="~{common/common}"></th:block>
-</head>
+  <body>
+    <!-- 헤더 프래그먼트 -->
+    <header th:replace="~{common/header :: header}"></header>
 
-<body>
-  <!-- 헤더 프래그먼트 -->
-  <header th:replace="~{common/header :: header}"></header>
+    <!-- 네비게이션 프래그먼트 -->
+    <nav th:replace="~{common/navigation :: navigation}"></nav>
 
-  <!-- 네비게이션 프래그먼트 -->
-  <nav th:replace="~{common/navigation :: navigation}"></nav>
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="main-list">
+      <section class="recipe-section">
+        <!-- 섹션 헤더 -->
+        <div class="section-header">
+          <h2 class="section-title">게시글 목록</h2>
 
-  <!-- 메인 콘텐츠 영역 -->
-  <main class="main-list">
-    <section class="recipe-section">
-      <!-- 섹션 헤더 -->
-      <div class="section-header">
-        <h2 class="section-title">게시글 목록</h2>
+          <div class="options-container">
+            <div class="view-options">
+              <div class="background-indicator"></div>
 
-        <div class="options-container">
-          <div class="view-options">
-            <div class="background-indicator"></div>
+              <button class="view-toggle agenda" data-view="agenda">
+                <span class="material-symbols-outlined"> view_agenda </span>
+              </button>
+              <button class="view-toggle cozy active" data-view="cozy">
+                <span class="material-symbols-outlined"> view_cozy </span>
+              </button>
+            </div>
 
             <button class="view-toggle agenda" data-view="agenda">
               <span class="material-symbols-outlined"> view_agenda </span>
@@ -71,7 +82,7 @@
             <div class="recipe-info">
               <h3 class="recipe-title">
                 <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
-                  th:text="${board.boardTitle}">레몬 팬케이크
+                  th:utext="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
@@ -79,7 +90,7 @@
                 <div class="author-info">
                   <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                     alt="프로필 이미지" class="author-image" />
-                  <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
+                  <span class="author-name" th:utext="${board.memberNickname}">장미애 님</span>
                 </div>
                 <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
               </div>
@@ -123,13 +134,13 @@
             <div class="recipe-details">
               <h3 class="recipe-title">
                 <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
-                  th:text="${board.boardTitle}">레몬 팬케이크
+                  th:utext="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
               <div class="recipe-meta">
                 <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
-                <span class="recipe-author" th:text="${board.memberNickname}">김아가 님</span>
+                <span class="recipe-author" th:utext="${board.memberNickname}">김아가 님</span>
               </div>
               <div class="recipe-stats">
                 <span class="likes"><i class="fas fa-heart"></i>
@@ -233,28 +244,33 @@
       </div>
 
 
-      <!-- 검색 컨테이너 -->
-      <div class="search-container">
-        <div class="search-dropdown">
-          <button class="dropdown-button">
-            <span>제목 + 내용</span>
-            <i class="fas fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <a href="#">제목 + 내용</a>
-            <a href="#">제목만</a>
-            <a href="#">내용만</a>
-            <a href="#">작성자</a>
-          </div>
-        </div>
+     <!-- 검색 컨테이너 -->
+<!-- 최종 검색창 화면 -->
+<form th:action="@{/board/{boardCode}(boardCode=${boardCode})}" method="get" id="boardSearch1">
+  <div class="select-container1">
+    <select name="key" id="searchKey1">
+  <option value="t" th:selected="${key == 't'}">제목</option>
+  <option value="c" th:selected="${key == 'c'}">내용</option>
+  <option value="tc" th:selected="${key == 'tc'}">제목+내용</option>
+  <option value="w" th:selected="${key == 'w'}">작성자</option>
+  <option value="h" th:selected="${key == 'h'}">해시태그</option>
+</select>
 
-        <div class="search-bar">
-          <input type="text" placeholder="오늘 뭐 먹지?" />
-          <button type="submit" class="search-button">
-            <span class="material-symbols-outlined"> search </span>
-          </button>
-        </div>
-      </div>
+    <div class="select-box1">
+      <span id="selectBoxText1">제목</span>
+      <span class="arrow1"></span>
+    </div>
+  </div>
+
+      <input type="text" name="queryb" id="searchQuery1" placeholder="내용을 입력하세요." th:value="${param.queryb}">
+
+      <button type="submit" class="search-button1">
+        <svg class="search-icon1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path
+            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
+        </svg>
+      </button>
+    </form>
     </section>
   </main>
 
@@ -262,10 +278,50 @@
   <footer th:replace="~{common/footer :: footer}"></footer>
 
   <!-- 공통 스크립트 -->
+  <script th:src="@{/js/board/boardList.js}"></script>
+  <script layout:fragment="script"></script>
+  <th:block th:replace="~{common/header :: search-header-js}"></th:block>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchKey1 = document.getElementById('searchKey1');
+    const selectBoxText1 = document.getElementById('selectBoxText1');
+
+    function updateSelectBoxText(value) {
+      switch (value) {
+        case 't': selectBoxText1.textContent = '제목'; break;
+        case 'c': selectBoxText1.textContent = '내용'; break;
+        case 'tc': selectBoxText1.textContent = '제목 + 내용'; break;
+        case 'w': selectBoxText1.textContent = '작성자'; break;
+        case 'h': selectBoxText1.textContent = '해시태그'; break;
+        default: selectBoxText1.textContent = '제목';
+      }
+    }
+
+    if (searchKey1 && selectBoxText1) {
+      updateSelectBoxText(searchKey1.value);
+
+      searchKey1.addEventListener('change', function () {
+        updateSelectBoxText(this.value);
+      });
+    }
+
+    // 폼 제출 검증
+    const form = document.getElementById('boardSearch1');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        const query = document.getElementById('searchQuery1').value.trim();
+        if (!query) {
+          e.preventDefault();
+          alert('검색어를 입력해주세요.');
+        }
+        
+      });
+    }
+  });
+</script>
   <th:block th:replace="~{common/header :: search-header-js}"></th:block>
   <script th:src="@{/js/board/boardList.js}"></script>
   <script layout:fragment="script"></script>
-
 </body>
 
 </html>

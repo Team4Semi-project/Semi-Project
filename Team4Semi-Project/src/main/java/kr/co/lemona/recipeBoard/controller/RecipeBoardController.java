@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
@@ -81,6 +82,38 @@ public class RecipeBoardController {
 
 			// 검색 서비스 호출
 			map = service.serchList(paramMap, inputMap);
+			
+			// 검색어 강조 처리
+			String query = (String) paramMap.get("queryb");
+			String searchKey = (String) paramMap.get("key");
+
+			if (query != null && !query.trim().isEmpty()) {
+				List<RecipeBoard> boardList = (List<RecipeBoard>) map.get("recipeBoardList");
+
+				for (RecipeBoard board : boardList) {
+					// 제목 강조
+					if ("t".equals(searchKey) || "tc".equals(searchKey)) {
+						String title = board.getBoardTitle();
+						if (title != null && title.contains(query)) {
+							board.setBoardTitle(title.replace(query,
+									"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+											+ "</span>"));
+						}
+					}
+
+					// 작성자 강조
+					if ("w".equals(searchKey)) {
+						String nickname = board.getMemberNickname();
+						if (nickname != null && nickname.contains(query)) {
+							board.setMemberNickname(nickname.replace(query,
+									"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+											+ "</span>"));
+						}
+					}
+
+				}
+
+			}
 		}
 
 		// model 에 반환 받은 값 등록

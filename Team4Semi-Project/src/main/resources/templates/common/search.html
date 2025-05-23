@@ -225,12 +225,7 @@
                 </div>
                 <!-- 레시피 게시판 해시태그 -->
                 <div th:if="${board.boardCode == 1}" class="recipe-tags">
-                  <span
-                    class="tag"
-                    th:each="tag : ${board.hashTagList}"
-                    th:text="${tag}"
-                    >#레몬</span
-                  >
+                  <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}">#레몬</span>
                 </div>
                 <div class="recipe-stats">
                   <span class="likes"

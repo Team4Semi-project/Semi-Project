@@ -213,68 +213,6 @@
         <img src="/images/lemona-logo.png" alt="레모나">
       </a>
     </div>
-
-    <!-- <div class="search-container">
-            <div class="search-dropdown">
-                <button class="dropdown-button">
-                    <span>제목 + 내용</span>
-                    <i class="fas fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">제목 + 내용</a>
-                    <a href="#">제목만</a>
-                    <a href="#">내용만</a>
-                    <a href="#">작성자</a>
-                </div>
-            </div>
-
-            <div class="search-bar">
-                <input type="text" placeholder="오늘 뭐 먹지?">
-                <button type="submit" class="search-button">
-                    <span class="material-symbols-outlined">
-                        search
-                    </span>
-                </button>
-            </div>
-        </div> -->
-
-    <!-- 또 다른 검색창 화면-->
-    <!-- <div class="header-container">
-    <div class="header-content">
-      <form
-        id="searchForm"
-        class="search-form"
-        th:action="@{/search}"
-        method="get"
-      >
-        <div class="dropdown" id="searchDropdown">
-          <button type="button" class="dropdown-button" id="dropdownButton">
-            제목 + 내용
-          </button>
-          <div name="key" class="dropdown-menu" id="dropdownMenu">
-            <div class="dropdown-item" data-value="제목 + 내용" value="tc">제목 + 내용</div>
-            <div class="dropdown-item" data-value="제목만" value="t">제목만</div>
-            <div class="dropdown-item" data-value="내용만" value="c">내용만</div>
-            <div class="dropdown-item" data-value="작성자" value="w">작성자</div>
-          </div>
-        </div>
-
-        <div class="search-input-container">
-          <input
-            type="text"
-            id="searchInput"
-            name="query"
-            class="search-input"
-            placeholder="제목 + 내용 검색어를 입력하세요"
-          />
-        </div>
-
-        <div class="button-container">
-          <button type="submit" class="search-button">검색</button>
-        </div>
-    </form>
-</div>
-</div> -->
     
 <!-- 최종 검색창 화면 -->
 <form th:action="@{/search}" method="get" id="boardSearch">

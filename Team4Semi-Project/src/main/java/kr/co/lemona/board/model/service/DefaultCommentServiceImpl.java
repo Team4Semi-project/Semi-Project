@@ -44,7 +44,7 @@ public class DefaultCommentServiceImpl implements DefaultCommentService {
 	        comment.setLikeCount(likeCount);
 
 	        // 로그인한 사용자가 있는 경우에만 likeCheck 설정
-	        if (memberNo != 0) { // 이 값을 세션에서 받아와야 함 (컨트롤러에서 넘겨줘야 함)
+	        if (memberNo != 0) {
 	    		Map<String, Object> map = new HashMap<>();
 	    		map.put("commentNo", comment.getCommentNo());
 	    		map.put("memberNo", memberNo);

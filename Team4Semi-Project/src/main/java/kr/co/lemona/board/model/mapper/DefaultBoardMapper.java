@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.co.lemona.board.model.dto.Board;
+import kr.co.lemona.board.model.dto.DefaultComment;
 
 @Mapper
 public interface DefaultBoardMapper {
@@ -71,4 +72,11 @@ public interface DefaultBoardMapper {
 	 * @author miae
 	 */
 	int selectReadCount(int boardNo);
+
+	/** 댓글 목록 + 좋아요 조회
+	 * @param commentMap
+	 * @return
+	 * @author 민장
+	 */
+	List<DefaultComment> selectCommentList(Map<String, Object> commentMap);
 }

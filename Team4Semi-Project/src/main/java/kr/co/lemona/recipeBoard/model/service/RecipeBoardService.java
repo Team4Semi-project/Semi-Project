@@ -58,7 +58,7 @@ public interface RecipeBoardService {
 	 * @return
 	 * @author jihyunE
 	 */
-	Map<String, Object> searchPopularList(Map<String, Object> paramMap, int cp);
+	Map<String, Object> searchPopularList(Map<String, Object> paramMap, int cp, String sort);
 
 	/** 좋아요 기능
 	 * @return

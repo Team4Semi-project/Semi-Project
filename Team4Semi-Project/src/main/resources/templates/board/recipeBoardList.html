@@ -44,6 +44,8 @@
             </select>
             <i class="fas fa-caret-down"></i>
           </div>
+
+
         </div>
       </div>
 
@@ -71,15 +73,15 @@
             <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} "
-                  th:text="${board.boardTitle}">레몬 팬케이크
+                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                  th:utext="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
 
               <!-- 레시피 게시판 해시태그 -->
               <div class="recipe-tags">
-                <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}">#레몬</span>
+                <span class="tag" th:each="tag : ${board.hashTagList}" th:utext="'#' +${tag}">#레몬</span>
               </div>
               <div class="recipe-meta">
                 <div class="author-info">
@@ -132,9 +134,8 @@
             <!-- 글 제목 클릭 시 이동-->
             <div class="recipe-details">
               <h3 class="recipe-title">
-
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} "
-                  th:text="${board.boardTitle}">레몬 팬케이크
+                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                  th:utext="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
@@ -144,7 +145,7 @@
               </div>
               <!-- 레시피 게시판 해시태그 -->
               <div class="recipe-tags">
-                <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}">#레몬</span>
+                <span class="tag" th:each="tag : ${board.hashTagList}" th:utext="'#' +${tag}">#레몬</span>
               </div>
               <div class="recipe-stats">
                 <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
@@ -213,13 +214,13 @@
           <!-- 첫 페이지로 이동 -->
           <li>
             <a
-              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=1, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} ">&lt;&lt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=1, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&lt;&lt;</a>
           </li>
 
           <!-- 이전 목록 마지막 번호로 이동 -->
           <li>
             <a
-              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{prevPage}, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} ">&lt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{prevPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&lt;</a>
           </li>
 
           <!-- 특정 페이지로 이동 -->
@@ -231,7 +232,7 @@
 
             <!-- 보고있지 않은 페이지 -->
             <li th:unless="${i} == *{currentPage}">
-              <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=${i}, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} "
+              <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=${i}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} "
                 th:text="${i}">이동할 페이지</a>
             </li>
           </th:block>
@@ -246,13 +247,13 @@
           <!-- 다음 목록 시작 번호로 이동 -->
           <li>
             <a
-              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage}, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} ">&gt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&gt;</a>
           </li>
 
           <!-- 끝 페이지로 이동 -->
           <li>
             <a
-              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage}, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} ">&gt;&gt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&gt;&gt;</a>
           </li>
         </ul>
       </div>

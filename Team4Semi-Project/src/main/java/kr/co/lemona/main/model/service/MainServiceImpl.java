@@ -1,5 +1,6 @@
 package kr.co.lemona.main.model.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.main.model.mapper.MainMapper;
+import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +32,17 @@ public class MainServiceImpl implements MainService {
 		// 1. 레시피 게시글 중 조건에 맞는 최근 인기 게시글 4개 조회해서 List에 담기
 		List<RecipeBoard> popularBoardList = mapper.selectPopularBoardList();
 		
+		// 해시태그 받아오는 부분
+		for (RecipeBoard recipeBoard : popularBoardList) {
+			String tags = recipeBoard.getTags();
+			if(tags != null && !tags.isEmpty()) {
+				 List<String> tagList = Arrays.stream(tags.split(","))
+                         .map(String::trim)
+                         .collect(Collectors.toList());
+				 recipeBoard.setHashTagList(tagList);
+			}
+		}
+		
 		// 2. 목록 조회 결과 객체를 Map 으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
 		map.put("popularBoardList", popularBoardList);
@@ -45,6 +58,18 @@ public class MainServiceImpl implements MainService {
 		// 1. 최근 레시피 게시글 4개 조회해서 List에 담기
 		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(categoryNo);
 		
+		// 해시태그 받아오는 부분
+		for (RecipeBoard recipeBoard : recipeBoardList) {
+			String tags = recipeBoard.getTags();
+			if(tags != null && !tags.isEmpty()) {
+				 List<String> tagList = Arrays.stream(tags.split(","))
+                         .map(String::trim)
+                         .collect(Collectors.toList());
+				 recipeBoard.setHashTagList(tagList);
+			}
+		}
+		
+
 		// 2. 목록 조회 결과 객체를 Map 으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
 		map.put("recipeBoardList", recipeBoardList);
@@ -55,7 +80,7 @@ public class MainServiceImpl implements MainService {
 	
 	// 전체 게시판 통합 검색 서비스
 	@Override
-	public Map<String, Object> AllsearchList(Map<String, Object> paramMap, int cp) {
+	public Map<String, Object> AllsearchList(Map<String, Object> paramMap, int cp, String sort) {
 		// paramMap (key, query)
 
 		// 1. 검색 조건에 맞으면서 삭제되지 않은 게시글 수 조회
@@ -80,7 +105,7 @@ public class MainServiceImpl implements MainService {
 		// 레시피 게시판과 그 외의 게시판에서 검색어 조회 후 해당 게시글들 담기
 		 List<Board> searchAllBoardList = mapper.searchAllBoardList(paramMap, rowBounds);
 		 
-		// 해시태그 받아오는 부분
+			// 해시태그 받아오는 부분
 			for (Board recipeBoard : searchAllBoardList) {
 				String tags = recipeBoard.getTags();
 				if(tags != null && !tags.isEmpty()) {
@@ -101,4 +126,5 @@ public class MainServiceImpl implements MainService {
 		return map;
 
 	}
+
 }

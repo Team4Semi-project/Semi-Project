@@ -1,5 +1,8 @@
 package kr.co.lemona.main.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,12 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.main.model.service.MainService;
+import kr.co.lemona.member.model.dto.Member;
+import kr.co.lemona.recipeBoard.model.dto.BoardStep;
+import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -87,7 +98,8 @@ public class MainController {
 	public String searchPage(@RequestParam(value = "categoryNo", defaultValue = "0") int categoryNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
 			@RequestParam Map<String, Object> paramMap,
-			@RequestParam(value = "key", required = false) String key) {
+			@RequestParam(value = "key", required = false) String key,
+			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort) {
 
 		// 조회 서비스 호출 후 결과 반환 받기
 		Map<String, Object> map = null;
@@ -95,7 +107,7 @@ public class MainController {
 		// 검색인 경우 --> paramMap = {"key"="tc", "query"="맞긴해"}
 
 		// 전체 게시글 통합 검색 서비스 호출
-		map = service.AllsearchList(paramMap, cp);
+		map = service.AllsearchList(paramMap, cp, sort);
 
 		// 검색어 강조 처리
 		String query = (String) paramMap.get("querys");
@@ -134,6 +146,7 @@ public class MainController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("categoryNo", categoryNo);
 		model.addAttribute("key", key);
+		model.addAttribute("sort", sort);
 
 		return "common/search";
   }

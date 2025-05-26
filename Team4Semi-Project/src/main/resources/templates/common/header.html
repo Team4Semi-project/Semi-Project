@@ -1,250 +1,255 @@
 <!-- 헤더 프래그먼트 -->
 <header th:fragment="header" class="header">
 
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-			font-family: "Malgun Gothic", sans-serif;
-		}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Malgun Gothic", sans-serif;
+    }
 
-		.header-container {
-			width: 100%;
-			background-color: #f3f4f6;
-			padding: 16px;
-		}
+    .header-container {
+      width: 100%;
+      height: 120px;
+      background-color: #f3f4f6;
+      /* padding: 100px; */
+    }
 
-		.header-content {
-			max-width: 1200px;
-			margin: 0 auto;
-		}
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-		.search-form {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-		}
+    .search-form {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-		.dropdown {
-			position: relative;
-		}
+    .dropdown {
+      position: relative;
+    }
 
-		.dropdown-button {
-			display: flex;
-			align-items: center;
-			background-color: #fbbf24;
-			color: #000;
-			padding: 8px 16px;
-			border-radius: 9999px;
-			font-size: 14px;
-			font-weight: 500;
-			border: none;
-			cursor: pointer;
-		}
+    .dropdown-button {
+      display: flex;
+      align-items: center;
+      background-color: #fbbf24;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+    }
 
-		.dropdown-menu {
-			position: absolute;
-			left: 0;
-			margin-top: 4px;
-			width: 128px;
-			background-color: #fff;
-			border-radius: 4px;
-			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-			z-index: 10;
-			display: none;
-		}
+    .dropdown-menu {
+      position: absolute;
+      left: 0;
+      margin-top: 4px;
+      width: 128px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      display: none;
+    }
 
-		.dropdown-menu.show {
-			display: block;
-		}
+    .dropdown-menu.show {
+      display: block;
+    }
 
-		.dropdown-item {
-			display: block;
-			padding: 8px 16px;
-			font-size: 14px;
-			color: #374151;
-			cursor: pointer;
-		}
+    .dropdown-item {
+      display: block;
+      padding: 8px 16px;
+      font-size: 14px;
+      color: #374151;
+      cursor: pointer;
+    }
 
-		.dropdown-item:hover {
-			background-color: #f3f4f6;
-		}
+    .dropdown-item:hover {
+      background-color: #f3f4f6;
+    }
 
-		.search-input-container {
-			flex: 1;
-			margin: 0 16px;
-		}
+    .search-input-container {
+      flex: 1;
+      margin: 0 16px;
+    }
 
-		.search-input {
-			width: 100%;
-			padding: 8px 16px;
-			border-radius: 9999px;
-			border: 1px solid #d1d5db;
-			outline: none;
-		}
+    .search-input {
+      width: 100%;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      border: 1px solid #d1d5db;
+      outline: none;
+    }
 
-		.search-input:focus {
-			outline: none;
-			border-color: #fbbf24;
-			box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.3);
-		}
+    .search-input:focus {
+      outline: none;
+      border-color: #fbbf24;
+      box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.3);
+    }
 
-		.button-container {
-			display: flex;
-			gap: 8px;
-		}
+    .button-container {
+      display: flex;
+      gap: 8px;
+    }
 
-		.search-button {
-			background-color: #fbbf24;
-			color: #000;
-			padding: 8px 16px;
-			border-radius: 9999px;
-			font-size: 14px;
-			font-weight: 500;
-			border: none;
-			cursor: pointer;
-		}
+    .search-button {
+      background-color: #fbbf24;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+    }
 
-		.login-button {
-			color: #374151;
-			font-size: 14px;
-			font-weight: 500;
-			border: none;
-			background: none;
-			cursor: pointer;
-		}
+    .login-button {
+      color: #374151;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
 
-		/* 검색 폼 스타일 */
-		#boardSearch {
-			display: flex;
-			align-items: center;
-			max-width: 1100px;
-			margin: 20px auto;
-			gap: 10px;
-		}
+    /* 검색 폼 스타일 */
+    #boardSearch {
+      display: flex;
+      align-items: center;
+      max-width: 1100px;
+      margin: 20px auto;
+      gap: 10px;
+    }
 
-		/* 셀렉트 박스 스타일링 */
-		.select-container {
-			position: relative;
-			min-width: 155px;
-		}
+    /* 셀렉트 박스 스타일링 */
+    .select-container {
+      position: relative;
+      min-width: 155px;
+    }
 
-		#searchKey {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			opacity: 0;
-			cursor: pointer;
-			z-index: 2;
-		}
+    #searchKey {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
 
-		.select-box {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			background-color: #FFCF39;
-			color: #000;
-			padding: 12px 20px;
-			border-radius: 30px;
-			font-weight: 500;
-			width: 100%;
-			box-sizing: border-box;
-		}
+    .select-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #FFCF39;
+      color: #000;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 500;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-		.select-box .arrow {
-			border-style: solid;
-			border-width: 6px 5px 0 5px;
-			border-color: #000 transparent transparent transparent;
-			margin-left: 10px;
-		}
+    .select-box .arrow {
+      border-style: solid;
+      border-width: 6px 5px 0 5px;
+      border-color: #000 transparent transparent transparent;
+      margin-left: 10px;
+    }
 
-		/* 검색어 입력 필드 */
-		#searchQuery {
-			flex-grow: 1;
-			padding: 12px 20px;
-			border: 1px solid #e0e0e0;
-			border-radius: 30px;
-			outline: none;
-			font-size: 14px;
-			width: 600px;
-		}
+    /* 검색어 입력 필드 */
+    #searchQuery {
+      flex-grow: 1;
+      padding: 12px 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 30px;
+      outline: none;
+      font-size: 14px;
+      width: 600px;
+    }
 
-		#searchQuery:focus {
-			border-color: #FFCF39;
-		}
+    #searchQuery:focus {
+      border-color: #FFCF39;
+    }
 
-		/* 검색 버튼 */
-		.search-button {
-			background: none;
-			border: none;
-			cursor: pointer;
-			padding: 12px;
-		}
+    /* 검색 버튼 */
+    .search-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 12px;
+    }
 
-		.search-icon {
-			width: 24px;
-			height: 24px;
-			fill: #555;
-		}
+    .search-icon {
+      width: 24px;
+      height: 24px;
+      fill: #555;
+    }
 
-		/* 반응형 스타일 */
-		@media (max-width: 768px) {
-			#boardSearch {
-				flex-wrap: wrap;
-			}
+    /* 반응형 스타일 */
+    @media (max-width: 768px) {
+      #boardSearch {
+        flex-wrap: wrap;
+      }
 
-			.select-container {
-				width: 100%;
-				margin-bottom: 10px;
-			}
+      .select-container {
+        width: 100%;
+        margin-bottom: 10px;
+      }
 
-			#searchQuery {
-				width: 100%;
-			}
-		}
-	</style>
+      #searchQuery {
+        width: 100%;
+      }
+    }
+  </style>
 
-	<!-- <th:block th:replace="common/header-search :: search-header-css"></th:block> -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styleguide.css" />
 
-	<div class="header-container">
-		<div class="logo">
-			<a th:href="@{/}">
-				<img src="/images/lemona-logo.png" alt="레모나">
-			</a>
-		</div>
+  <!-- <th:block th:replace="common/header-search :: search-header-css"></th:block> -->
 
-		<!-- 최종 검색창 화면 -->
-		<form th:action="@{/search}" method="get" id="boardSearch">
-			<div class="select-container">
-				<select name="key" id="searchKey">
-					<option value="t" th:selected="${key == 't'}">제목</option>
-					<option value="c" th:selected="${key == 'c'}">내용</option>
-					<option value="tc" th:selected="${key == 'tc'}">제목+내용</option>
-					<option value="w" th:selected="${key == 'w'}">작성자</option>
-					<option value="h" th:selected="${key == 'h'}">해시태그</option>
-				</select>
+  <div class="header-container">
+    
+    
+<!-- 최종 검색창 화면 -->
+<form th:action="@{/search}" method="get" id="boardSearch">
+  <div class="logo">
+      <a th:href="@{/}">
+        <img src="/images/lemona-logo.png" alt="레모나">
+      </a>
+    </div>
+  <div class="select-container">
+    <select name="key" id="searchKey">
+  <option value="t" th:selected="${key == 't'}">제목</option>
+  <option value="c" th:selected="${key == 'c'}">내용</option>
+  <option value="tc" th:selected="${key == 'tc'}">제목+내용</option>
+  <option value="w" th:selected="${key == 'w'}">작성자</option>
+  <option value="h" th:selected="${key == 'h'}">해시태그</option>
+</select>
 
-				<div class="select-box">
-					<span id="selectBoxText">제목</span>
-					<span class="arrow"></span>
-				</div>
-			</div>
+    <div class="select-box">
+      <span id="selectBoxText">제목</span>
+      <span class="arrow"></span>
+    </div>
+  </div>
 
-			<input type="text" name="querys" id="searchQuery" placeholder="내용을 입력하세요." th:value="${param.querys}">
+      <input type="text" name="querys" id="searchQuery" placeholder="내용을 입력하세요." th:value="${param.querys}">
 
-			<button type="submit" class="search-button">
-				<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-					<path
-						d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
-				</svg>
-			</button>
-		</form>
+      <button type="submit" class="search-button">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path
+            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
+        </svg>
+      </button>
+    </form>
 
-		<!-- 로그인 되어있는 계정이 없을때, {로그인,회원가입} -->
-		<div class="user-menu">
-			<th:block th:if="${session.loginMember == null}">
-				<!-- <button
+    <!-- 로그인 되어있는 계정이 없을때, {로그인,회원가입} -->
+    <div class="user-menu">
+      <th:block th:if="${session.loginMember == null}">
+        <!-- <button
                   type="button"
                   class="login-button"
                   th:onclick="|location.href='@{/login}'|">

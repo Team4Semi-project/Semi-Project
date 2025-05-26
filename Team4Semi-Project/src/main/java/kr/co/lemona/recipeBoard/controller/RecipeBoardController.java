@@ -2,9 +2,11 @@ package kr.co.lemona.recipeBoard.controller;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -69,7 +71,7 @@ public class RecipeBoardController {
 		inputMap.put("cp", cp);
 		inputMap.put("categoryNo", categoryNo);
 		inputMap.put("sort", sort);	// 정렬
-		
+
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
 
@@ -81,10 +83,45 @@ public class RecipeBoardController {
 		} else { // 검색인 경우 --> paramMap
 
 			// 검색 서비스 호출
-			if (categoryNo.equals("poupular")) {
-				map = service.searchPopularList(paramMap, cp);
+			if (categoryNo.equals("popular")) {
+				map = service.searchPopularList(paramMap, cp, sort);
+				log.debug("popularmap : "+map);
+				
+				// 검색어 강조 처리
+				String query = (String) paramMap.get("queryb");
+				String searchKey = (String) paramMap.get("key");
+
+				if (query != null && !query.trim().isEmpty()) {
+					List<RecipeBoard> boardList = (List<RecipeBoard>) map.get("recipeBoardList");
+
+					for (RecipeBoard board : boardList) {
+						// 제목 강조
+						if ("t".equals(searchKey) || "tc".equals(searchKey)) {
+							String title = board.getBoardTitle();
+							if (title != null && title.contains(query)) {
+								board.setBoardTitle(title.replace(query,
+										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+												+ "</span>"));
+							}
+						}
+
+						// 작성자 강조
+						if ("w".equals(searchKey)) {
+							String nickname = board.getMemberNickname();
+							if (nickname != null && nickname.contains(query)) {
+								board.setMemberNickname(nickname.replace(query,
+										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+												+ "</span>"));
+							}
+						}
+						
+					}
+				}
+				
+				
 			} else {
 				map = service.searchList(paramMap, inputMap);
+				log.debug("map : "+map);
 
 				// 검색어 강조 처리
 				String query = (String) paramMap.get("queryb");
@@ -113,6 +150,7 @@ public class RecipeBoardController {
 												+ "</span>"));
 							}
 						}
+						
 					}
 				}
 			}

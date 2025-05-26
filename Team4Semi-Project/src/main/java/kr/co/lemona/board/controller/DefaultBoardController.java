@@ -46,7 +46,8 @@ public class DefaultBoardController {
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			@RequestParam Map<String, Object> paramMap, Model model, HttpServletRequest req,
-			@RequestParam(value = "key", required = false) String key) {
+			@RequestParam(value = "key", required = false) String key,
+			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort) {
 
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
@@ -60,6 +61,7 @@ public class DefaultBoardController {
 
 			// boardCode를 paramMap에 추가
 			 paramMap.put("boardCode", boardCode);
+			 paramMap.put("sort", sort);	// 정렬
 			
 			// 검색 서비스 호출
 			 map = service.serchList(paramMap, cp);
@@ -107,6 +109,7 @@ public class DefaultBoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("key", key);
+		model.addAttribute("sort", sort);
 
 		return "board/boardList";
 	}

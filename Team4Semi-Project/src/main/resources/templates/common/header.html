@@ -11,8 +11,9 @@
 
     .header-container {
       width: 100%;
+      height: 120px;
       background-color: #f3f4f6;
-      padding: 16px;
+      /* padding: 100px; */
     }
 
     .header-content {
@@ -205,17 +206,21 @@
     }
   </style>
 
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styleguide.css" />
+
   <!-- <th:block th:replace="common/header-search :: search-header-css"></th:block> -->
 
   <div class="header-container">
-    <div class="logo">
+    
+    
+<!-- 최종 검색창 화면 -->
+<form th:action="@{/search}" method="get" id="boardSearch">
+  <div class="logo">
       <a th:href="@{/}">
         <img src="/images/lemona-logo.png" alt="레모나">
       </a>
     </div>
-    
-<!-- 최종 검색창 화면 -->
-<form th:action="@{/search}" method="get" id="boardSearch">
   <div class="select-container">
     <select name="key" id="searchKey">
   <option value="t" th:selected="${key == 't'}">제목</option>

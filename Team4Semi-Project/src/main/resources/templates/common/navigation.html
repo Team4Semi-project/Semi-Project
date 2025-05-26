@@ -1,5 +1,9 @@
 <!-- 네비게이션 프래그먼트 -->
 <nav th:fragment="navigation" class="navigation">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- 글씨체 반영 -->
+<link href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2204@1.0/RRIDUTONG.css" rel="stylesheet" />
+
   <div class="nav-container">
     <ul class="menu-list">
       <li class="menu-item recipe-menu" th:classappend="${currentMenu == 'recipe'} ? 'active' : ''">
@@ -29,15 +33,33 @@
     <!-- boarCode 확인용
      <p th:text="'현재 boardCode: ' + ${boardCode}">boardCode 없음</p> 
      -->
-    <div th:if="${session.loginMember !=null}" class="write-button-container">
-      <!-- 레시피 게시판 (boardCode == 1) -->
-      <a th:if="${boardCode == 1}" th:href="@{/board/1/insert}" class="write-button">Write Button</a>
-      <!-- 자유게시판 (boardCode == 2) -->
-      <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">Write Button</a>
-    </div>
+    <!-- 로그인한 사용자에게만 버튼 표시 -->
+<div th:if="${session.loginMember != null}" class="write-button-container">
+  <!-- 레시피 게시판 (boardCode == 1) -->
+  <a th:if="${boardCode == 1}"
+     th:href="@{/board/1/insert}"
+     class="write-button bg-gray-200 text-sm px-3 py-1.5 rounded-lg inline-block text-black">
+    레시피 작성
+  </a>
 
-    <div class="write-button-container">
-      <a th:href="@{/board/1/insert}" class="write-button">글 작성하기</a>
-    </div>
+  <!-- 자유게시판 (boardCode == 2) -->
+  <a th:if="${boardCode == 2}"
+     th:href="@{/editBoard/2/insert}"
+     class="write-button bg-gray-200 text-sm px-3 py-1.5 rounded-lg inline-block text-black">
+     글 작성
+  </a>
+</div>
+
+<!-- boardCode가 2, 3이 아닌 경우에도 버튼 표시 -->
+<div th:if="${boardCode != 2 and boardCode != 3}" class="write-button-container">
+  <a th:href="@{/board/1/insert}"
+     class="write-button bg-gray-200 text-sm px-3 py-1.5 rounded-lg inline-block text-black">
+    레시피 작성
+  </a>
+</div>
+
+
+
+
   </div>
 </nav>

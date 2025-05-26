@@ -315,6 +315,17 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		// 1번째 : sql에 전달할 파라미터
 		// 2번째 : RowBounds 객체
 		List<RecipeBoard> recipeBoardList = mapper.selectSearchList(paramMap, rowBounds);
+		
+		// 해시태그 받아오는 부분
+		for (RecipeBoard recipeBoard : recipeBoardList) {
+			String tags = recipeBoard.getTags();
+			if(tags != null && !tags.isEmpty()) {
+				 List<String> tagList = Arrays.stream(tags.split(","))
+                         .map(String::trim)
+                         .collect(Collectors.toList());
+				 recipeBoard.setHashTagList(tagList);
+			}
+		}
 
 		// 4. 목록 조회 결과 + Paginaion 객체를 Map으로 묶음
 		Map<String, Object> map = new HashMap<>();
@@ -329,7 +340,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	 * @author jihyun
 	 */
 	@Override
-	public Map<String, Object> searchPopularList(Map<String, Object> paramMap, int cp) {
+	public Map<String, Object> searchPopularList(Map<String, Object> paramMap, int cp, String sort) {
 		// paramMap (key, query, boardCode)
 
 		// 1. 지정된 게시판(boardCode)에서
@@ -353,12 +364,23 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		// 1번째 : sql에 전달할 파라미터
 		// 2번째 : RowBounds 객체
 		List<RecipeBoard> popularBoardList = mapper.selectPopularSearchList(paramMap, rowBounds);
+		
+		// 해시태그 받아오는 부분
+		for (RecipeBoard recipeBoard : popularBoardList) {
+			String tags = recipeBoard.getTags();
+			if(tags != null && !tags.isEmpty()) {
+				 List<String> tagList = Arrays.stream(tags.split(","))
+                         .map(String::trim)
+                         .collect(Collectors.toList());
+				 recipeBoard.setHashTagList(tagList);
+			}
+		}
 
 		// 4. 목록 조회 결과 + Paginaion 객체를 Map으로 묶음
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("pagination", pagination);
-		map.put("boardList", popularBoardList);
+		map.put("recipeBoardList", popularBoardList);
 
 		return map;
 	}

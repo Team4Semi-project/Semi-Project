@@ -16,6 +16,11 @@ public class FindController {
     @Autowired
     private MemberService memberService;
     
+    /**
+     * @param params
+     * @return
+     * Map으로 받기 떄문에 params 하나만 받아야 한다.
+     */ 
     @PostMapping("/findid")
     public Map<String, Object> findId(@RequestBody Map<String, String> params) {
         String name = params.get("name");

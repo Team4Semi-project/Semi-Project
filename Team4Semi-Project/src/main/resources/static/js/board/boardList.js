@@ -288,6 +288,26 @@ document.addEventListener("DOMContentLoaded", function () {
    * 정렬 기능 초기화
    */
 
+
+ function initSorting() {
+   const sortSelect = document.getElementById("sortSelect");
+
+   if (sortSelect) {
+     sortSelect.addEventListener("change", function () {
+       const url = new URL(window.location.href);
+
+       // 정렬 파라미터 설정
+       url.searchParams.set("sort", this.value);
+
+       // 페이지 파라미터 초기화 (선택사항)
+       url.searchParams.set("page", "1");
+
+       window.location.href = url.toString();
+     });
+   }
+ }
+
+
   function changeSorting() {
     if (sortSelect) {
       sortSelect.addEventListener("change", function () {

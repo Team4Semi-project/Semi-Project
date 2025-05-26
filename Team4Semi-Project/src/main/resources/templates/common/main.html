@@ -60,7 +60,7 @@
                 <div class="recipe-info">
                   <h3 class="recipe-title">
                     <a
-                      th:href="@{/board/1/{categoryNo}/{boardNo}(categoryNo=${categoryNo}, boardNo=${board.boardNo})}+'?popular=1'"
+                      th:href="@{/board/1/popular/{boardNo}(boardNo=${board.boardNo})}"
                       th:text="${board.boardTitle}"
                       >레몬 팬케이크
                     </a>
@@ -72,9 +72,9 @@
                   </h3>
 
                   <!-- 레시피 게시판 해시태그 -->
-                  <div th:if="${board.boardCode == 1}" class="recipe-tags">
-                  <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}">#레몬</span>
-                  </div>
+              <div class="recipe-tags">
+                <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}">#레몬</span>
+              </div>
                   <div class="recipe-meta">
                     <div class="author-info">
                       <img
@@ -92,16 +92,19 @@
                       >2025-05-09</span
                     >
                   </div>
-                  <div class="recipe-stats">
-                    <div class="likes">
-                      <i class="fas fa-heart"></i>
-                      <span th:text="${board.likeCount}">28</span>
-                    </div>
-                    <div class="views">
-                      <i class="fas fa-eye"></i>
-                      <span th:text="${board.readCount}">36</span>
-                    </div>
-                  </div>
+              <div class="recipe-stats">
+                <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                  th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                  th:data-like-check="${board.likeCheck}"
+                  th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+                  <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+                  <span th:text="${board.likeCount}">28</span>
+                </button>
+                <div class="views">
+                  <i class="fas fa-eye"></i>
+                  <span th:text="${board.readCount}">36</span>
+                </div>
+              </div>
                 </div>
               </div>
             </div>
@@ -156,7 +159,7 @@
                 <div class="recipe-details">
                   <h3 class="recipe-title">
                     <a
-                      th:href="@{/board/1/{categoryNo}/{boardNo}(categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                      th:href="@{/board/1/0/{boardNo}(boardNo=${board.boardNo})}"
                       th:text="${board.boardTitle}"
                       >레몬 팬케이크
                     </a>
@@ -186,16 +189,19 @@
                       >#레몬</span
                     >
                   </div>
-                  <div class="recipe-stats">
-                    <span class="likes"
-                      ><i class="fas fa-heart"></i>
-                      <span th:text="${board.likeCount}">28</span></span
-                    >
-                    <span class="views"
-                      ><i class="fas fa-eye"></i>
-                      <span th:text="${board.readCount}">36</span></span
-                    >
-                  </div>
+              <div class="recipe-stats">
+                <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                  th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                  th:data-like-check="${board.likeCheck}"
+                  th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+                  <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+                  <span th:text="${board.likeCount}">28</span>
+                </button>
+                <div class="views">
+                  <i class="fas fa-eye"></i>
+                  <span th:text="${board.readCount}">36</span>
+                </div>
+              </div>
                 </div>
               </div>
             </div>
@@ -203,9 +209,9 @@
         </div>
       </div>
     </div>
-
-    <!-- 푸터 프래그먼트 -->
-    <footer th:replace="~{common/footer :: footer}"></footer>
+	
+	<!-- 푸터 프래그먼트 -->
+	<footer th:replace="~{common/footer}"></footer>
     <!-- 공통 스크립트 -->
     <script th:src="@{/js/board/boardList.js}"></script>
     <script layout:fragment="script"></script>

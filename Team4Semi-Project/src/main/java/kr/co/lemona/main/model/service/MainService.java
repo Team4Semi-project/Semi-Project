@@ -25,5 +25,5 @@ public interface MainService {
 	 * @return
 	 * @author jihyun
 	 */
-	Map<String, Object> AllsearchList(Map<String, Object> paramMap, int cp);
+	Map<String, Object> AllsearchList(Map<String, Object> paramMap, int cp, String sort);
 }

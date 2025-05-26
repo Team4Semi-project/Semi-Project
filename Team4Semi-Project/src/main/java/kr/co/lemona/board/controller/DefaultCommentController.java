@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.lemona.board.model.dto.DefaultComment;
 import kr.co.lemona.board.model.service.DefaultCommentService;
+import kr.co.lemona.member.model.dto.Member;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -32,8 +34,12 @@ public class DefaultCommentController {
 	 * @author 민장
 	 */
 	@GetMapping("")
-	public Map<String, Object> select(@RequestParam("boardNo") int boardNo) {
-	    List<DefaultComment> commentList = service.select(boardNo);
+	public Map<String, Object> select(@RequestParam("boardNo") int boardNo,
+			 @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+		
+		int memberNo = loginMember != null ? loginMember.getMemberNo() : 0;
+		
+	    List<DefaultComment> commentList = service.select(boardNo, memberNo);
 	    int commentCount = service.count(boardNo);
 
 	    Map<String, Object> map = new HashMap<>();
@@ -72,5 +78,20 @@ public class DefaultCommentController {
 	@PutMapping("")
 	public int update(@RequestBody DefaultComment comment) {
 		return service.update(comment);
+	}
+	
+	/** 댓글 좋아요
+	 * @param commentNo
+	 * @param loginMember
+	 * @return
+	 */
+	@PostMapping("like")
+	public int like(@RequestBody Map<String, Object> map, 
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+		
+		int commentNo = Integer.parseInt(map.get("commentNo").toString());
+	    int memberNo = loginMember.getMemberNo();
+	    
+		return service.like(commentNo, memberNo);
 	}
 }

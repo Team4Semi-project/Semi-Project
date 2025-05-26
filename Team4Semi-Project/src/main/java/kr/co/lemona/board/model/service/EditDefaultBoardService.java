@@ -21,4 +21,11 @@ public interface EditDefaultBoardService {
 	 */
 	int boardDelete(Map<String, Integer> map);
 
+	/** 게시글 수정 서비스
+	 * @param inputBoard
+	 * @return
+	 * @author 민장
+	 */
+	int defaultBoardUpdate(Board inputBoard);
+
 }

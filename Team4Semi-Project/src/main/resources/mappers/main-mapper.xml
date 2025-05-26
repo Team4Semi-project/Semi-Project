@@ -16,6 +16,11 @@
 	        
 	        S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 			S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+			
+		    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		    FROM BOARD_HASHTAG BH
+		    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
 		
 	        (SELECT COUNT(*) 
 	         FROM "RECIPE_COMMENT" C 
@@ -48,20 +53,14 @@
 		) S ON B.BOARD_NO = S.BOARD_NO
 	    
 	    WHERE B.BOARD_DEL_FL = 'N'
-	      AND B.READ_COUNT >= 20
-	      AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
-	      AND (
-	          SELECT COUNT(*) 
-	          FROM "RECIPE_BOARD_LIKE" L 
-	          WHERE L.BOARD_NO = B.BOARD_NO
-	      ) >= 0
+		AND B.POPULAR_CHECK = 'Y'
 	    
-	    ORDER BY 
-    (SELECT COUNT(*) 
-     FROM RECIPE_BOARD_LIKE L 
-     WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-     B.READ_COUNT DESC,
-     B.BOARD_NO DESC
+		ORDER BY
+		(SELECT COUNT(*)
+		FROM "RECIPE_BOARD_LIKE" L
+		WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+		B.READ_COUNT DESC,
+		B.BOARD_NO DESC
 	)
 	WHERE ROWNUM <= 4
 	]]>
@@ -91,6 +90,11 @@
 
 		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		
+		(SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		 FROM BOARD_HASHTAG BH
+		 JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		 WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
 		
 
 		CASE
@@ -192,7 +196,7 @@
 			</when>
 			<when test='key == "tc"'>
 				AND (
-				B.BOARD_TITLE LIKE '%' || #{query} || '%'
+				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
 				OR STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
 				)
 			</when>
@@ -238,6 +242,8 @@
 
 		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		
+		NULL AS TAGS,
 
 		B.BOARD_CREATE_DATE AS RAW_DATE,
 
@@ -309,6 +315,12 @@
 
 		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		
+				    <!-- 해시태그 -->
+		    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		    FROM BOARD_HASHTAG BH
+		    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
 
 		B.BOARD_CREATE_DATE AS RAW_DATE,
 
@@ -356,7 +368,7 @@
 			</when>
 			<when test='key == "tc"'>
 				AND (
-				B.BOARD_TITLE LIKE '%' || #{query} || '%'
+				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
 				OR STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
 				)
 			</when>
@@ -373,8 +385,31 @@
 				)
 			</when>
 		</choose>
-		)
-		ORDER BY RAW_DATE DESC
+		) B
+		<!-- 정렬 -->
+		<choose>
+			<when test="sort == null or sort == '' or sort == 'latest'">
+				ORDER BY B.BOARD_NO DESC
+			</when>
+			<when test="sort == 'oldest'">
+				ORDER BY B.BOARD_NO ASC
+			</when>
+			<when test="sort == 'popular'">
+				ORDER BY 
+				(SELECT COUNT(*)
+			      FROM "RECIPE_BOARD_LIKE" L
+			      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+			      B.READ_COUNT DESC,
+			      B.BOARD_NO DESC
+			</when>
+			<when test="sort == 'views'">
+				ORDER BY B.READ_COUNT DESC,
+				(SELECT COUNT(*)
+			      FROM "RECIPE_BOARD_LIKE" L
+			      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+			      B.BOARD_NO DESC
+			</when>
+		</choose>
 
 	</select>
 

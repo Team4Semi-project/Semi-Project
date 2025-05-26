@@ -21,7 +21,7 @@
   <header th:replace="~{common/header :: header}"></header>
 
   <!-- 네비게이션 프래그먼트 -->
-  <nav th:replace="~{common/navigation :: navigation}"></nav>
+  <!-- <nav th:replace="~{common/navigation :: navigation}"></nav> -->
 
   <div class="container mt-3">
     <div class="write-header">글 작성하기</div>
@@ -31,8 +31,9 @@
       alert("[[${ message }]]");
     </script>
 
-    <!-- <form th:action="@{/editBoard/{boardCode}/insert(boardCode=${boardCode})}"  -->
-    <form id="postForm" method="post" action="/editBoard/2/insert">
+    <!-- board가 넘어오면 수정 아니면 추가 -->
+    <form id="postForm" method="post"
+      th:action=" @{${board != null ? '/editBoard/' + board.boardCode + '/' + board.boardNo + '/update' : '/editBoard/' + board.boardCode + '/insert'}} ">
       <!-- 제목 -->
       <input type="text" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글제목을 입력해주세요"
         required>
@@ -60,9 +61,9 @@
   <!-- js -->
   <script src="/js/board/defaultBoardWrite.js"></script>
 
-    <!-- 푸터 프래그먼트 -->
-    <footer th:replace="~{common/footer :: footer}"></footer>
-    <th:block th:replace="~{common/header :: search-header-js}"></th:block>
+  <!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+  <th:block th:replace="~{common/header :: search-header-js}"></th:block>
 </body>
 
 </html>

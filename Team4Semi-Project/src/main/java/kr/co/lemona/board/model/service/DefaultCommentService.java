@@ -18,7 +18,7 @@ public interface DefaultCommentService {
 	 * @return
 	 * @author 민장
 	 */
-	List<DefaultComment> select(int boardNo);
+	List<DefaultComment> select(int boardNo, int memberNo);
 
 	/** 댓글/답글 등록 서비스
 	 * @param comment
@@ -40,5 +40,12 @@ public interface DefaultCommentService {
 	 * @author 민장
 	 */
 	int update(DefaultComment comment);
+
+	/** 댓글 좋아요 서비스
+	 * @param commentNo
+	 * @param memberNo
+	 * @return
+	 */
+	int like(int commentNo, int memberNo);
 
 }

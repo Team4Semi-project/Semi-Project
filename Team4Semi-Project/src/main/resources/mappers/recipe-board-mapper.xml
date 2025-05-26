@@ -280,7 +280,7 @@
 	
 	<!-- 이전 글 번호 조회 -->
 	<select id="selectPrevBoard">
-				SELECT *
+		SELECT *
 		FROM (
 		    SELECT B.*, 
 		           ROW_NUMBER() OVER (
@@ -349,7 +349,7 @@
 			AND CATEGORY_NO = ${categoryNo}
 		</if>
 		<if test="popular == 1">
-			AND B.POPULAR_CHECK='Y'
+			AND R.POPULAR_CHECK = 'Y'
 		</if>
 	</select>
 	
@@ -424,7 +424,7 @@
 			AND CATEGORY_NO = ${categoryNo}
 		</if>
 		<if test="popular == 1">
-			AND B.POPULAR_CHECK='Y'
+			AND R.POPULAR_CHECK = 'Y'
 		</if>
 		
 	</select>

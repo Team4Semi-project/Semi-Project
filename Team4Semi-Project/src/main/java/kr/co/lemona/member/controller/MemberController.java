@@ -74,13 +74,11 @@ public class MemberController {
 		return "redirect:/"; // 메인 페이지로 리다이렉트
 	}
 
-
 	// 회원가입 페이지로 이동
 	@GetMapping("register")
 	public String registerPage() {
 		return "register/register"; // templates/register/register.html을 가리킴
 	}
-
 
 	// 이메일 중복체크
 	@ResponseBody
@@ -102,7 +100,6 @@ public class MemberController {
 	public int checkId(@RequestParam("memberId") String memberId) {
 		return service.checkId(memberId);
 	}
-
 
 	// 회원가입
 	@PostMapping("register")
@@ -130,6 +127,11 @@ public class MemberController {
 		// 성공 -> redirect:/
 		// 실패 -> redirect:register (상대경로)
 		// 현재 주소 /register (GET 방식 요청)
+	}
+	
+	@GetMapping("/mypage")
+	public String mypage() {
+	    return "mypage/mypage"; // templates/mypage/mypage.html 마이페이지로 이동	
 	}
 
 }

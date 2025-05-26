@@ -1,6 +1,5 @@
 package kr.co.lemona.email.controller;
 
-
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -31,7 +30,6 @@ public class EmailController {
 
 		// 이메일 보내기 실패
 		return 0;
-
 	}
 
 	/**

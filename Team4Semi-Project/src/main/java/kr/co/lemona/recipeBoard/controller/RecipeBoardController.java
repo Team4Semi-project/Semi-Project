@@ -219,7 +219,7 @@ public class RecipeBoardController {
 
 		// 로그인 상태인 경우에만 memberNo 추가
 		if (loginMember != null) {
-			map.put("loginMember", loginMember.getMemberNo());
+			map.put("memberNo", loginMember.getMemberNo());
 		}
 
 		// 2) 서비스 호출

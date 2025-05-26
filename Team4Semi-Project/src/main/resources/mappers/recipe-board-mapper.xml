@@ -28,7 +28,8 @@
 		
 		    (SELECT COUNT(*) 
 		     FROM RECIPE_COMMENT C
-		     WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+		     WHERE C.BOARD_NO = B.BOARD_NO
+		     AND COMMENT_DEL_FL = 'N') AS COMMENT_COUNT,
 		
 		    (SELECT COUNT(*) 
 		     FROM RECIPE_BOARD_LIKE L
@@ -85,7 +86,7 @@
 		</if>
 		<!-- 정렬 -->
 		<choose>
-			<when test="sort == 'latest'">
+			<when test="sort == null or sort == 'latest'">
 				ORDER BY B.BOARD_NO DESC
 			</when>
 			<when test="sort == 'oldest'">
@@ -192,7 +193,7 @@
 		  
 		<!-- 정렬 -->
 		<choose>
-			<when test="sort == 'latest'">
+			<when test="sort == null or sort == 'latest'">
 				ORDER BY B.BOARD_NO DESC
 			</when>
 			<when test="sort == 'oldest'">
@@ -257,6 +258,11 @@
 		WHERE BOARD_NO = #{boardNo}
 		AND MEMBER_NO = #{memberNo}) LIKE_CHECK,
 		
+		(SELECT COUNT(*) FROM
+		RECIPE_COMMENT WHERE BOARD_NO = #{boardNo} AND
+		COMMENT_DEL_FL = 'N')
+		AS COMMENT_COUNT,
+		
 		(SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
 	    FROM BOARD_HASHTAG BH
 	    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
@@ -290,7 +296,7 @@
 							B.BOARD_NO DESC
 						</when>
 						<when test="sort == 2">
-							BY B.BOARD_NO ASC
+							B.BOARD_NO ASC
 						</when>
 						<when test="sort == 3">
 							(SELECT COUNT(*)
@@ -310,6 +316,13 @@
 		           ) AS RN
 		    FROM RECIPE_BOARD B
 		    WHERE B.BOARD_DEL_FL = 'N'
+ 		    <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+			<if test="categoryNo != 0">
+				AND CATEGORY_NO = ${categoryNo}
+			</if>
+			<if test="popular == 1">
+				AND B.POPULAR_CHECK = 'Y'
+			</if>
 		) R
 		WHERE R.RN = (
 		    SELECT RN + 1 FROM (
@@ -321,7 +334,7 @@
 								B.BOARD_NO DESC
 							</when>
 							<when test="sort == 2">
-								BY B.BOARD_NO ASC
+								B.BOARD_NO ASC
 							</when>
 							<when test="sort == 3">
 								(SELECT COUNT(*)
@@ -341,16 +354,17 @@
 		               ) AS RN
 		        FROM RECIPE_BOARD B
 		        WHERE B.BOARD_DEL_FL = 'N'
+        	<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+			<if test="categoryNo != 0">
+				AND CATEGORY_NO = ${categoryNo}
+			</if>
+			<if test="popular == 1">
+				AND B.POPULAR_CHECK = 'Y'
+			</if>
 		    ) 
 		    WHERE BOARD_NO = ${boardNo}
 		)
-		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
-		<if test="categoryNo != 0">
-			AND CATEGORY_NO = ${categoryNo}
-		</if>
-		<if test="popular == 1">
-			AND R.POPULAR_CHECK = 'Y'
-		</if>
+		
 	</select>
 	
 	<!-- 다음 글 번호 조회 -->
@@ -365,7 +379,7 @@
 							B.BOARD_NO DESC
 						</when>
 						<when test="sort == 2">
-							BY B.BOARD_NO ASC
+							B.BOARD_NO ASC
 						</when>
 						<when test="sort == 3">
 							(SELECT COUNT(*)
@@ -385,6 +399,13 @@
 		           ) AS RN
 		    FROM RECIPE_BOARD B
 		    WHERE B.BOARD_DEL_FL = 'N'
+		    <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+			<if test="categoryNo != 0">
+				AND CATEGORY_NO = ${categoryNo}
+			</if>
+			<if test="popular == 1">
+				AND B.POPULAR_CHECK = 'Y'
+			</if>
 		) R
 		WHERE R.RN = (
 		    SELECT RN - 1 FROM (
@@ -396,7 +417,7 @@
 								B.BOARD_NO DESC
 							</when>
 							<when test="sort == 2">
-								BY B.BOARD_NO ASC
+								B.BOARD_NO ASC
 							</when>
 							<when test="sort == 3">
 								(SELECT COUNT(*)
@@ -416,17 +437,49 @@
 		               ) AS RN
 		        FROM RECIPE_BOARD B
 		        WHERE B.BOARD_DEL_FL = 'N'
+		     <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+			<if test="categoryNo != 0">
+				AND CATEGORY_NO = ${categoryNo}
+			</if>
+			<if test="popular == 1">
+				AND B.POPULAR_CHECK = 'Y'
+			</if>
 		    ) 
 		    WHERE BOARD_NO = ${boardNo}
 		)
-		<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
-		<if test="categoryNo != 0">
-			AND CATEGORY_NO = ${categoryNo}
-		</if>
-		<if test="popular == 1">
-			AND R.POPULAR_CHECK = 'Y'
-		</if>
 		
+	</select>
+	
+	<!-- 댓글 수 조회 -->
+	<select id="commentCount" resultType="int">
+		SELECT COUNT(*) AS
+		COMMENT_COUNT FROM "RECIPE_COMMENT"
+		WHERE BOARD_NO = #{boardNo} AND
+		COMMENT_DEL_FL = 'N'
+	</select>
+
+	<!-- 댓글 목록 조회 -->
+	<select id="selectCommentList" resultType="RecipeComment" parameterType="map">
+		SELECT LEVEL, C.*,
+		(SELECT COUNT(*) FROM "RECIPE_COMMENT_LIKE" L WHERE L.COMMENT_NO =
+		C.COMMENT_NO) AS LIKE_COUNT,
+		(SELECT COUNT(*) FROM "RECIPE_COMMENT_LIKE" L
+		WHERE L.COMMENT_NO = C.COMMENT_NO AND L.MEMBER_NO = #{memberNo}) AS
+		LIKE_CHECK
+		FROM
+		(SELECT COMMENT_NO, COMMENT_CONTENT,
+		TO_CHAR(COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE,
+		BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_COMMENT_NO,
+		COMMENT_DEL_FL
+		FROM "RECIPE_COMMENT"
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE BOARD_NO = #{boardNo}) C
+		WHERE COMMENT_DEL_FL = 'N'
+		OR 0 != (SELECT COUNT(*) FROM "RECIPE_COMMENT" SUB
+		WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO AND COMMENT_DEL_FL = 'N')
+		START WITH PARENT_COMMENT_NO IS NULL
+		CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
+		ORDER SIBLINGS BY COMMENT_NO
 	</select>
 	
 	<!-- RECIPE_BOARD에 게시글 제목+카테고리번호+작성자 정보 삽입 -->

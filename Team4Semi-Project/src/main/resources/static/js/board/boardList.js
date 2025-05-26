@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initDropdowns();
 
   // 정렬 기능
-  initSorting();
+  //initSorting();
   changeSorting();
   setSortSelected();
 
@@ -288,34 +288,23 @@ function saveViewMode(){
    * 정렬 기능 초기화
    */
 
-  function changeSorting() {
-    if (sortSelect) {
-      sortSelect.addEventListener("change", function () {
-        const url = new URL(window.location.href);
-        url.searchParams.set("sort", this.value);
+ function initSorting() {
+   const sortSelect = document.getElementById("sortSelect");
 
-        // 페이지 파라미터 초기화 (선택사항)
-        url.searchParams.set("page", "1");
+   if (sortSelect) {
+     sortSelect.addEventListener("change", function () {
+       const url = new URL(window.location.href);
 
-        window.location.href = url.toString();
-      });
-    }
-  }
+       // 정렬 파라미터 설정
+       url.searchParams.set("sort", this.value);
 
-  function setSortSelected() {
-    const url = new URL(window.location.href);
-    const currentSort = url.searchParams.get("sort");
+       // 페이지 파라미터 초기화 (선택사항)
+       url.searchParams.set("page", "1");
 
-    if (currentSort) {
-      //const sortSelect = document.getElementById("sortSelect");
-      sortSelect.value = currentSort;
-    }
-  }
-
-
-  /**
-   * 정렬 기능 초기화
-   */
+       window.location.href = url.toString();
+     });
+   }
+ }
 
   function changeSorting() {
     if (sortSelect) {

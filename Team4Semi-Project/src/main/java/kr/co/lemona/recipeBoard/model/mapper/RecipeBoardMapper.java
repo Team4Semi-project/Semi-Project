@@ -10,6 +10,7 @@ import org.apache.ibatis.session.RowBounds;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
+import kr.co.lemona.recipeBoard.model.dto.RecipeComment;
 
 @Mapper
 public interface RecipeBoardMapper {
@@ -179,4 +180,11 @@ public interface RecipeBoardMapper {
 	 * @return
 	 */
 	int deleteRecipeBoard(int boardNo);
+
+	/** 댓글 목록 조회
+	 * @param commentMap
+	 * @return
+	 * @author miae
+	 */
+	List<RecipeComment> selectCommentList(Map<String, Object> commentMap);
 }

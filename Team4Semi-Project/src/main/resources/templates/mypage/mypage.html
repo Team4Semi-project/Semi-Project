@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lemona - MyPage</title>
+    <link rel="stylesheet" href="/static/css/mypage.css" />
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- 공통 스타일 -->
+  </head>
+  <body>
+    <!-- header + nav-container (메인 페이지랑 동일) -->
+    <header>
+      <div class="header-container">
+        <a href="/" class="logo">LEMONA</a>
+        <nav class="nav-container">
+          <ul>
+            <li><a href="/category/recipe">레시피</a></li>
+            <li><a href="/category/popular">인기 게시물</a></li>
+            <li><a href="/category/free">자유 게시판</a></li>
+            <li><a href="/category/qna">질문/답변</a></li>
+          </ul>
+        </nav>
+        <div class="user-menu">
+          <a
+            th:if="${session.loginMember != null}"
+            th:text="${session.loginMember.memberNickname}"
+            href="/mypage/mypage"
+            >사용자명</a
+          >
+          <a href="/write">Write Button</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MyPage 콘텐츠 -->
+    <main class="mypage-container">
+      <section class="profile-section">
+        <img
+          src="/images/profile.png"
+          alt="Profile Image"
+          class="profile-img"
+        />
+        <h2>레모니 🍋</h2>
+        <div class="profile-buttons">
+          <button>내가 쓴 글</button>
+          <button>내 댓글</button>
+        </div>
+      </section>
+
+      <section class="post-list-section">
+        <div class="post-list-header">
+          <h3>게시글 목록</h3>
+          <div class="list-controls">
+            <button class="btn-latest">최신순</button>
+            <button class="btn-grid">🔳</button>
+            <button class="btn-list">📋</button>
+          </div>
+        </div>
+
+        <div class="post-cards">
+          <div class="post-card">
+            <img src="/images/lemon1.png" alt="레몬 요리 이미지" />
+            <h4>레몬 카르보나라 [0]</h4>
+            <div class="post-meta">
+              <span>작성자: 레모니</span>
+              <span>2025-05-26</span>
+            </div>
+            <div class="post-stats">
+              <span>👍 26</span>
+              <span>👁️ 40</span>
+            </div>
+          </div>
+          <!-- 필요한 만큼 post-card 반복 -->
+        </div>
+
+        <div class="pagination">
+          <a href="#">«</a>
+          <a href="#">1</a>
+          <a href="#">2</a>
+          <a href="#">3</a>
+          <a href="#">»</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <ul>
+          <li>프로젝트 소개</li>
+          <li>팀원 소개</li>
+          <li>개인정보 처리방침</li>
+          <li>이용약관</li>
+        </ul>
+        <p>&copy; 2025 Lemona Project</p>
+      </div>
+    </footer>
+  </body>
+</html>

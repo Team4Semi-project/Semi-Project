@@ -81,7 +81,6 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 			recipeBoardList = mapper.selectPopularBoardList(inputMap,rowBounds);
 			
 		} else {
-			
 			// 조회 결과를 리스트에 저장
 			recipeBoardList = mapper.selectRecipeBoardList(inputMap, rowBounds);
 		}
@@ -123,6 +122,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		boardStepList = mapper.selectBoardStepList(map.get("boardNo"));
 		RecipeBoard recipeBoard = mapper.selectOneRecipe(map);
+		log.info("sorttttttttttttttttttttttt : " + map.get("sort"));
 		
 		// 해시태그 받아오는 부분
 		if(recipeBoard != null) {

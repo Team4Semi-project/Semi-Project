@@ -5,18 +5,14 @@
 	<!-- 로그인(조회) -->
 	<select id="login" resultType="Member">
 		SELECT MEMBER_NO, MEMBER_EMAIL,
-		MEMBER_NICKNAME,
-		MEMBER_PW, MEMBER_TEL, MEMBER_ADDRESS, PROFILE_IMG,
-		AUTHORITY,
-		TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분"
-		SS"초"') ENROLL_DATE
+		MEMBER_NICKNAME, MEMBER_PW
 		FROM "MEMBER"
-		WHERE MEMBER_EMAIL = #{memberEmail}
+		WHERE MEMBER_ID = #{memberID}
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 
 	<!-- 이메일 중복 검사 -->
-	<select id="checkEmail" resultType="int">
+	<select id="checkEmail" resultType="_int">
 		SELECT COUNT(*)
 		FROM "MEMBER"
 		WHERE MEMBER_EMAIL = #{memberEmail}
@@ -32,6 +28,7 @@
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 
+    <!-- 회원가입  -->
 	<insert id="register">
 		INSERT INTO "MEMBER" (
 		MEMBER_NO,

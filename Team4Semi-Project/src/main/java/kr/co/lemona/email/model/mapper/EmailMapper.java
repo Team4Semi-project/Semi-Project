@@ -24,8 +24,5 @@ public interface EmailMapper {
 	 * @return
 	 */
 	int checkAuthKey(Map<String, String> map);
-	
-	
-	
 
 }

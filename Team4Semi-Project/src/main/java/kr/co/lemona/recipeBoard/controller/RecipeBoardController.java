@@ -181,6 +181,7 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("{category}/{boardNo:[0-9]+}")
 	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("category") String category,
+			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
 			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
 			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠기 얻어오기
 			HttpServletResponse resp // 새로운 쿠기 만들어서 응답하기
@@ -202,7 +203,19 @@ public class RecipeBoardController {
 			map.put("categoryNo", 0);
 		}
 		map.put("boardNo", boardNo);
-		// categoryNo 자리에 들어오는 값 확인
+		
+		// 이전글/다음글을 위한 sort 전달
+		int sortNo = 0;
+		switch (sort) {
+		case "latest" : sortNo = 1; break;
+		case "oldest" : sortNo = 2; break;
+		case "popular" : sortNo = 3; break;
+		case "views" : sortNo = 4; break;
+		default:
+			sortNo = 1;
+		}
+		
+		map.put("sort", sortNo);
 
 		// 로그인 상태인 경우에만 memberNo 추가
 		if (loginMember != null) {

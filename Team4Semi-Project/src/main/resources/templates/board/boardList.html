@@ -1,42 +1,32 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
->
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">레모나</title>
-    <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
-    <th:block th:replace="~{common/common}"></th:block>
-    
-  </head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-  <body>
-    <!-- 헤더 프래그먼트 -->
-    <header th:replace="~{common/header :: header}"></header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">레모나</title>
+  <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
+  <th:block th:replace="~{common/common}"></th:block>
 
-    <!-- 네비게이션 프래그먼트 -->
-    <nav th:replace="~{common/navigation :: navigation}"></nav>
+</head>
 
-    <!-- 메인 콘텐츠 영역 -->
-    <main class="main-list">
-      <section class="recipe-section">
-        <!-- 섹션 헤더 -->
-        <div class="section-header">
-          <h2 class="section-title">게시글 목록</h2>
+<body>
+  <!-- 헤더 프래그먼트 -->
+  <header th:replace="~{common/header :: header}"></header>
 
-          <div class="options-container">
-            <div class="view-options">
-              <div class="background-indicator"></div>
+  <!-- 네비게이션 프래그먼트 -->
+  <nav th:replace="~{common/navigation :: navigation}"></nav>
 
-              <button class="view-toggle agenda" data-view="agenda">
-                <span class="material-symbols-outlined"> view_agenda </span>
-              </button>
-              <button class="view-toggle cozy active" data-view="cozy">
-                <span class="material-symbols-outlined"> view_cozy </span>
-              </button>
-            </div>
+  <!-- 메인 콘텐츠 영역 -->
+  <main class="main-list">
+    <section class="recipe-section">
+      <!-- 섹션 헤더 -->
+      <div class="section-header">
+        <h2 class="section-title">게시글 목록</h2>
+
+        <div class="options-container">
+          <div class="view-options">
+            <div class="background-indicator"></div>
 
             <button class="view-toggle agenda" data-view="agenda">
               <span class="material-symbols-outlined"> view_agenda </span>
@@ -45,6 +35,7 @@
               <span class="material-symbols-outlined"> view_cozy </span>
             </button>
           </div>
+        </div>
 
           <div class="sort-options">
             <select class="sort-select" id="sortSelect">
@@ -55,9 +46,8 @@
             </select>
             <i class="fas fa-caret-down"></i>
           </div>
-
-          
         </div>
+      </div>
       </div>
       <!-- 게시글 컨테이너 (Cozy View) -->
       <div class="recipe-container cozy-view" id="cozy">
@@ -279,6 +269,7 @@
         </svg>
       </button>
     </form>
+
     </section>
   </main>
 
@@ -290,20 +281,20 @@
   <script layout:fragment="script"></script>
   <th:block th:replace="~{common/header :: search-header-js}"></th:block>
   <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const searchKey1 = document.getElementById('searchKey1');
-    const selectBoxText1 = document.getElementById('selectBoxText1');
+    document.addEventListener('DOMContentLoaded', function () {
+      const searchKey1 = document.getElementById('searchKey1');
+      const selectBoxText1 = document.getElementById('selectBoxText1');
 
-    function updateSelectBoxText(value) {
-      switch (value) {
-        case 't': selectBoxText1.textContent = '제목'; break;
-        case 'c': selectBoxText1.textContent = '내용'; break;
-        case 'tc': selectBoxText1.textContent = '제목 + 내용'; break;
-        case 'w': selectBoxText1.textContent = '작성자'; break;
-        case 'h': selectBoxText1.textContent = '해시태그'; break;
-        default: selectBoxText1.textContent = '제목';
-      }
-    }
+      function updateSelectBoxText(value) {
+        switch (value) {
+          case 't': selectBoxText1.textContent = '제목'; break;
+          case 'c': selectBoxText1.textContent = '내용'; break;
+          case 'tc': selectBoxText1.textContent = '제목 + 내용'; break;
+          case 'w': selectBoxText1.textContent = '작성자'; break;
+          case 'h': selectBoxText1.textContent = '해시태그'; break;
+          default: selectBoxText1.textContent = '제목';
+        }
+}
 
     if (searchKey1 && selectBoxText1) {
       updateSelectBoxText(searchKey1.value);

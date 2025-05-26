@@ -5,7 +5,8 @@
 
 	<!-- 댓글 수 조회 -->
 	<select id="count" resultType="int">
-		SELECT COUNT(*) FROM "DEFAULT_COMMENT"
+		SELECT COUNT(*) FROM
+		"DEFAULT_COMMENT"
 		WHERE BOARD_NO = #{boardNo} AND COMMENT_DEL_FL = 'N'
 	</select>
 
@@ -71,4 +72,31 @@
 		#{commentContent}
 		WHERE COMMENT_NO = #{commentNo}
 	</update>
+
+	<!-- 좋아요 여부 확인 -->
+	<select id="checkLike" resultType="int">
+		SELECT COUNT(*) FROM "DEFAULT_COMMENT_LIKE"
+		WHERE COMMENT_NO = #{commentNo}
+		AND MEMBER_NO = #{memberNo}
+	</select>
+
+	<!-- 좋아요 추가 -->
+	<insert id="insertLike">
+		INSERT INTO "DEFAULT_COMMENT_LIKE" (COMMENT_NO, MEMBER_NO)
+		VALUES (#{commentNo}, #{memberNo})
+	</insert>
+
+	<!-- 좋아요 취소 -->
+	<delete id="deleteLike">
+		DELETE FROM "DEFAULT_COMMENT_LIKE"
+		WHERE COMMENT_NO = #{commentNo}
+		AND MEMBER_NO = #{memberNo}
+	</delete>
+
+	<!-- 좋아요 수 카운트 -->
+	<select id="countLike">
+		SELECT COUNT(*) FROM "DEFAULT_COMMENT_LIKE"
+		WHERE COMMENT_NO = #{commentNo}
+	</select>
+
 </mapper>

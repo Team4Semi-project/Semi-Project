@@ -100,8 +100,10 @@ public class DefaultBoardController {
 
 		}
 		// --------------- 세션 구현 안돼서 테스트용 데이터 삽입 ---------------
-		Member loginMember = Member.builder().memberNo(2).memberId("user2").memberName("이순신").memberNickname("순신이")
-				.memberEmail("user2@example.com").memberDelFl("N").build();
+		Member loginMember = Member.builder().memberNo(3).memberId("user3").memberName("신사임당").memberNickname("사임당")
+				.memberEmail("user3@example.com").memberDelFl("N").build();
+//		Member loginMember = Member.builder().memberNo(1).memberId("user1").memberName("홍길동").memberNickname("길동이")
+//				.memberEmail("user1@example.com").memberDelFl("N").build();
 
 		req.getSession().setAttribute("loginMember", loginMember);
 		// ---------------------------------------------------------------------
@@ -132,7 +134,6 @@ public class DefaultBoardController {
 			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠키 얻어오기
 			HttpServletResponse resp // 새로운 쿠키 만들어서 응답하기
 	) {
-
 		// 게시글 상세 조회 서비스 호출
 
 		// 1) Map으로 전달할 파라미터 묶기
@@ -140,9 +141,11 @@ public class DefaultBoardController {
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
 
-		// 로그인 상태인 경우에만 memberNo 추가
+		// 로그인 상태인 경우 memberNo 추가
 		if (loginMember != null) {
 			map.put("memberNo", loginMember.getMemberNo());
+		} else {
+			  map.put("memberNo", 0);
 		}
 
 		// 2) 서비스 호출

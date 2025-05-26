@@ -24,7 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
   initMenuHover();
 
   // 뷰 토글 (아젠다/코지)
-  initViewToggle();
+  //initViewToggle();
+  applyViewModeFromURL();
 
   // 드롭다운 기능
   initDropdowns();
@@ -163,6 +164,38 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // 뷰 모드 초기 설정
+function applyViewModeFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const view = urlParams.get("view") || "cozy";
+
+  viewToggles.forEach((t) => t.classList.remove("active"));
+  document.querySelector(`.view-toggle.${view}`).classList.add("active");
+  saveViewMode();
+  if (view === "agenda") {
+    cozy.style.display = "none";
+    agenda.style.display = "block";
+  } else {
+    agenda.style.display = "none";
+    cozy.style.display = "block";
+  }
+}
+
+
+// 클릭 시 URL에 뷰모드 저장
+function saveViewMode(){
+  viewToggles.forEach((toggle) => {
+    toggle.addEventListener("click", function () {
+      const viewMode = this.dataset.view;
+
+      // URL 업데이트
+      const url = new URL(window.location.href);
+      url.searchParams.set("view", viewMode);
+      window.location.href = url.toString(); // 페이지 새로고침 필요
+    });
+  });
+}
+
   // 토글 배경 전환 UI 구현 코드
   const indicator = document.querySelector(".background-indicator");
 
@@ -254,18 +287,11 @@ document.addEventListener("DOMContentLoaded", function () {
   /**
    * 정렬 기능 초기화
    */
-  document.addEventListener("DOMContentLoaded", function () {
-    initSorting();
-  });
 
-  function initSorting() {
-    const sortSelect = document.getElementById("sortSelect");
-
+  function changeSorting() {
     if (sortSelect) {
       sortSelect.addEventListener("change", function () {
         const url = new URL(window.location.href);
-
-        // 정렬 파라미터 설정
         url.searchParams.set("sort", this.value);
 
         // 페이지 파라미터 초기화 (선택사항)
@@ -275,6 +301,17 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
+
+  function setSortSelected() {
+    const url = new URL(window.location.href);
+    const currentSort = url.searchParams.get("sort");
+
+    if (currentSort) {
+      //const sortSelect = document.getElementById("sortSelect");
+      sortSelect.value = currentSort;
+    }
+  }
+
 
   /**
    * 정렬 기능 초기화

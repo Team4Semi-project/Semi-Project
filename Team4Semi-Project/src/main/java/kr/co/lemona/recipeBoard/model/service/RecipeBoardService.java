@@ -112,5 +112,5 @@ public interface RecipeBoardService {
 	 * @return
 	 */
 	int updateRecipeBoard(RecipeBoard inputBoard, List<MultipartFile> images, List<String> inputStepContent,
-			int thumbnailNo, List<Integer> deleteOrderList) throws Exception;
+			int thumbnailNo, List<Integer> stepNoList) throws Exception;
 }

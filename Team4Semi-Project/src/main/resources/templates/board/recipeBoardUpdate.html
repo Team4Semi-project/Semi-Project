@@ -84,6 +84,9 @@
               </div>
             </div>
 
+            <!-- STEP의 고유 번호 -->
+            <input type="hidden" th:value="${step.stepNo}" class="step-no">
+
           </div>
         </div>
       </div>
@@ -102,10 +105,10 @@
         <input type="text" id="hashTagInput" placeholder="#해시태그를 입력하세요..." />
       </div>
       <div class="hashtag-list" id="hashTagContainer">
+        <!-- 해시태그가 여기에 추가됨 -->
         <div class="hashtag" th:each="tag : ${board.hashTagList}">
           <span th:text="'#' + ${tag}"></span>
           <span class="delete-hashtag" onclick="this.parentElement.remove();">×</span>
-          <!-- 해시태그가 여기에 추가됨 -->
         </div>
       </div>
     </div>

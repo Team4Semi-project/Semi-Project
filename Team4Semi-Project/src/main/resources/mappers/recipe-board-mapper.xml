@@ -730,13 +730,6 @@
 			
 		WHERE BOARD_NO = #{boardNo}
 	</update>
-
-	<!-- 기존의 게시글 스텝 삭제/신규 스텝 추가는 기존 SQL 활용 -->
-	<!-- 재호 -->
-	<delete id="deleteBoardStepByBoardNo">
-  		DELETE FROM "BOARD_STEP"
-  		WHERE BOARD_NO = #{boardNo}
-	</delete>
 	
 	<!-- 기존의 게시글 해시태그 삭제/신규 해시태그 추가는 기존 SQL 활용 -->
 	<!-- 재호 -->
@@ -744,5 +737,35 @@
 		DELETE FROM "BOARD_HASHTAG"
 		WHERE BOARD_NO = #{boardNo}
 	</delete>
+	
+	<!-- 기존의 boardStep 정보 조회 -->
+	<!-- 재호 -->
+	<select id="selectOriginalList" resultType="int">
+    	SELECT STEP_NO
+    	FROM BOARD_STEP
+    	WHERE BOARD_NO = #{boardNo}
+	</select>
 
+	<!-- 이미지가 삭제된 스텝 삭제 -->
+	<!-- 재호 -->
+	<delete id="deleteBoardStep" parameterType="int">
+	    DELETE FROM BOARD_STEP
+	    WHERE STEP_NO = #{stepNo}
+	</delete>
+
+	<!-- 스텝 순서 변경 -->
+	<!-- 재호 -->
+	<update id="changeBoardStep" parameterType="BoardStep">
+	    UPDATE BOARD_STEP
+	    SET STEP_ORDER = #{stepOrder}
+	    WHERE STEP_NO = #{stepNo}
+	</update>
+	
+	<update id="resetThumnail">
+		UPDATE BOARD_STEP
+		SET THUMBNAIL_CHECK = 'N'
+		WHERE BOARD_NO = #{boardNo}
+		  AND STEP_NO != #{thumbnailStep}
+	</update>
+	
 </mapper>

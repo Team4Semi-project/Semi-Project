@@ -314,6 +314,14 @@ document.addEventListener("DOMContentLoaded", function () {
       cleanTag = cleanTag.substring(1);
     }
 
+    // 해시태그 정규식 검사
+    const tagPattern = /^[a-zA-Z가-힣0-9]+$/;
+    if (!tagPattern.test(cleanTag)) {
+      alert("해시태그에는 특수문자나 공백을 사용할 수 없습니다.");
+      hashTagInput.value = "";
+      return;
+    }
+
     // 중복 체크
     if (hashTags.includes(cleanTag)) {
       hashTagInput.value = "";
@@ -371,45 +379,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 대표 이미지 선택 여부
     let isThumbnailSelected = false;
-    let isEmptyStepContent = false;
-    // 요리과정 수집
-    const steps = document.querySelectorAll(".recipe-step");
-    steps.forEach((step, index) => {
-      const stepContent = step.querySelector("textarea").value;
-      if (!stepContent) { // 설명이 비어있는 단계가 있다면
-        isEmptyStepContent = true;
-        step.querySelector("textarea").focus();
-      } else {
-        formData.append("stepContents", stepContent);
-      }
 
-      // 이미지 수집
+    // 스텝 정보 수집
+    const steps = document.querySelectorAll(".recipe-step");
+    for (let index = 0; index < steps.length; index++) {
+      const step = steps[index];
+
+      // 스텝 설명 수집
+      const stepContent = step.querySelector("textarea").value;
+      // 작성되지 않은 스텝 설명이 있을때
+      if (!stepContent.trim()) {
+        alert("작성되지 않은 레시피 과정이 있어요!");
+        step.querySelector("textarea").focus();
+        e.preventDefault();
+        return;
+      }
+      // 작성되지 않은 스텝 설명이 없을때, 스텝 설명을 수집
+      formData.append("stepContents", stepContent);
+
+      // 스텝 이미지 수집
       const imageInput = step.querySelector(".step-image-input");
+      // 이미지가 있을때
       if (imageInput.files.length > 0) {
         formData.append("images", imageInput.files[0]);
-      } else { // 이미지가 없다면
-        formData.append("images", new File([""], ""));
+        formData.append("imageExists", true);
+      } else { // 이미지가 없을때
+        // 공백 표시
+        formData.append("imageExists", false);
       }
 
-      // 썸네일 설정 확인
-      const isThumbnail = step.querySelector('input[type="radio"]').checked;
-      if (isThumbnail) {
+      // 썸내일 정보 수집
+      const thumbnailRadio = step.querySelector('input[type="radio"]');
+      // 썸내일 체크박스가 있고, 체크 요소도 있을때
+      if (thumbnailRadio && thumbnailRadio.checked) {
+        // 썸내일 정보 수집
         formData.append("thumbnailNo", index + 1);
         isThumbnailSelected = true;
       }
-    });
-
-    // 설명이 비어있는 단계가 있다면
-    if (isEmptyStepContent) {
-      alert("작성되지 않은 레시피 과정이 있어요!");
-      e.preventDefault(); // 제출 취소
-      return;
     }
 
-    // 대표 이미지가 선택되지 않았다면
-    if (!isThumbnailSelected) {
+    // 이미지는 있는데 썸내일이 없다면
+    const hasAnyImage = Array.from(steps).some(step => step.querySelector(".step-image-input").files.length > 0);
+
+    if (hasAnyImage && !isThumbnailSelected) {
       alert("대표 이미지를 선택해주세요!");
-      e.preventDefault(); // 제출 취소
+      e.preventDefault();
       return;
     }
 

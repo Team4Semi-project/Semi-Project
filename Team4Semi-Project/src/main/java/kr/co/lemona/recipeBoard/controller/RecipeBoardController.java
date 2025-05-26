@@ -3,11 +3,9 @@ package kr.co.lemona.recipeBoard.controller;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,10 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
@@ -314,16 +312,35 @@ public class RecipeBoardController {
 			@RequestParam(value = "images", required = false) List<MultipartFile> images,
 			@RequestParam("stepContents") List<String> inputStepContent,
 			@RequestParam(value = "thumbnailNo", required = false) int thumbnailNo,
-			@RequestParam(value = "hashTags", required = false) List<String> hashTagList, RedirectAttributes ra)
+			@RequestParam(value = "hashTags", required = false) List<String> hashTagList, RedirectAttributes ra,
+			@RequestParam("imageExists") List<Boolean> imageExists)
 			throws Exception {
 
 		// 1. 로그인한 회원번호 세팅
 		inputBoard.setMemberNo(1);
 		inputBoard.setHashTagList(hashTagList);
-		// memberNo title categoryNo hashTag
+		// memberNo title categoryNo hashTagList
+		
+		// 빈 배열을 포함한 imageList
+		List<MultipartFile> imageList = new ArrayList<>();
+		if (images != null && imageExists != null) {
+		    int index = 0;
+
+		    for (int i = 0; i < imageExists.size(); i++) {
+		        if (imageExists.get(i)) {
+		            if (index < images.size()) {
+		                imageList.add(images.get(index++));
+		            } else {
+		                imageList.add(null); // 오류 방지용 fallback
+		            }
+		        } else {
+		            imageList.add(null);
+		        }
+		    }
+		}
 
 		// 2. 서비스 메서드 호출 후 결과 반환 받기
-		int boardNo = service.insertRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo);
+		int boardNo = service.insertRecipeBoard(inputBoard, imageList, inputStepContent, thumbnailNo);
 
 		// 3. 서비스 결과에 따라 message, 리다이렉트 경로 지정
 		String message = null;
@@ -452,26 +469,20 @@ public class RecipeBoardController {
 	public String updateRecipeBoard(RecipeBoard inputBoard,
 	        @RequestParam(value = "images", required = false) List<MultipartFile> images,
 	        @RequestParam("stepContents") List<String> inputStepContent,
-	        @RequestParam(value = "thumbnailNo", required = false) int thumbnailNo,
+	        @RequestParam(value = "thumbnailNo", required = false) Integer thumbnailNo,
 	        @RequestParam(value = "hashTags", required = false) List<String> hashTagList,
-	        @RequestParam(value = "deleteOrderList", required = false) String deleteOrderListStr,
 	        RedirectAttributes ra,
 	        @RequestParam("boardNo") int boardNo,
-	        @RequestParam("categoryNo") String category) throws Exception {
+	        @RequestParam("categoryNo") String category,
+	        @RequestParam("stepNoList") List<Integer> stepNoList) throws Exception {
 
 	    inputBoard.setHashTagList(hashTagList);
 	    inputBoard.setBoardNo(boardNo);
+	    
+	    log.debug("====stepNoList==== : {}",stepNoList);
+	    log.debug("======images====== : {}",images);
 
-	    // 삭제된 이미지 순서 처리
-	    List<Integer> deleteOrderList = new ArrayList<>();
-	    if (deleteOrderListStr != null && !deleteOrderListStr.isEmpty()) {
-	        deleteOrderList = Arrays.stream(deleteOrderListStr.split(","))
-	                                .map(String::trim)
-	                                .map(Integer::parseInt)
-	                                .collect(Collectors.toList());
-	    }
-
-	    int result = service.updateRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo, deleteOrderList);
+	    int result = service.updateRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo, stepNoList);
 
 	    String message;
 	    String path;
@@ -487,7 +498,5 @@ public class RecipeBoardController {
 	    ra.addFlashAttribute("message", message);
 	    return path;
 	}
-
-
 
 }

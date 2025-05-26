@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
@@ -212,13 +214,15 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 			String thumbnailCheck = "N";
 
 			// 3-1. 단계에 이미지가 있는 경우
-			if (!images.get(i).isEmpty()) {
-
+			if (images != null && images.size() > i && images.get(i) != null && !images.get(i).isEmpty()) {
+				// 이미지
+				MultipartFile stepImage = images.get(i);
 				// 원본명
-				originalName = images.get(i).getOriginalFilename();
+				originalName = stepImage.getOriginalFilename();
 				// 변경명
 				rename = Utility.fileRename(originalName);
-				// 썸내일 여부
+
+				// 썸네일 여부 설정
 				if (i == thumbnailNo - 1) {
 					thumbnailCheck = "Y";
 				}
@@ -226,7 +230,8 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 			// boardStep에 boardNo와 순서, 설명 삽입
 			boardStep = BoardStep.builder().stepOrder(stepOrder).stepContent(stepContent).imgPath(webPath)
-					.imgOriginalName(originalName).imgRename(rename).uploadFile(images.get(i)).boardNo(boardNo)
+					.imgOriginalName(originalName).imgRename(rename)
+					.uploadFile(images != null && images.size() > i ? images.get(i) : null).boardNo(boardNo)
 					.thumbnailCheck(thumbnailCheck).build();
 
 			// 해당 boardStep을 boardStepList에 추가
@@ -240,8 +245,14 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		if (result > 0) {
 			// 서버에 이미지 저장
 			for (BoardStep step : boardStepList) {
-				step.getUploadFile().transferTo(new File(folderPath + step.getImgRename()));
+				MultipartFile file = step.getUploadFile();
+				String rename = step.getImgRename();
+
+				if (file != null && !file.isEmpty() && rename != null && !rename.isBlank()) {
+					file.transferTo(new File(folderPath + File.separator + rename));
+				}
 			}
+
 		} else { // 삽입 실패
 			log.debug("삽입실패");
 			throw new RuntimeException();
@@ -410,22 +421,25 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	 * 레시피 게시글 업데이트
 	 * 
 	 * @author 재호
-	 * @throws IOException 
-	 * @throws IllegalStateException 
+	 * @throws IOException
+	 * @throws IllegalStateException
 	 */
 	@Override
 	public int updateRecipeBoard(RecipeBoard inputBoard, List<MultipartFile> images, List<String> inputStepContent,
-			int thumbnailNo) throws IllegalStateException, IOException {
-		
+			int thumbnailNo, List<Integer> stepNoList) throws IllegalStateException, IOException {
+
+		// 수정할 게시글 번호
 		int boardNo = inputBoard.getBoardNo();
 
+		int result = 0;
+
 		// 1. 레시피의 제목/카테고리 번호 먼저 RECIPE_BOARD 테이블에 업데이트
-		int result = mapper.updateRecipeBoard(inputBoard);
+		result = result + mapper.updateRecipeBoard(inputBoard);
 
 		// 2. 해시태그 갱신
 		// 2-1. 기존의 해시태그 초기화
-		result = mapper.deleteBoardHashtagByBoardNo(inputBoard);
-		
+		result = result + mapper.deleteBoardHashtagByBoardNo(inputBoard);
+
 		// 2-2. 신규 해시태그 리스트 삽입
 		if (inputBoard.getHashTagList() != null) {
 			List<String> hashTagList = inputBoard.getHashTagList();
@@ -435,72 +449,155 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 			map.put("boardNo", boardNo);
 
 			// 해시태그 중복감사 + 해시태그 테이블에 삽입
-			result = mapper.insertNewHashtagIfNotExists(hashTagList);
+			result = result + mapper.insertNewHashtagIfNotExists(hashTagList);
 			// 해시태그를 글에 추가
-			result = mapper.insertHashTag(map);
+			result = result + mapper.insertHashTag(map);
 		}
 
-		// 3. boardStep 업로드
-		// 3-1. 기존의 스텝을 초기화
-		result = mapper.deleteBoardStepByBoardNo(inputBoard);
+		// 3. 기존의 스텝 과정 정보 추출
+		List<Integer> originalList = mapper.selectOriginalList(boardNo);
+		Set<Integer> original = new HashSet<>(originalList);
+
+		// 수정된 스텝 과정 정보
+		Set<Integer> modified = new HashSet<>(stepNoList);
+		modified.remove(0); // 추가된 0은 비교 대상에서 제외
+
+		// 4. 이미지가 지워진 스텝 정보 추출
+		original.removeAll(modified); // 삭제된 요소만 남음
+		List<Integer> deletedList = new ArrayList<>(original);
+
+		// 이미지가 지워진 과정 삭제
+		if (!deletedList.isEmpty()) {
+			for (int stepNo : deletedList) {
+				result = result + mapper.deleteBoardStep(stepNo);
+			}
+		}
+
+		// 5. 이미지가 남은 스텝 과정의 순서 변경사항 추적
+		List<BoardStep> stepOrderList = new ArrayList<>();
+
+		Set<Integer> usedOrders = new HashSet<>();
+
+		for (int i = 0; i < stepNoList.size(); i++) {
+			int stepNo = stepNoList.get(i);
+			if (stepNo != 0) {
+				BoardStep step = new BoardStep();
+				step.setStepNo(stepNo);
+				// 스텝 순서는 1부터 시작
+				step.setStepOrder(i + 1);
+				// 사용된 스텝 순서 저장
+				usedOrders.add(i + 1);
+				stepOrderList.add(step);
+			}
+		}
+
+		if (!stepOrderList.isEmpty()) {
+			for (BoardStep step : stepOrderList) {
+				result = result + mapper.changeBoardStep(step);
+			}
+		}
+
+		// 실패시 수정 취소
+		if (result == 0)
+			return 0;
+
+		// 6. 나머지 스텝을 새로 추가(새로 이미지가 추가되거나, 기존 이미지가 삭제된)
+
+		// 업로드할 새로운 스텝을 저장할 리스트
+		List<BoardStep> insertStepList = new ArrayList<>();
+
+		int orderCursor = 1; // stepOrder는 1부터 시작
+		int imageCursor = 0; // 실제 넘어온 이미지 리스트 index용
 		
-		// 업로드된 boardStep의 정보를 저장하는 List
-		List<BoardStep> boardStepList = new ArrayList<>();
+		boolean isNewThumbnail = false;
+		int thumbnailStep = 0;
+		int targetBoard = 0;
 
-		// 업로드할 boardStep을 저장하는 객체
-		BoardStep boardStep = null;
+		for (int i = 0; i < stepNoList.size(); i++) {
 
-		for (int i = 0; i < inputStepContent.size(); i++) {
+		    // 신규 추가 대상만 처리
+		    if (stepNoList.get(i) == 0) {
 
-			// 단계 순서
-			int stepOrder = i + 1;
-			// 설명 텍스트
-			String stepContent = inputStepContent.get(i);
+		        // 사용되지 않은 stepOrder 찾기
+		        while (usedOrders.contains(orderCursor)) {
+		            orderCursor++;
+		        }
 
-			// 원본명
-			String originalName = null;
-			// 변경명
-			String rename = null;
-			// 썸내일 여부
-			String thumbnailCheck = "N";
+		        // 기본값 세팅
+		        String originalName = null;
+		        String rename = null;
+		        String thumbnailCheck = (i == (thumbnailNo - 1)) ? "Y" : "N";
 
-			// 3-1. 단계에 이미지가 있는 경우
-			if (!images.get(i).isEmpty()) {
+		        // 실제 넘어온 이미지 리스트에서 가져오기
+		        if (images != null && images.size() > imageCursor) {
+		            MultipartFile stepImage = images.get(imageCursor);
 
-				// 원본명
-				originalName = images.get(i).getOriginalFilename();
-				// 변경명
-				rename = Utility.fileRename(originalName);
-				// 썸내일 여부
-				if (i == thumbnailNo - 1) {
-					thumbnailCheck = "Y";
-				}
-			}
+		            // 실제 파일이 비어있지 않다면 파일명 설정
+		            if (stepImage != null && !stepImage.isEmpty()) {
+		                originalName = stepImage.getOriginalFilename();
+		                rename = Utility.fileRename(originalName);
+		            }
 
-			// boardStep에 boardNo와 순서, 설명 삽입
-			boardStep = BoardStep.builder().stepOrder(stepOrder).stepContent(stepContent).imgPath(webPath)
-					.imgOriginalName(originalName).imgRename(rename).uploadFile(images.get(i)).boardNo(boardNo)
-					.thumbnailCheck(thumbnailCheck).build();
+		            imageCursor++; // 이미지 인덱스 증가 (실제 넘어온 순서대로만 증가)
+		        }
 
-			// 해당 boardStep을 boardStepList에 추가
-			boardStepList.add(boardStep);
+		        // BoardStep 객체 생성
+		        BoardStep step = BoardStep.builder()
+		            .boardNo(inputBoard.getBoardNo())
+		            .stepOrder(orderCursor)
+		            .stepContent(inputStepContent.get(i))
+		            .imgOriginalName(originalName)
+		            .imgRename(rename)
+		            .imgPath(webPath)
+		            .uploadFile((images != null && imageCursor <= images.size()) ? images.get(imageCursor - 1) : null)
+		            .thumbnailCheck(thumbnailCheck)
+		            .build();
+		        
+		        if(thumbnailCheck.equals("Y")) {
+		        	isNewThumbnail = true;
+		        	thumbnailStep = step.getStepNo();
+		        	targetBoard = step.getBoardNo();
+		        }
+
+		        insertStepList.add(step);
+
+		        // 사용한 순번으로 등록
+		        usedOrders.add(orderCursor);
+		    }
 		}
+		
+		if(isNewThumbnail) {
+			Map<String, Integer> map = new HashMap<>();
+			map.put("thumbnailStep", thumbnailStep);
+			map.put("boardNo", targetBoard);
+			mapper.resetThumnail(map);
+		}
+		
+		int insertResult = 0;
 
-		// boardStepList를 DB에 삽입
-		result = mapper.insertBoardStepContent(boardStepList);
+		// 변경사항이 있으면
+		if (!insertStepList.isEmpty()) {
+			// boardStepList를 DB에 삽입
+			insertResult = mapper.insertBoardStepContent(insertStepList);
 
-		// 4. 다중 삽입 성공 확인
-		if (result > 0) {
-			// 서버에 이미지 저장
-			for (BoardStep step : boardStepList) {
-				step.getUploadFile().transferTo(new File(folderPath + step.getImgRename()));
+			// 4. 다중 삽입 성공 확인
+			if (insertResult > 0) {
+				// 서버에 이미지 저장
+				for (BoardStep step : insertStepList) {
+					MultipartFile file = step.getUploadFile();
+					// 변경명
+					String rename = step.getImgRename();
+					if (file != null && !file.isEmpty() && rename != null) {
+						file.transferTo(new File(folderPath + rename));
+					}
+				}
+			} else { // 삽입 실패	
+				log.debug("삽입실패");
+				throw new RuntimeException();
 			}
-		} else { // 삽입 실패
-			log.debug("삽입실패");
-			throw new RuntimeException();
 		}
 
 		// 5. 반환
-		return result;
+		return insertResult + result;
 	}
 }

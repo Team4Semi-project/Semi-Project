@@ -58,8 +58,9 @@ public class EditDefaultBoardController {
 	 * @author 민장
 	 */
 	@GetMapping("insert")
-	public String defaultBoardInsert(@PathVariable("boardCode") int boardCode) {
-		return "board/defaultBoardWrite";
+	public String defaultBoardInsert(@PathVariable("boardCode") int boardCode, Model model) {
+		
+	  return "board/defaultBoardWrite";
 	}
 	
 	/** 게시글 작성
@@ -149,6 +150,15 @@ public class EditDefaultBoardController {
 		return path;
 	}
 	
+	/** 게시글 수정
+	 * @param boardCode
+	 * @param boardNo
+	 * @param inputBoard
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping("{boardNo:[0-9]+}/update")
 	public String boardUpdate(
 	        @PathVariable("boardCode") int boardCode,

@@ -31,9 +31,12 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 	 * @author 민장
 	 */
 	@Override
-	public Map<String, Object> selectBoardList(int boardCode, int cp) {
+	public Map<String, Object> selectBoardList(Map<String, Object> inputMap) {
 		// 1. 지정된 게시판(boardCode)에서 삭제 되지 않은 게시글 수를 조회
-		int listCount = mapper.getListCount(boardCode);
+		int listCount = 0;
+		int boardCode = (int)inputMap.get("boardCode");
+		int cp = (int)inputMap.get("cp");
+		listCount = mapper.getListCount(boardCode);
 
 		// 2. 1번의 결과 + cp를 이용해서 Pagination 객체를 생성
 		Pagination pagination = new Pagination(cp, listCount);
@@ -44,7 +47,7 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		// 게시글 조회
-		List<Board> boardList = mapper.selectBoardList(boardCode, rowBounds);
+		List<Board> boardList = mapper.selectBoardList(inputMap, rowBounds);
 
 		// 썸네일 추출 추가
 		for (Board board : boardList) {
@@ -165,6 +168,31 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		}
 
 		// 실패한 경우 -1 반환
+		return -1;
+	}
+
+	/** 좋아요 기능
+	 * @author 재호
+	 */
+	@Override
+	public int updateLikeCount(Map<String, Integer> map) {
+		
+		log.debug("map : {}",map);
+		
+		int result = 0;
+		
+		if(map.get("likeCheck")==1) {
+			// 좋아요가 체크되어있음
+			result = mapper.decreaseLikeCount(map);
+		} else {
+			// 좋아요가 체크되어있지 않음
+			result = mapper.increaseLikeCount(map);
+		}
+		
+		if(result>0) {
+			// 좋아요 갯수 갱신 반환
+			return mapper.updateLikeCount(map); 
+		}
 		return -1;
 	}
 }

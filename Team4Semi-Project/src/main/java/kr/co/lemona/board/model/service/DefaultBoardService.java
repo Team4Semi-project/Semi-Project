@@ -10,8 +10,9 @@ public interface DefaultBoardService {
 	 * @param cp
 	 * @return
 	 * @author 민장
+	 * @param sort 
 	 */
-	Map<String, Object> selectBoardList(int boardCode, int cp);
+	Map<String, Object> selectBoardList(Map<String, Object> inputMap);
 	
 	/** 게시글 상세 조회 서비스
 	 * @param map
@@ -33,5 +34,11 @@ public interface DefaultBoardService {
 	 * @return
 	 */
 	int updateReadCount(int boardNo);
+	
+	/** 좋아요 기능
+	 * @return
+	 * @author 재호
+	 */
+	int updateLikeCount(Map<String, Integer> map);
 
 }

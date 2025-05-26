@@ -55,4 +55,20 @@
 		WHERE member_name = #{name}
 		AND member_email = #{email}
 	</select>
+	
+	
+	<select id="findUserByIdNameEmail" parameterType="map" resultType="map">
+	    SELECT id, name, email
+	    FROM members
+	    WHERE id = #{id} AND name = #{name} AND email = #{email}
+	</select>
+	
+	<select id="findUserForPassword" resultType="String">
+  		SELECT user_id
+  		FROM member
+  		WHERE user_id = #{userId}
+   		 AND user_name = #{userName}
+   		 AND user_email = #{userEmail}
+	</select>
+	
 </mapper>

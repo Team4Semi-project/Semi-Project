@@ -21,8 +21,8 @@
 
       <!-- 탭 메뉴 -->
       <nav class="tabs">
-        <a href="findid" id="findIdTab" class="tab">아이디 찾기</a>
-        <a href="findpw" id="findPwTab" class="tab active">비밀번호 찾기</a>
+        <a href="/findid" id="findIdTab" class="tab">아이디 찾기</a>
+        <a href="/findpw" id="findPwTab" class="tab active">비밀번호 찾기</a>
       </nav>
 
       <main>
@@ -30,23 +30,18 @@
           <h2>비밀번호 찾기</h2>
           <form id="findPwForm" method="POST" action="/findpw-update">
             <input
-              type="text"
+              type="password"
               name="userId"
-              placeholder="아이디를 입력하세요"
+              placeholder="새로운 비밀번호 입력"
               required
             />
             <input
-              type="text"
+              type="password"
               name="userName"
-              placeholder="이름을 입력하세요"
+              placeholder="새로운 비밀번호 확인"
               required
             />
-            <input
-              type="email"
-              name="userEmail"
-              placeholder="이메일을 입력하세요"
-              required
-            />
+
             <div class="bottom-buttons">
               <button type="button" id="goToReset">비밀번호 찾기</button>
             </div>

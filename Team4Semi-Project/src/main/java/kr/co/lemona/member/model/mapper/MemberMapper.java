@@ -51,6 +51,18 @@ public interface MemberMapper {
 	 */
 	String findIdByNameAndEmail(Map<String, String> params);
 
+	/** 비밀번호 찾기
+	 * @param params
+	 * @return
+	 */
+	Map<String, String> findUserByIdNameEmail(Map<String, String> params);
 
+	/** 
+	 * @param params
+	 * @return
+	 */
+	String findUserForPassword(Map<String, String> params);
+
+	
 
 }

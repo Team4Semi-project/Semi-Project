@@ -1,11 +1,14 @@
 package kr.co.lemona.member.model.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.member.model.mapper.MemberMapper;
@@ -94,6 +97,7 @@ public class MemberServiceImpl implements MemberService {
 		return 0;
 	}
 
+	// 아이디 찾기 
 	@Override
 	public String findIdByNameAndEmail(Map<String, String> params) {
 		log.debug("입력 name: " + params.get("name"));
@@ -105,5 +109,54 @@ public class MemberServiceImpl implements MemberService {
 
 	    return result;
 	}
+	
+	// 비밀번호 찾기
+	@PostMapping("/findpassword")
+    public Map<String, Object> findPassword(@RequestBody Map<String, String> params) {
+        String userId = params.get("userId");
+        String userName = params.get("userName");
+        String userEmail = params.get("userEmail");
+
+        Map<String, Object> result = new HashMap<>();
+
+        if (userId == null || userName == null || userEmail == null ||
+            userId.isEmpty() || userName.isEmpty() || userEmail.isEmpty()) {
+            result.put("success", false);
+            result.put("message", "모든 항목을 입력해주세요.");
+            return result;
+        }
+
+        boolean isMatch = MemberService.isUserInfoMatch(params);
+
+        if (isMatch) {
+            result.put("success", true);
+            result.put("redirectUrl", "/reset/findpw-update.html"); // 비밀번호 변경 페이지
+        } else {
+            result.put("success", false);
+            result.put("message", "입력하신 정보가 일치하지 않습니다.");
+        }
+
+        return result;
+    }
+	
+	 public boolean isUserInfoMatch(Map<String, String> params) {
+	        String foundUser = mapper.findUserForPassword(params);
+	        return foundUser != null; // 일치하는 유저가 있으면 true
+	    }
+
+	 // 유저 정보 확인
+	 @Override
+	 public boolean checkUserInfo(Map<String, String> params) {
+	 	 // TODO Auto-generated method stub
+		 return false;
+	}
+
+	// 비밀번호 찾기
+	@Override
+	public String findPassword(String id, String name, String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 }

@@ -1,51 +1,69 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LEMONA - 비밀번호 재설정</title>
-  <link rel="stylesheet" href="/css/findpw-update.css"/>
-  <script defer src="/js/findpw-update.js"></script>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LEMONA - 비밀번호 찾기</title>
+    <link rel="stylesheet" href="/css/find-pw.css" />
+    <script defer src="/js/find-pw.js"></script>
+  </head>
 
-<body>
-  <div class="wrap">
-    <header class="header">
-      <div class="logo-container">
-        <a href="/" class="logo-link">
-          <img src="/images/lemona-logo.png" alt="LEMONA 로고" class="logo"/>
-        </a>
-      </div>
-    </header>
+  <body>
+    <div class="wrap">
+      <header class="header">
+        <div class="logo-container">
+          <a href="/" class="logo-link">
+            <img src="/images/lemona-logo.png" alt="LEMONA 로고" class="logo" />
+            <h1 class="brand-name"></h1>
+          </a>
+        </div>
+      </header>
 
-    <main>
-      <div class="find-box">
-        <h2>비밀번호 재설정</h2>
-		<form id="resetPwForm" method="POST" action="/member/updatePw">
-		  <input type="hidden" name="memberId" value="{{memberId}}" />
+      <!-- 탭 메뉴 -->
+      <nav class="tabs">
+        <a href="findid" id="findIdTab" class="tab">아이디 찾기</a>
+        <a href="findpw" id="findPwTab" class="tab active">비밀번호 찾기</a>
+      </nav>
 
-		  <input type="password" id="newPassword" name="newPw" placeholder="새 비밀번호" required />
-		  <input type="password" id="confirmPassword" name="confirmPw" placeholder="비밀번호 확인" required />
+      <main>
+        <div class="find-box">
+          <h2>비밀번호 찾기</h2>
+          <form id="findPwForm" method="POST" action="/findpw-update">
+            <input
+              type="text"
+              name="userId"
+              placeholder="아이디를 입력하세요"
+              required
+            />
+            <input
+              type="text"
+              name="userName"
+              placeholder="이름을 입력하세요"
+              required
+            />
+            <input
+              type="email"
+              name="userEmail"
+              placeholder="이메일을 입력하세요"
+              required
+            />
+            <div class="bottom-buttons">
+              <button type="button" id="goToReset">비밀번호 찾기</button>
+            </div>
+          </form>
+        </div>
+      </main>
 
-		  <div id="pwError" style="color: red; margin-top: 10px;"></div>
-
-		  <div class="bottom-buttons">
-		    <button type="submit">비밀번호 변경</button>
-		    <a href="/login">로그인 화면</a>
-		  </div>
-		</form>
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-links">
-        <a href="#">프로젝트 소개</a>
-        <a href="#">개발자 소개</a>
-        <a href="#">개인정보 처리방침</a>
-        <a href="#">이용약관</a>
-        <span>© Copyright</span>
-      </div>
-    </footer>
-  </div>
-</body>
+      <footer class="footer">
+        <div class="footer-links">
+          <a href="#" class="footer-link">프로젝트 소개</a>
+          <a href="#" class="footer-link">개발자 소개</a>
+          <a href="#" class="footer-link">개인정보 처리방침</a>
+          <a href="#" class="footer-link">이용약관</a>
+          <span class="copyright">© Copyright</span>
+          <a href="#" class="footer-link">SNS</a>
+        </div>
+      </footer>
+    </div>
+  </body>
 </html>

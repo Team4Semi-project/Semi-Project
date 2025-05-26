@@ -1,11 +1,15 @@
 package kr.co.lemona.member.model.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.co.lemona.member.model.dto.Member;
 
 @Mapper
 public interface MemberMapper {
+   
 
 	/**
 	 * 로그인 SQL 실행
@@ -40,5 +44,13 @@ public interface MemberMapper {
 	 * @return
 	 */
 	int register(Member inputMember);
+
+	/** 아이디 찾기
+	 * @param params
+	 * @return
+	 */
+	String findIdByNameAndEmail(Map<String, String> params);
+
+
 
 }

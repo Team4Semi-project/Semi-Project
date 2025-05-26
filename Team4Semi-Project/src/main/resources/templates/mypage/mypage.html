@@ -2,97 +2,224 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Lemona - MyPage</title>
-    <link rel="stylesheet" href="/static/css/mypage.css" />
-    <link rel="stylesheet" href="/static/css/common.css" />
-    <!-- 공통 스타일 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${session.loginMember.memberNickname} + '님의 마이페이지'">
+      LEMONA - 마이페이지
+    </title>
+    <link rel="stylesheet" href="/css/mypage.css" />
+    <!-- Material Symbols 아이콘 사용을 위한 링크 -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
   </head>
   <body>
-    <!-- header + nav-container (메인 페이지랑 동일) -->
-    <header>
-      <div class="header-container">
-        <a href="/" class="logo">LEMONA</a>
-        <nav class="nav-container">
-          <ul>
-            <li><a href="/category/recipe">레시피</a></li>
-            <li><a href="/category/popular">인기 게시물</a></li>
-            <li><a href="/category/free">자유 게시판</a></li>
-            <li><a href="/category/qna">질문/답변</a></li>
-          </ul>
-        </nav>
-        <div class="user-menu">
-          <a
-            th:if="${session.loginMember != null}"
-            th:text="${session.loginMember.memberNickname}"
-            href="/mypage/mypage"
-            >사용자명</a
-          >
-          <a href="/write">Write Button</a>
-        </div>
-      </div>
-    </header>
+    <!-- 헤더 프래그먼트 -->
+    <header th:replace="~{common/header :: header}"></header>
 
-    <!-- MyPage 콘텐츠 -->
-    <main class="mypage-container">
+    <div class="container">
+      <!-- 프로필 섹션 -->
       <section class="profile-section">
-        <img
-          src="/images/profile.png"
-          alt="Profile Image"
-          class="profile-img"
-        />
-        <h2>레모니 🍋</h2>
-        <div class="profile-buttons">
-          <button>내가 쓴 글</button>
-          <button>내 댓글</button>
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <img
+              th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/lemona-default-avatar.png'}"
+              alt="프로필 이미지"
+            />
+          </div>
+          <div class="profile-info">
+            <div class="nickname-wrapper">
+              <span
+                class="profile-nickname"
+                th:text="${session.loginMember.memberNickname}"
+                >레몬짱</span
+              >
+              <a href="/mypage/editProfile" class="edit-icon">
+                <span class="material-symbols-outlined">settings</span>
+              </a>
+            </div>
+            <div class="profile-stats">
+              <button class="stat-btn">
+                내가 쓴 글
+                <span class="stat-number" th:text="${writtenCount ?: 0}"
+                  >0</span
+                >
+              </button>
+              <button class="stat-btn">
+                댓글 수
+                <span class="stat-number" th:text="${commentCount ?: 0}"
+                  >0</span
+                >
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="post-list-section">
-        <div class="post-list-header">
-          <h3>게시글 목록</h3>
-          <div class="list-controls">
-            <button class="btn-latest">최신순</button>
-            <button class="btn-grid">🔳</button>
-            <button class="btn-list">📋</button>
-          </div>
-        </div>
+      <!-- 탭 섹션 -->
+      <nav class="tabs">
+        <a href="/mypage/main" id="postsTab" class="tab active">내가 쓴 글</a>
+        <a href="/mypage/like" id="lemonaTab" class="tab">내 레모나</a>
+      </nav>
 
-        <div class="post-cards">
-          <div class="post-card">
-            <img src="/images/lemon1.png" alt="레몬 요리 이미지" />
-            <h4>레몬 카르보나라 [0]</h4>
-            <div class="post-meta">
-              <span>작성자: 레모니</span>
-              <span>2025-05-26</span>
+      <!-- 게시글 섹션 -->
+      <section class="post-section" id="posts">
+        <div class="recipe-grid">
+          <article class="recipe-card" th:each="post : ${writtenPosts}">
+            <div class="recipe-image">
+              <img
+                th:src="${post.imageUrl != null ? post.imageUrl : '/images/default-recipe.png'}"
+                alt="게시글 이미지"
+              />
             </div>
-            <div class="post-stats">
-              <span>👍 26</span>
-              <span>👁️ 40</span>
+            <div class="recipe-content">
+              <h3 class="recipe-title" th:text="${post.title}">게시물 제목</h3>
+              <div class="recipe-meta">
+                <span class="recipe-date" th:text="${post.createDate}"
+                  >2025-05-26</span
+                >
+              </div>
+              <div class="recipe-stats">
+                <div class="stat-item">
+                  <span class="icon">❤️</span>
+                  <span th:text="${post.likes}">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="icon">👁️</span>
+                  <span th:text="${post.views}">0</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <!-- 필요한 만큼 post-card 반복 -->
+          </article>
         </div>
-
-        <div class="pagination">
-          <a href="#">«</a>
-          <a href="#">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">»</a>
+        <div
+          class="pagination-area"
+          th:if="${not #lists.isEmpty(writtenPosts)}"
+        >
+          <ul class="pagination" th:object="${writtenPagination}">
+            <li><a th:href="@{/myPage/mypage(cp=1, tab='posts')}"><<</a></li>
+            <li>
+              <a th:href="@{/myPage/mypage(cp=*{prevPage}, tab='posts')}"><</a>
+            </li>
+            <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+              <li th:if="${i} == *{currentPage}">
+                <a class="current" th:text="${i}"></a>
+              </li>
+              <li th:unless="${i} == *{currentPage} or ${i} == 0">
+                <a
+                  th:href="@{/myPage/mypage(cp=${i}, tab='posts')}"
+                  th:text="${i}"
+                ></a>
+              </li>
+            </th:block>
+            <li>
+              <a th:href="@{/myPage/mypage(cp=*{nextPage}, tab='posts')}">></a>
+            </li>
+            <li>
+              <a th:href="@{/myPage/mypage(cp=*{maxPage}, tab='posts')}">>></a>
+            </li>
+          </ul>
         </div>
       </section>
-    </main>
 
-    <footer>
-      <div class="footer-container">
-        <ul>
-          <li>프로젝트 소개</li>
-          <li>팀원 소개</li>
-          <li>개인정보 처리방침</li>
-          <li>이용약관</li>
-        </ul>
-        <p>&copy; 2025 Lemona Project</p>
+      <section class="post-section" id="lemona" style="display: none">
+        <div class="recipe-grid">
+          <article class="recipe-card" th:each="lemona : ${likedPosts}">
+            <div class="recipe-image">
+              <img
+                th:src="${lemona.imageUrl != null ? lemona.imageUrl : '/images/default-recipe.png'}"
+                alt="레모나 이미지"
+              />
+            </div>
+            <div class="recipe-content">
+              <h3 class="recipe-title" th:text="${lemona.title}">
+                레모나 제목
+              </h3>
+              <div class="recipe-meta">
+                <span class="recipe-date" th:text="${lemona.createDate}"
+                  >2025-05-26</span
+                >
+              </div>
+              <div class="recipe-stats">
+                <div class="stat-item">
+                  <span class="icon">❤️</span>
+                  <span th:text="${lemona.likes}">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="icon">👁️</span>
+                  <span th:text="${lemona.views}">0</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="pagination-area" th:if="${not #lists.isEmpty(likedPosts)}">
+          <ul class="pagination" th:object="${likedPagination}">
+            <li><a th:href="@{/myPage/mypage(cp=1, tab='lemona')}"><<</a></li>
+            <li>
+              <a th:href="@{/myPage/mypage(cp=*{prevPage}, tab='lemona')}"><</a>
+            </li>
+            <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+              <li th:if="${i} == *{currentPage}">
+                <a class="current" th:text="${i}"></a>
+              </li>
+              <li th:unless="${i} == *{currentPage} or ${i} == 0">
+                <a
+                  th:href="@{/myPage/mypage(cp=${i}, tab='lemona')}"
+                  th:text="${i}"
+                ></a>
+              </li>
+            </th:block>
+            <li>
+              <a th:href="@{/myPage/mypage(cp=*{nextPage}, tab='lemona')}">></a>
+            </li>
+            <li>
+              <a th:href="@{/myPage/mypage(cp=*{maxPage}, tab='lemona')}">>></a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <a href="#">회사 소개</a>
+        <a href="#">이용약관</a>
+        <a href="#">개인정보보호정책</a>
+        <a href="#">고객센터</a>
+        <a href="#">파트너십 문의</a>
+        <a href="#">광고</a>
       </div>
     </footer>
+
+    <script>
+      function showTab(tabName) {
+        const tabs = document.querySelectorAll(".post-section");
+        tabs.forEach((tab) => (tab.style.display = "none"));
+        document.getElementById(tabName).style.display = "block";
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document
+          .querySelector(`button[onclick="showTab('${tabName}')"]`)
+          .classList.add("active");
+        // 탭 전환 시 페이지 번호 초기화 (cp=1)
+        window.location.href = "/myPage/mypage?cp=1&tab=" + tabName;
+      }
+
+      // 페이지 로드 시 현재 탭 설정
+      document.addEventListener("DOMContentLoaded", function () {
+        const currentTab = /*[[${param.tab ?: 'posts'}]]*/ "posts";
+        const tabs = document.querySelectorAll(".post-section");
+        tabs.forEach((tab) => (tab.style.display = "none"));
+        document.getElementById(currentTab).style.display = "block";
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.classList.remove("active");
+          if (btn.getAttribute("onclick").includes(currentTab)) {
+            btn.classList.add("active");
+          }
+        });
+      });
+    </script>
   </body>
 </html>

@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.member.model.service.MemberService;
+import kr.co.lemona.myPage.model.service.MyPageService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -133,5 +136,5 @@ public class MemberController {
 	public String mypage() {
 	    return "mypage/mypage"; // templates/mypage/mypage.html 마이페이지로 이동	
 	}
-
+	
 }

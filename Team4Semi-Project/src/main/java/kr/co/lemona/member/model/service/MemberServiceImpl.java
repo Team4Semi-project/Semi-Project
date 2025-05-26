@@ -1,5 +1,7 @@
 package kr.co.lemona.member.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -90,6 +92,18 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int checkId(String memberId) {
 		return 0;
+	}
+
+	@Override
+	public String findIdByNameAndEmail(Map<String, String> params) {
+		log.debug("입력 name: " + params.get("name"));
+	    log.debug("입력 email: " + params.get("email"));
+
+	    String result = mapper.findIdByNameAndEmail(params);
+
+	    log.debug("찾은 ID: " + result);
+
+	    return result;
 	}
 
 }

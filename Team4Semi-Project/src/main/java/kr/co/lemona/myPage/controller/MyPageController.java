@@ -35,7 +35,7 @@ import oracle.jdbc.proxy.annotation.Post;
 
 @SessionAttributes({ "loginMember" })
 @Controller
-@RequestMapping("myPage")
+@RequestMapping("mypage")
 @Slf4j
 public class MyPageController {
 
@@ -350,11 +350,12 @@ public class MyPageController {
 		return "redirect:profile";
 	}
 
-	@GetMapping("/mypage/mypage")
+	@GetMapping("main")
 	public String myPage(HttpSession session, Model model) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 
 		// 예: 내가 쓴 글 목록 가져오기 (선택)
+		model.addAttribute(loginMember);
 
 		return "mypage/mypage"; // templates/mypage/mypage.html 로 연결
 	}

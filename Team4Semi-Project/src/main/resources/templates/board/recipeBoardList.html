@@ -60,7 +60,7 @@
             <div class="recipe-image">
               <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <a
-                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
+                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} ">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -71,7 +71,7 @@
             <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} "
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -98,7 +98,7 @@
                   <span th:text="${board.likeCount}">28</span>
                 </button>
                 <div class="views">
-                  <i class="fas fa-eye"></i>
+                  <i class="material-symbols-outlined align-middle">visibility</i>
                   <span th:text="${board.readCount}">36</span>
                 </div>
               </div>
@@ -121,7 +121,7 @@
               <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <!-- 레시피 게시판 썸네일 -->
               <a
-                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
+                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} ">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
@@ -133,7 +133,7 @@
             <div class="recipe-details">
               <h3 class="recipe-title">
 
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} "
                   th:text="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -147,10 +147,17 @@
                 <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}">#레몬</span>
               </div>
               <div class="recipe-stats">
-                <span class="likes"><i class="fas fa-heart"></i>
-                  <span th:text="${board.likeCount}">28</span></span>
-                <span class="views"><i class="fas fa-eye"></i>
-                  <span th:text="${board.readCount}">36</span></span>
+                <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                  th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                  th:data-like-check="${board.likeCheck}"
+                  th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+                  <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+                  <span th:text="${board.likeCount}">28</span>
+                </button>
+                <div class="views">
+                  <i class="material-symbols-outlined align-middle">visibility</i>
+                  <span th:text="${board.readCount}">36</span>
+                </div>
               </div>
             </div>
           </div>
@@ -163,13 +170,14 @@
         <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
           <!-- 첫 페이지로 이동 -->
           <li>
-            <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=1)}">&lt;&lt;</a>
+            <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=1)} + '&sort=' +  ${sort} ">&lt;&lt;</a>
           </li>
           <!-- << : /board/1?cp=1 -->
 
           <!-- 이전 목록 마지막 번호로 이동 -->
           <li>
-            <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=*{prevPage})}">&lt;</a>
+            <a
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=*{prevPage})} + '&sort=' +  ${sort} ">&lt;</a>
           </li>
           <!-- < : /board/1?cp=10 -->
 
@@ -182,18 +190,21 @@
 
             <!-- 보고있지 않은 페이지 -->
             <li th:unless="${i} == *{currentPage} or ${i} == 0">
-              <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=${i})}" th:text="${i}">이동할 페이지</a>
+              <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=${i})} + '&sort=' +  ${sort} "
+                th:text="${i}">이동할 페이지</a>
             </li>
           </th:block>
 
           <!-- 다음 목록 시작 번호로 이동 -->
           <li>
-            <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage})}">&gt;</a>
+            <a
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage})} + '&sort=' +  ${sort} ">&gt;</a>
           </li>
 
           <!-- 끝 페이지로 이동 -->
           <li>
-            <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage})}">&gt;&gt;</a>
+            <a
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage})} + '&sort=' +  ${sort} ">&gt;&gt;</a>
           </li>
         </ul>
 
@@ -202,13 +213,13 @@
           <!-- 첫 페이지로 이동 -->
           <li>
             <a
-              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=1, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} ">&lt;&lt;</a>
           </li>
 
           <!-- 이전 목록 마지막 번호로 이동 -->
           <li>
             <a
-              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{prevPage}, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} ">&lt;</a>
           </li>
 
           <!-- 특정 페이지로 이동 -->
@@ -220,7 +231,7 @@
 
             <!-- 보고있지 않은 페이지 -->
             <li th:unless="${i} == *{currentPage}">
-              <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=${i}, key=${param.key}, query=${param.query})}"
+              <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=${i}, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} "
                 th:text="${i}">이동할 페이지</a>
             </li>
           </th:block>
@@ -235,46 +246,49 @@
           <!-- 다음 목록 시작 번호로 이동 -->
           <li>
             <a
-              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage}, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} ">&gt;</a>
           </li>
 
           <!-- 끝 페이지로 이동 -->
           <li>
             <a
-              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a>
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage}, key=${param.key}, query=${param.query})} + '&sort=' +  ${sort} ">&gt;&gt;</a>
           </li>
         </ul>
       </div>
 
       <!-- 검색 컨테이너 -->
-<!-- 최종 검색창 화면 -->
-<form th:action="@{/board/1/{categoryNo}(categoryNo=${categoryNo})}" method="get" id="boardSearch1">
-  <div class="select-container1">
-    <select name="key" id="searchKey1">
-  <option value="t" th:selected="${key == 't'}">제목</option>
-  <option value="c" th:selected="${key == 'c'}">내용</option>
-  <option value="tc" th:selected="${key == 'tc'}">제목+내용</option>
-  <option value="w" th:selected="${key == 'w'}">작성자</option>
-  <option value="h" th:selected="${key == 'h'}">해시태그</option>
-</select>
+      <!-- 최종 검색창 화면 -->
+      <form th:action="@{/board/1/{categoryNo}(categoryNo=${categoryNo})}" method="get" id="boardSearch1">
+        <div class="select-container1">
+          <select name="key" id="searchKey1">
+            <option value="t" th:selected="${key == 't'}">제목</option>
+            <option value="c" th:selected="${key == 'c'}">내용</option>
+            <option value="tc" th:selected="${key == 'tc'}">제목+내용</option>
+            <option value="w" th:selected="${key == 'w'}">작성자</option>
+            <option value="h" th:selected="${key == 'h'}">해시태그</option>
+          </select>
 
-    <div class="select-box1">
-      <span id="selectBoxText1">제목</span>
-      <span class="arrow1"></span>
-    </div>
-  </div>
+          <div class="select-box1">
+            <span id="selectBoxText1">제목</span>
+            <span class="arrow1"></span>
+          </div>
+        </div>
 
-      <input type="text" name="queryb" id="searchQuery1" placeholder="내용을 입력하세요." th:value="${param.queryb}">
+        <input type="text" name="queryb" id="searchQuery1" placeholder="내용을 입력하세요." th:value="${param.queryb}">
 
-      <button type="submit" class="search-button1">
-        <svg class="search-icon1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <path
-            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
-        </svg>
-      </button>
-    </form>
+        <button type="submit" class="search-button1">
+          <svg class="search-icon1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path
+              d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
+          </svg>
+        </button>
+      </form>
     </section>
   </main>
+
+  <!-- 댓글 영역-->
+  <!-- <th:block th:replace="~{board/comment}"></th:block> -->
 
   <!-- 푸터 프래그먼트 -->
   <footer th:replace="~{common/footer :: footer}"></footer>
@@ -284,43 +298,43 @@
   <script layout:fragment="script"></script>
   <th:block th:replace="~{common/header :: search-header-js}"></th:block>
   <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const searchKey1 = document.getElementById('searchKey1');
-    const selectBoxText1 = document.getElementById('selectBoxText1');
+    document.addEventListener('DOMContentLoaded', function () {
+      const searchKey1 = document.getElementById('searchKey1');
+      const selectBoxText1 = document.getElementById('selectBoxText1');
 
-    function updateSelectBoxText(value) {
-      switch (value) {
-        case 't': selectBoxText1.textContent = '제목'; break;
-        case 'c': selectBoxText1.textContent = '내용'; break;
-        case 'tc': selectBoxText1.textContent = '제목 + 내용'; break;
-        case 'w': selectBoxText1.textContent = '작성자'; break;
-        case 'h': selectBoxText1.textContent = '해시태그'; break;
-        default: selectBoxText1.textContent = '제목';
-      }
-    }
-
-    if (searchKey1 && selectBoxText1) {
-      updateSelectBoxText(searchKey1.value);
-
-      searchKey1.addEventListener('change', function () {
-        updateSelectBoxText(this.value);
-      });
-    }
-
-    // 폼 제출 검증
-    const form = document.getElementById('boardSearch1');
-    if (form) {
-      form.addEventListener('submit', function (e) {
-        const query = document.getElementById('searchQuery1').value.trim();
-        if (!query) {
-          e.preventDefault();
-          alert('검색어를 입력해주세요.');
+      function updateSelectBoxText(value) {
+        switch (value) {
+          case 't': selectBoxText1.textContent = '제목'; break;
+          case 'c': selectBoxText1.textContent = '내용'; break;
+          case 'tc': selectBoxText1.textContent = '제목 + 내용'; break;
+          case 'w': selectBoxText1.textContent = '작성자'; break;
+          case 'h': selectBoxText1.textContent = '해시태그'; break;
+          default: selectBoxText1.textContent = '제목';
         }
-        
-      });
-    }
-  });
-</script>
+      }
+
+      if (searchKey1 && selectBoxText1) {
+        updateSelectBoxText(searchKey1.value);
+
+        searchKey1.addEventListener('change', function () {
+          updateSelectBoxText(this.value);
+        });
+      }
+
+      // 폼 제출 검증
+      const form = document.getElementById('boardSearch1');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          const query = document.getElementById('searchQuery1').value.trim();
+          if (!query) {
+            e.preventDefault();
+            alert('검색어를 입력해주세요.');
+          }
+
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>

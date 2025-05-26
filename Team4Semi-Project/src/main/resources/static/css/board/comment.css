@@ -120,10 +120,3 @@
   white-space: pre-wrap;
   /* 작성된 문자열 모양 그대로(공백 유지) */
 }
-
-
-
-/* 댓글 좋아요 색 테스트 */
-.liked {
-  color: red;
-}

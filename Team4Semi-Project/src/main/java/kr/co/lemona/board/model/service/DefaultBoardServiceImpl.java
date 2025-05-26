@@ -79,8 +79,6 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 	 */
 	@Override
 	public Map<String, Object> selectOne(Map<String, Integer> map) {
-		log.debug("🟡 ServiceImpl: 넘겨받은 파라미터 맵 => {}", map);
-		log.debug("🟡 ServiceImpl: memberNo => {}", map.get("memberNo"));
 		Map<String, Object> resultMap = new HashMap<>();
 
 		Board board = mapper.selectOne(map);

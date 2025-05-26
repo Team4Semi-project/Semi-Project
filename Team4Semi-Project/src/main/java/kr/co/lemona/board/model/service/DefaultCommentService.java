@@ -10,7 +10,6 @@ public interface DefaultCommentService {
 	 * @param boardNo
 	 * @return
 	 * @author 민장
-	 * @param memberNo 
 	 */
 	int count(int boardNo);
 	

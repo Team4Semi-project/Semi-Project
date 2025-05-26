@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>레시피 수정하기</title>
+  <link rel="stylesheet" href="/css/board/recipeBoardWrite.css" />
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+
+<body>
+  <!-- 헤더 (Thymeleaf replace) -->
+  <header th:replace="~{common/header :: header}"></header>
+
+  <div class="page-title">
+    <h2>레시피 수정하기</h2>
+  </div>
+
+  <div class="container">
+    <!-- 카테고리 및 제목 영역 -->
+    <div class="form-row">
+      <div class="category-select">
+        <select name="categoryNo" id="categorySelect">
+          <option value="" disabled>레시피 카테고리</option>
+          <option value="1" th:selected="${board.categoryNo == 1}">한식</option>
+          <option value="2" th:selected="${board.categoryNo == 2}">중식</option>
+          <option value="3" th:selected="${board.categoryNo == 3}">양식</option>
+          <option value="4" th:selected="${board.categoryNo == 4}">일식</option>
+          <option value="5" th:selected="${board.categoryNo == 5}">기타</option>
+        </select>
+      </div>
+      <input type="text" name="boardTitle" id="boardTitle" class="title-input" th:value="${board.boardTitle}"
+        placeholder="레시피 제목을 입력하세요..." />
+    </div>
+
+    <!-- 레시피 스텝 영역 -->
+    <div class="recipe-steps" id="recipeStepsContainer">
+      <!-- 첫 번째 스텝 (기본) -->
+      <div class="recipe-step" th:each="step, iterStat : ${boardStepList}" th:data-step="${iterStat.count}"
+        th:data-img-path="${step.imgPath}" th:data-img-rename="${step.imgRename}">
+
+        <div class="step-buttons">
+          <button type="button" class="step-btn step-up" title="위로 이동">
+            <span class="material-symbols-outlined">
+              keyboard_arrow_up
+            </span>
+          </button>
+          <button type="button" class="step-btn step-delete" title="삭제">
+            <span>×</span>
+          </button>
+          <button type="button" class="step-btn step-down" title="아래로 이동">
+            <span class="material-symbols-outlined">
+              keyboard_arrow_down
+            </span>
+          </button>
+        </div>
+
+        <div class="step-content">
+          <textarea name="recipeStep" th:text="${step.stepContent}" placeholder="요리 과정을 입력하세요..."></textarea>
+          <div class="step-image-area">
+
+            <!-- 이미지 업로드 영역 -->
+            <div class="image-upload" th:if="${step.imgRename == null}">
+              <label th:for="'stepImage'+${iterStat.count}">
+                <div class="upload-icon">+</div>
+                <span>사진 추가</span>
+              </label>
+              <input type="file" th:id="'stepImage'+${iterStat.count}" class="step-image-input" accept="image/*" />
+            </div>
+
+            <!-- 이미지 미리보기 영역 -->
+            <div class="image-preview-container" th:if="${step.imgRename != null}" style="display: block;">
+              <div class="image-preview">
+                <img th:src="@{${step.imgPath + step.imgRename}}" alt="레시피 이미지">
+              </div>
+              <div class="image-controls">
+                <div class="thumbnail-control">
+                  <input type="radio" name="thumbnailStep" th:value="${iterStat.count}"
+                    th:id="'thumbnail'+${iterStat.count}" th:checked="${step.thumbnailCheck == 'Y'}" />
+                  <label th:for="'thumbnail'+${iterStat.count}">대표 이미지로 설정</label>
+                </div>
+                <button type="button" class="image-cancel-btn">선택 취소</button>
+              </div>
+            </div>
+
+            <!-- STEP의 고유 번호 -->
+            <input type="hidden" th:value="${step.stepNo}" class="step-no">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 요리과정 추가 버튼 -->
+    <div class="add-step-container">
+      <button type="button" id="addStepBtn" class="add-step-btn">
+        요리과정 추가하기
+      </button>
+    </div>
+
+    <!-- 해시태그 영역 -->
+    <div class="hashtag-section">
+      <div class="hashtag-input-container">
+        <input type="text" id="hashTagInput" placeholder="#해시태그를 입력하세요..." />
+      </div>
+      <div class="hashtag-list" id="hashTagContainer">
+        <!-- 해시태그가 여기에 추가됨 -->
+        <div class="hashtag" th:each="tag : ${board.hashTagList}">
+          <span th:text="'#' + ${tag}"></span>
+          <span class="delete-hashtag" onclick="this.parentElement.remove();">×</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 글 작성 완료 버튼 -->
+    <div class="submit-container">
+      <button type="button" id="submitBtn" class="submit-btn">
+        수정 완료
+      </button>
+    </div>
+  </div>
+
+  <!-- 푸터 (Thymeleaf replace) -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+
+  <script src="/js/board/recipeBoardUpdate.js"></script>
+</body>
+
+</html>

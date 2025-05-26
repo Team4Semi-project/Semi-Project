@@ -284,6 +284,7 @@
 		ORDER BY STEP_ORDER
 	</select>
 	
+
 	<!-- 이전 글 번호 조회 -->
 	<select id="selectPrevBoard">
 		SELECT *
@@ -296,7 +297,8 @@
 							B.BOARD_NO DESC
 						</when>
 						<when test="sort == 2">
-							B.BOARD_NO ASC
+							B.
+              
 						</when>
 						<when test="sort == 3">
 							(SELECT COUNT(*)
@@ -449,6 +451,7 @@
 		)
 		
 	</select>
+
 	
 	<!-- 댓글 수 조회 -->
 	<select id="commentCount" resultType="int">
@@ -492,9 +495,9 @@
 		INSERT INTO "RECIPE_BOARD"
 		VALUES(#{boardNo},
 			   #{boardTitle},
-			   default, default, default, null,
+			   DEFAULT, DEFAULT, DEFAULT, NULL,
 			   #{memberNo}, 1,
-			   #{categoryNo})
+			   #{categoryNo}, DEFAULT)
 	</insert>
 	
 	<!-- BOARD_STEP에 단계 설명, 단계 순서 삽입 -->
@@ -954,5 +957,54 @@
 		SET BOARD_DEL_FL = 'Y'
 		WHERE BOARD_NO= ${boardNo}
 	</update>
+	
+	<!-- 레시피 게시글 수정/{제목,카테고리번호,수정일} -->
+	<!-- 재호 -->
+	<update id="updateRecipeBoard">
+  		UPDATE "RECIPE_BOARD"
+  		
+  		SET	BOARD_TITLE = #{boardTitle},
+			CATEGORY_NO = #{categoryNo},
+			BOARD_UPDATE_DATE = SYSDATE
+			
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<!-- 기존의 게시글 해시태그 삭제/신규 해시태그 추가는 기존 SQL 활용 -->
+	<!-- 재호 -->
+	<delete id="deleteBoardHashtagByBoardNo">
+		DELETE FROM "BOARD_HASHTAG"
+		WHERE BOARD_NO = #{boardNo}
+	</delete>
+	
+	<!-- 기존의 boardStep 정보 조회 -->
+	<!-- 재호 -->
+	<select id="selectOriginalList" resultType="int">
+    	SELECT STEP_NO
+    	FROM BOARD_STEP
+    	WHERE BOARD_NO = #{boardNo}
+	</select>
 
+	<!-- 이미지가 삭제된 스텝 삭제 -->
+	<!-- 재호 -->
+	<delete id="deleteBoardStep" parameterType="int">
+	    DELETE FROM BOARD_STEP
+	    WHERE STEP_NO = #{stepNo}
+	</delete>
+
+	<!-- 스텝 순서 변경 -->
+	<!-- 재호 -->
+	<update id="changeBoardStep" parameterType="BoardStep">
+	    UPDATE BOARD_STEP
+	    SET STEP_ORDER = #{stepOrder}
+	    WHERE STEP_NO = #{stepNo}
+	</update>
+	
+	<update id="resetThumnail">
+		UPDATE BOARD_STEP
+		SET THUMBNAIL_CHECK = 'N'
+		WHERE BOARD_NO = #{boardNo}
+		  AND STEP_NO != #{thumbnailStep}
+	</update>
+	
 </mapper>

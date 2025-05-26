@@ -473,9 +473,10 @@ public class RecipeBoardController {
 	 * @author 재호
 	 */
 	@GetMapping("{category}/{boardNo:[1-9]+}/update")
-	public String updateRecipeBoard(@PathVariable("category") Object category, @PathVariable("boardNo") int boardNo,
+	public String updateRecipeBoard(@PathVariable("category") Object category, @PathVariable("boardNo" ) int boardNo,
 			Model model,
-			RedirectAttributes ra) {
+			RedirectAttributes ra,
+			@RequestParam(value="sort", required = false, defaultValue = "lastest") String sort) {
 
 		// 1) Map 으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
@@ -491,8 +492,20 @@ public class RecipeBoardController {
 			map.put("categoryNo", 0);
 		}
 		map.put("boardNo", boardNo);
-		// categoryNo 자리에 들어오는 값 확인
 
+		// 이전글/다음글을 위한 sort 전달
+		int sortNo = 0;
+		switch (sort) {
+		case "latest" : sortNo = 1; break;
+		case "oldest" : sortNo = 2; break;
+		case "popular" : sortNo = 3; break;
+		case "views" : sortNo = 4; break;
+		default:
+			sortNo = 1;
+		}
+		
+		map.put("sort", sortNo);
+		
 		// 2) 서비스 호출
 		Map<String, Object> recipeMap = service.selectOneRecipe(map);
 

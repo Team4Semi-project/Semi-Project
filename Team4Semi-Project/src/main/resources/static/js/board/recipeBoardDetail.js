@@ -36,7 +36,7 @@ goToPrev.addEventListener("click", () => {
 goToNext.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const nextBoardNo = naviBtn.dataset.nextBoardNo;
-  console.log(nextBoardNo);
+  // console.log(nextBoardNo);
   if (nextBoardNo == 0) {
     alert("다음 글이 없습니다.");
     return;

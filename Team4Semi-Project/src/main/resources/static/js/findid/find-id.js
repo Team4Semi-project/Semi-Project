@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
 
-    // 1️⃣ 입력 유효성 검사
+    // 입력 유효성 검사
     if (!name) {
       alert("이름을 입력해주세요.");
       nameInput.focus();
@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 2️⃣ 서버에 POST 요청 보내기
     try {
-      const response = await fetch("/findid", {
+      const response = await fetch("/findId", {
+        // 대소문자 주의!
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,8 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.foundId) {
         foundId.value = data.foundId;
+        alert("아이디를 찾았습니다!");
       } else {
-        alert("일치하는 아이디가 없습니다.");
+        alert("입력한 정보와 일치하는 아이디가 없습니다. 다시 입력해주세요.");
         foundId.value = "";
       }
     } catch (error) {

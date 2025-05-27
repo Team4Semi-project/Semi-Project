@@ -50,19 +50,13 @@ public interface MemberMapper {
 	 * @return
 	 */
 	String findIdByNameAndEmail(Map<String, String> params);
-
+	
 	/** 비밀번호 찾기
 	 * @param params
 	 * @return
+	 * Map 으로 받아서 params 로 받아야 함
 	 */
 	Map<String, String> findUserByIdNameEmail(Map<String, String> params);
 
-	/** 
-	 * @param params
-	 * @return
-	 */
-	String findUserForPassword(Map<String, String> params);
-
-	
 
 }

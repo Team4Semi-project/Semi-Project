@@ -40,28 +40,5 @@ public interface MemberService {
 	 * @return
 	 */
 	String findIdByNameAndEmail(Map<String, String> params);
-	
-	/** 비밀번호 찾기
-	 * @param params
-	 * @return
-	 */
-	boolean checkUserInfo(Map<String, String> params);
-
-	/** 비밀번호 찾기
-	 * @param id
-	 * @param name
-	 * @param email
-	 * @return
-	 */
-	String findPassword(String id, String name, String email);
-
-	/**
-	 * @param params
-	 * @return
-	 */
-	static boolean isUserInfoMatch(Map<String, String> params) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

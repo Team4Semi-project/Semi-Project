@@ -26,7 +26,7 @@ public interface RecipeBoardService {
 	 * @author miae
 	 * @param boardNo
 	 */
-	Map<String, Object> selectOneRecipe(Map<String, Integer> map);
+	Map<String, Object> selectOneRecipe(Map<String, Integer> map, Map<String, String> searchMap);
 
 	/**
 	 * 레시피 게시글 작성 서비스

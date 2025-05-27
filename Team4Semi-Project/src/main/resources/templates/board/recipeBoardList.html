@@ -130,7 +130,7 @@
               <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <!-- 레시피 게시판 썸네일 -->
               <a th:if="${key != null}"
-                th:href="@{/search/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">
+                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"

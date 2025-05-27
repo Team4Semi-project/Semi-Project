@@ -1,304 +1,369 @@
 /* Global styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 body {
-    background-color: #ffffff;
-    color: #333;
+  background-color: #ffffff;
+  color: #333;
 }
 
 /* Main content container */
 .content-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-    
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
 
 /* 썸네일 */
 .recipe-thumbnail {
-    width: 100%;           /* 부모의 width 설정 */
-    height: 300px;         /* 필요한 높이 설정!! */
-    overflow: hidden;      /* 넘치는 이미지 잘라내기!!!!! */
-    position: relative;
+  width: 100%; /* 부모의 width 설정 */
+  height: 300px; /* 필요한 높이 설정!! */
+  overflow: hidden; /* 넘치는 이미지 잘라내기!!!!! */
+  position: relative;
 }
 
 .recipe-thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;     /* 비율 맞추고 넘치는 부분 잘라냄!!!! */
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 비율 맞추고 넘치는 부분 잘라냄!!!! */
+  display: block;
 }
-
 
 /* Recipe header section */
 .recipe-header {
-    padding: 20px 0;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.write-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.write-info > * {
+  display: flex;
+  align-items: center;
+
+  padding: 8px 20px;
+  border-right: 1px solid var(--lightgray);
 }
 
 .recipe-title {
-    font-size: 24px;
-    font-weight: bold;
+  font-family: var(--pre-h-2-font-family);
+  font-size: var(--pre-h-2-font-size);
+  font-weight: var(--pre-h-2-font-weight);
 }
 
 .recipe-date {
-    color: #888;
-    font-size: 14px;
+  color: #888;
+
+  font-family: var(--pre-p-1-font-family);
+  font-size: var(--pre-p-1-font-size);
+  font-weight: var(--pre-p-1-font-weight);
 }
 
 .recipe-stats {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.likes, .views {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+/* 좋아요/조회수 기능 */
+.likes,
+.views {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  font-size: var(--pre-p-1-font-size);
+  color: var(--darkgray);
+
+  width: 86px;
+  height: 36px;
+  border-radius: 18px;
 }
 
-.likes img, .views img {
-    width: 18px;
-    height: 18px;
+.likes i {
+  font-size: 20px;
+  color: var(--yellow);
+}
+
+.likes {
+  border: 1px solid var(--yellow);
+}
+
+.likes span {
+  color: var(--darkgray);
+}
+
+.likes span,
+.views span {
+  font-size: var(--pre-p-2-font-size);
+  font-family: var(--pre-p-2-font-family);
+  font-weight: var(--pre-p-2-font-size);
+
+  width: 24px;
+  text-align: center;
+}
+
+.views i {
+  color: var(--deepgray);
+  font-size: 20px;
 }
 
 /* Author section */
 .author-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  margin-bottom: 20px;
 }
 
 .author-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .author-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .author-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .author-name {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .action-buttons {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .action-button {
-    background-color: #FFDE59;
-    color: #333;
-    border: none;
-    border-radius: 20px;
-    padding: 8px 15px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .action-button:hover {
-    background-color: #FFD21E;
+  background-color: #ffd21e;
 }
 
 /* Recipe steps */
 .recipe-steps {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .recipe-step {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
-    border: 1px solid #f0f0f0;
-    border-radius: 10px;
-    overflow: hidden;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .step-number {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: #FFDE59;
-    color: #333;
-    font-weight: bold;
-    border-radius: 50%;
-    position: absolute;
-    left: 10px;
-    top: 10px;
+  margin-right: 12px;
+}
+
+.step-number > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  /* background-color: #ffde59; */
+  border-radius: 50%;
+  /* left: 10px;
+  top: 10px; */
+  /* position: relative; */
+
+  color: #333;
+  font-weight: bold;
+}
+
+.step-number > img {
+  position: absolute;
+  z-index: -1;
+
+  top: 24px;
+  left: 24px;
+  width: 52px;
+  height: 52px;
 }
 
 .step-content {
-    flex: 1;
-    padding: 30px;
-    position: relative;
+  flex: 1;
+  padding: 30px;
+
+  display: inline-flex;
+  position: relative;
 }
 
 .step-image {
-    flex: 0 0 200px;
-    height: 200px;
-    overflow: hidden;
+  flex: 0 0 200px;
+  height: 200px;
+  overflow: hidden;
 }
 
 .step-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Navigation section */
 .navigation {
-    display: flex;
-    justify-content: space-between;
-    margin: 30px 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
 }
 
 .nav-button {
-    background-color: #FFDE59;
-    color: #333;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    flex: 1;
-    text-align: center;
-    margin: 0 5px;
-    transition: background-color 0.3s;
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  flex: 1;
+  text-align: center;
+  margin: 0 5px;
+  transition: background-color 0.3s;
 }
 
 .nav-button:hover {
-    background-color: #FFD21E;
+  background-color: #ffd21e;
 }
 
 /* Comments section */
 .comments-section {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
 
 .comments-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .comments-count {
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
 }
 
 .comment-form {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
 }
 
 .comment-input {
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-    resize: none;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  resize: none;
 }
 
 .comment-submit {
-    background-color: #FFDE59;
-    color: #333;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    float: right;
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  float: right;
 }
 
 .comment-submit:hover {
-    background-color: #FFD21E;
+  background-color: #ffd21e;
 }
 
 /* Individual comment */
 .comment {
-    border-bottom: 1px solid #eee;
-    padding: 15px 0;
-    margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+  margin-bottom: 15px;
 }
 
 .comment-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .comment-user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .comment-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    overflow: hidden;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .comment-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .comment-date {
-    color: #888;
-    font-size: 12px;
+  color: #888;
+  font-size: 12px;
 }
 
 .comment-body {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .comment-actions {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .comment-like {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .comment-reply {
-    color: #FFDE59;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;
+  color: #ffde59;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
 }
 
 /* 해시태그 */
@@ -319,21 +384,21 @@ body {
 
 /* Media queries */
 @media (max-width: 768px) {
-    .recipe-step {
-        flex-direction: column;
-    }
-    
-    .step-image {
-        flex: 0 0 100%;
-        height: 200px;
-    }
-    
-    .navigation {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .nav-button {
-        margin: 5px 0;
-    }
+  .recipe-step {
+    flex-direction: column;
+  }
+
+  .step-image {
+    flex: 0 0 100%;
+    height: 200px;
+  }
+
+  .navigation {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-button {
+    margin: 5px 0;
+  }
 }

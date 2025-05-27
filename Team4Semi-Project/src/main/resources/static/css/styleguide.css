@@ -172,7 +172,7 @@ select {
 .logo {
   display: flex;
   align-items: center;
-  width: 120px;
+  /* width: 120px; */
   flex-shrink: 0;
 }
 
@@ -320,10 +320,12 @@ select {
 .menu-item a {
   display: block;
   padding: 15px 20px;
-  font-size: var(--pre-p-2-font-size);
-  font-weight: var(--pre-p-2-font-weight);
   transition: color 0.2s;
   color: var(--deepgray);
+
+  font-family: var(--pre-p-2-font-family);
+  font-size: var(--pre-p-2-font-size);
+  font-weight: var(--pre-p-2-font-weight);
 }
 
 .menu-item.active a {
@@ -365,19 +367,25 @@ select {
 }
 
 .write-button {
-  display: inline-block;
-  background-color: var(--lemon);
-  color: var(--deepbrown);
-  padding: 8px 20px;
-  border-radius: 4px;
-  font-size: var(--pre-p-2-font-size);
-  font-weight: var(--pre-h-1-font-weight);
+  display: inline-flex;
+  justify-content: center;
   transition: background-color 0.2s;
-  box-shadow: var(--under-shadow);
+
+  background-color: var(--lemon);
+  padding: 8px 20px;
+  box-shadow: var(--SHADOW);
+  border-radius: 4px;
+  width: 120px;
+
+  color: var(--deepbrown);
+  font-size: var(--pre-p-2-font-size);
+  font-weight: var(--pre-p-2-font-weight);
+  font-family: var(--pre-p-2-font-family);
 }
 
 .write-button:hover {
   background-color: var(--yellow);
+  color: var(--milk);
 }
 
 /* 푸터 스타일 */
@@ -429,6 +437,6 @@ body ::-webkit-scrollbar {
 .nav-container,
 .menu-list,
 .menu-item,
-.submenu{
+.submenu {
   overflow: visible !important;
 }

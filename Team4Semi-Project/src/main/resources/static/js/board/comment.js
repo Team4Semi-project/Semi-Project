@@ -435,7 +435,7 @@ if (likes) {
         likeCheck: likeCK
       };
 
-      fetch("/defaultComments/like", {
+      fetch(`${fetchUrl}/like`, {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(obj)

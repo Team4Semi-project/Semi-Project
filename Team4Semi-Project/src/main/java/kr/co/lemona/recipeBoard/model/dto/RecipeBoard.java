@@ -42,7 +42,7 @@ public class RecipeBoard {
 	private String thumbnailImgRename;
 	
 	// 게시글에 달린 댓글 리스트
-	private List<DefaultComment> commentList;
+	private List<RecipeComment> commentList;
 	
 	// 게시글에 포함된 해쉬태그
 	private String tags;

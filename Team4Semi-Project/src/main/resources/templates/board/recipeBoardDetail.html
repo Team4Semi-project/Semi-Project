@@ -8,6 +8,7 @@
 
     <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/board/recipeBoardDetail.css">
+    <link rel="stylesheet" href="/css/board/comment.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=visibility" />
 
@@ -56,7 +57,7 @@
                 <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
             </div>
             <div class="action-buttons">
-                <button class="action-button">수정하기</button>
+                <button class="action-button" id="updateBtn" th:data-board-no=${board.boardNo}>수정하기</button>
                 <button class="action-button" id="deleteBtn">삭제하기</button>
             </div>
         </div>
@@ -90,13 +91,26 @@
             <a class="nav-button" id="goToNext"><span>다음 글 →</span></a>
         </div>
 
-        <!-- Comments section -->
-        <!-- 나중에 추가 예정 -->
-    </div>
+        <!-- 댓글 영역-->
+        <th:block th:replace="~{board/comment}"></th:block>
     </div>
 
     <!-- 푸터 프래그먼트 -->
     <footer th:replace="~{common/footer :: footer}"></footer>
+
+    <script th:inline="javascript">
+        // 게시판 코드
+        const boardCode = /*[[${board.boardCode}]]*/ 0;
+
+        // - loginMember가 null 인 경우 null 반환
+        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+        // 현재 게시글 번호를 전역 변수로 저장
+        const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
+
+        const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+    </script>
+
     <th:block th:replace="~{common/header :: search-header-js}"></th:block>
     <script th:src="@{/js/board/recipeBoardDetail.js}"></script>
     <script>
@@ -109,6 +123,7 @@
             });
         });
     </script>
+    <script src="/js/board/comment.js"></script>
 </body>
 
 </html>

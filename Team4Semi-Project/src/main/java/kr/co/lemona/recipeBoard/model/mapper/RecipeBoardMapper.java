@@ -186,14 +186,14 @@ public interface RecipeBoardMapper {
 	 * @return
 	 * @author jihyun
 	 */
-	RecipeBoard searchPrevBoard(Map<String, Integer> map);
+	RecipeBoard searchPrevBoard(Map<String, String> saerchMap);
 
 	/** 레시피/인기 게시글 검색 시 다음글
 	 * @param map
 	 * @return
 	 * @author jihyun
 	 */
-	RecipeBoard searchNextBoard(Map<String, Integer> map);
+	RecipeBoard searchNextBoard(Map<String, String> saerchMap);
 	/** 댓글 목록 조회
 	 * @param commentMap
 	 * @return

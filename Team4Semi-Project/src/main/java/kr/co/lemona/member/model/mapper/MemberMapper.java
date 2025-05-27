@@ -52,11 +52,13 @@ public interface MemberMapper {
 	String findIdByNameAndEmail(Map<String, String> params);
 	
 	/** 비밀번호 찾기
-	 * @param params
+	 * @param member
 	 * @return
 	 * Map 으로 받아서 params 로 받아야 함
 	 */
-	Map<String, String> findUserByIdNameEmail(Map<String, String> params);
+	Map<String, String> findUserByIdNameEmail(Member member);
+	
+
 
 
 }

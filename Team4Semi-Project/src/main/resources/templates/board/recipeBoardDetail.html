@@ -25,8 +25,8 @@
     <div class="content-container">
         <!-- 썸네일 이미지 띄워주기 -->
         <div class="recipe-thumbnail" th:each="step : ${boardStepList}" th:if="${step.thumbnailCheck} == 'Y'">
-
-            <img th:src="@{${step.imgPath + step.imgRename}}" alt="썸네일 이미지" />
+            <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                th:src="@{${step.imgPath + step.imgRename}}" alt="썸네일 이미지" />
         </div>
         <!-- Recipe header -->
         <div class="recipe-header">
@@ -59,7 +59,8 @@
                 </div>
                 <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
             </div>
-            <div class="action-buttons" th:if="${board.memberNo}==${session.loginMember?.memberNo}">
+
+            <div class="action-buttons" th:if="${loginMember != null and loginMember.memberNo == board.memberNo}">
                 <button class="action-button" id="updateBtn" th:data-board-no=${board.boardNo}>수정하기</button>
                 <button class="action-button" id="deleteBtn">삭제하기</button>
             </div>

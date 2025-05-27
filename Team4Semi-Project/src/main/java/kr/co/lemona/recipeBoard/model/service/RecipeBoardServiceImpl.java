@@ -112,7 +112,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 	 * @author miae
 	 */
 	@Override
-	public Map<String, Object> selectOneRecipe(Map<String, Integer> map) {
+	public Map<String, Object> selectOneRecipe(Map<String, Integer> map, Map<String, String> searchMap) {
 
 		// 각각의 테이블에서 값을 조회해와야하기 때문에 map 사용
 		Map<String, Object> map2 = new HashMap<>();
@@ -136,16 +136,17 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		RecipeBoard prevBoard = null;
 		RecipeBoard nextBoard = null;
 		
-		if (map.get("querys") == null) { // 검색이 아닌 경우
+		if (searchMap.get("key") == null) { // 검색이 아닌 경우
 			// 이전 글
 			prevBoard = mapper.selectPrevBoard(map);
 			// 다음 글
 			nextBoard = mapper.selectNextBoard(map);
 		}else { // 검색인 경우
+			log.info("keyyyyyyyyyyyyyyyy : "+searchMap.get("key"));
 			// 이전 글
-			prevBoard = mapper.searchPrevBoard(map);
+			prevBoard = mapper.searchPrevBoard(searchMap);
 			// 다음 글
-			nextBoard = mapper.searchNextBoard(map);
+			nextBoard = mapper.searchNextBoard(searchMap);
 		}
 
 		int prevBoardNo = 0;
@@ -154,10 +155,12 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		// 이전 글 다음글 목록이 있을때만 값을 받아오기
 		if (prevBoard != null) {
 			prevBoardNo = prevBoard.getBoardNo();
+			log.info("prevBoardNo prevBoardNo: "+prevBoardNo);
 		}
 
 		if (nextBoard != null) {
 			nextBoardNo = nextBoard.getBoardNo();
+			log.info("nextBoardNo nextBoardNo: "+nextBoardNo);
 		}
 		
 		// 댓글 목록 (로그인 회원의 댓글 좋아요 여부 포함)
@@ -169,7 +172,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		
 		// Board 에 댓글 목록 추가
 		recipeBoard.setCommentList(commentList);
-		recipeBoard.setCommentCount(nextBoardNo);
+		
 		map2.put("recipeBoard", recipeBoard);
 		map2.put("boardStepList", boardStepList);
 		map2.put("prevBoardNo", prevBoardNo);

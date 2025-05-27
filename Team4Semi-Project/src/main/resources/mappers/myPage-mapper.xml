@@ -79,5 +79,6 @@
 		AND member_email = #{email}
 	</select>
 
-
+	
+	
 </mapper>

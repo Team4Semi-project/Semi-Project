@@ -109,6 +109,11 @@ public class MemberServiceImpl implements MemberService {
 
 	    return result;
 	}
+	
+	@Override
+	public Map<String, String> findUserByIdNameEmail(Member member) {
+	    return mapper.findUserByIdNameEmail(member);
+	}
 		
 
 }

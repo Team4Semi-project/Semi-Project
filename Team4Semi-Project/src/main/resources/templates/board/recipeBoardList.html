@@ -21,7 +21,7 @@
     <section class="recipe-section">
       <!-- 섹션 헤더 -->
       <div class="section-header">
-        <h2 class="section-title">게시글 목록</h2>
+        <h2 class="section-title" th:text="${categoryNo == 'popular'} ? '인기 레시피' : '레시피 게시판'">게시글 목록</h2>
 
         <div class="options-container">
           <div class="view-options">
@@ -68,7 +68,7 @@
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
                   alt="레시피 이미지" />
               </a>
-                <a th:if="${key == null}"
+              <a th:if="${key == null}"
                 th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} ">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
@@ -130,13 +130,13 @@
               <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <!-- 레시피 게시판 썸네일 -->
               <a th:if="${key != null}"
-                th:href="@{/search/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">
+                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                   th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
                   alt="레시피 이미지" />
               </a>
-                <a th:if="${key == null}"
+              <a th:if="${key == null}"
                 th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} ">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"

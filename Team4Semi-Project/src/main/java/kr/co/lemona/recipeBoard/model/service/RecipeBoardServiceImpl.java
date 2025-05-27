@@ -169,7 +169,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		
 		// Board 에 댓글 목록 추가
 		recipeBoard.setCommentList(commentList);
-		recipeBoard.setCommentCount(nextBoardNo);
+		
 		map2.put("recipeBoard", recipeBoard);
 		map2.put("boardStepList", boardStepList);
 		map2.put("prevBoardNo", prevBoardNo);

@@ -316,6 +316,7 @@ public class RecipeBoardController {
 				model.addAttribute("boardStepList", boardStepList);
 				model.addAttribute("prevBoardNo", prevBoardNo);
 				model.addAttribute("nextBoardNo", nextBoardNo);
+				model.addAttribute("loginMember", loginMember);
 
 				// 조회된 이미지 목록이 있을 경우
 				/*

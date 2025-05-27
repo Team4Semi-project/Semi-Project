@@ -141,11 +141,11 @@ document.addEventListener("DOMContentLoaded", function () {
    * 뷰 토글 (아젠다/코지) 초기화
    */
   function saveViewMode(mode) {
-  localStorage.setItem("viewMode", mode);
+  sessionStorage.setItem("viewMode", mode);
   }
 
   function getViewMode() {
-    return localStorage.getItem("viewMode") || "cozy";
+    return sessionStorage.getItem("viewMode") || "cozy";
   }
 
   function applyViewMode() {
@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function applyViewModeFromStorage() {
-    const savedView = localStorage.getItem("viewMode") || "cozy";
+    const savedView = sessionStorage.getItem("viewMode") || "cozy";
 
     viewToggles.forEach((btn) => {
       const view = btn.dataset.view;

@@ -110,10 +110,17 @@ public class MemberServiceImpl implements MemberService {
 	    return result;
 	}
 	
+	// 비밀번호 찾기
 	@Override
 	public Map<String, String> findUserByIdNameEmail(Member member) {
 	    return mapper.findUserByIdNameEmail(member);
 	}
 		
+	// 비밀번호 재설정
+	@Override
+	public boolean updatePassword(String memberId, String newPassword) {
+		 String encPw = bcrypt.encode(newPassword);  // 암호화
+	    return mapper.updatePassword(memberId, newPassword);
+	}
 
 }

@@ -17,14 +17,24 @@
         </div>
       </header>
 
+      <nav class="tabs">
+        <a href="/findid" id="findIdTab" class="tab">아이디 찾기</a>
+        <a href="/findpw" id="findPwTab" class="tab active">비밀번호 찾기</a>
+      </nav>
+
       <main>
         <div class="find-box">
           <h2>비밀번호 재설정</h2>
-          <form method="post" th:action="@{/member/reset}">
+          <form
+            id="resetForm"
+            method="post"
+            th:action="@{/member/findpw-update}"
+          >
             <input type="hidden" name="memberId" th:value="${memberId}" />
             <div class="form-group">
               <input
                 type="password"
+                id="newPassword"
                 name="newPassword"
                 placeholder="새 비밀번호 입력"
                 required
@@ -33,25 +43,29 @@
             <div class="form-group">
               <input
                 type="password"
+                id="confirmPassword"
                 name="confirmPassword"
                 placeholder="새 비밀번호 확인"
                 required
               />
             </div>
-            <div
-              th:if="${error}"
-              class="error-message"
-              th:text="${error}"
-            ></div>
-            <div
-              th:if="${success}"
-              class="success-message"
-              th:text="${success}"
-            ></div>
             <div class="bottom-buttons">
-              <button type="submit" class="find-pw-btn">비밀번호 변경</button>
+              <button
+                type="submit"
+                id="resetButton"
+                class="find-pw-btn"
+                disabled
+              >
+                비밀번호 변경
+              </button>
             </div>
           </form>
+          <div th:if="${error}" class="error-message" th:text="${error}"></div>
+          <div
+            th:if="${success}"
+            class="success-message"
+            th:text="${success}"
+          ></div>
         </div>
       </main>
 
@@ -66,5 +80,6 @@
         </div>
       </footer>
     </div>
+    <script src="/js/reset/reset-pw.js"></script>
   </body>
 </html>

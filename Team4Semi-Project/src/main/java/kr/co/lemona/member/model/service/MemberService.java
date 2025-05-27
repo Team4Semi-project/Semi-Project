@@ -46,8 +46,12 @@ public interface MemberService {
 	 * @return
 	 */
 	Map<String, String> findUserByIdNameEmail(Member member);
-
-
-
+	
+	/** 비밀번호 재설정
+	 * @param memberId
+	 * @param newPassword
+	 * @return
+	 */
+	 boolean updatePassword(String memberId, String newPassword);
 
 }

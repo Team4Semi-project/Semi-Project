@@ -66,7 +66,7 @@
                 <img th:src="${board.thumbnail}" alt="레시피 이미지">
                 <a
                   th:if="${board.boardCode == 1}"
-                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
                 >
                   <!-- 레시피 게시판 썸네일 -->
                   <img
@@ -77,7 +77,7 @@
                 </a>
                 <a
                   th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                  th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                  th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
                 >
                   <!-- 자유 또는 공지 게시판 썸네일 -->
                   <img
@@ -92,14 +92,14 @@
                 <h3 class="recipe-title">
                   <a
                     th:if="${board.boardCode == 1}"
-                    th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                    th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
                     th:utext="${board.boardTitle}"
                     >레몬 팬케이크
                   </a>
 
                   <a
                     th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                    th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                    th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
                     th:utext="${board.boardTitle}"
                     >레몬 팬케이크
                   </a>
@@ -169,7 +169,7 @@
                 <!-- 레시피 게시판 썸네일 -->
                 <a
                   th:if="${board.boardCode == 1}"
-                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                  th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})} + '&sort=' +  ${sort} "
                 >
                   <!-- 레시피 게시판 썸네일 -->
                   <img
@@ -180,7 +180,7 @@
                 </a>
                 <a
                   th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                  th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                  th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
                 >
                   <!-- 자유 또는 공지 게시판 썸네일 -->
                   <img
@@ -195,14 +195,14 @@
                 <h3 class="recipe-title">
                   <a
                     th:if="${board.boardCode == 1}"
-                    th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo})}"
+                    th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
                     th:utext="${board.boardTitle}"
                     >레몬 팬케이크
                   </a>
 
                   <a
                     th:if="${board.boardCode == 2 || board.boardCode == 3}"
-                    th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
+                    th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
                     th:utext="${board.boardTitle}"
                     >레몬 팬케이크
                   </a>

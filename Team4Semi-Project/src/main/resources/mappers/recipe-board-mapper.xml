@@ -484,6 +484,7 @@
 		CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
 		ORDER SIBLINGS BY COMMENT_NO
 	</select>
+>>>>>>> 6d1b27357640f3b347375179639a6de003f9a6d3
 	
 	<!-- RECIPE_BOARD에 게시글 제목+카테고리번호+작성자 정보 삽입 -->
 	<!-- 재호 -->
@@ -958,6 +959,201 @@
 		WHERE BOARD_NO= ${boardNo}
 	</update>
 	
+	
+	<!-- 검색 시 이전 글 번호 조회 -->
+	<!-- 지현 -->
+   <select id="searchPrevBoard">
+SELECT *
+FROM (
+    SELECT B.*, 
+           ROW_NUMBER() OVER (
+               ORDER BY 
+               (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+               B.READ_COUNT DESC,
+               B.BOARD_NO DESC
+           ) AS RN
+    FROM RECIPE_BOARD B
+    JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+    LEFT JOIN (
+        SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+        FROM BOARD_STEP
+        WHERE THUMBNAIL_CHECK = 'Y'
+    ) S ON B.BOARD_NO = S.BOARD_NO
+    LEFT JOIN (
+        SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+        FROM BOARD_STEP
+        GROUP BY BOARD_NO
+    ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+    WHERE B.BOARD_DEL_FL = 'N'
+    AND B.POPULAR_CHECK = 'Y'
+    
+    <choose>
+        <when test='key == "t"'>
+            AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "c"'>
+            AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "tc"'>
+            AND (B.BOARD_TITLE LIKE '%' || #{queryb} || '%' OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%')
+        </when>
+        <when test='key == "w"'>
+            AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "h"'>
+            AND EXISTS (
+                SELECT 1
+                FROM BOARD_HASHTAG BH
+                JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                WHERE BH.BOARD_NO = B.BOARD_NO
+                AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+            )
+        </when>
+    </choose>
+) R
+WHERE R.RN = (
+    SELECT RN - 1 FROM (
+        SELECT B.BOARD_NO,
+               ROW_NUMBER() OVER (
+                   ORDER BY 
+                   (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+                   B.READ_COUNT DESC,
+                   B.BOARD_NO DESC
+               ) AS RN
+        FROM RECIPE_BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+            FROM BOARD_STEP
+            GROUP BY BOARD_NO
+        ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+        WHERE B.BOARD_DEL_FL = 'N'
+        AND B.POPULAR_CHECK = 'Y'
+        
+        <choose>
+            <when test='key == "t"'>
+                AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "c"'>
+                AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "tc"'>
+                AND (B.BOARD_TITLE LIKE '%' || #{queryb} || '%' OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%')
+            </when>
+            <when test='key == "w"'>
+                AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "h"'>
+                AND EXISTS (
+                    SELECT 1
+                    FROM BOARD_HASHTAG BH
+                    JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                    WHERE BH.BOARD_NO = B.BOARD_NO
+                    AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+                )
+            </when>
+        </choose>
+    ) WHERE BOARD_NO = #{boardNo}
+)
+</select>
+
+   
+   <!-- 검색 시 다음 글 번호 조회 -->
+   <!-- 지현 -->
+   <select id="searchNextBoard">
+SELECT *
+FROM (
+    SELECT B.*, 
+           ROW_NUMBER() OVER (
+               ORDER BY 
+               (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+               B.READ_COUNT DESC,
+               B.BOARD_NO DESC
+           ) AS RN
+    FROM RECIPE_BOARD B
+    JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+    LEFT JOIN (
+        SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+        FROM BOARD_STEP
+        WHERE THUMBNAIL_CHECK = 'Y'
+    ) S ON B.BOARD_NO = S.BOARD_NO
+    LEFT JOIN (
+        SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+        FROM BOARD_STEP
+        GROUP BY BOARD_NO
+    ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+    WHERE B.BOARD_DEL_FL = 'N'
+    AND B.POPULAR_CHECK = 'Y'
+    
+    <choose>
+        <when test='key == "t"'>
+            AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "c"'>
+            AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "tc"'>
+            AND (B.BOARD_TITLE LIKE '%' || #{queryb} || '%' OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%')
+        </when>
+        <when test='key == "w"'>
+            AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "h"'>
+            AND EXISTS (
+                SELECT 1
+                FROM BOARD_HASHTAG BH
+                JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                WHERE BH.BOARD_NO = B.BOARD_NO
+                AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+            )
+        </when>
+    </choose>
+) R
+WHERE R.RN = (
+    SELECT RN - 1 FROM (
+        SELECT B.BOARD_NO,
+               ROW_NUMBER() OVER (
+                   ORDER BY 
+                   (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+                   B.READ_COUNT DESC,
+                   B.BOARD_NO DESC
+               ) AS RN
+        FROM RECIPE_BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+            FROM BOARD_STEP
+            GROUP BY BOARD_NO
+        ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+        WHERE B.BOARD_DEL_FL = 'N'
+        AND B.POPULAR_CHECK = 'Y'
+        
+        <choose>
+            <when test='key == "t"'>
+                AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "c"'>
+                AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "tc"'>
+                AND (B.BOARD_TITLE LIKE '%' || #{queryb} || '%' OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%')
+            </when>
+            <when test='key == "w"'>
+                AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "h"'>
+                AND EXISTS (
+                    SELECT 1
+                    FROM BOARD_HASHTAG BH
+                    JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                    WHERE BH.BOARD_NO = B.BOARD_NO
+                    AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+                )
+            </when>
+        </choose>
+    ) WHERE BOARD_NO = #{boardNo}
+)
+</select>
 	<!-- 레시피 게시글 수정/{제목,카테고리번호,수정일} -->
 	<!-- 재호 -->
 	<update id="updateRecipeBoard">

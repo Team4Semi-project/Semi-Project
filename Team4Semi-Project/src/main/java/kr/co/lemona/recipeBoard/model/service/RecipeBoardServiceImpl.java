@@ -132,12 +132,21 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 				recipeBoard.setHashTagList(tagList);
 			}
 		}
-
-		// 이전 글
-		RecipeBoard prevBoard = mapper.selectPrevBoard(map);
-
-		// 다음 글
-		RecipeBoard nextBoard = mapper.selectNextBoard(map);
+		
+		RecipeBoard prevBoard = null;
+		RecipeBoard nextBoard = null;
+		
+		if (map.get("querys") == null) { // 검색이 아닌 경우
+			// 이전 글
+			prevBoard = mapper.selectPrevBoard(map);
+			// 다음 글
+			nextBoard = mapper.selectNextBoard(map);
+		}else { // 검색인 경우
+			// 이전 글
+			prevBoard = mapper.searchPrevBoard(map);
+			// 다음 글
+			nextBoard = mapper.searchNextBoard(map);
+		}
 
 		int prevBoardNo = 0;
 		int nextBoardNo = 0;

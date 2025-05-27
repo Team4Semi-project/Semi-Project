@@ -181,6 +181,19 @@ public interface RecipeBoardMapper {
 	 */
 	int deleteRecipeBoard(int boardNo);
 
+	/** 레시피/인기 게시글 검색 시 이전글
+	 * @param map
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard searchPrevBoard(Map<String, Integer> map);
+
+	/** 레시피/인기 게시글 검색 시 다음글
+	 * @param map
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard searchNextBoard(Map<String, Integer> map);
 	/** 댓글 목록 조회
 	 * @param commentMap
 	 * @return
@@ -228,5 +241,4 @@ public interface RecipeBoardMapper {
 	 * @author 재호
 	 */
 	void resetThumnail(Map<String, Integer> map);
-
 }

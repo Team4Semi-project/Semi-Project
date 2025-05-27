@@ -1,5 +1,7 @@
 package kr.co.lemona.common.exeption;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 
 /*
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @ControllerAdvice // 전역적 예외처리 활성화 어노테이션
 public class ExeptionController {
 	
@@ -26,17 +30,23 @@ public class ExeptionController {
 	@ExceptionHandler(NoResourceFoundException.class)
 	public String notFound() {
 		return "error/404";
-		
 	}
 	
 	// 프로젝트에서 발생하는 모든 종류의 예외를 잡아 처리하는 메서드
 	@ExceptionHandler(Exception.class)
-	public String allExeptionHandler(Exception e ,Model model) {
-		
-		e.printStackTrace();
-		model.addAttribute("e", e);
-		
-		return "error/500";
+	public Object allExceptionHandler(Exception e, HttpServletRequest request, Model model) {
+	    e.printStackTrace();
+
+	    boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+
+	    if (isAjax) {
+	        return ResponseEntity
+	                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body("500 ERROR: AJAX 요청 중 서버 오류");
+	    }
+
+	    model.addAttribute("e", e);
+	    return "error/500"; // 브라우저에서 이동한 경우는 그대로 HTML 응답
 	}
 	
 	

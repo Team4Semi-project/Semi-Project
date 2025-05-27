@@ -10,6 +10,7 @@ import org.apache.ibatis.session.RowBounds;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
+import kr.co.lemona.recipeBoard.model.dto.RecipeComment;
 
 @Mapper
 public interface RecipeBoardMapper {
@@ -193,4 +194,51 @@ public interface RecipeBoardMapper {
 	 * @author jihyun
 	 */
 	RecipeBoard searchNextBoard(Map<String, Integer> map);
+	/** 댓글 목록 조회
+	 * @param commentMap
+	 * @return
+	 * @author miae
+	 */
+	List<RecipeComment> selectCommentList(Map<String, Object> commentMap);
+
+	/** 레시피 게시글 수정/{제목,카테고리번호,수정일}
+	 * @param inputBoard
+	 * @return
+	 * @author 재호
+	 */
+	int updateRecipeBoard(RecipeBoard inputBoard);
+
+	/** 기존의 게시글 해시태그 삭제/신규 해시태그 추가는 기존 SQL 활용
+	 * @param inputBoard
+	 * @return
+	 * @author 재호
+	 */
+	int deleteBoardHashtagByBoardNo(RecipeBoard inputBoard);
+
+	/** 기존의 boardStep 정보 조회
+	 * @param boardNo
+	 * @return
+	 * @author 재호
+	 */
+	List<Integer> selectOriginalList(int boardNo);
+
+	/** 이미지가 삭제된 스텝 삭제
+	 * @param deletedList
+	 * @return
+	 * @author 재호
+	 */
+	int deleteBoardStep(int deletedList);
+
+	/** 스텝 순서 변경
+	 * @param stepOrderList
+	 * @return
+	 * @author 재호
+	 */
+	int changeBoardStep(BoardStep stepOrderList);
+
+	/** 썸내일이 아닌 이미지들 설정 초기화
+	 * @param thumbnailOrder
+	 * @author 재호
+	 */
+	void resetThumnail(Map<String, Integer> map);
 }

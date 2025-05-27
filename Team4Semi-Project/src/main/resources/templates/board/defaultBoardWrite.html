@@ -33,7 +33,7 @@
 
     <!-- board가 넘어오면 수정 아니면 추가 -->
     <form id="postForm" method="post"
-      th:action=" @{${board != null ? '/editBoard/' + board.boardCode + '/' + board.boardNo + '/update' : '/editBoard/' + board.boardCode + '/insert'}} ">
+      th:action=" @{${board != null ? '/editBoard/' + board.boardCode + '/' + board.boardNo + '/update' : '/editBoard/2/insert'}} ">
       <!-- 제목 -->
       <input type="text" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글제목을 입력해주세요"
         required>

@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const hashTagContainer = document.getElementById("hashTagContainer");
   const submitBtn = document.getElementById("submitBtn");
 
+  // 게시글 번호 수집
+  const pathname = window.location.pathname;
+  const segments = pathname.split("/");
+  const boardNo = segments[4];
+
   // 스텝 카운터
   let stepCounter = 1;
 
@@ -76,11 +81,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             <button type="button" class="image-cancel-btn">선택 취소</button>
                         </div>
                     </div>
+
+                    <input type="hidden" value="0" class="step-no">
+
                 </div>
             </div>
         `;
 
     recipeStepsContainer.appendChild(newStep);
+
     updateStepButtons();
     bindStepEvents();
   }
@@ -122,6 +131,9 @@ document.addEventListener("DOMContentLoaded", function () {
           if (thumbnailRadio) {
             thumbnailRadio.checked = false;
           }
+
+          // 서버에서 삭제 처리를 위한 작업
+          stepElement.querySelector(".step-no").value = "0";
         });
         btn.hasListener = true;
       }
@@ -299,6 +311,19 @@ document.addEventListener("DOMContentLoaded", function () {
     lastStep.querySelector(".step-down").classList.add("disabled");
   }
 
+  // 1. 기존 렌더된 해시태그를 hashTags에 추가하고 삭제 이벤트 연결
+  document.querySelectorAll("#hashTagContainer .hashtag").forEach((tagElement) => {
+    const tagText = tagElement.querySelector("span:first-child").textContent.replace(/^#/, "");
+
+    hashTags.push(tagText); // 배열에 추가
+
+    // 삭제 이벤트 바인딩
+    tagElement.querySelector(".delete-hashtag").addEventListener("click", function () {
+      tagElement.remove();
+      hashTags = hashTags.filter((tag) => tag !== tagText);
+    });
+  });
+
   /**
    * 해시태그 추가
    */
@@ -366,6 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     formData.append("categoryNo", categoryNo);
+    formData.append("boardNo", boardNo);
 
     // 제목 수집
     const boardTitle = document.getElementById("boardTitle").value;
@@ -399,12 +425,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 스텝 이미지 수집
       const imageInput = step.querySelector(".step-image-input");
-      // 이미지가 있을때
-      if (imageInput.files.length > 0) {
+      // 신규 이미지가 있을 때
+      if (imageInput && imageInput.files && imageInput.files.length > 0) {
         formData.append("images", imageInput.files[0]);
         formData.append("imageExists", true);
-      } else { // 이미지가 없을때
-        // 공백 표시
+      } else {
         formData.append("imageExists", false);
       }
 
@@ -416,10 +441,18 @@ document.addEventListener("DOMContentLoaded", function () {
         formData.append("thumbnailNo", index + 1);
         isThumbnailSelected = true;
       }
+
+      // 순서 변경 및 기존 이미지에 대한 처리사항 수집
+      const stepNoInput = step.querySelector(".step-no");
+      const stepNo = stepNoInput ? stepNoInput.value : "0";
+      formData.append("stepNoList", stepNo);
     }
 
     // 이미지는 있는데 썸내일이 없다면
-    const hasAnyImage = Array.from(steps).some(step => step.querySelector(".step-image-input").files.length > 0);
+    const hasAnyImage = Array.from(steps).some(step => {
+      const input = step.querySelector(".step-image-input");
+      return input && input.files && input.files.length > 0;
+    });
 
     if (hasAnyImage && !isThumbnailSelected) {
       alert("대표 이미지를 선택해주세요!");
@@ -440,7 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(key, value);
     });
 
-    fetch("/board/1/insert", {
+    fetch("/board/1/update", {
       method: "POST",
       // ✅ AJAX 요청임을 명시!
       headers: { "X-Requested-With": "XMLHttpRequest" },
@@ -468,12 +501,12 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((result) => {
         console.log("응답 성공:", result);
-        alert("레시피를 등록했습니다!");
+        alert("레시피를 수정했습니다!");
         location.href = result;
       })
       .catch((error) => {
         console.error("에러 발생:", error);
-        alert("레시피 등록에 실패했습니다.");
+        alert("레시피 수정에 실패했습니다.");
       });
   }
 });

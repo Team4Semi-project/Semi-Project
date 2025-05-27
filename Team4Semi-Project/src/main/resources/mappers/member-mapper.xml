@@ -57,12 +57,6 @@
 	</select>
 	
 	
-	<select id="findUserByIdNameEmail" parameterType="map" resultType="map">
-	    SELECT id, name, email
-	    FROM members
-	    WHERE id = #{id} AND name = #{name} AND email = #{email}
-	</select>
-	
 	<select id="findUserForPassword" resultType="String">
   		SELECT user_id
   		FROM member
@@ -71,4 +65,15 @@
    		 AND user_email = #{userEmail}
 	</select>
 	
+	<!-- 비밀번호 찾기 -->
+	<select id="findUserByIdNameEmail" resultType="map">
+		SELECT MEMBER_ID, MEMBER_NAME, MEMBER_EMAIL
+		FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
+		AND MEMBER_NAME = #{memberName}
+		AND MEMBER_EMAIL = #{memberEmail}
+	</select>
+	
+	<!-- 비밀번호 업데이트 -->
+
 </mapper>

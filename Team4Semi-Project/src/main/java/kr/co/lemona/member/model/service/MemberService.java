@@ -41,4 +41,13 @@ public interface MemberService {
 	 */
 	String findIdByNameAndEmail(Map<String, String> params);
 
+	/** 비밀번호 찾기
+	 * @param member
+	 * @return
+	 */
+	Map<String, String> findUserByIdNameEmail(Member member);
+
+
+
+
 }

@@ -1,9 +1,9 @@
-// /js/login/login.js
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
   const username = document.getElementById("username");
   const password = document.getElementById("password");
 
+  // 로그인 유효성 검사
   loginForm.addEventListener("submit", function (e) {
     if (username.value.trim() === "") {
       alert("아이디를 입력하세요.");
@@ -18,5 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       return;
     }
+  });
+
+  // 회원가입 버튼 클릭 시 /register로 이동
+  const registerBtn = document.getElementById("registerBtn");
+  registerBtn.addEventListener("click", () => {
+    window.location.href = "/register";
   });
 });

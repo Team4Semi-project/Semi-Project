@@ -67,7 +67,7 @@
             <div class="image-upload" th:style="${step.imgRename != null} ? 'display:none;' : 'display:flex;'">
               <label th:for="'stepImage'+${iterStat.count}">
                 <span class="material-symbols-outlined">
-                  add
+                  image
                 </span>
               </label>
               <input type="file" th:id="'stepImage'+${iterStat.count}" class="step-image-input" accept="image/*" />
@@ -113,7 +113,9 @@
         <!-- 해시태그가 여기에 추가됨 -->
         <div class="hashtag" th:each="tag : ${board.hashTagList}">
           <span th:text="'#' + ${tag}"></span>
-          <span class="delete-hashtag" onclick="this.parentElement.remove();">×</span>
+          <span class="delete-hashtag material-symbols-outlined" onclick="this.parentElement.remove();">
+            close
+          </span>
         </div>
       </div>
     </div>

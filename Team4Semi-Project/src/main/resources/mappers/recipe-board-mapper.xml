@@ -1194,11 +1194,21 @@ WHERE R.RN = (
 	    WHERE STEP_NO = #{stepNo}
 	</update>
 	
-	<update id="resetThumnail">
+	<!-- 이미지 썸내일 설정 초기화 -->
+	<!-- 재호 -->
+	<update id="resetThumbnail">
 		UPDATE BOARD_STEP
 		SET THUMBNAIL_CHECK = 'N'
 		WHERE BOARD_NO = #{boardNo}
-		  AND STEP_NO != #{thumbnailStep}
+	</update>
+	
+	<!-- 썸내일 설정 -->
+	<!-- 재호 -->
+	<update id="newThumbnail">
+		UPDATE BOARD_STEP
+		SET THUMBNAIL_CHECK = 'Y'
+		WHERE BOARD_NO = #{boardNo}
+		AND STEP_ORDER = #{stepNo}
 	</update>
 	
 </mapper>

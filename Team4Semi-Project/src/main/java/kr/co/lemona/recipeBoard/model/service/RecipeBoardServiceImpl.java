@@ -550,10 +550,6 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		int orderCursor = 1; // stepOrder는 1부터 시작
 		int imageCursor = 0; // 실제 넘어온 이미지 리스트 index용
-		
-		boolean isNewThumbnail = false;
-		int thumbnailStep = 0;
-		int targetBoard = 0;
 
 		for (int i = 0; i < stepNoList.size(); i++) {
 
@@ -568,7 +564,6 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		        // 기본값 세팅
 		        String originalName = null;
 		        String rename = null;
-		        String thumbnailCheck = (i == (thumbnailNo - 1)) ? "Y" : "N";
 
 		        // 실제 넘어온 이미지 리스트에서 가져오기
 		        if (images != null && images.size() > imageCursor) {
@@ -592,27 +587,14 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		            .imgRename(rename)
 		            .imgPath(webPath)
 		            .uploadFile((images != null && imageCursor <= images.size()) ? images.get(imageCursor - 1) : null)
-		            .thumbnailCheck(thumbnailCheck)
+		            .thumbnailCheck("N")
 		            .build();
-		        
-		        if(thumbnailCheck.equals("Y")) {
-		        	isNewThumbnail = true;
-		        	thumbnailStep = step.getStepNo();
-		        	targetBoard = step.getBoardNo();
-		        }
-
+		      
 		        insertStepList.add(step);
 
 		        // 사용한 순번으로 등록
 		        usedOrders.add(orderCursor);
 		    }
-		}
-		
-		if(isNewThumbnail) {
-			Map<String, Integer> map = new HashMap<>();
-			map.put("thumbnailStep", thumbnailStep);
-			map.put("boardNo", targetBoard);
-			mapper.resetThumnail(map);
 		}
 		
 		int insertResult = 0;
@@ -638,6 +620,19 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 				throw new RuntimeException();
 			}
 		}
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardNo", boardNo);
+		map.put("stepNo", thumbnailNo);
+		
+		// 썸내일 초기화
+		int thumbResult = mapper.resetThumbnail(map);
+		log.debug("ㅎㅎㅎㅎ thumbResult : {}", thumbResult);
+		// 썸내일 설정
+		log.debug("ㅎㅎㅎㅎ boardNo : {}", boardNo);
+		log.debug("ㅎㅎㅎㅎ thumbnailNo : {}", thumbnailNo);
+		thumbResult = thumbResult + mapper.newThumbnail(map);
+		log.debug("ㅎㅎㅎㅎ thumbResult : {}", thumbResult);
 
 		// 5. 반환
 		return insertResult + result;

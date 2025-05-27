@@ -37,7 +37,7 @@
           <p class="comment-content" th:text="${comment.commentContent}">댓글 내용</p>
 
           <!-- 좋아요 하트 -->
-          <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+          <button type="button" class="commentLikes" th:data-login-member-no="${session.loginMember?.memberNo}"
             th:data-comment-no="${comment.commentNo}" th:data-like-check="${comment.likeCheck}"
             th:classappend="${comment.likeCheck == 1} ? likeChecked : likeUnChecked">
             <!-- 좋아요 누른적이 있으면 fa-solid, 없으면 fa-regular 클래스 추가 -->

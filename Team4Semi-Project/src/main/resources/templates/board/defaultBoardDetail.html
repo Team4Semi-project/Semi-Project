@@ -34,11 +34,14 @@
           <span class="board-update" th:text="${board.boardCreateDate}">작성일</span>
         </div>
         <div class="text-right">
-          <div class="likes">
-            <i class="fa-solid fa-lemon" style="color: #FFD43B;"></i>
-            <span th:text="${board.likeCount}">좋아요</span>
-          </div>
-          <div>
+          <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+            th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+            th:data-like-check="${board.likeCheck}"
+            th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+            <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+            <span th:text="${board.likeCount}">28</span>
+          </button>
+          <div class="views">
             <i class="material-symbols-outlined align-middle">visibility</i>
             <span th:text="${board.readCount}" class="align-middle">조회수</span>
           </div>

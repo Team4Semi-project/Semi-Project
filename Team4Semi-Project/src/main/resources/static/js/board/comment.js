@@ -414,9 +414,9 @@ const updateComment = (commentNo, btn) => {
 
 }
 /* 좋아요 기능 */
-const likes = document.querySelectorAll(".likes");
-if (likes) {
-  likes.forEach((likesBtn) => {
+const commentLikes = document.querySelectorAll(".commentLikes");
+if (commentLikes) {
+  commentLikes.forEach((likesBtn) => {
     likesBtn.addEventListener("click", function (e) {
       const loginMemberNo = this.dataset.loginMemberNo;
       const commentNo = this.dataset.commentNo;

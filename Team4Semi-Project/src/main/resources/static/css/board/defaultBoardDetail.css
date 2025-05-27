@@ -6,15 +6,25 @@ a:hover {
 
 /* 전체 섹션 스타일 */
 .board-detail {
-  width: 100%;
-  margin: 30px auto;
+  width: 60%;
   padding: 0;
+  display: block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 서머노트 출력 형식 */
+.board-detail .mt-4 img {
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: top;
 }
 
 /* 내용 컨테이너 공통 스타일 */
 .container-inner {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   padding: 0 20px;
 }
 
@@ -58,6 +68,50 @@ a:hover {
 
 .board-update::after {
   right: -15px;
+}
+
+/* 좋아요 조회수 컨테이너 */
+.text-right {
+  display: block;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 좋아요/조회수 기능 */
+.likes, .views{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  font-size: var(--pre-p-1-font-size);
+  color: var(--darkgray);
+
+  width: 86px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+.likes i {
+  font-size: 20px;
+  color: var(--yellow);
+}
+
+.likes {
+  border: 1px solid var(--yellow);
+}
+
+.likes span {
+  color: var(--darkgray);
+}
+
+.likes span, .views span {
+  font-size: var(--pre-p-2-font-size);
+  font-family: var(--pre-p-2-font-family);
+  font-weight: var(--pre-p-2-font-size);
+
+  width: 24px;
+  text-align: center;
 }
 
 /* 컨테이너 내부 정렬 */
@@ -114,9 +168,11 @@ a:hover {
   background-color: var(--lemon);
   color: var(--darkgray);
   border: none;
-  border-radius: 20px;
+  border-radius: 30px;
   padding: 8px 20px;
-  font-weight: 500;
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-3-weight);
+  font-family: var(--ryu-p-3-font-family);
   cursor: pointer;
   transition: background-color 0.2s;
 }

@@ -179,4 +179,18 @@ public interface RecipeBoardMapper {
 	 * @return
 	 */
 	int deleteRecipeBoard(int boardNo);
+
+	/** 레시피/인기 게시글 검색 시 이전글
+	 * @param map
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard searchPrevBoard(Map<String, Integer> map);
+
+	/** 레시피/인기 게시글 검색 시 다음글
+	 * @param map
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard searchNextBoard(Map<String, Integer> map);
 }

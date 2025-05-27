@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.co.lemona.board.model.dto.Board;
@@ -42,6 +43,48 @@ public interface MainMapper {
 	 * @author jihyun
 	 */
 	List<Board> searchAllBoardList(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	/** 레시피/인기 검색 시 상세조회 - 레시피 단계 조회
+	 * @param integer
+	 * @return
+	 * @author jihyun
+	 */
+	List<BoardStep> selectBoardStepList(Integer integer);
+
+	/** 레시피/인기 검색 시 상세조회 - 레시피 조회
+	 * @param map
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard selectOneRecipe(@Param("map") Map<String, Integer> map, @Param("paramMap") Map<String, Object> paramMap);
+
+	/** 레시피 인기 검색 시 상세조회 - 이전글
+	 * @param map
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard selectPrevBoard(Map<String, Integer> map);
+
+	/** 레시피 인기 검색 시 상세조회 - 다음글
+	 * @param map
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard selectNextBoard(Map<String, Integer> map);
+
+	/** 레시피/인기 검색 시 상세조회 - 조회수 증가
+	 * @param boardNo
+	 * @return
+	 * @author jihyun
+	 */
+	int updateReadCount(int boardNo);
+
+	/** 레시피/인기 검색 시 상세조회 - 조회수 증가
+	 * @param boardNo
+	 * @return
+	 * @author jihyun
+	 */
+	int selectReadCount(int boardNo);
 
 	
 

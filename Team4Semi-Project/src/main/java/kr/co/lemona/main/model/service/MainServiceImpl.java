@@ -127,4 +127,70 @@ public class MainServiceImpl implements MainService {
 
 	}
 
+	// 레시피/인기 게시글 검색 시 상세 조회 서비스
+	@Override
+	public Map<String, Object> selectOneRecipe(Map<String, Integer> map, Map<String, Object> paramMap) {
+		// 각각의 테이블에서 값을 조회해와야하기 때문에 map 사용
+				Map<String, Object> map2 = new HashMap<>();
+
+				// boardStep은 여러개의 값을 받아오기 때문에 ArrayList 사용
+				List<BoardStep> boardStepList = new ArrayList<>();
+
+				boardStepList = mapper.selectBoardStepList(map.get("boardNo"));
+				RecipeBoard recipeBoard = mapper.selectOneRecipe(map, paramMap);
+				log.info("sorttttttttttttttttttttttt : " + map.get("sort"));
+				
+				// 해시태그 받아오는 부분
+				if(recipeBoard != null) {
+					String tags = recipeBoard.getTags();
+					if(tags != null && !tags.isEmpty()) {
+						 List<String> tagList = Arrays.stream(tags.split(","))
+			                     .map(String::trim)
+			                     .collect(Collectors.toList());
+						 recipeBoard.setHashTagList(tagList);
+					}
+				}
+				
+				
+				// 이전 글
+				RecipeBoard prevBoard = mapper.selectPrevBoard(map);
+
+				// 다음 글
+				RecipeBoard nextBoard = mapper.selectNextBoard(map);
+
+				int prevBoardNo = 0;
+				int nextBoardNo = 0;
+
+				// 이전 글 다음글 목록이 있을때만 값을 받아오기
+				if (prevBoard != null) {
+					prevBoardNo = prevBoard.getBoardNo();
+				}
+
+				if (nextBoard != null) {
+					nextBoardNo = nextBoard.getBoardNo();
+				}
+
+				map2.put("recipeBoard", recipeBoard);
+				map2.put("boardStepList", boardStepList);
+				map2.put("prevBoardNo", prevBoardNo);
+				map2.put("nextBoardNo", nextBoardNo);
+
+				return map2;
+	}
+
+	// 레시피/인기 게시글 검색 시 조회수 증가 서비스
+	@Override
+	public int updateReadCount(int boardNo) {
+		// 1, 조회수 1 증가 (UPDATE)
+				int result = mapper.updateReadCount(boardNo);
+				
+				// 2. 현재 조회 수 조회
+				if(result > 0) {
+					return mapper.selectReadCount(boardNo);
+				}
+				
+				// 실패한 경우 -1 반환
+				return -1;
+	}
+
 }

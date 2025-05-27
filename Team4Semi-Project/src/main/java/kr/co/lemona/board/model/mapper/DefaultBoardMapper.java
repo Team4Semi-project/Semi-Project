@@ -25,7 +25,7 @@ public interface DefaultBoardMapper {
 	 * @return
 	 * @author 민장
 	 */
-	List<Board> selectBoardList(int boardCode, RowBounds rowBounds);
+	List<Board> selectBoardList(Map<String, Object> inputMap, RowBounds rowBounds);
 
 	/** 게시글 상세 조회
 	 * @param map
@@ -73,6 +73,27 @@ public interface DefaultBoardMapper {
 	 */
 	int selectReadCount(int boardNo);
 
+	/** 좋아요 해제
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int decreaseLikeCount(Map<String, Integer> map);
+
+	/** 좋아요 체크
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int increaseLikeCount(Map<String, Integer> map);
+
+	/** 좋아요 갯수 갱신
+	 * @param map
+	 * @return
+	 * @author 재호
+	 */
+	int updateLikeCount(Map<String, Integer> map);
+	
 	/** 댓글 목록 + 좋아요 조회
 	 * @param commentMap
 	 * @return

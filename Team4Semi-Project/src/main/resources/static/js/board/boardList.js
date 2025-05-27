@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const boardCode = this.dataset.boardCode;
         let likeCK = Number(this.dataset.likeCheck);
 
-        console.log(loginMemberNo, boardNo, likeCK, `${boardCode}`);
+        // console.log(loginMemberNo, boardNo, likeCK, `${boardCode}`);
 
         if (!loginMemberNo || loginMemberNo === "null") {
           alert("로그인 후 이용해주세요");

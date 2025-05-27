@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("/findId", {
+      const response = await fetch("/find/findId", {
         // 대소문자 주의!
         method: "POST",
         headers: {

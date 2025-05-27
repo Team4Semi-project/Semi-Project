@@ -40,24 +40,21 @@
         class="write-button bg-gray-200 text-sm px-3 py-1.5 rounded-lg inline-block text-black">
         레시피 작성
       </a>
-      
-  <!-- 자유게시판 (boardCode == 2) -->
-  <a th:if="${boardCode == 2}"
-     th:href="@{/editBoard/2/insert}"
-     class="write-button bg-gray-200 text-sm px-3 py-1.5 rounded-lg inline-block text-black">
-     글 작성
-  </a>
-  <!-- boardCode가 2, 3이 아닌 경우에도 버튼 표시 -->
-  <div th:if="${boardCode != 2 and boardCode != 3}" class="write-button-container">
-    <a th:href="@{/board/1/insert}"
-       class="write-button bg-gray-200 text-sm px-3 py-1.5 rounded-lg inline-block text-black">
-      레시피 작성
-    </a>
-  </div>
-</div>
 
+      <!-- 자유게시판 (boardCode == 2) -->
+      <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}"
+        class="write-button bg-gray-200 text-sm px-3 py-1.5 rounded-lg inline-block text-black">
+        글 작성
+      </a>
+    </div>
 
-
+    <!-- boardCode가 2, 3이 아닌 경우에도 버튼 표시 -->
+    <div th:if="${boardCode != 2 and boardCode != 3}" class="write-button-container">
+      <a th:href="@{/board/1/insert}"
+        class="write-button bg-gray-200 text-sm px-3 py-1.5 rounded-lg inline-block text-black">
+        레시피 작성
+      </a>
+    </div>
 
   </div>
 </nav>

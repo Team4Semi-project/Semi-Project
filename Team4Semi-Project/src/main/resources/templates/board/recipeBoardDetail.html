@@ -34,10 +34,13 @@
             <div class="recipe-info">
                 <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-13</span>
                 <div class="recipe-stats">
-                    <div class="likes">
-                        <i class="fa-solid fa-lemon" style="color: #FFD43B;"></i>
-                        <span th:text="${board.likeCount}">0</span>
-                    </div>
+                    <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                        th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                        th:data-like-check="${board.likeCheck}"
+                        th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+                        <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+                        <span th:text="${board.likeCount}">28</span>
+                    </button>
                     <div class="views">
                         <span class="material-symbols-outlined">visibility</span>
                         <span th:text="${board.readCount}">20</span>

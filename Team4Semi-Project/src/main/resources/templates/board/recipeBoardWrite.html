@@ -1,134 +1,122 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>레시피 작성하기</title>
-    <link rel="stylesheet" href="/css/board/recipeBoardWrite.css" />
-    <th:block th:replace="~{common/common}"></th:block>
-  </head>
-  <body>
-    <!-- 헤더 (Thymeleaf replace) -->
-    <header th:replace="~{common/header :: header}"></header>
 
-    <div class="page-title">
-      <h2>레시피 작성하기</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>레시피 작성하기</title>
+  <link rel="stylesheet" href="/css/board/recipeBoardWrite.css" />
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+
+<body>
+  <!-- 헤더 (Thymeleaf replace) -->
+  <header th:replace="~{common/header :: header}"></header>
+
+  <div class="page-title">
+    <h2>레시피 작성하기</h2>
+  </div>
+
+  <div class="container">
+    <!-- 카테고리 및 제목 영역 -->
+    <div class="form-row">
+      <div class="category-select">
+        <select name="categoryNo" id="categorySelect">
+          <option value="" disabled selected>레시피 카테고리</option>
+          <option value="1">한식</option>
+          <option value="2">중식</option>
+          <option value="3">양식</option>
+          <option value="4">일식</option>
+          <option value="5">기타</option>
+        </select>
+        <span class="arrow"></span>
+      </div>
+      <input type="text" name="boardTitle" id="boardTitle" class="title-input" placeholder="메뉴 이름을 알려주세요, 셰프!" />
     </div>
 
-    <div class="container">
-      <!-- 카테고리 및 제목 영역 -->
-      <div class="form-row">
-        <div class="category-select">
-          <select name="categoryNo" id="categorySelect">
-            <option value="" disabled selected>레시피 카테고리</option>
-            <option value="1">한식</option>
-            <option value="2">중식</option>
-            <option value="3">양식</option>
-            <option value="4">일식</option>
-            <option value="5">기타</option>
-          </select>
+    <!-- 레시피 스텝 영역 -->
+    <div class="recipe-steps" id="recipeStepsContainer">
+      <!-- 첫 번째 스텝 (기본) -->
+      <div class="recipe-step" data-step="1">
+        <!-- 스텝 수정 버튼 -->
+        <div class="step-buttons">
+          <button type="button" class="step-btn step-up" title="위로 이동">
+            <span class="material-symbols-outlined">
+              keyboard_arrow_up
+            </span>
+          </button>
+          <button type="button" class="step-btn step-delete" title="삭제">
+            <span class="material-symbols-outlined">
+              close
+            </span>
+          </button>
+          <button type="button" class="step-btn step-down" title="아래로 이동">
+            <span class="material-symbols-outlined">
+              keyboard_arrow_down
+            </span>
+          </button>
         </div>
-        <input
-          type="text"
-          name="boardTitle"
-          id="boardTitle"
-          class="title-input"
-          placeholder="레시피 제목을 입력하세요..."
-        />
-      </div>
+        <div class="step-content">
+          <textarea name="recipeStep" placeholder="요리 과정을 알려주세요, 셰프!"></textarea>
 
-      <!-- 레시피 스텝 영역 -->
-      <div class="recipe-steps" id="recipeStepsContainer">
-        <!-- 첫 번째 스텝 (기본) -->
-        <div class="recipe-step" data-step="1">
-          <div class="step-buttons">
-            <button type="button" class="step-btn step-up" title="위로 이동">
-              <span>↑</span>
-            </button>
-            <button type="button" class="step-btn step-delete" title="삭제">
-              <span>×</span>
-            </button>
-            <button
-              type="button"
-              class="step-btn step-down"
-              title="아래로 이동"
-            >
-              <span>↓</span>
-            </button>
-          </div>
-          <div class="step-content">
-            <textarea
-              name="recipeStep"
-              placeholder="요리 과정을 입력하세요..."
-            ></textarea>
-            <div class="step-image-area">
-              <div class="image-upload">
-                <label for="stepImage1">
-                  <div class="upload-icon">+</div>
-                  <span>사진 추가</span>
-                </label>
-                <input
-                  type="file"
-                  id="stepImage1"
-                  class="step-image-input"
-                  accept="image/*"
-                />
-              </div>
-              <div class="image-preview-container" style="display: none">
-                <div class="image-preview"></div>
-                <div class="image-controls">
-                  <div class="thumbnail-control">
-                    <input
-                      type="radio"
-                      name="thumbnailStep"
-                      value="1"
-                      id="thumbnail1"
-                      checked
-                    />
-                    <label for="thumbnail1">대표 이미지로 설정</label>
-                  </div>
-                  <button type="button" class="image-cancel-btn">
-                    선택 취소
-                  </button>
+          <div class="step-image-area">
+            <!-- 이미지 업로드 영역 -->
+            <div class="image-upload">
+              <label for="stepImage1">
+                <span class="material-symbols-outlined">
+                  image
+                </span>
+              </label>
+              <input type="file" id="stepImage1" class="step-image-input" accept="image/*" />
+            </div>
+
+            <!-- 이미지 미리보기 영역 -->
+            <div class="image-preview-container" style="display: none">
+              <div class="image-preview"></div>
+              <div class="image-controls">
+                <div class="thumbnail-control">
+                  <input type="radio" name="thumbnailStep" value="1" id="thumbnail1" checked />
+                  <label for="thumbnail1">대표 이미지로 설정</label>
                 </div>
+                <button type="button" class="image-cancel-btn">
+                  선택 취소
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- 요리과정 추가 버튼 -->
-      <div class="add-step-container">
-        <button type="button" id="addStepBtn" class="add-step-btn">
-          요리과정 추가하기
-        </button>
+    <!-- 요리과정 추가 버튼 -->
+    <div class="add-step-container">
+      <button type="button" id="addStepBtn" class="add-step-btn">
+        요리과정 추가하기
+      </button>
+    </div>
+
+    <!-- 해시태그 영역 -->
+    <div class="hashtag-section">
+      <div class="hashtag-input-container">
+        <input type="text" id="hashTagInput" placeholder="#해시태그를 입력하세요!" />
       </div>
-
-      <!-- 해시태그 영역 -->
-      <div class="hashtag-section">
-        <div class="hashtag-input-container">
-          <input
-            type="text"
-            id="hashTagInput"
-            placeholder="#해시태그를 입력하세요..."
-          />
-        </div>
-        <div class="hashtag-list" id="hashTagContainer">
-          <!-- 해시태그가 여기에 추가됨 -->
-        </div>
-      </div>
-
-      <!-- 글 작성 완료 버튼 -->
-      <div class="submit-container">
-        <button type="button" id="submitBtn" class="submit-btn">
-          작성 완료
-        </button>
+      <div class="hashtag-list" id="hashTagContainer">
+        <!-- 해시태그가 여기에 추가됨 -->
       </div>
     </div>
 
-    <!-- 푸터 (Thymeleaf replace) -->
-    <footer th:replace="~{common/footer :: footer}"></footer>
+    <!-- 글 작성 완료 버튼 -->
+    <div class="submit-container">
+      <button type="button" id="submitBtn" class="submit-btn">
+        작성 완료
+      </button>
+    </div>
+  </div>
 
-    <script src="/js/board/recipeBoardWrite.js"></script>
-  </body>
+  <!-- 푸터 (Thymeleaf replace) -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+
+  <script src="/js/board/recipeBoardWrite.js"></script>
+</body>
+
 </html>

@@ -30,31 +30,71 @@
 }
 
 .category-select {
-  flex: 0 0 150px;
+  flex: 0 0 1;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .category-select select {
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 10px 32px 10px 20px;
+  border-radius: 20px;
   border: 1px solid var(--lightgray);
-  background-color: var(--input-color);
+  background-color: var(--lemon);
   cursor: pointer;
-  color: var(--deepgray);
+  color: var(--darkgray);
+
+  font-family: var(--pre-p-2-font-family);
+  font-size: var(--pre-p-2-font-size);
+  font-weight: var(--pre-p-2-font-weight);
+
+  appearance: none; /* 기본 화살표 제거 (표준) */
+  -webkit-appearance: none; /* Safari/Chrome */
+  -moz-appearance: none; /* Firefox */
+
+  box-shadow: var(--SHADOW);
+}
+
+.category-select .arrow {
+  /* content: "arrow_drop_down"; */
+  /* font-family: "Material Symbols Outlined"; */
+  /* color: var(--darkgray);
+  font-size: 32px; */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  margin-right: 4px;
+
+  border-width: 6px 5px 0 5px;
+  border-color: black transparent transparent transparent;
+  border-style: solid;
 }
 
 .title-input {
   flex: 1;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 10px 20px;
+  border-radius: 8px;
   border: 1px solid var(--lightgray);
-  background-color: var(--input-color);
-  font-size: 16px;
+  background-color: var(--milk);
   color: var(--darkgray);
+
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-3-font-weight);
+  font-family: var(--ryu-p-3-font-family);
+
+  box-shadow: var(--SHADOW);
 }
 
 .title-input::placeholder {
   color: var(--gray);
+}
+
+.title-input:focus {
+  outline: none;
+  border: 1px solid var(--yellow);
 }
 
 /* 레시피 스텝 영역 */
@@ -69,6 +109,7 @@
   border-radius: 8px;
   box-shadow: var(--SHADOW);
   overflow: hidden;
+  height: 420px;
 }
 
 .step-buttons {
@@ -80,9 +121,9 @@
 
 .step-btn {
   width: 30px;
-  height: 30px;
+  height: 100%;
   border: none;
-  background-color: transparent;
+  background-color: var(--yellow);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -91,17 +132,15 @@
   margin: 2px 0;
   border-radius: 4px;
   transition: background-color 0.2s;
-  color: var(--deepgray);
+}
+
+.step-btn span {
+  color: var(--white);
 }
 
 .step-btn:hover {
-  background-color: var(--lightyellow);
+  background-color: var(--lightbrown);
   color: var(--deepbrown);
-}
-
-.step-delete:hover {
-  background-color: var(--pink);
-  color: var(--white);
 }
 
 .step-btn.disabled {
@@ -119,12 +158,23 @@
 .step-content textarea {
   flex: 1;
   min-height: 100px;
-  padding: 10px;
+  padding: 12px 20px;
   border: 1px solid var(--lightgray);
   border-radius: 5px;
   resize: vertical;
   background-color: var(--input-color);
   color: var(--darkgray);
+
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-3-font-weight);
+  font-family: var(--ryu-p-3-font-family);
+
+  resize: none;
+}
+
+.step-content textarea:focus {
+  outline: none;
+  border: 1px solid var(--yellow);
 }
 
 .step-content textarea::placeholder {
@@ -132,11 +182,11 @@
 }
 
 .step-image-area {
-  flex: 0 0 200px;
+  flex: 0 0 1;
 }
 
 .image-upload {
-  width: 100%;
+  width: 60px;
   height: 100%;
   border: 2px dashed var(--lightgray);
   border-radius: 5px;
@@ -157,15 +207,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   width: 100%;
   height: 100%;
 }
 
-.upload-icon {
+.material-symbols-outlined {
   font-size: 28px;
   color: var(--lemon);
-  margin-bottom: 5px;
 }
 
 .step-image-input {
@@ -174,11 +224,16 @@
 
 .image-preview-container {
   width: 100%;
+  height: 100%;
+
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .image-preview {
   width: 100%;
-  height: 150px;
+  height: 300px;
   border-radius: 5px;
   overflow: hidden;
   margin-bottom: 10px;
@@ -186,8 +241,8 @@
 }
 
 .image-preview img {
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 300px;
   object-fit: cover;
 }
 
@@ -195,6 +250,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  bottom: 0;
 }
 
 .thumbnail-control {
@@ -242,7 +298,9 @@
   font-weight: 700;
   transition: background-color 0.2s;
   color: var(--deepbrown);
-  box-shadow: var(--under-shadow);
+  box-shadow: var(--SHADOW);
+
+  width: 100%;
 }
 
 .add-step-btn:hover {
@@ -267,9 +325,18 @@
   padding: 10px;
   border: 1px solid var(--lightgray);
   border-radius: 5px;
-  font-size: 14px;
+
   background-color: var(--input-color);
   color: var(--darkgray);
+
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-3-font-weight);
+  font-family: var(--ryu-p-3-font-family);
+}
+
+#hashTagInput:focus {
+  outline: none;
+  border: 1px solid var(--yellow);
 }
 
 #hashTagInput::placeholder {
@@ -285,26 +352,37 @@
 .hashtag {
   display: inline-flex;
   align-items: center;
-  background-color: var(--lightyellow);
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 14px;
-  color: var(--deepbrown);
 }
 
-.delete-hashtag {
-  margin-left: 8px;
+.hashtag span:first-of-type {
+  background-color: var(--milk);
+  border-radius: 20px 4px 4px 20px;
+  padding: 5px 12px;
+  color: var(--deepbrown);
+  box-shadow: var(--SHADOW);
+
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-3-font-weight);
+  font-family: var(--ryu-p-3-font-family);
+}
+
+.delete-hashtag.material-symbols-outlined {
+  margin-left: 4px;
+  padding-right: 4px;
   cursor: pointer;
-  font-size: 16px;
-  width: 18px;
-  height: 18px;
+  font-size: 20px;
+  width: 40px;
+  height: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+
+  border-radius: 4px 20px 20px 4px;
   background-color: var(--lemon);
   color: var(--deepbrown);
   transition: background-color 0.2s;
+  box-shadow: var(--SHADOW);
 }
 
 .delete-hashtag:hover {
@@ -313,6 +391,8 @@
 
 /* 글 작성 완료 버튼 */
 .submit-container {
+  display: flex;
+  justify-content: flex-end;
   text-align: center;
 }
 

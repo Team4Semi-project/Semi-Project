@@ -183,6 +183,8 @@ public class RecipeBoardController {
 	@GetMapping("{category}/{boardNo:[0-9]+}")
 	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("category") String category,
 			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
+			@RequestParam(value = "key", required = false, defaultValue = "") String key,
+			@RequestParam(value = "queryb", required = false, defaultValue = "") String queryb,
 			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
 			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠기 얻어오기
 			HttpServletResponse resp // 새로운 쿠기 만들어서 응답하기
@@ -190,6 +192,7 @@ public class RecipeBoardController {
 
 		// 1) Map 으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
+		Map<String, String> searchMap = new HashMap<>();
 
 		// caterogy에 인기글(popular) 이 들어올 경우 categoryNo를 0으로 하고
 		// 그렇지 않을 경우에는 int형으로 변환 후 categoryNo값 넘겨줌
@@ -202,6 +205,7 @@ public class RecipeBoardController {
 			map.put("categoryNo", 0);
 		}
 		map.put("boardNo", boardNo);
+		searchMap.put("boardNo", String.valueOf(boardNo));
 		
 		// 이전글/다음글을 위한 sort 전달
 		int sortNo = 0;
@@ -214,7 +218,20 @@ public class RecipeBoardController {
 			sortNo = 1;
 		}
 		
+		// 이전글/다음글을 위한 key 전달
+		int keyNo = 0;
+		switch (key) {
+		case "t" : keyNo = 1; break;
+		case "c" : keyNo = 2; break;
+		case "tc" : keyNo = 3; break;
+		case "w" : keyNo = 4; break;
+		case "h" : keyNo = 5; break;
+		}
+		
 		map.put("sort", sortNo);
+		searchMap.put("sort", String.valueOf(sortNo));
+		searchMap.put("key", String.valueOf(keyNo));
+		searchMap.put("queryb", queryb);
 
 		// 로그인 상태인 경우에만 memberNo 추가
 		if (loginMember != null) {
@@ -222,7 +239,7 @@ public class RecipeBoardController {
 		}
 
 		// 2) 서비스 호출
-		Map<String, Object> recipeMap = service.selectOneRecipe(map);
+		Map<String, Object> recipeMap = service.selectOneRecipe(map, searchMap);
 
 		String path = null;
 
@@ -507,7 +524,7 @@ public class RecipeBoardController {
 		map.put("sort", sortNo);
 		
 		// 2) 서비스 호출
-		Map<String, Object> recipeMap = service.selectOneRecipe(map);
+		Map<String, Object> recipeMap = service.selectOneRecipe(map, null);
 
 		// 조회 결과가 없는 경우
 		if (recipeMap == null) {

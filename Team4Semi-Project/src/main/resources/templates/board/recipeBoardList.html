@@ -30,7 +30,7 @@
             <button class="view-toggle agenda" data-view="agenda">
               <span class="material-symbols-outlined"> view_agenda </span>
             </button>
-            <button class="view-toggle cozy active" data-view="cozy">
+            <button class="view-toggle cozy" data-view="cozy">
               <span class="material-symbols-outlined"> view_cozy </span>
             </button>
           </div>
@@ -61,7 +61,14 @@
           <div th:each="board : ${boardList}" class="recipe-item">
             <div class="recipe-image">
               <!-- <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
-              <a
+              <a th:if="${key != null}"
+                th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">
+                <!-- 레시피 게시판 썸네일 -->
+                <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                  th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
+                  alt="레시피 이미지" />
+              </a>
+                <a th:if="${key == null}"
                 th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} ">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
@@ -73,7 +80,7 @@
             <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort}"
                   th:utext="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -122,7 +129,14 @@
             <div class="recipe-image">
               <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
               <!-- 레시피 게시판 썸네일 -->
-              <a
+              <a th:if="${key != null}"
+                th:href="@{/search/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">
+                <!-- 레시피 게시판 썸네일 -->
+                <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                  th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
+                  alt="레시피 이미지" />
+              </a>
+                <a th:if="${key == null}"
                 th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort} ">
                 <!-- 레시피 게시판 썸네일 -->
                 <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
@@ -134,7 +148,7 @@
             <!-- 글 제목 클릭 시 이동-->
             <div class="recipe-details">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort}"
                   th:utext="${board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -288,8 +302,6 @@
     </section>
   </main>
 
-  <!-- 댓글 영역-->
-  <!-- <th:block th:replace="~{board/comment}"></th:block> -->
 
   <!-- 푸터 프래그먼트 -->
   <footer th:replace="~{common/footer :: footer}"></footer>

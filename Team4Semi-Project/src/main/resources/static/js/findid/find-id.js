@@ -1,69 +1,51 @@
-console.log("아이디 찾기 스크립트 로드됨");
-
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM 완전히 로드됨 - find-id");
-
-  // 탭 요소 가져오기
-  const findIdTab = document.getElementById("findIdTab");
-  const findPwTab = document.getElementById("findPwTab");
-  const form = document.getElementById("findIdForm");
+document.addEventListener("DOMContentLoaded", () => {
+  const findIdForm = document.getElementById("findIdForm");
   const nameInput = document.getElementById("nameInput");
   const emailInput = document.getElementById("emailInput");
-  const foundIdInput = document.getElementById("foundId");
-  const initialButtons = document.getElementById("initialButtons");
-  const resultButtons = document.getElementById("resultButtons");
+  const foundId = document.getElementById("foundId");
 
-  // 탭 전환 이벤트 처리
-  findIdTab.addEventListener("click", function (e) {
-    e.preventDefault();
-    console.log("아이디 찾기 탭 클릭");
-    window.location.href = "find-id.html";
-  });
+  findIdForm.addEventListener("submit", async (e) => {
+    e.preventDefault(); // 기본 form 제출 막기
 
-  findPwTab.addEventListener("click", function (e) {
-    e.preventDefault();
-    console.log("비밀번호 찾기 탭 클릭");
-    window.location.href = "find-password.html";
-  });
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
 
-  if (form) {
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
+    // 입력 유효성 검사
+    if (!name) {
+      alert("이름을 입력해주세요.");
+      nameInput.focus();
+      return;
+    }
 
-      const name = nameInput.value.trim();
-      const email = emailInput.value.trim();
+    if (!email) {
+      alert("이메일을 입력해주세요.");
+      emailInput.focus();
+      return;
+    }
 
-      if (!name || !email) {
-        alert("이름과 이메일을 모두 입력해주세요.");
-        return;
+    try {
+      const response = await fetch("/findId", {
+        // 대소문자 주의!
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await response.json();
+      console.log("응답 내용:", data);
+
+      if (data.foundId) {
+        foundId.value = data.foundId;
+        alert("아이디를 찾았습니다!");
+      } else {
+        alert("입력한 정보와 일치하는 아이디가 없습니다. 다시 입력해주세요.");
+        foundId.value = "";
       }
-
-      try {
-        const response = await fetch("/find-id", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email }),
-        });
-
-        if (!response.ok) {
-          throw new Error("서버 오류 또는 네트워크 문제");
-        }
-
-        const data = await response.json();
-
-        if (data.success && data.userId) {
-          foundIdInput.value = data.userId;
-          initialButtons.style.display = "none";
-          resultButtons.style.display = "flex";
-        } else {
-          alert("일치하는 아이디를 찾을 수 없습니다.");
-        }
-      } catch (error) {
-        console.error("에러 발생:", error);
-        alert("오류가 발생했습니다. 다시 시도해주세요.");
-      }
-    });
-  }
+    } catch (error) {
+      console.error("에러:", error);
+      alert("아이디 찾기 중 오류가 발생했습니다.");
+    }
+  });
 });

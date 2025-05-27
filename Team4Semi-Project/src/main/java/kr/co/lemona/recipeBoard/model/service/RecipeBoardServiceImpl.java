@@ -23,6 +23,7 @@ import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.common.util.Utility;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
+import kr.co.lemona.recipeBoard.model.dto.RecipeComment;
 import kr.co.lemona.recipeBoard.model.mapper.RecipeBoardMapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -121,6 +122,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 
 		boardStepList = mapper.selectBoardStepList(map.get("boardNo"));
 		RecipeBoard recipeBoard = mapper.selectOneRecipe(map);
+		
 
 		// 해시태그 받아오는 부분
 		if (recipeBoard != null) {
@@ -130,12 +132,21 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 				recipeBoard.setHashTagList(tagList);
 			}
 		}
-
-		// 이전 글
-		RecipeBoard prevBoard = mapper.selectPrevBoard(map);
-
-		// 다음 글
-		RecipeBoard nextBoard = mapper.selectNextBoard(map);
+		
+		RecipeBoard prevBoard = null;
+		RecipeBoard nextBoard = null;
+		
+		if (map.get("querys") == null) { // 검색이 아닌 경우
+			// 이전 글
+			prevBoard = mapper.selectPrevBoard(map);
+			// 다음 글
+			nextBoard = mapper.selectNextBoard(map);
+		}else { // 검색인 경우
+			// 이전 글
+			prevBoard = mapper.searchPrevBoard(map);
+			// 다음 글
+			nextBoard = mapper.searchNextBoard(map);
+		}
 
 		int prevBoardNo = 0;
 		int nextBoardNo = 0;
@@ -148,7 +159,17 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		if (nextBoard != null) {
 			nextBoardNo = nextBoard.getBoardNo();
 		}
+		
+		// 댓글 목록 (로그인 회원의 댓글 좋아요 여부 포함)
+		Map<String, Object> commentMap = new HashMap<>();
+		commentMap.put("boardNo", map.get("boardNo"));
+		commentMap.put("memberNo", map.getOrDefault("memberNo", 0)); // 있으면 가져오고 없으면 0 : 에러 방지
 
+		List<RecipeComment> commentList = mapper.selectCommentList(commentMap);
+		
+		// Board 에 댓글 목록 추가
+		recipeBoard.setCommentList(commentList);
+		recipeBoard.setCommentCount(nextBoardNo);
 		map2.put("recipeBoard", recipeBoard);
 		map2.put("boardStepList", boardStepList);
 		map2.put("prevBoardNo", prevBoardNo);

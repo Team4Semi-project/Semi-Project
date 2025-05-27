@@ -18,6 +18,7 @@ public class RecipeComment {
     private String commentDelFl;	 // 댓글 삭제 여부
     private int boardNo;			 // 댓글이 달린 게시글 번호(FK)
     private int parentCommentNo;	 // 댓글 부모댓글 번호(자기참조)
+    private int commentCount; 		 // 댓글 수
 
 	// 작성자 정보
 	private int memberNo;			 // 댓글 작성자 번호

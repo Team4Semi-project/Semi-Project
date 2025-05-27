@@ -1,6 +1,5 @@
 <!-- 헤더 프래그먼트 -->
 <header th:fragment="header" class="header">
-
   <style>
     * {
       margin: 0;
@@ -144,7 +143,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: #FFCF39;
+      background-color: #ffcf39;
       color: #000;
       padding: 12px 20px;
       border-radius: 30px;
@@ -172,7 +171,7 @@
     }
 
     #searchQuery:focus {
-      border-color: #FFCF39;
+      border-color: #ffcf39;
     }
 
     /* 검색 버튼 */
@@ -212,13 +211,11 @@
   <!-- <th:block th:replace="common/header-search :: search-header-css"></th:block> -->
 
   <div class="header-container">
-
-
     <!-- 최종 검색창 화면 -->
     <form th:action="@{/search}" method="get" id="boardSearch">
       <div class="logo">
         <a th:href="@{/}">
-          <img src="/images/lemona-logo.png" alt="레모나">
+          <img src="/images/lemona-logo.png" alt="레모나" />
         </a>
       </div>
       <div class="select-container">
@@ -236,7 +233,7 @@
         </div>
       </div>
 
-      <input type="text" name="querys" id="searchQuery" placeholder="내용을 입력하세요." th:value="${param.querys}">
+      <input type="text" name="querys" id="searchQuery" placeholder="내용을 입력하세요." th:value="${param.querys}" />
 
       <button type="submit" class="search-button">
         <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -256,16 +253,14 @@
                   로그인
                 </button> -->
         <a th:href="@{/login}">
-          <span class="material-symbols-outlined">
-            login
-          </span>
+          <span class="material-symbols-outlined">login</span>
         </a>
         <a th:href="@{/register}">회원가입</a>
       </th:block>
 
       <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
       <th:block th:if="${session.loginMember != null}" class="user-menu">
-        <a th:text="${session.loginMember.memberNickname}" th:href="@{/mypage/mypage}">사용자명</a>
+        <a th:text="${session.loginMember.memberNickname}" th:href="@{'/mypage/main'}">사용자명</a>
 
         <!-- 로그인 하고 로그아웃 버튼을 누르면 알림으로 로그아웃 하시겠습니까? -->
         <!-- 알림 뜬 후 확인 버튼을 누르면 로그아웃 취소 버튼을 누르면 그대로 -->
@@ -290,39 +285,48 @@
 <!-- <th:block th:replace="common/header-search :: search-header-js"></th:block> -->
 <th:block th:fragment="search-header-js">
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const searchKey = document.getElementById('searchKey');
-      const selectBoxText = document.getElementById('selectBoxText');
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchKey = document.getElementById("searchKey");
+      const selectBoxText = document.getElementById("selectBoxText");
 
       function updateSelectBoxText(value) {
         switch (value) {
-          case 't': selectBoxText.textContent = '제목'; break;
-          case 'c': selectBoxText.textContent = '내용'; break;
-          case 'tc': selectBoxText.textContent = '제목 + 내용'; break;
-          case 'w': selectBoxText.textContent = '작성자'; break;
-          case 'h': selectBoxText.textContent = '해시태그'; break;
-          default: selectBoxText.textContent = '제목';
+          case "t":
+            selectBoxText.textContent = "제목";
+            break;
+          case "c":
+            selectBoxText.textContent = "내용";
+            break;
+          case "tc":
+            selectBoxText.textContent = "제목 + 내용";
+            break;
+          case "w":
+            selectBoxText.textContent = "작성자";
+            break;
+          case "h":
+            selectBoxText.textContent = "해시태그";
+            break;
+          default:
+            selectBoxText.textContent = "제목";
         }
       }
 
       if (searchKey && selectBoxText) {
         updateSelectBoxText(searchKey.value);
-
-        searchKey.addEventListener('change', function () {
+        searchKey.addEventListener("change", function () {
           updateSelectBoxText(this.value);
         });
       }
 
       // 폼 제출 검증
-      const form = document.getElementById('boardSearch');
+      const form = document.getElementById("boardSearch");
       if (form) {
-        form.addEventListener('submit', function (e) {
-          const query = document.getElementById('searchQuery').value.trim();
+        form.addEventListener("submit", function (e) {
+          const query = document.getElementById("searchQuery").value.trim();
           if (!query) {
             e.preventDefault();
-            alert('검색어를 입력해주세요.');
+            alert("검색어를 입력해주세요.");
           }
-
         });
       }
     });

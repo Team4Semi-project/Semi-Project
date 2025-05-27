@@ -28,7 +28,8 @@
 		
 		    (SELECT COUNT(*) 
 		     FROM RECIPE_COMMENT C
-		     WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+		     WHERE C.BOARD_NO = B.BOARD_NO
+		     AND COMMENT_DEL_FL = 'N') AS COMMENT_COUNT,
 		
 		    (SELECT COUNT(*) 
 		     FROM RECIPE_BOARD_LIKE L
@@ -85,7 +86,7 @@
 		</if>
 		<!-- 정렬 -->
 		<choose>
-			<when test="sort == 'latest'">
+			<when test="sort == null or sort == 'latest'">
 				ORDER BY B.BOARD_NO DESC
 			</when>
 			<when test="sort == 'oldest'">
@@ -192,7 +193,7 @@
 		  
 		<!-- 정렬 -->
 		<choose>
-			<when test="sort == 'latest'">
+			<when test="sort == null or sort == 'latest'">
 				ORDER BY B.BOARD_NO DESC
 			</when>
 			<when test="sort == 'oldest'">
@@ -257,6 +258,11 @@
 		WHERE BOARD_NO = #{boardNo}
 		AND MEMBER_NO = #{memberNo}) LIKE_CHECK,
 		
+		(SELECT COUNT(*) FROM
+		RECIPE_COMMENT WHERE BOARD_NO = #{boardNo} AND
+		COMMENT_DEL_FL = 'N')
+		AS COMMENT_COUNT,
+		
 		(SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
 	    FROM BOARD_HASHTAG BH
 	    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
@@ -278,173 +284,205 @@
 		ORDER BY STEP_ORDER
 	</select>
 	
-  <!-- 이전 글 번호 조회 -->
-   <select id="selectPrevBoard">
-      SELECT *
-      FROM (
-          SELECT B.*, 
-                 ROW_NUMBER() OVER (
-                     ORDER BY 
-                     <choose>
-                  <when test="sort == 1">
-                     B.BOARD_NO DESC
-                  </when>
-                  <when test="sort == 2">
-                     B.BOARD_NO ASC
-                  </when>
-                  <when test="sort == 3">
-                     (SELECT COUNT(*)
-                        FROM "RECIPE_BOARD_LIKE" L
-                        WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-                        B.READ_COUNT DESC,
-                        B.BOARD_NO DESC
-                  </when>
-                  <when test="sort == 4">
-                     B.READ_COUNT DESC,
-                     (SELECT COUNT(*)
-                        FROM "RECIPE_BOARD_LIKE" L
-                        WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-                        B.BOARD_NO DESC
-                  </when>
-               </choose>
-                 ) AS RN
-          FROM RECIPE_BOARD B
-          WHERE B.BOARD_DEL_FL = 'N'
-           <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
-         <if test="categoryNo != 0">
-            AND CATEGORY_NO = ${categoryNo}
-         </if>
-         <if test="popular == 1">
-            AND B.POPULAR_CHECK = 'Y'
-         </if>
-      ) R
-      WHERE R.RN = (
-          SELECT RN + 1 FROM (
-              SELECT BOARD_NO,
-                     ROW_NUMBER() OVER (
-                         ORDER BY
-                         <choose>
-                     <when test="sort == 1">
-                        B.BOARD_NO DESC
-                     </when>
-                     <when test="sort == 2">
-                        B.BOARD_NO ASC
-                     </when>
-                     <when test="sort == 3">
-                        (SELECT COUNT(*)
-                           FROM "RECIPE_BOARD_LIKE" L
-                           WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-                           B.READ_COUNT DESC,
-                           B.BOARD_NO DESC
-                     </when>
-                     <when test="sort == 4">
-                        B.READ_COUNT DESC,
-                        (SELECT COUNT(*)
-                           FROM "RECIPE_BOARD_LIKE" L
-                           WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-                           B.BOARD_NO DESC
-                     </when>
-                  </choose>
-                     ) AS RN
-              FROM RECIPE_BOARD B
-              WHERE B.BOARD_DEL_FL = 'N'
-           <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
-         <if test="categoryNo != 0">
-            AND CATEGORY_NO = ${categoryNo}
-         </if>
-         <if test="popular == 1">
-            AND B.POPULAR_CHECK = 'Y'
-         </if>
-          ) 
-          WHERE BOARD_NO = ${boardNo}
-      )
-      
-   </select>
-   
-   <!-- 다음 글 번호 조회 -->
-   <select id="selectNextBoard">
-      SELECT *
-      FROM (
-          SELECT B.*, 
-                 ROW_NUMBER() OVER (
-                     ORDER BY 
-                     <choose>
-                  <when test="sort == 1">
-                     B.BOARD_NO DESC
-                  </when>
-                  <when test="sort == 2">
-                     BY B.BOARD_NO ASC
-                  </when>
-                  <when test="sort == 3">
-                     (SELECT COUNT(*)
-                        FROM "RECIPE_BOARD_LIKE" L
-                        WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-                        B.READ_COUNT DESC,
-                        B.BOARD_NO DESC
-                  </when>
-                  <when test="sort == 4">
-                     B.READ_COUNT DESC,
-                     (SELECT COUNT(*)
-                        FROM "RECIPE_BOARD_LIKE" L
-                        WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-                        B.BOARD_NO DESC
-                  </when>
-               </choose>
-                 ) AS RN
-          FROM RECIPE_BOARD B
-          WHERE B.BOARD_DEL_FL = 'N'
-          <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
-         <if test="categoryNo != 0">
-            AND CATEGORY_NO = ${categoryNo}
-         </if>
-         <if test="popular == 1">
-            AND B.POPULAR_CHECK = 'Y'
-         </if>
-      ) R
-      WHERE R.RN = (
-          SELECT RN - 1 FROM (
-              SELECT BOARD_NO,
-                     ROW_NUMBER() OVER (
-                         ORDER BY
-                         <choose>
-                     <when test="sort == 1">
-                        B.BOARD_NO DESC
-                     </when>
-                     <when test="sort == 2">
-                        BY B.BOARD_NO ASC
-                     </when>
-                     <when test="sort == 3">
-                        (SELECT COUNT(*)
-                           FROM "RECIPE_BOARD_LIKE" L
-                           WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-                           B.READ_COUNT DESC,
-                           B.BOARD_NO DESC
-                     </when>
-                     <when test="sort == 4">
-                        B.READ_COUNT DESC,
-                        (SELECT COUNT(*)
-                           FROM "RECIPE_BOARD_LIKE" L
-                           WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-                           B.BOARD_NO DESC
-                     </when>
-                  </choose>
-                     ) AS RN
-              FROM RECIPE_BOARD B
-              WHERE B.BOARD_DEL_FL = 'N'
-           <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
-         <if test="categoryNo != 0">
-            AND CATEGORY_NO = ${categoryNo}
-         </if>
-         <if test="popular == 1">
-            AND B.POPULAR_CHECK = 'Y'
-         </if>
-          ) 
-          WHERE BOARD_NO = ${boardNo}
-      )
 
-      
-   </select>
+	<!-- 이전 글 번호 조회 -->
+	<select id="selectPrevBoard">
+		SELECT *
+		FROM (
+		    SELECT B.*, 
+		           ROW_NUMBER() OVER (
+		               ORDER BY 
+		               <choose>
+						<when test="sort == 1">
+							B.BOARD_NO DESC
+						</when>
+						<when test="sort == 2">
+							B.BOARD_NO ASC
+						</when>
+						<when test="sort == 3">
+							(SELECT COUNT(*)
+						      FROM "RECIPE_BOARD_LIKE" L
+						      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+						      B.READ_COUNT DESC,
+						      B.BOARD_NO DESC
+						</when>
+						<when test="sort == 4">
+							B.READ_COUNT DESC,
+							(SELECT COUNT(*)
+						      FROM "RECIPE_BOARD_LIKE" L
+						      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+						      B.BOARD_NO DESC
+						</when>
+					</choose>
+		           ) AS RN
+		    FROM RECIPE_BOARD B
+		    WHERE B.BOARD_DEL_FL = 'N'
+ 		    <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+			<if test="categoryNo != 0">
+				AND CATEGORY_NO = ${categoryNo}
+			</if>
+			<if test="popular == 1">
+				AND B.POPULAR_CHECK = 'Y'
+			</if>
+		) R
+		WHERE R.RN = (
+		    SELECT RN + 1 FROM (
+		        SELECT BOARD_NO,
+		               ROW_NUMBER() OVER (
+		                   ORDER BY
+		                   <choose>
+							<when test="sort == 1">
+								B.BOARD_NO DESC
+							</when>
+							<when test="sort == 2">
+								B.BOARD_NO ASC
+							</when>
+							<when test="sort == 3">
+								(SELECT COUNT(*)
+							      FROM "RECIPE_BOARD_LIKE" L
+							      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+							      B.READ_COUNT DESC,
+							      B.BOARD_NO DESC
+							</when>
+							<when test="sort == 4">
+								B.READ_COUNT DESC,
+								(SELECT COUNT(*)
+							      FROM "RECIPE_BOARD_LIKE" L
+							      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+							      B.BOARD_NO DESC
+							</when>
+						</choose>
+		               ) AS RN
+		        FROM RECIPE_BOARD B
+		        WHERE B.BOARD_DEL_FL = 'N'
+        	<!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+			<if test="categoryNo != 0">
+				AND CATEGORY_NO = ${categoryNo}
+			</if>
+			<if test="popular == 1">
+				AND B.POPULAR_CHECK = 'Y'
+			</if>
+		    ) 
+		    WHERE BOARD_NO = ${boardNo}
+		)
+		
+	</select>
+	
+	<!-- 다음 글 번호 조회 -->
+	<select id="selectNextBoard">
+		SELECT *
+		FROM (
+		    SELECT B.*, 
+		           ROW_NUMBER() OVER (
+		               ORDER BY 
+		               <choose>
+						<when test="sort == 1">
+							B.BOARD_NO DESC
+						</when>
+						<when test="sort == 2">
+							B.BOARD_NO ASC
+						</when>
+						<when test="sort == 3">
+							(SELECT COUNT(*)
+						      FROM "RECIPE_BOARD_LIKE" L
+						      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+						      B.READ_COUNT DESC,
+						      B.BOARD_NO DESC
+						</when>
+						<when test="sort == 4">
+							B.READ_COUNT DESC,
+							(SELECT COUNT(*)
+						      FROM "RECIPE_BOARD_LIKE" L
+						      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+						      B.BOARD_NO DESC
+						</when>
+					</choose>
+		           ) AS RN
+		    FROM RECIPE_BOARD B
+		    WHERE B.BOARD_DEL_FL = 'N'
+		    <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+			<if test="categoryNo != 0">
+				AND CATEGORY_NO = ${categoryNo}
+			</if>
+			<if test="popular == 1">
+				AND B.POPULAR_CHECK = 'Y'
+			</if>
+		) R
+		WHERE R.RN = (
+		    SELECT RN - 1 FROM (
+		        SELECT BOARD_NO,
+		               ROW_NUMBER() OVER (
+		                   ORDER BY
+		                   <choose>
+							<when test="sort == 1">
+								B.BOARD_NO DESC
+							</when>
+							<when test="sort == 2">
+								B.BOARD_NO ASC
+							</when>
+							<when test="sort == 3">
+								(SELECT COUNT(*)
+							      FROM "RECIPE_BOARD_LIKE" L
+							      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+							      B.READ_COUNT DESC,
+							      B.BOARD_NO DESC
+							</when>
+							<when test="sort == 4">
+								B.READ_COUNT DESC,
+								(SELECT COUNT(*)
+							      FROM "RECIPE_BOARD_LIKE" L
+							      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+							      B.BOARD_NO DESC
+							</when>
+						</choose>
+		               ) AS RN
+		        FROM RECIPE_BOARD B
+		        WHERE B.BOARD_DEL_FL = 'N'
+		     <!-- 카테고리 0 (전체) / 특정 카테고리일 경우 -->
+			<if test="categoryNo != 0">
+				AND CATEGORY_NO = ${categoryNo}
+			</if>
+			<if test="popular == 1">
+				AND B.POPULAR_CHECK = 'Y'
+			</if>
+		    ) 
+		    WHERE BOARD_NO = ${boardNo}
+		)
+		
+	</select>
 
+	
+	<!-- 댓글 수 조회 -->
+	<select id="commentCount" resultType="int">
+		SELECT COUNT(*) AS
+		COMMENT_COUNT FROM "RECIPE_COMMENT"
+		WHERE BOARD_NO = #{boardNo} AND
+		COMMENT_DEL_FL = 'N'
+	</select>
+
+	<!-- 댓글 목록 조회 -->
+	<select id="selectCommentList" resultType="RecipeComment" parameterType="map">
+		SELECT LEVEL, C.*,
+		(SELECT COUNT(*) FROM "RECIPE_COMMENT_LIKE" L WHERE L.COMMENT_NO =
+		C.COMMENT_NO) AS LIKE_COUNT,
+		(SELECT COUNT(*) FROM "RECIPE_COMMENT_LIKE" L
+		WHERE L.COMMENT_NO = C.COMMENT_NO AND L.MEMBER_NO = #{memberNo}) AS
+		LIKE_CHECK
+		FROM
+		(SELECT COMMENT_NO, COMMENT_CONTENT,
+		TO_CHAR(COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE,
+		BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_COMMENT_NO,
+		COMMENT_DEL_FL
+		FROM "RECIPE_COMMENT"
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE BOARD_NO = #{boardNo}) C
+		WHERE COMMENT_DEL_FL = 'N'
+		OR 0 != (SELECT COUNT(*) FROM "RECIPE_COMMENT" SUB
+		WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO AND COMMENT_DEL_FL = 'N')
+		START WITH PARENT_COMMENT_NO IS NULL
+		CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
+		ORDER SIBLINGS BY COMMENT_NO
+	</select>
 	
 	<!-- RECIPE_BOARD에 게시글 제목+카테고리번호+작성자 정보 삽입 -->
 	<!-- 재호 -->
@@ -919,6 +957,201 @@
 		WHERE BOARD_NO= ${boardNo}
 	</update>
 	
+	
+	<!-- 검색 시 이전 글 번호 조회 -->
+	<!-- 지현 -->
+   <select id="searchPrevBoard">
+SELECT *
+FROM (
+    SELECT B.*, 
+           ROW_NUMBER() OVER (
+               ORDER BY 
+               (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+               B.READ_COUNT DESC,
+               B.BOARD_NO DESC
+           ) AS RN
+    FROM RECIPE_BOARD B
+    JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+    LEFT JOIN (
+        SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+        FROM BOARD_STEP
+        WHERE THUMBNAIL_CHECK = 'Y'
+    ) S ON B.BOARD_NO = S.BOARD_NO
+    LEFT JOIN (
+        SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+        FROM BOARD_STEP
+        GROUP BY BOARD_NO
+    ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+    WHERE B.BOARD_DEL_FL = 'N'
+    AND B.POPULAR_CHECK = 'Y'
+    
+    <choose>
+        <when test='key == "t"'>
+            AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "c"'>
+            AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "tc"'>
+            AND (B.BOARD_TITLE LIKE '%' || #{queryb} || '%' OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%')
+        </when>
+        <when test='key == "w"'>
+            AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "h"'>
+            AND EXISTS (
+                SELECT 1
+                FROM BOARD_HASHTAG BH
+                JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                WHERE BH.BOARD_NO = B.BOARD_NO
+                AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+            )
+        </when>
+    </choose>
+) R
+WHERE R.RN = (
+    SELECT RN - 1 FROM (
+        SELECT B.BOARD_NO,
+               ROW_NUMBER() OVER (
+                   ORDER BY 
+                   (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+                   B.READ_COUNT DESC,
+                   B.BOARD_NO DESC
+               ) AS RN
+        FROM RECIPE_BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+            FROM BOARD_STEP
+            GROUP BY BOARD_NO
+        ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+        WHERE B.BOARD_DEL_FL = 'N'
+        AND B.POPULAR_CHECK = 'Y'
+        
+        <choose>
+            <when test='key == "t"'>
+                AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "c"'>
+                AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "tc"'>
+                AND (B.BOARD_TITLE LIKE '%' || #{queryb} || '%' OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%')
+            </when>
+            <when test='key == "w"'>
+                AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "h"'>
+                AND EXISTS (
+                    SELECT 1
+                    FROM BOARD_HASHTAG BH
+                    JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                    WHERE BH.BOARD_NO = B.BOARD_NO
+                    AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+                )
+            </when>
+        </choose>
+    ) WHERE BOARD_NO = #{boardNo}
+)
+</select>
+
+   
+   <!-- 검색 시 다음 글 번호 조회 -->
+   <!-- 지현 -->
+   <select id="searchNextBoard">
+SELECT *
+FROM (
+    SELECT B.*, 
+           ROW_NUMBER() OVER (
+               ORDER BY 
+               (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+               B.READ_COUNT DESC,
+               B.BOARD_NO DESC
+           ) AS RN
+    FROM RECIPE_BOARD B
+    JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+    LEFT JOIN (
+        SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+        FROM BOARD_STEP
+        WHERE THUMBNAIL_CHECK = 'Y'
+    ) S ON B.BOARD_NO = S.BOARD_NO
+    LEFT JOIN (
+        SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+        FROM BOARD_STEP
+        GROUP BY BOARD_NO
+    ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+    WHERE B.BOARD_DEL_FL = 'N'
+    AND B.POPULAR_CHECK = 'Y'
+    
+    <choose>
+        <when test='key == "t"'>
+            AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "c"'>
+            AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "tc"'>
+            AND (B.BOARD_TITLE LIKE '%' || #{queryb} || '%' OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%')
+        </when>
+        <when test='key == "w"'>
+            AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == "h"'>
+            AND EXISTS (
+                SELECT 1
+                FROM BOARD_HASHTAG BH
+                JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                WHERE BH.BOARD_NO = B.BOARD_NO
+                AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+            )
+        </when>
+    </choose>
+) R
+WHERE R.RN = (
+    SELECT RN - 1 FROM (
+        SELECT B.BOARD_NO,
+               ROW_NUMBER() OVER (
+                   ORDER BY 
+                   (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+                   B.READ_COUNT DESC,
+                   B.BOARD_NO DESC
+               ) AS RN
+        FROM RECIPE_BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+            FROM BOARD_STEP
+            GROUP BY BOARD_NO
+        ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+        WHERE B.BOARD_DEL_FL = 'N'
+        AND B.POPULAR_CHECK = 'Y'
+        
+        <choose>
+            <when test='key == "t"'>
+                AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "c"'>
+                AND STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "tc"'>
+                AND (B.BOARD_TITLE LIKE '%' || #{queryb} || '%' OR STEP.STEP_CONTENTS LIKE '%' || #{queryb} || '%')
+            </when>
+            <when test='key == "w"'>
+                AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == "h"'>
+                AND EXISTS (
+                    SELECT 1
+                    FROM BOARD_HASHTAG BH
+                    JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                    WHERE BH.BOARD_NO = B.BOARD_NO
+                    AND HT.TAG_NAME = <![CDATA[ REPLACE(#{queryb}, '#', '') ]]>
+                )
+            </when>
+        </choose>
+    ) WHERE BOARD_NO = #{boardNo}
+)
+</select>
 	<!-- 레시피 게시글 수정/{제목,카테고리번호,수정일} -->
 	<!-- 재호 -->
 	<update id="updateRecipeBoard">

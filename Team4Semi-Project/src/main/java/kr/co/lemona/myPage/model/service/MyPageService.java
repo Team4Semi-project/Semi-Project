@@ -8,8 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.myPage.model.dto.UploadFile;
 
-
-
 public interface MyPageService {
 
 	/** 회원 정보 수정 서비스
@@ -68,5 +66,39 @@ public interface MyPageService {
 	 * @return
 	 */
 	int profile(MultipartFile profileImg, Member loginMember) throws Exception;
+	
+//	/** 내가 쓴 글 수 조회 
+//     * @param memberId
+//     * @return
+//     */
+//    int getWrittenPostsCount(String memberId);
+//
+//    /** 내가 쓴 글 목록 조회 
+//     * @param memberId
+//     * @param currentPage
+//     * @param limit
+//     * @return
+//     */
+//    List<PostDTO> getWrittenPosts(String memberId, int currentPage, int limit);
+//
+//    /** 댓글 수 조회 
+//     * @param memberId
+//     * @return
+//     */
+//    int getCommentCount(String memberId);
+//
+//    /** 좋아요한 게시글 수 조회
+//     * @param memberId
+//     * @return
+//     */
+//    int getLikedPostsCount(String memberId);
+//
+//    /** 좋아요한 게시글 목록 조회
+//     * @param memberId
+//     * @param currentPage
+//     * @param limit
+//     * @return
+//     */
+//    List<PostDTO> getLikedPosts(String memberId, int currentPage, int limit);
 
 }

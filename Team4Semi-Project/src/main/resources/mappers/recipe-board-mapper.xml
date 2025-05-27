@@ -297,8 +297,7 @@
 							B.BOARD_NO DESC
 						</when>
 						<when test="sort == 2">
-							B.
-              
+							B.BOARD_NO ASC
 						</when>
 						<when test="sort == 3">
 							(SELECT COUNT(*)
@@ -484,7 +483,6 @@
 		CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
 		ORDER SIBLINGS BY COMMENT_NO
 	</select>
->>>>>>> 6d1b27357640f3b347375179639a6de003f9a6d3
 	
 	<!-- RECIPE_BOARD에 게시글 제목+카테고리번호+작성자 정보 삽입 -->
 	<!-- 재호 -->

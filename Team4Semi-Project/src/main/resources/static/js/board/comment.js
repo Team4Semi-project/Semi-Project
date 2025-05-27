@@ -198,6 +198,7 @@ const showInsertComment = (parentCommentNo, btn) => {
   // 답글을 작성할 textarea 요소 생성
   const textarea = document.createElement("textarea");
   textarea.classList.add("commentInsertContent");
+  textarea.placeholder = "답글을 입력하세요";
   // 답글 버튼의 부모의 뒤쪽에 textarea 추가
   // after(요소) : 뒤쪽에 추가
   btn.parentElement.after(textarea);

@@ -371,7 +371,7 @@ public class RecipeBoardController {
 			throws Exception {
 
 		// 1. 로그인한 회원번호 세팅
-		inputBoard.setMemberNo(1);
+		inputBoard.setMemberNo(loginMember.getMemberNo());
 		inputBoard.setHashTagList(hashTagList);
 		// memberNo title categoryNo hashTagList
 		
@@ -473,7 +473,8 @@ public class RecipeBoardController {
 	 * @author 재호
 	 */
 	@GetMapping("{category}/{boardNo:[1-9]+}/update")
-	public String updateRecipeBoard(@PathVariable("category") Object category, @PathVariable("boardNo" ) int boardNo,
+	public String updateRecipeBoard(@PathVariable("category") Object category,
+			@PathVariable("boardNo" ) int boardNo,
 			Model model,
 			RedirectAttributes ra,
 			@RequestParam(value="sort", required = false, defaultValue = "lastest") String sort) {

@@ -57,17 +57,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     newStep.innerHTML = `
             <div class="step-buttons">
-                <button type="button" class="step-btn step-up" title="위로 이동"><span>↑</span></button>
-                <button type="button" class="step-btn step-delete" title="삭제"><span>×</span></button>
-                <button type="button" class="step-btn step-down" title="아래로 이동"><span>↓</span></button>
+                <button type="button" class="step-btn step-up" title="위로 이동">
+                  <span class="material-symbols-outlined">
+                    keyboard_arrow_up
+                  </span>
+                </button>
+                <button type="button" class="step-btn step-delete" title="삭제">
+                  <span class="material-symbols-outlined">
+                    close
+                  </span>
+                </button>
+                <button type="button" class="step-btn step-down" title="아래로 이동">
+                  <span class="material-symbols-outlined">
+                    keyboard_arrow_down
+                  </span>
+                </button>
             </div>
             <div class="step-content">
-                <textarea name="recipeStep" placeholder="요리 과정을 입력하세요..."></textarea>
+                <textarea name="recipeStep" placeholder="요리 과정을 알려주세요, 셰프!"></textarea>
                 <div class="step-image-area">
                     <div class="image-upload">
                         <label for="stepImage${stepCounter}">
-                            <div class="upload-icon">+</div>
-                            <span>사진 추가</span>
+                          <span class="material-symbols-outlined">
+                            image
+                          </span>
                         </label>
                         <input type="file" id="stepImage${stepCounter}" class="step-image-input" accept="image/*">
                     </div>
@@ -81,9 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             <button type="button" class="image-cancel-btn">선택 취소</button>
                         </div>
                     </div>
-
-                    <input type="hidden" value="0" class="step-no">
-
                 </div>
             </div>
         `;
@@ -103,6 +113,37 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!input.hasListener) {
         input.addEventListener("change", handleImageUpload);
         input.hasListener = true;
+      }
+    });
+
+    // 이미지 변경 이벤트
+    document.querySelectorAll(".image-preview").forEach((previewDiv) => {
+      if (!previewDiv.hasListener) {
+        previewDiv.addEventListener("click", function (e) {
+          const img = e.target;
+          if (img.tagName !== "IMG") return;
+
+          const stepImageArea = previewDiv.closest(".step-image-area");
+          if (!stepImageArea) {
+            console.warn("step-image-area를 찾을 수 없습니다.");
+            return;
+          }
+
+          const fileInput = stepImageArea.querySelector(".step-image-input");
+          if (!fileInput) {
+            console.warn("fileInput을 찾을 수 없습니다.");
+            return;
+          }
+
+          if (fileInput.files.length > 0) {
+            fileInput.click();
+          } else {
+            const label = stepImageArea.querySelector(`label[for="${fileInput.id}"]`);
+            if (label) label.click();
+          }
+        });
+
+        previewDiv.hasListener = true;
       }
     });
 
@@ -174,36 +215,76 @@ document.addEventListener("DOMContentLoaded", function () {
    */
   function handleImageUpload(e) {
     const file = e.target.files[0];
-    if (!file) return;
+    const maxSize = 1024 * 1024 * 10; // 10MB
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 
-    const stepElement = this.closest(".recipe-step");
+    const input = e.target;
+    const stepElement = input.closest(".recipe-step");
     const imageUpload = stepElement.querySelector(".image-upload");
-    const previewContainer = stepElement.querySelector(
-      ".image-preview-container"
-    );
+    const previewContainer = stepElement.querySelector(".image-preview-container");
     const preview = stepElement.querySelector(".image-preview");
+
+    // 기존 이미지 태그
+    const prevImg = preview.querySelector("img");
+    // 기존 이미지 src 기억
+    const previousImageSrc = prevImg?.getAttribute("src");
+
+    // 사용자가 파일 선택을 취소했을 때
+    if (!file) {
+      // 기존 이미지 복원
+      if (previousImageSrc) {
+        preview.innerHTML = `<img src="${previousImageSrc}" alt="레시피 이미지">`;
+        imageUpload.style.display = "none";
+        previewContainer.style.display = "flex";
+      }
+      return;
+    }
+
+    // 업로드 파일 조건 검사 (예: 확장자, 용량 제한 등)
+    if (!allowedTypes.includes(file.type)) {
+      alert("JPG, PNG, GIF 형식의 이미지만 업로드 가능합니다.");
+      // 기존 이미지 복원
+      if (previousImageSrc) {
+        preview.innerHTML = `<img src="${previousImageSrc}" alt="레시피 이미지">`;
+        imageUpload.style.display = "none";
+        previewContainer.style.display = "flex";
+      }
+      return;
+    }
+
+    // 용량 제한 조건 적용
+    if (file.size > maxSize) {
+      alert("10MB 이하의 이미지만 업로드 가능합니다.");
+      // 기존 이미지 복원
+      if (previousImageSrc) {
+        preview.innerHTML = `<img src="${previousImageSrc}" alt="레시피 이미지">`;
+        imageUpload.style.display = "none";
+        previewContainer.style.display = "flex";
+      }
+      return;
+    }
 
     // 미리보기 생성
     const reader = new FileReader();
     reader.onload = function (e) {
       preview.innerHTML = `<img src="${e.target.result}" alt="레시피 이미지">`;
       imageUpload.style.display = "none";
-      previewContainer.style.display = "block";
-    };
+      previewContainer.style.display = "flex";
 
-    // 업도드된 이미지가 마지막 사진일때 썸내일로 사용
-    const steps = document.querySelectorAll(".recipe-step");
-    const isLastStep = stepElement === steps[steps.length - 1];
-
-    if (isLastStep) {
-      const thumbnailRadio = stepElement.querySelector('input[type="radio"]');
-      if (thumbnailRadio) {
-        thumbnailRadio.checked = true;
+      // 업로드된 이미지가 마지막 사진일 때 썸네일로 사용
+      const steps = document.querySelectorAll(".recipe-step");
+      const isLastStep = stepElement === steps[steps.length - 1];
+      if (isLastStep) {
+        const thumbnailRadio = stepElement.querySelector('input[type="radio"]');
+        if (thumbnailRadio) {
+          thumbnailRadio.checked = true;
+        }
       }
-    }
+    };
 
     reader.readAsDataURL(file);
   }
+
 
   /**
    * 스텝 순서 위로 이동

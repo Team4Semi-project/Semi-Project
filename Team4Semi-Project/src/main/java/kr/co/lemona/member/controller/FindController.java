@@ -64,6 +64,7 @@ public class FindController {
 		return "reset/findpw-update";
 	}
 
+	// 하는 중
 	@PostMapping("/findpw-update")
 	@ResponseBody
 	public Map<String, Object> updatePassword(

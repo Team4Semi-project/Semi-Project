@@ -33,6 +33,11 @@ public class MemberController {
 
 	@Autowired // 의존성 주입
 	private MemberService service;
+	
+	 @GetMapping("login")
+	    public String loginForm() {
+	        return "member/login"; // templates/member/login.html
+	    }
 
 	@PostMapping("login") // Post 방식 로그인
 	public String login(Member inputMember, RedirectAttributes ra, Model model,
@@ -102,7 +107,6 @@ public class MemberController {
 
 	// 회원가입
 	@PostMapping("register")
-	@ResponseBody
 	public String register(Member inputMember, RedirectAttributes ra) {
 
 		// 회원가입 서비스 호출
@@ -113,11 +117,11 @@ public class MemberController {
 
 		if (result > 0) { // 성공 시
 			message = inputMember.getMemberNickname() + "님의 가입을 환영합니다!";
-			path = "/"; // 메인 페이지로 이동
+			path = "/login"; // 메인 페이지로 이동
 
 		} else { // 실패 시
 			message = "회원 가입 실패..";
-			path = "register";
+			path = "redirect:/member/register";
 		}
 
 		ra.addFlashAttribute("message", message);

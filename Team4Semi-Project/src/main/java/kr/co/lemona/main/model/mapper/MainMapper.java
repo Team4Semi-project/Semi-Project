@@ -19,7 +19,7 @@ public interface MainMapper {
 	 * @return
 	 * @author jihyun
 	 */
-	List<RecipeBoard> selectRecipeBoardList(int categoryNo);
+	List<RecipeBoard> selectRecipeBoardList(Map<String, Integer> dataMap);
 
 	int getPopularListCount();
 
@@ -27,7 +27,7 @@ public interface MainMapper {
 	 * @return
 	 * @author jihyun
 	 */
-	List<RecipeBoard> selectPopularBoardList();
+	List<RecipeBoard> selectPopularBoardList(Integer memberNo);
 
 	/** 검색 조건에 맞으면서 삭제되지 않은 게시글 갯수 조회
 	 * @param paramMap
@@ -85,7 +85,5 @@ public interface MainMapper {
 	 * @author jihyun
 	 */
 	int selectReadCount(int boardNo);
-
-	
 
 }

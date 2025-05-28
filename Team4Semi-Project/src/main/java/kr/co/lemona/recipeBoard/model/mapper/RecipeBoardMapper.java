@@ -247,4 +247,10 @@ public interface RecipeBoardMapper {
 	 * @author 재호
 	 */
 	int newThumbnail(Map<String, Integer> map);
+
+	/** 스텝 내용 수정
+	 * @param content
+	 * @return
+	 */
+	int updateBoardStepContent(Map<String, Object> contentMap);
 }

@@ -15,6 +15,7 @@ import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.board.model.dto.DefaultComment;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.board.model.mapper.DefaultBoardMapper;
+import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -81,21 +82,43 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 	 * @author 민장
 	 */
 	@Override
-	public Map<String, Object> selectOne(Map<String, Integer> map) {
+	public Map<String, Object> selectOne(Map<String, Integer> map, Map<String, String> searchMap) {
 		Map<String, Object> resultMap = new HashMap<>();
 
 		Board board = mapper.selectOne(map);
-
-		// 이전 글
-		Board prevBoard = mapper.selectPrevBoard(map);
-
-		// 다음 글
-		Board nextBoard = mapper.selectNextBoard(map);
+		
+		Board prevBoard = null;
+		Board nextBoard = null;
+		
+		if (searchMap.get("queryb").isEmpty()) { // 검색이 아닌 경우
+			log.info("select key : "+searchMap.get("key"));
+			log.info("SEARCHMAP : "+searchMap);
+			// 이전 글
+			prevBoard = mapper.selectPrevBoard(map);
+			// 다음 글
+			nextBoard = mapper.selectNextBoard(map);
+		}else { // 검색인 경우
+			log.info("search key : "+searchMap.get("key"));
+			log.info("SEARCHMAP : "+searchMap);
+			// 이전 글
+			prevBoard = mapper.searchPrevBoard(searchMap);
+			// 다음 글
+			nextBoard = mapper.searchNextBoard(searchMap);
+		}
+//
+//		// 이전 글
+//		Board prevBoard = mapper.selectPrevBoard(map);
+//
+//		// 다음 글
+//		Board nextBoard = mapper.selectNextBoard(map);
 
 		// 이전 글 다음글 목록이 있을때만 값을 받아오기
 		int prevBoardNo = (prevBoard != null) ? prevBoardNo = prevBoard.getBoardNo() : 0;
 		int nextBoardNo = (nextBoard != null) ? nextBoardNo = nextBoard.getBoardNo() : 0;
 
+		log.info("prevBoardNo : "+prevBoardNo);
+		log.info("nextBoardNo : "+nextBoardNo);
+		
 		// 3. 댓글 목록 (로그인 회원의 댓글 좋아요 여부 포함)
 		Map<String, Object> commentMap = new HashMap<>();
 		commentMap.put("boardNo", map.get("boardNo"));

@@ -41,14 +41,14 @@
       <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">
         글 작성
       </a>
+      <!-- boardCode가 2, 3이 아닌 경우에도 버튼 표시 -->
+      <div th:if="${boardCode != 2 and boardCode != 3}" class="write-button-container">
+        <a th:href="@{/board/1/insert}" class="write-button">
+          레시피 작성
+        </a>
+      </div>
     </div>
 
-    <!-- boardCode가 2, 3이 아닌 경우에도 버튼 표시 -->
-    <div th:if="${boardCode != 2 and boardCode != 3}" class="write-button-container">
-      <a th:href="@{/board/1/insert}" class="write-button">
-        레시피 작성
-      </a>
-    </div>
 
   </div>
 </nav>

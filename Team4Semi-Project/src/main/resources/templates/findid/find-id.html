@@ -1,99 +1,68 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <title>LEMONA - 아이디 찾기</title>
 
-    <link rel="stylesheet" href="/css/find-id.css" />
-    <script src="/js/find-id.js" defer></script>
-    <!-- JS 연결 추가 -->
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <title>LEMONA - 아이디 찾기</title>
 
-  <body>
-    <div class="wrap">
-      <header class="header">
-        <div class="logo-container">
-          <a href="/" class="logo-link">
-            <img src="/images/lemona-logo.png" alt="LEMONA 로고" class="logo" />
-            <h1 class="brand-name"></h1>
-          </a>
-        </div>
-      </header>
+  <link rel="stylesheet" href="/css/find-id.css" />
+  <script src="/js/find-id.js" defer></script>
+  <!-- JS 연결 추가 -->
+</head>
 
-      <!-- 상단 아이디찾기 비밀번호 찾기 탭 -->
-      <nav class="tabs">
-        <a href="findid" id="findIdTab" class="tab active">아이디 찾기</a>
-        <a href="findpw" id="findPwTab" class="tab">비밀번호 찾기</a>
-      </nav>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <div class="logo-container">
+        <a href="/" class="logo-link">
+          <img src="/images/lemona-logo.png" alt="LEMONA 로고" class="logo" />
+          <h1 class="brand-name"></h1>
+        </a>
+      </div>
+    </header>
 
-      <main>
-        <div class="find-box">
-          <h2>아이디 찾기</h2>
-          <form id="findIdForm">
-            <input
-              type="text"
-              id="nameInput"
-              placeholder="이름을 입력하세요"
-              required
-            />
-            <input
-              type="email"
-              id="emailInput"
-              placeholder="이메일을 입력하세요"
-              required
-            />
-            <input type="text" id="foundId" placeholder="아이디" readonly />
+    <!-- 상단 아이디찾기 비밀번호 찾기 탭 -->
+    <nav class="tabs">
+      <a href="findid" id="findIdTab" class="tab active">아이디 찾기</a>
+      <a href="findpw" id="findPwTab" class="tab">비밀번호 찾기</a>
+    </nav>
 
-            <!-- 초기 상태 버튼 -->
-            <div class="bottom-buttons" id="initialButtons">
-              <a href="register" class="join-link" id="registerLink"
-                >회원가입</a
-              >
-              <button type="submit" id="findIdButton">아이디 찾기</button>
-            </div>
+    <main>
+      <div class="find-box">
+        <h2>아이디 찾기</h2>
+        <form id="findIdForm">
+          <input type="text" id="nameInput" placeholder="이름을 입력하세요" required />
+          <input type="email" id="emailInput" placeholder="이메일을 입력하세요" required />
+          <input type="text" id="foundId" placeholder="아이디" readonly />
 
-            <!-- 결과 버튼 (초기에는 숨김) -->
-            <div
-              class="bottom-buttons"
-              id="resultButtons"
-              style="display: none"
-            >
-              <a href="findpw" class="join-link" id="findPwLink"
-                >비밀번호 찾기</a
-              >
-              <a href="login" class="join-link" id="loginButton">로그인 하기</a>
-            </div>
+          <!-- 초기 상태 버튼 -->
+          <div class="bottom-buttons" id="initialButtons">
+            <a href="register" class="join-link" id="registerLink">회원가입</a>
+            <button type="submit" id="findIdButton">아이디 찾기</button>
+          </div>
 
-            <!-- 결과 버튼 영역 (숨김 처리 기본) -->
-            <div
-              class="bottom-buttons"
-              id="resultButtons"
-              style="display: none"
-            >
-              <a href="login" class="join-link">로그인</a>
-              <a href="find-password" class="join-link">비밀번호 찾기</a>
-            </div>
-          </form>
-          <p
-            id="idResult"
-            style="display: none; font-weight: bold; margin-top: 10px"
-          ></p>
-        </div>
-      </main>
+          <!-- 결과 버튼 (초기에는 숨김) -->
+          <div class="bottom-buttons" id="resultButtons" style="display: none">
+            <a href="findpw" class="join-link" id="findPwLink">비밀번호 찾기</a>
+            <a href="login" class="join-link" id="loginButton">로그인 하기</a>
+          </div>
 
-      <footer>
-        <div class="footer-links">
-          <a href="#">프로젝트 소개</a>
-          <a href="#">개발자 소개</a>
-          <a href="#">개인정보 처리방침</a>
-          <a href="#">이용약관</a>
-          <a href="#">ⓒ Copyright</a>
-          <a href="#">SNS</a>
-        </div>
-      </footer>
-    </div>
+          <!-- 결과 버튼 영역 (숨김 처리 기본) -->
+          <div class="bottom-buttons" id="resultButtons" style="display: none">
+            <a href="login" class="join-link">로그인</a>
+            <a href="find-password" class="join-link">비밀번호 찾기</a>
+          </div>
+        </form>
+        <p id="idResult" style="display: none; font-weight: bold; margin-top: 10px"></p>
+      </div>
+    </main>
 
-    <!-- JavaScript 연결 -->
-    <script src="/js/findid/find-id.js"></script>
-  </body>
+  </div>
+  <!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+
+  <!-- JavaScript 연결 -->
+  <script src="/js/findid/find-id.js"></script>
+</body>
+
 </html>

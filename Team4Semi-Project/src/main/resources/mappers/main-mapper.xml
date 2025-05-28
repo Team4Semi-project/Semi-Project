@@ -29,6 +29,11 @@
 	        (SELECT COUNT(*) 
 	         FROM "RECIPE_BOARD_LIKE" L 
 	         WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+	         
+	        CASE 
+		        WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+		        ELSE 0
+		    END AS LIKE_CHECK,
 	    
 	        CASE
 	            WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60
@@ -51,6 +56,12 @@
 		FROM BOARD_STEP
 		WHERE THUMBNAIL_CHECK = 'Y'
 		) S ON B.BOARD_NO = S.BOARD_NO
+		
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM RECIPE_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
 	    
 	    WHERE B.BOARD_DEL_FL = 'N'
 		AND B.POPULAR_CHECK = 'Y'
@@ -87,6 +98,11 @@
 		FROM RECIPE_BOARD_LIKE L
 		WHERE L.BOARD_NO = B.BOARD_NO)
 		AS LIKE_COUNT,
+		
+		CASE 
+	        WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+	        ELSE 0
+	    END AS LIKE_CHECK,
 
 		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
@@ -123,6 +139,12 @@
 		BOARD_STEP
 		WHERE THUMBNAIL_CHECK = 'Y'
 		) S ON B.BOARD_NO = S.BOARD_NO
+		
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM RECIPE_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
 
 		WHERE B.BOARD_DEL_FL = 'N'
 
@@ -223,6 +245,7 @@
 		SELECT * FROM (
 
 		<!-- 일반 게시판 -->
+		<!-- SELECT -->
 		SELECT
 		B.BOARD_NO,
 		B.BOARD_TITLE,
@@ -231,15 +254,24 @@
 		B.BOARD_CODE,
 		M.PROFILE_IMG,
 
+		<!-- 댓글수 -->
 		(SELECT COUNT(*)
 		FROM DEFAULT_COMMENT C
 		WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
 
+		<!-- 좋아요수 -->
 		(SELECT COUNT(*)
 		FROM
 		DEFAULT_BOARD_LIKE L
 		WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+		
+		<!-- 좋아요 체크 여부 -->
+		CASE 
+		    WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+		    ELSE 0
+		END AS LIKE_CHECK,
 
+		<!-- 썸내일 -->
 		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
 		
@@ -247,6 +279,7 @@
 
 		B.BOARD_CREATE_DATE AS RAW_DATE,
 
+		<!-- 작성일 -->
         <![CDATA[
         CASE
             WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN 
@@ -263,16 +296,29 @@
 
 		'DEFAULT' AS BOARD_TYPE
 
+		<!-- FROM -->
 		FROM BOARD B
+		
 		JOIN MEMBER M
 		ON B.MEMBER_NO = M.MEMBER_NO
+
+		<!-- 썸내일 조인-->		
 		LEFT JOIN (
-		SELECT BOARD_NO, IMG_PATH,
-		IMG_RENAME
-		FROM BOARD_STEP
-		WHERE THUMBNAIL_CHECK = 'Y'
-		) S ON (B.BOARD_NO
-		= S.BOARD_NO)
+			SELECT BOARD_NO, IMG_PATH,
+			IMG_RENAME
+			FROM BOARD_STEP
+			WHERE THUMBNAIL_CHECK = 'Y'
+		) S
+		ON ( B.BOARD_NO	= S.BOARD_NO)
+		
+		<!-- 좋아요 조인 -->
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM DEFAULT_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
+		
+		<!-- WHERE -->
 		WHERE B.BOARD_DEL_FL = 'N'
 
 		<choose>
@@ -308,55 +354,87 @@
 		B.BOARD_CODE,
 		M.PROFILE_IMG,
 
-		(SELECT COUNT(*) FROM RECIPE_COMMENT C WHERE C.BOARD_NO = B.BOARD_NO) AS
-		COMMENT_COUNT,
-		(SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) AS
-		LIKE_COUNT,
+		<!-- 댓글수 -->
+		(SELECT COUNT(*)
+		FROM RECIPE_COMMENT C
+		WHERE C.BOARD_NO = B.BOARD_NO)
+		AS COMMENT_COUNT,
+		
+		<!-- 좋아요수 -->
+		(SELECT COUNT(*)
+		FROM RECIPE_BOARD_LIKE L
+		WHERE L.BOARD_NO = B.BOARD_NO)
+		AS LIKE_COUNT,
+		
+		<!-- 좋아요 체크 여부 -->
+		CASE 
+		    WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+		    ELSE 0
+		END AS LIKE_CHECK,
 
+		<!-- 썸내일 -->
 		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
 		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
 		
-				    <!-- 해시태그 -->
-		    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
-		    FROM BOARD_HASHTAG BH
-		    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
-		    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
+		<!-- 해시태그 -->
+	    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+	    FROM BOARD_HASHTAG BH
+	    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+	    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
 
 		B.BOARD_CREATE_DATE AS RAW_DATE,
 
-    <![CDATA[
-    CASE
-        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN 
-            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
-        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN 
-            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
-        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN 
-            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
-        ELSE 
-            TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
-    END
-    ]]>
+		<!-- 작성일 -->
+	    <![CDATA[
+	    CASE
+	        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN 
+	            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+	        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN 
+	            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+	        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN 
+	            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+	        ELSE 
+	            TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+	    END
+	    ]]>
 		AS BOARD_CREATE_DATE,
 
 		'RECIPE' AS BOARD_TYPE
 
+		<!-- FROM -->
 		FROM RECIPE_BOARD B
 
-		JOIN MEMBER M ON (B.MEMBER_NO = M.MEMBER_NO)
+		JOIN MEMBER M
+		ON (B.MEMBER_NO = M.MEMBER_NO)
 
+		<!-- 썸내일 조인 -->
 		LEFT JOIN (
-		SELECT BOARD_NO, IMG_PATH, IMG_RENAME
-		FROM BOARD_STEP
-		WHERE THUMBNAIL_CHECK = 'Y'
-		) S ON (B.BOARD_NO = S.BOARD_NO)
+			SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+			FROM BOARD_STEP
+			WHERE THUMBNAIL_CHECK = 'Y'
+		) S
+		ON (B.BOARD_NO = S.BOARD_NO)
 
+		<!-- 스텝 조인 -->
 		LEFT JOIN (
-		SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO)
-		AS STEP_CONTENTS
-		FROM BOARD_STEP
-		GROUP BY BOARD_NO
-		) STEP ON (B.BOARD_NO = STEP.BOARD_NO)
+			SELECT BOARD_NO,
+			LISTAGG(STEP_CONTENT, ' ')
+			WITHIN GROUP (ORDER BY STEP_NO)
+			AS STEP_CONTENTS
+			
+			FROM BOARD_STEP
+			GROUP BY BOARD_NO
+		) STEP
+		ON (B.BOARD_NO = STEP.BOARD_NO)
 
+		<!-- 좋아요 조인 -->
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM RECIPE_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
+
+		<!-- WHERE -->
 		WHERE B.BOARD_DEL_FL = 'N'
 
 		<choose>
@@ -388,28 +466,20 @@
 		) B
 		<!-- 정렬 -->
 		<choose>
-			<when test="sort == null or sort == '' or sort == 'latest'">
-				ORDER BY B.BOARD_NO DESC
-			</when>
-			<when test="sort == 'oldest'">
-				ORDER BY B.BOARD_NO ASC
-			</when>
-			<when test="sort == 'popular'">
-				ORDER BY 
-				(SELECT COUNT(*)
-			      FROM "RECIPE_BOARD_LIKE" L
-			      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-			      B.READ_COUNT DESC,
-			      B.BOARD_NO DESC
-			</when>
-			<when test="sort == 'views'">
-				ORDER BY B.READ_COUNT DESC,
-				(SELECT COUNT(*)
-			      FROM "RECIPE_BOARD_LIKE" L
-			      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-			      B.BOARD_NO DESC
-			</when>
+		    <when test="sort == null or sort == '' or sort == 'latest'">
+		        ORDER BY B.RAW_DATE DESC
+		    </when>
+		    <when test="sort == 'oldest'">
+		        ORDER BY B.RAW_DATE ASC
+		    </when>
+		    <when test="sort == 'popular'">
+		        ORDER BY B.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_NO DESC
+		    </when>
+		    <when test="sort == 'views'">
+		        ORDER BY B.READ_COUNT DESC, B.LIKE_COUNT DESC, B.BOARD_NO DESC
+		    </when>
 		</choose>
+
 
 	</select>
 

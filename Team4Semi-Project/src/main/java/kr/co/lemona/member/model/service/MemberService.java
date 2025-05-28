@@ -49,9 +49,9 @@ public interface MemberService {
 	
 	/** 비밀번호 재설정
 	 * @param memberId
-	 * @param newPassword
+	 * @param memberPw
 	 * @return
 	 */
-	 boolean updatePassword(String memberId, String newPassword);
+	int updatePassword(String memberId, String memberPw);
 
 }

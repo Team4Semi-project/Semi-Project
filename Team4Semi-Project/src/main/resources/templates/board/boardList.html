@@ -62,17 +62,18 @@
           <div th:each="board : ${boardList}" class="recipe-item">
             <div class="recipe-image">
               <a
-                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
-                <!-- 자유 또는 공지 게시판 썸네일 -->
-                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
-                  alt="게시판 이미지">
+                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} "
+                <!-- 썸네일 -->
+                <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                  th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
+                  alt="레시피 이미지" />
               </a>
             </div>
 
             <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
+                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} "
                   th:utext="${#strings.length(board.boardTitle) > 25 ? #strings.substring(board.boardTitle, 0, 25) + '...' : board.boardTitle}">레몬 팬케이크
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
@@ -197,13 +198,13 @@
           <!-- 첫 페이지로 이동 -->
           <li>
             <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1, key=${param.key}, queryb=${param.queryb})}">&lt;&lt;</a>
+              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&lt;&lt;</a>
           </li>
 
           <!-- 이전 목록 마지막 번호로 이동 -->
           <li>
             <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage}, key=${param.key}, queryb=${param.queryb})}">&lt;</a>
+              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&lt;</a>
           </li>
 
           <!-- 특정 페이지로 이동 -->
@@ -215,7 +216,7 @@
 
             <!-- 보고있지 않은 페이지 -->
             <li th:unless="${i} == *{currentPage}">
-              <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i}, key=${param.key}, queryb=${param.queryb})}"
+              <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} "
                 th:text="${i}">이동할 페이지</a>
             </li>
           </th:block>
@@ -230,13 +231,13 @@
           <!-- 다음 목록 시작 번호로 이동 -->
           <li>
             <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, queryb=${param.queryb})}">&gt;</a>
+              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&gt;</a>
           </li>
 
           <!-- 끝 페이지로 이동 -->
           <li>
             <a
-              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage}, key=${param.key}, queryb=${param.queryb})}">&gt;&gt;</a>
+              th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&gt;&gt;</a>
           </li>
         </ul>
       </div>

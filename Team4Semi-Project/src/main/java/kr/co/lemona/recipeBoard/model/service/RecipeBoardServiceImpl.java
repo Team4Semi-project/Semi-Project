@@ -624,18 +624,32 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 			}
 		}
 		
+
+		int updateResult = 0;
+		int order = 1;
+		Map<String, Object> contentMap = new HashMap<>();
+		contentMap.put("boardNo", boardNo);
+		
+		for(String content : inputStepContent) {
+			
+			contentMap.put("content", content);
+			contentMap.put("stepOrder", order);
+			updateResult = mapper.updateBoardStepContent(contentMap);
+			order ++;
+		}
+		
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardNo", boardNo);
 		map.put("stepNo", thumbnailNo);
 		
 		// 썸내일 초기화
 		int thumbResult = mapper.resetThumbnail(map);
-		log.debug("ㅎㅎㅎㅎ thumbResult : {}", thumbResult);
+//		log.debug("ㅎㅎㅎㅎ thumbResult : {}", thumbResult);
 		// 썸내일 설정
-		log.debug("ㅎㅎㅎㅎ boardNo : {}", boardNo);
-		log.debug("ㅎㅎㅎㅎ thumbnailNo : {}", thumbnailNo);
+//		log.debug("ㅎㅎㅎㅎ boardNo : {}", boardNo);
+//		log.debug("ㅎㅎㅎㅎ thumbnailNo : {}", thumbnailNo);
 		thumbResult = thumbResult + mapper.newThumbnail(map);
-		log.debug("ㅎㅎㅎㅎ thumbResult : {}", thumbResult);
+//		log.debug("ㅎㅎㅎㅎ thumbResult : {}", thumbResult);
 
 		// 5. 반환
 		return insertResult + result;

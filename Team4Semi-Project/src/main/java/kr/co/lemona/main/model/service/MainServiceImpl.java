@@ -27,10 +27,14 @@ public class MainServiceImpl implements MainService {
 
 	// 메인화면에 출력될 최근 인기 게시글 4개 조회
 	@Override
-	public Map<String, Object> selectPopularBoardList(int cp) {
+	public Map<String, Object> selectPopularBoardList(Map<String, Integer> dataMap) {
 		
 		// 1. 레시피 게시글 중 조건에 맞는 최근 인기 게시글 4개 조회해서 List에 담기
-		List<RecipeBoard> popularBoardList = mapper.selectPopularBoardList();
+		List<RecipeBoard> popularBoardList = mapper.selectPopularBoardList(dataMap.get("memberNo"));
+		
+		for(RecipeBoard board : popularBoardList) {
+			log.debug("ㅎㅎㅎㅎ {}",board.getLikeCheck());
+		}
 		
 		// 해시태그 받아오는 부분
 		for (RecipeBoard recipeBoard : popularBoardList) {
@@ -53,10 +57,10 @@ public class MainServiceImpl implements MainService {
 	
 	// 메인화면에 출력될 최근 레시피 게시글 4개 조회
 	@Override
-	public Map<String, Object> selectRecipeBoardList(int categoryNo, int cp) {
+	public Map<String, Object> selectRecipeBoardList(Map<String, Integer> dataMap) {
 		
 		// 1. 최근 레시피 게시글 4개 조회해서 List에 담기
-		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(categoryNo);
+		List<RecipeBoard> recipeBoardList = mapper.selectRecipeBoardList(dataMap);
 		
 		// 해시태그 받아오는 부분
 		for (RecipeBoard recipeBoard : recipeBoardList) {

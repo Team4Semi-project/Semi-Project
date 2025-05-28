@@ -44,15 +44,19 @@ body {
 
 .write-info {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .write-info > * {
   display: flex;
   align-items: center;
-
   padding: 8px 20px;
-  border-right: 1px solid var(--lightgray);
+}
+
+.recipe-info {
+  height: 100%;
+  border-left: 1px solid var(--lightgray);
+  padding: 8px 20px;
 }
 
 .recipe-title {
@@ -186,7 +190,7 @@ body {
 }
 
 .step-number {
-  margin-right: 12px;
+  margin-right: 20px;
 }
 
 .step-number > span {
@@ -195,11 +199,7 @@ body {
   justify-content: center;
   width: 40px;
   height: 40px;
-  /* background-color: #ffde59; */
   border-radius: 50%;
-  /* left: 10px;
-  top: 10px; */
-  /* position: relative; */
 
   color: #333;
   font-weight: bold;
@@ -209,8 +209,8 @@ body {
   position: absolute;
   z-index: -1;
 
-  top: 24px;
-  left: 24px;
+  top: 23px;
+  left: 25px;
   width: 52px;
   height: 52px;
 }
@@ -221,11 +221,15 @@ body {
 
   display: inline-flex;
   position: relative;
+
+  font-family: var(--ryu-p-2-font-family);
+  font-size: var(--ryu-p-2-font-size);
+  font-weight: var(--ryu-p-2-font-weight);
 }
 
 .step-image {
-  flex: 0 0 200px;
-  height: 200px;
+  flex: 0 0 240px;
+  height: 240px;
   overflow: hidden;
 }
 

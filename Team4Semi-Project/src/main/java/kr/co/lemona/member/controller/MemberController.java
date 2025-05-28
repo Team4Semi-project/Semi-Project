@@ -135,16 +135,15 @@ public class MemberController {
 
 	@GetMapping("/reset")
 	public String showFindPwUpdatePage() {
-	    return "reset/findpw-update"; // templates/reset/findpw-update.html
+		return "reset/findpw-update"; // templates/reset/findpw-update.html
 	}
-	
-	@PostMapping("/findpw-update")
-	public String updatePassword(@RequestParam("userId") String userId,
-	                             @RequestParam("userName") String userName) {
-	    // 비밀번호 업데이트 로직 (예: service 호출)
-	    log.info("비밀번호 업데이트 요청 - ID: {}, 이름: {}", userId, userName);
 
-	    // 비밀번호 업데이트 성공 후 이동할 페이지
-	    return "redirect:/"; // 메인 페이지로 리다이렉트
+	@PostMapping("/findpw-update")
+	public String updatePassword(@RequestParam("userId") String userId, @RequestParam("userName") String userName) {
+		// 비밀번호 업데이트 로직 (예: service 호출)
+		log.info("비밀번호 업데이트 요청 - ID: {}, 이름: {}", userId, userName);
+
+		// 비밀번호 업데이트 성공 후 이동할 페이지
+		return "redirect:/"; // 메인 페이지로 리다이렉트
 	}
 }

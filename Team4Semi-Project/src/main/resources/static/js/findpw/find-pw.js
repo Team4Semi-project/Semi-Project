@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (data.sucess) {
       // 비밀번호 재설정 페이지로 이동
-      window.location.href = "/find/findpw-update";
+      window.location.href = "/find/findpw-update?memberId="+memberId;
     } else {
       alert(data.message || "입력한 값이 일치하지 않습니다.");
     }

@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
           likeCheck: likeCK
         };
 
-        fetch(`/board/${boardCode}/like`, {
+        fetch(`/board/1/like`, {
           method: "post",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(obj)
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   };
 
- 
+
   /**
    * 드롭다운 초기화
    */

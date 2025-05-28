@@ -181,7 +181,8 @@ public class RecipeBoardController {
 	 * @author miae
 	 */
 	@GetMapping("{category}/{boardNo:[0-9]+}")
-	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("category") String category,
+	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo,
+			@PathVariable("category") String category,
 			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
 			@RequestParam(value = "key", required = false, defaultValue = "") String key,
 			@RequestParam(value = "queryb", required = false, defaultValue = "") String queryb,
@@ -499,6 +500,7 @@ public class RecipeBoardController {
 
 		// 1) Map 으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
+		Map<String, String> searchMap = new HashMap<>();
 
 		// caterogy에 인기글(popular) 이 들어올 경우 categoryNo를 0으로 하고
 		// 그렇지 않을 경우에는 int형으로 변환 후 categoryNo값 넘겨줌
@@ -526,7 +528,7 @@ public class RecipeBoardController {
 		map.put("sort", sortNo);
 		
 		// 2) 서비스 호출
-		Map<String, Object> recipeMap = service.selectOneRecipe(map, null);
+		Map<String, Object> recipeMap = service.selectOneRecipe(map, searchMap);
 
 		// 조회 결과가 없는 경우
 		if (recipeMap == null) {

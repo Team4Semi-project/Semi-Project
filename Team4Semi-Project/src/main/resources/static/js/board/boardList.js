@@ -74,7 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
   /* 좋아요 기능 */
   const likes = document.querySelectorAll(".likes");
   if (likes) {
@@ -112,6 +111,8 @@ document.addEventListener("DOMContentLoaded", function () {
               console.log("좋아요 처리 실패");
               return;
             }
+
+            // console.log(count)
 
             // 상태 토글 및 반영
             likeCK = likeCK === 0 ? 1 : 0;

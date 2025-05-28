@@ -30,35 +30,6 @@ public interface MyPageService {
 	 */
 	int secession(String memberPw, int memberNo);
 
-	/** 파일 업로드 테스트 1
-	 * @param uploadFile
-	 * @return path
-	 */
-	String fileUpload1(MultipartFile uploadFile) throws Exception;
-
-	/** 파일 업로드 테스트 2
-	 * @param uploadFile
-	 * @param memberNo
-	 * @return
-	 */
-	int fileUpload2(MultipartFile uploadFile, int memberNo) throws Exception;
-
-	/** 파일 목록 조회
-	 * @param memberNo
-	 * @return
-	 */
-	List<UploadFile> fileList(int memberNo);
-
-	/** 여러파일 업로드 서비스
-	 * @param aaaList
-	 * @param bbbList
-	 * @param memberNo
-	 * @return
-	 * @throws Exception
-	 */
-	int fileUpload3(List<MultipartFile> aaaList, 
-					List<MultipartFile> bbbList, 
-					int memberNo) throws Exception;
 
 	/** 프로필 이미지 수정 서비스
 	 * @param profileImg
@@ -66,6 +37,13 @@ public interface MyPageService {
 	 * @return
 	 */
 	int profile(MultipartFile profileImg, Member loginMember) throws Exception;
+
+	/** 사용자 조회
+	 * @param loginMember
+	 * @return
+	 * @author miae
+	 */
+	Map<String, Object> selectMemberInfo(Map<String, Object> inputMap);
 	
 //	/** 내가 쓴 글 수 조회 
 //     * @param memberId

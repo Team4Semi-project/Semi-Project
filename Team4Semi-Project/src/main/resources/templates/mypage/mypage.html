@@ -4,10 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title th:text="${session.loginMember.memberNickname} + '님의 마이페이지'">
+
+  <title th:text="${member.memberNickname} + '님의 마이페이지'">
     LEMONA - 마이페이지
   </title>
-  <link rel="stylesheet" href="/css/mypage.css" />
+  <link rel="stylesheet" th:href="@{/css/myPage/mypage.css}" />
+  <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
+
   <!-- Material Symbols 아이콘 사용을 위한 링크 -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -19,33 +22,34 @@
 
   <div class="container">
     <!-- 프로필 섹션 -->
-    <section class="profile-section">
-      <div class="profile-header">
-        <div class="profile-avatar">
-          <img
-            th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/lemona-default-avatar.png'}"
-            alt="프로필 이미지" />
-        </div>
-        <div class="profile-info">
-          <div class="nickname-wrapper">
-            <span class="profile-nickname" th:text="${session.loginMember.memberNickname}">레몬짱</span>
-            <a href="/mypage/editProfile" class="edit-icon">
-              <span class="material-symbols-outlined">settings</span>
-            </a>
+    <div class="my-profile-scope">
+      <section class="profile-section">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <img th:src="${member.profileImg != null ? member.profileImg : '/images/user.png'}" alt="프로필 이미지" />
           </div>
-          <div class="profile-stats">
-            <button class="stat-btn">
-              내가 쓴 글
-              <span class="stat-number" th:text="${writtenCount ?: 0}">0</span>
-            </button>
-            <button class="stat-btn">
-              댓글 수
-              <span class="stat-number" th:text="${commentCount ?: 0}">0</span>
-            </button>
+          <div class="profile-info">
+            <div class="nickname-wrapper">
+              <span class="profile-nickname" th:text="${member.memberNickname}">레몬짱</span>
+              <a href="/mypage/editProfile" class="edit-icon">
+                <span class="material-symbols-outlined">settings</span>
+              </a>
+            </div>
+            <div class="profile-stats">
+              <button class="stat-btn">
+                내가 쓴 글
+                <span class="stat-number" th:text="${writtenCount ?: 0}">0</span>
+              </button>
+              <button class="stat-btn">
+                댓글 수
+                <span class="stat-number" th:text="${commentCount ?: 0}">0</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
+
 
     <!-- 탭 섹션 -->
     <nav class="tabs">
@@ -53,116 +57,71 @@
       <a href="/mypage/like" id="lemonaTab" class="tab">내 레모나</a>
     </nav>
 
-    <!-- 게시글 섹션 -->
-    <section class="post-section" id="posts">
-      <div class="recipe-grid">
-        <article class="recipe-card" th:each="post : ${writtenPosts}">
-          <div class="recipe-image">
-            <img th:src="${post.imageUrl != null ? post.imageUrl : '/images/default-recipe.png'}" alt="게시글 이미지" />
-          </div>
-          <div class="recipe-content">
-            <h3 class="recipe-title" th:text="${post.title}">게시물 제목</h3>
-            <div class="recipe-meta">
-              <span class="recipe-date" th:text="${post.createDate}">2025-05-26</span>
-            </div>
-            <div class="recipe-stats">
-              <div class="stat-item">
-                <span class="icon">❤️</span>
-                <span th:text="${post.likes}">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="icon">👁️</span>
-                <span th:text="${post.views}">0</span>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-      <div class="pagination-area" th:if="${not #lists.isEmpty(writtenPosts)}">
-        <ul class="pagination" th:object="${writtenPagination}">
-          <li><a th:href="@{/myPage/mypage(cp=1, tab='posts')}">
-              <<< /a>
-          </li>
-          <li>
-            <a th:href="@{/myPage/mypage(cp=*{prevPage}, tab='posts')}">
-              << /a>
-          </li>
-          <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-            <li th:if="${i} == *{currentPage}">
-              <a class="current" th:text="${i}"></a>
-            </li>
-            <li th:unless="${i} == *{currentPage} or ${i} == 0">
-              <a th:href="@{/myPage/mypage(cp=${i}, tab='posts')}" th:text="${i}"></a>
-            </li>
-          </th:block>
-          <li>
-            <a th:href="@{/myPage/mypage(cp=*{nextPage}, tab='posts')}">></a>
-          </li>
-          <li>
-            <a th:href="@{/myPage/mypage(cp=*{maxPage}, tab='posts')}">>></a>
-          </li>
-        </ul>
-      </div>
-    </section>
 
-    <section class="post-section" id="lemona" style="display: none">
-      <div class="recipe-grid">
-        <article class="recipe-card" th:each="lemona : ${likedPosts}">
-          <div class="recipe-image">
-            <img th:src="${lemona.imageUrl != null ? lemona.imageUrl : '/images/default-recipe.png'}" alt="레모나 이미지" />
-          </div>
-          <div class="recipe-content">
-            <h3 class="recipe-title" th:text="${lemona.title}">
-              레모나 제목
-            </h3>
-            <div class="recipe-meta">
-              <span class="recipe-date" th:text="${lemona.createDate}">2025-05-26</span>
-            </div>
-            <div class="recipe-stats">
-              <div class="stat-item">
-                <span class="icon">❤️</span>
-                <span th:text="${lemona.likes}">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="icon">👁️</span>
-                <span th:text="${lemona.views}">0</span>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-      <div class="pagination-area" th:if="${not #lists.isEmpty(likedPosts)}">
-        <ul class="pagination" th:object="${likedPagination}">
-          <li><a th:href="@{/myPage/mypage(cp=1, tab='lemona')}">
-              <<< /a>
+    <!-- 게시글 섹션 -->
+    <!-- 게시글 컨테이너 (Cozy View) fragment -->
+    <div class="recipe-container cozy-view" id="cozy">
+      <div th:replace="~{board/cozyList :: cozyList}"></div>
+    </div>
+
+    <!-- 게시글 컨테이너 (Agenda View) fragment -->
+    <div class="recipe-container agenda-view" id="agenda" style="display: none">
+      <div th:replace="~{board/agendaList :: agendaList}"></div>
+    </div>
+
+    <!-- 페이지네이션 : 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
+    <div class="pagination-area">
+      <!-- 일반 목록 조회 (검색 X )-->
+      <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
+        <!-- 첫 페이지로 이동 -->
+        <li>
+          <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=1)} + '&sort=' +  ${sort} ">&lt;&lt;</a>
+        </li>
+        <!-- << : /board/1?cp=1 -->
+
+        <!-- 이전 목록 마지막 번호로 이동 -->
+        <li>
+          <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=*{prevPage})} + '&sort=' +  ${sort} ">&lt;</a>
+        </li>
+        <!-- < : /board/1?cp=10 -->
+
+        <!-- 특정 페이지로 이동 -->
+        <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+          <!-- 현재 보고있는 페이지 -->
+          <li th:if="${i} == *{currentPage}">
+            <a class="current" th:text="${i}">현재페이지</a>
           </li>
-          <li>
-            <a th:href="@{/myPage/mypage(cp=*{prevPage}, tab='lemona')}">
-              << /a>
+
+          <!-- 보고있지 않은 페이지 -->
+          <li th:unless="${i} == *{currentPage} or ${i} == 0">
+            <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo},cp=${i})} + '&sort=' +  ${sort} "
+              th:text="${i}">이동할 페이지</a>
           </li>
-          <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-            <li th:if="${i} == *{currentPage}">
-              <a class="current" th:text="${i}"></a>
-            </li>
-            <li th:unless="${i} == *{currentPage} or ${i} == 0">
-              <a th:href="@{/myPage/mypage(cp=${i}, tab='lemona')}" th:text="${i}"></a>
-            </li>
-          </th:block>
-          <li>
-            <a th:href="@{/myPage/mypage(cp=*{nextPage}, tab='lemona')}">></a>
-          </li>
-          <li>
-            <a th:href="@{/myPage/mypage(cp=*{maxPage}, tab='lemona')}">>></a>
-          </li>
-        </ul>
-      </div>
-    </section>
+        </th:block>
+
+        <!-- 다음 목록 시작 번호로 이동 -->
+        <li>
+          <a
+            th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage})} + '&sort=' +  ${sort} ">&gt;</a>
+        </li>
+
+        <!-- 끝 페이지로 이동 -->
+        <li>
+          <a
+            th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage})} + '&sort=' +  ${sort} ">&gt;&gt;</a>
+        </li>
+      </ul>
+    </div>
+
   </div>
 
   <!-- 푸터 프래그먼트 -->
   <footer th:replace="~{common/footer :: footer}"></footer>
 
-  <script>
+  <script th:src="@{/js/board/boardList.js}"></script>
+
+  <!-- <script>
+
     function showTab(tabName) {
       const tabs = document.querySelectorAll(".post-section");
       tabs.forEach((tab) => (tab.style.display = "none"));
@@ -190,7 +149,8 @@
         }
       });
     });
-  </script>
+  </script> -->
+
 </body>
 
 </html>

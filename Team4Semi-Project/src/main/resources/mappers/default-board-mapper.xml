@@ -137,7 +137,7 @@
 		DESC
 		FETCH FIRST 1 ROWS ONLY
 	</select>
-
+	
 	<!-- 다음 글 번호 조회 -->
 	<select id="selectNextBoard">
 		SELECT *
@@ -148,6 +148,215 @@
 		ORDER BY BOARD_NO
 		FETCH FIRST 1 ROWS ONLY
 	</select>
+	
+	<!-- 검색 시 이전 글 번호 조회 -->
+	<!--  지현 -->
+	<select id="searchPrevBoard">
+		SELECT *
+FROM (
+    SELECT ROW_NUMBER() OVER (
+               ORDER BY 
+               <choose>
+                   <when test="sort == 1">
+                       B.BOARD_NO DESC
+                   </when>
+                   <when test="sort == 2">
+                       B.BOARD_NO ASC
+                   </when>
+                   <when test="sort == 3">
+                       L.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_NO DESC
+                   </when>
+                   <when test="sort == 4">
+                       B.READ_COUNT DESC, L.LIKE_COUNT DESC, B.BOARD_NO DESC
+                   </when>
+               </choose>
+           ) AS RN, B.*
+    FROM BOARD B
+    JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+
+    LEFT JOIN (
+        SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+        FROM DEFAULT_BOARD_LIKE
+        GROUP BY BOARD_NO
+    ) L ON B.BOARD_NO = L.BOARD_NO
+
+    WHERE B.BOARD_DEL_FL = 'N'
+AND BOARD_CODE = #{boardCode}
+    <choose>
+        <when test='key == 1'>
+            AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == 2'>
+            AND BOARD_CONTENT LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == 3'>
+            AND (
+                B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+                OR BOARD_CONTENT LIKE '%' || #{queryb} || '%'
+            )
+        </when>
+        <when test='key == 4'>
+            AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+        </when>
+    </choose>
+) R
+WHERE R.RN = (
+    SELECT RN + 1 FROM (
+        SELECT B.BOARD_NO,
+               ROW_NUMBER() OVER (
+                   ORDER BY 
+                   <choose>
+                       <when test="sort == 1">
+                           B.BOARD_NO DESC
+                       </when>
+                       <when test="sort == 2">
+                           B.BOARD_NO ASC
+                       </when>
+                       <when test="sort == 3">
+                           L.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_NO DESC
+                       </when>
+                       <when test="sort == 4">
+                           B.READ_COUNT DESC, L.LIKE_COUNT DESC, B.BOARD_NO DESC
+                       </when>
+                   </choose>
+               ) AS RN
+        FROM BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+
+        LEFT JOIN (
+            SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+            FROM DEFAULT_BOARD_LIKE
+            GROUP BY BOARD_NO
+        ) L ON B.BOARD_NO = L.BOARD_NO
+
+        WHERE B.BOARD_DEL_FL = 'N'
+AND BOARD_CODE = #{boardCode}
+        <choose>
+            <when test='key == 1'>
+                AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == 2'>
+                AND BOARD_CONTENT LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == 3'>
+                AND (
+                    B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+                    OR BOARD_CONTENT LIKE '%' || #{queryb} || '%'
+                )
+            </when>
+            <when test='key == 4'>
+                AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+            </when>
+        </choose>
+    ) WHERE BOARD_NO = ${boardNo}
+)
+	</select>
+	
+	<!-- 검색 시 다음 글 번호 조회 -->
+	<!--  지현 -->
+	<select id="searchNextBoard">
+		SELECT *
+FROM (
+    SELECT ROW_NUMBER() OVER (
+               ORDER BY 
+               <choose>
+                   <when test="sort == 1">
+                       B.BOARD_NO DESC
+                   </when>
+                   <when test="sort == 2">
+                       B.BOARD_NO ASC
+                   </when>
+                   <when test="sort == 3">
+                       L.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_NO DESC
+                   </when>
+                   <when test="sort == 4">
+                       B.READ_COUNT DESC, L.LIKE_COUNT DESC, B.BOARD_NO DESC
+                   </when>
+               </choose>
+           ) AS RN, B.*
+    FROM BOARD B
+    JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+
+    LEFT JOIN (
+        SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+        FROM DEFAULT_BOARD_LIKE
+        GROUP BY BOARD_NO
+    ) L ON B.BOARD_NO = L.BOARD_NO
+
+    WHERE B.BOARD_DEL_FL = 'N'
+AND BOARD_CODE = #{boardCode}
+    <choose>
+        <when test='key == 1'>
+            AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == 2'>
+            AND BOARD_CONTENT LIKE '%' || #{queryb} || '%'
+        </when>
+        <when test='key == 3'>
+            AND (
+                B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+                OR BOARD_CONTENT LIKE '%' || #{queryb} || '%'
+            )
+        </when>
+        <when test='key == 4'>
+            AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+        </when>
+    </choose>
+) R
+WHERE R.RN = (
+    SELECT RN - 1 FROM (
+        SELECT B.BOARD_NO,
+               ROW_NUMBER() OVER (
+                   ORDER BY 
+                   <choose>
+                       <when test="sort == 1">
+                           B.BOARD_NO DESC
+                       </when>
+                       <when test="sort == 2">
+                           B.BOARD_NO ASC
+                       </when>
+                       <when test="sort == 3">
+                           L.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_NO DESC
+                       </when>
+                       <when test="sort == 4">
+                           B.READ_COUNT DESC, L.LIKE_COUNT DESC, B.BOARD_NO DESC
+                       </when>
+                   </choose>
+               ) AS RN
+        FROM BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+
+        LEFT JOIN (
+            SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+            FROM DEFAULT_BOARD_LIKE
+            GROUP BY BOARD_NO
+        ) L ON B.BOARD_NO = L.BOARD_NO
+
+        WHERE B.BOARD_DEL_FL = 'N'
+AND BOARD_CODE = #{boardCode}
+        <choose>
+            <when test='key == 1'>
+                AND B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == 2'>
+                AND BOARD_CONTENT LIKE '%' || #{queryb} || '%'
+            </when>
+            <when test='key == 3'>
+                AND (
+                    B.BOARD_TITLE LIKE '%' || #{queryb} || '%'
+                    OR BOARD_CONTENT LIKE '%' || #{queryb} || '%'
+                )
+            </when>
+            <when test='key == 4'>
+                AND M.MEMBER_NICKNAME LIKE '%' || #{queryb} || '%'
+            </when>
+        </choose>
+    ) WHERE BOARD_NO = ${boardNo}
+)
+	</select>
+	
+	
+	
 
 	<!-- 조회수 1 증가 -->
 	<!-- 미애 -->

@@ -63,7 +63,10 @@ goToPrev.addEventListener("click", () => {
     return;
   }
 
-  location.href = `/board/${boardCode}/${prevBoardNo}?cp=${cp}`;
+  const key = urlParams.get("key") || "";
+  const queryb = urlParams.get("queryb") || "";
+  const sort = urlParams.get("sort") || "";
+  location.href = `/board/${boardCode}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&sort=${sort}`;
 });
 
 // 다음글 버튼
@@ -75,7 +78,10 @@ goToNext.addEventListener("click", () => {
     return;
   }
 
-  location.href = `/board/${boardCode}/${nextBoardNo}?cp=${cp}`;
+  const key = urlParams.get("key") || "";
+  const queryb = urlParams.get("queryb") || "";
+  const sort = urlParams.get("sort") || "";
+  location.href = `/board/${boardCode}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&sort=${sort}`;
 });
 
 /* 좋아요 기능 */

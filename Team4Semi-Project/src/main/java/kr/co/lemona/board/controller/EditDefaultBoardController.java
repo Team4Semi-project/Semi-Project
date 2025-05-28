@@ -114,11 +114,12 @@ public class EditDefaultBoardController {
 		// -> 게시글 상세 조회
 		// BoardService.selectOne의 매개변수
 		Map<String, Integer> map = new HashMap<>();
+		Map<String, String> searchMap = new HashMap<>();
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
 
 		// BoardService.selectOne(map) 호출
-		Map<String, Object> boardMap = boardService.selectOne(map);
+		Map<String, Object> boardMap = boardService.selectOne(map, searchMap);
 
 		String message = null;
 		String path = null;

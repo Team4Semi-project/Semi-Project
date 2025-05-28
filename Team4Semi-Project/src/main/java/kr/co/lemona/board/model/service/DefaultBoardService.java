@@ -19,7 +19,7 @@ public interface DefaultBoardService {
 	 * @return
 	 * @author 민장
 	 */
-	Map<String, Object> selectOne(Map<String, Integer> map);
+	Map<String, Object> selectOne(Map<String, Integer> map, Map<String, String> searchMap);
 
 	/** 해당 게시판 검색 조회 서비스
 	 * @param paramMap

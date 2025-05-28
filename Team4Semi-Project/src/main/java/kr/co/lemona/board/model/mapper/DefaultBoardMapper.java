@@ -100,4 +100,18 @@ public interface DefaultBoardMapper {
 	 * @author 민장
 	 */
 	List<DefaultComment> selectCommentList(Map<String, Object> commentMap);
+
+	/** 검색 시 이전글
+	 * @param searchMap
+	 * @return
+	 * @author jihyun
+	 */
+	Board searchPrevBoard(Map<String, String> searchMap);
+
+	/** 검색 시 다음글
+	 * @param searchMap
+	 * @return
+	 * @author jihyun
+	 */
+	Board searchNextBoard(Map<String, String> searchMap);
 }

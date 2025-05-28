@@ -23,7 +23,7 @@
   <!-- 네비게이션 프래그먼트 -->
   <!-- <nav th:replace="~{common/navigation :: navigation}"></nav> -->
 
-  <div class="container mt-3">
+  <div class="container">
     <div class="write-header">글 작성하기</div>
 
     <!-- 메시지 출력 -->
@@ -35,7 +35,7 @@
     <form id="postForm" method="post"
       th:action=" @{${board != null ? '/editBoard/' + board.boardCode + '/' + board.boardNo + '/update' : '/editBoard/2/insert'}} ">
       <!-- 제목 -->
-      <input type="text" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글제목을 입력해주세요"
+      <input type="text" maxlength="100" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글제목을 입력해주세요"
         required>
 
       <!-- 서머노트(내용) -->

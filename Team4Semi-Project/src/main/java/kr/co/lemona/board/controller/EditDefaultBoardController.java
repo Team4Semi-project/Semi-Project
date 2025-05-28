@@ -48,22 +48,28 @@ public class EditDefaultBoardController {
 
 	@Autowired
 	private EditDefaultBoardService service;
-	
+
 	@Autowired
 	private DefaultBoardService boardService;
 
-	/** 게시글 작성 화면 전환
+	/**
+	 * 게시글 작성 화면 전환
+	 * 
 	 * @param boardCode
 	 * @return
 	 * @author 민장
 	 */
 	@GetMapping("insert")
-	public String defaultBoardInsert(@PathVariable("boardCode") int boardCode, Model model) {
-		
-	  return "board/defaultBoardWrite";
+	public String defaultBoardInsert(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
+			@PathVariable("boardCode") int boardCode, Model model) {
+		if (loginMember == null) {
+			return "redirect:/login";
+		}
+		return "board/defaultBoardWrite";
 	}
-	
-	/** 게시글 작성
+
+	/**
+	 * 게시글 작성
 	 * 
 	 * @param inputBoard
 	 * @param ra
@@ -72,18 +78,15 @@ public class EditDefaultBoardController {
 	 * @author 민장
 	 */
 	@PostMapping("insert") // 파라미터 : loginMember
-	public String defaultBoardInsert(@PathVariable("boardCode") int boardCode, 
-			@ModelAttribute Board inputBoard, 
-			@SessionAttribute("loginMember") Member loginMember,
-			Model model, RedirectAttributes ra)
-			throws Exception {
+	public String defaultBoardInsert(@PathVariable("boardCode") int boardCode, @ModelAttribute Board inputBoard,
+			@SessionAttribute("loginMember") Member loginMember, Model model, RedirectAttributes ra) throws Exception {
 
 		inputBoard.setBoardCode(boardCode);
 		inputBoard.setMemberNo(loginMember.getMemberNo());
 
 		// insert하고 게시글 번호 저장 : 작성한 글의 Detail 페이지로 보내기 위함
 		int boardNo = service.defaultBoardInsert(inputBoard);
-		
+
 		if (boardNo > 0) {
 			ra.addFlashAttribute("message", "게시글이 작성되었습니다");
 			return "redirect:" + "/board/" + boardCode + "/" + boardNo; // /board/1/2002
@@ -94,7 +97,8 @@ public class EditDefaultBoardController {
 		}
 	}
 
-	/** 게시글 수정 화면 전환
+	/**
+	 * 게시글 수정 화면 전환
 	 * 
 	 * @param boarCode    : 게시판 종류 번호
 	 * @param boardNo     : 게시글 번호
@@ -105,20 +109,19 @@ public class EditDefaultBoardController {
 	 * @author 민장
 	 */
 	@GetMapping("{boardNo:[0-9]+}/update")
-	public String boardUpdate(@PathVariable("boardCode") int boardCode,
-			@PathVariable("boardNo") int boardNo,
-			@SessionAttribute("loginMember") Member loginMember, 
-			Model model, RedirectAttributes ra) {
+	public String boardUpdate(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
+			@SessionAttribute("loginMember") Member loginMember, Model model, RedirectAttributes ra) {
 
 		// 수정 화면에 출력한 기존의 제목/내용/이미지 조회
 		// -> 게시글 상세 조회
 		// BoardService.selectOne의 매개변수
 		Map<String, Integer> map = new HashMap<>();
+		Map<String, String> searchMap = new HashMap<>();
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
 
 		// BoardService.selectOne(map) 호출
-		Map<String, Object> boardMap = boardService.selectOne(map);
+		Map<String, Object> boardMap = boardService.selectOne(map, searchMap);
 
 		String message = null;
 		String path = null;
@@ -131,7 +134,7 @@ public class EditDefaultBoardController {
 
 		} else {
 			Board board = (Board) boardMap.get("board");
-			
+
 			if (board.getMemberNo() != loginMember.getMemberNo()) {
 				message = "자신이 작성한 글만 수정 가능합니다!";
 
@@ -139,18 +142,20 @@ public class EditDefaultBoardController {
 				path = String.format("redirect:/board/%d/%d", boardCode, boardNo);
 
 				ra.addFlashAttribute("message", message);
-				
+
 				return path;
 			}
-			
+
 			path = "board/defaultBoardWrite"; // templates/board/defaultBoardUpdate.html로 forward
 			model.addAttribute("board", board);
 		}
 
 		return path;
 	}
-	
-	/** 게시글 수정
+
+	/**
+	 * 게시글 수정
+	 * 
 	 * @param boardCode
 	 * @param boardNo
 	 * @param inputBoard
@@ -160,33 +165,31 @@ public class EditDefaultBoardController {
 	 * @throws Exception
 	 */
 	@PostMapping("{boardNo:[0-9]+}/update")
-	public String boardUpdate(
-	        @PathVariable("boardCode") int boardCode,
-	        @PathVariable("boardNo") int boardNo,
-	        @ModelAttribute Board inputBoard,
-	        @SessionAttribute("loginMember") Member loginMember,
-	        RedirectAttributes ra) throws Exception {
+	public String boardUpdate(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
+			@ModelAttribute Board inputBoard, @SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra) throws Exception {
 
-	    inputBoard.setBoardCode(boardCode);
-	    inputBoard.setBoardNo(boardNo);
-	    inputBoard.setMemberNo(loginMember.getMemberNo());
+		inputBoard.setBoardCode(boardCode);
+		inputBoard.setBoardNo(boardNo);
+		inputBoard.setMemberNo(loginMember.getMemberNo());
 
-	    int result = service.defaultBoardUpdate(inputBoard);
+		int result = service.defaultBoardUpdate(inputBoard);
 
-	    String path;
-	    if (result > 0) {
-	        ra.addFlashAttribute("message", "게시글이 수정되었습니다.");
-	        path = String.format("/board/%d/%d", boardCode, boardNo);
-	    } else {
-	        ra.addFlashAttribute("message", "게시글 수정 실패");
-	        path = String.format("/editBoard/%d/%d/update", boardCode, boardNo);
-	    }
+		String path;
+		if (result > 0) {
+			ra.addFlashAttribute("message", "게시글이 수정되었습니다.");
+			path = String.format("/board/%d/%d", boardCode, boardNo);
+		} else {
+			ra.addFlashAttribute("message", "게시글 수정 실패");
+			path = String.format("/editBoard/%d/%d/update", boardCode, boardNo);
+		}
 
-	    return "redirect:" + path;
+		return "redirect:" + path;
 	}
 
-	
-	/** 게시글 삭제
+	/**
+	 * 게시글 삭제
+	 * 
 	 * @param boardCode
 	 * @param boardNo
 	 * @param cp
@@ -196,28 +199,26 @@ public class EditDefaultBoardController {
 	 * @author 민장
 	 */
 	@GetMapping("{boardNo:[0-9]+}/delete")
-	public String boardDelete(@PathVariable("boardCode") int boardCode,
-			@PathVariable("boardNo") int boardNo,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			RedirectAttributes ra,
+	public String boardDelete(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, RedirectAttributes ra,
 			@SessionAttribute("loginMember") Member loginMember) {
-			
+
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
 		map.put("memberNo", loginMember.getMemberNo());
-		
+
 		int result = service.boardDelete(map);
-		
+
 		String path = null;
 		String message = null;
-		
-		if(result > 0) {
-			
+
+		if (result > 0) {
+
 			message = "삭제 되었습니다";
 			path = String.format("/board/%d?cp=%d", boardCode, cp);
 			// /board/1?cp=2
-					
+
 		} else {
 			message = "삭제 실패";
 			path = String.format("/board/%d/%d?cp=%d", boardCode, boardNo, cp);
@@ -225,11 +226,12 @@ public class EditDefaultBoardController {
 		}
 
 		ra.addFlashAttribute("message", message);
-		
+
 		return "redirect:" + path;
 	}
 
-	/** 이미지 서버에 업로드
+	/**
+	 * 이미지 서버에 업로드
 	 * 
 	 * @param imageFile
 	 * @param request

@@ -6,6 +6,26 @@ document.addEventListener("DOMContentLoaded", function () {
   const hashTagContainer = document.getElementById("hashTagContainer");
   const submitBtn = document.getElementById("submitBtn");
 
+  // 제목 길이 제한
+  const titleInput = document.querySelector("#boardTitle");
+  titleInput.addEventListener("input", e => {
+    if (e.target.value.length > 40) {
+      alert("메뉴 이름의 길이는 40자를 넘을 수 없습니다.")
+      e.target.value = e.target.value.slice(0, 40); // 40자까지만 유지
+    }
+  })
+
+  // 스텝 내용 길이 제한
+  const contentInput = document.querySelectorAll("[name='recipeStep']");
+  contentInput.forEach(input => {
+    input.addEventListener("input", e => {
+      if (e.target.value.length > 390) {
+        alert("각 조리과정의 길이는 390자를 넘을 수 없습니다.");
+        e.target.value = e.target.value.slice(0, 390); // 390자까지만 유지
+      }
+    });
+  });
+
   // 게시글 번호 수집
   const pathname = window.location.pathname;
   const segments = pathname.split("/");
@@ -491,13 +511,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // 이미지는 있는데 썸내일이 없다면
     const hasAnyImage = Array.from(steps).some(step => {
       const img = step.querySelector(".image-preview img");
-      return img;
+      const src = img?.getAttribute("src");
+      return img && src && !["", "null", "/images/recipeBoard/null"].includes(src.trim());
     });
 
     if (hasAnyImage && !isThumbnailSelected) {
       alert("대표 이미지를 선택해주세요!");
       e.preventDefault();
       return;
+    }
+
+    // 썸네일 라디오 버튼 존재 여부 확인
+    const hasThumbnailRadio = Array.from(steps).some(step => step.querySelector('input[type="radio"]'));
+
+
+    // 썸네일 라디오 버튼은 있지만 이미지가 전혀 없는 경우 → 빈값 처리
+    if (!hasAnyImage && hasThumbnailRadio && !isThumbnailSelected) {
+      formData.delete("thumbnailNo");
     }
 
     // 해시태그 수집

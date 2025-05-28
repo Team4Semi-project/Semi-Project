@@ -201,9 +201,12 @@ public class RecipeBoardController {
 			int categoryNo = 0;
 			categoryNo = Integer.parseInt(category);
 			map.put("categoryNo", categoryNo);
+			searchMap.put("categoryNo", String.valueOf(categoryNo));
 		} else {
 			map.put("popular", 1);
 			map.put("categoryNo", 0);
+			searchMap.put("popular", "1");
+			searchMap.put("categoryNo", "0");
 		}
 		map.put("boardNo", boardNo);
 		searchMap.put("boardNo", String.valueOf(boardNo));

@@ -388,28 +388,20 @@
 		) B
 		<!-- 정렬 -->
 		<choose>
-			<when test="sort == null or sort == '' or sort == 'latest'">
-				ORDER BY B.BOARD_NO DESC
-			</when>
-			<when test="sort == 'oldest'">
-				ORDER BY B.BOARD_NO ASC
-			</when>
-			<when test="sort == 'popular'">
-				ORDER BY 
-				(SELECT COUNT(*)
-			      FROM "RECIPE_BOARD_LIKE" L
-			      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-			      B.READ_COUNT DESC,
-			      B.BOARD_NO DESC
-			</when>
-			<when test="sort == 'views'">
-				ORDER BY B.READ_COUNT DESC,
-				(SELECT COUNT(*)
-			      FROM "RECIPE_BOARD_LIKE" L
-			      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-			      B.BOARD_NO DESC
-			</when>
+		    <when test="sort == null or sort == '' or sort == 'latest'">
+		        ORDER BY B.RAW_DATE DESC
+		    </when>
+		    <when test="sort == 'oldest'">
+		        ORDER BY B.RAW_DATE ASC
+		    </when>
+		    <when test="sort == 'popular'">
+		        ORDER BY B.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_NO DESC
+		    </when>
+		    <when test="sort == 'views'">
+		        ORDER BY B.READ_COUNT DESC, B.LIKE_COUNT DESC, B.BOARD_NO DESC
+		    </when>
 		</choose>
+
 
 	</select>
 

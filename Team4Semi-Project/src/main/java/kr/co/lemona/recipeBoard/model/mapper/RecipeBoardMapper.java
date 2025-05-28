@@ -240,5 +240,11 @@ public interface RecipeBoardMapper {
 	 * @param thumbnailOrder
 	 * @author 재호
 	 */
-	void resetThumnail(Map<String, Integer> map);
+	int resetThumbnail(Map<String, Integer> map);
+
+	/** 썸내일 설정
+	 * @param map
+	 * @author 재호
+	 */
+	int newThumbnail(Map<String, Integer> map);
 }

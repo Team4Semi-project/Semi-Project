@@ -567,6 +567,7 @@ public class RecipeBoardController {
 	    
 	    log.debug("====stepNoList==== : {}",stepNoList);
 	    log.debug("======images====== : {}",images);
+	    log.debug("====thumbnailNo=== : {}",thumbnailNo);
 
 	    int result = service.updateRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo, stepNoList);
 

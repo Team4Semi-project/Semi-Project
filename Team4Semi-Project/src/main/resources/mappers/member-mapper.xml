@@ -55,25 +55,34 @@
 		WHERE member_name = #{name}
 		AND member_email = #{email}
 	</select>
-	
-	
+
+
 	<select id="findUserForPassword" resultType="String">
-  		SELECT user_id
-  		FROM member
-  		WHERE user_id = #{userId}
-   		 AND user_name = #{userName}
-   		 AND user_email = #{userEmail}
+		SELECT user_id
+		FROM
+		member
+		WHERE user_id = #{userId}
+		AND user_name = #{userName}
+		AND
+		user_email = #{userEmail}
 	</select>
-	
+
 	<!-- 비밀번호 찾기 -->
 	<select id="findUserByIdNameEmail" resultType="map">
-		SELECT MEMBER_ID, MEMBER_NAME, MEMBER_EMAIL
+		SELECT MEMBER_ID,
+		MEMBER_NAME, MEMBER_EMAIL
 		FROM MEMBER
 		WHERE MEMBER_ID = #{memberId}
-		AND MEMBER_NAME = #{memberName}
+		AND
+		MEMBER_NAME = #{memberName}
 		AND MEMBER_EMAIL = #{memberEmail}
 	</select>
-	
+
 	<!-- 비밀번호 업데이트 -->
+	<update id="updatePassword">
+		UPDATE member
+		SET member_pw = #{newPassword}
+		WHERE member_id = #{memberId}
+	</update>
 
 </mapper>

@@ -71,13 +71,7 @@
 		MEMBER_NO = #{memberNo}
 	</update>
 
-	<!-- 아이디 찾기 -->
-	<select id="findIdByNameAndEmail" resultType="String">
-		SELECT member_id
-		FROM member
-		WHERE member_name = #{name}
-		AND member_email = #{email}
-	</select>
+
 
 	
 	

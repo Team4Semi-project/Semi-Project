@@ -260,7 +260,7 @@
 
       <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
       <th:block th:if="${session.loginMember != null}" class="user-menu">
-        <a th:text="${session.loginMember.memberNickname}" th:href="@{'/mypage/main'}">사용자명</a>
+        <a th:text="${session.loginMember.memberNickname}" th:href="@{'/mypage/userProfile'}">사용자명</a>
 
         <!-- 로그인 하고 로그아웃 버튼을 누르면 알림으로 로그아웃 하시겠습니까? -->
         <!-- 알림 뜬 후 확인 버튼을 누르면 로그아웃 취소 버튼을 누르면 그대로 -->
@@ -330,5 +330,11 @@
         });
       }
     });
+  </script>
+
+  <script th:inline="javascript">
+    const message =  /*[[${message}]]*/ "전달 받은 message";
+
+    if (message != null) alert(message);
   </script>
 </th:block>

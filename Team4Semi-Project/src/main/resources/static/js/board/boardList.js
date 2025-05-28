@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
    * 뷰 토글 (아젠다/코지) 초기화
    */
   function saveViewMode(mode) {
-  sessionStorage.setItem("viewMode", mode);
+    sessionStorage.setItem("viewMode", mode);
   }
 
   function getViewMode() {
@@ -212,10 +212,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       indicator.style.width = "50%";
     }
-    
-}
+
+  }
   // 토글 배경 전환 UI 구현 코드
-  
+
 
   viewToggles.forEach((btn, index) => {
     btn.addEventListener("click", () => {
@@ -301,53 +301,53 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
-  
+
   /**
   * 정렬 기능 초기화
   */
- document.addEventListener("DOMContentLoaded", function () {
-   initSorting();
- });
+  document.addEventListener("DOMContentLoaded", function () {
+    initSorting();
+  });
 
- function initSorting() {
-   const sortSelect = document.getElementById("sortSelect");
+  function initSorting() {
+    const sortSelect = document.getElementById("sortSelect");
 
-   if (sortSelect) {
-     sortSelect.addEventListener("change", function () {
-       const url = new URL(window.location.href);
+    if (sortSelect) {
+      sortSelect.addEventListener("change", function () {
+        const url = new URL(window.location.href);
 
-       // 정렬 파라미터 설정
-       url.searchParams.set("sort", this.value);
+        // 정렬 파라미터 설정
+        url.searchParams.set("sort", this.value);
 
-       // 페이지 파라미터 초기화 (선택사항)
-       url.searchParams.set("page", "1");
+        // 페이지 파라미터 초기화 (선택사항)
+        url.searchParams.set("page", "1");
 
-       window.location.href = url.toString();
-     });
-   }
- }
+        window.location.href = url.toString();
+      });
+    }
+  }
   /**
    * 정렬 기능 초기화
    */
 
 
-function initSorting() {
-   const sortSelect = document.getElementById("sortSelect");
+  function initSorting() {
+    const sortSelect = document.getElementById("sortSelect");
 
-   if (sortSelect) {
-     sortSelect.addEventListener("change", function () {
-       const url = new URL(window.location.href);
+    if (sortSelect) {
+      sortSelect.addEventListener("change", function () {
+        const url = new URL(window.location.href);
 
-       // 정렬 파라미터 설정
-       url.searchParams.set("sort", this.value);
+        // 정렬 파라미터 설정
+        url.searchParams.set("sort", this.value);
 
-       // 페이지 파라미터 초기화 (선택사항)
-       url.searchParams.set("page", "1");
+        // 페이지 파라미터 초기화 (선택사항)
+        url.searchParams.set("page", "1");
 
-       window.location.href = url.toString();
-     });
-   }
- }
+        window.location.href = url.toString();
+      });
+    }
+  }
 
   /**
    * 정렬 기능 초기화

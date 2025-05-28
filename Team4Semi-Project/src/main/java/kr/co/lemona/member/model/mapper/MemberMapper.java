@@ -57,6 +57,14 @@ public interface MemberMapper {
 	 * Map 으로 받아서 params 로 받아야 함
 	 */
 	Map<String, String> findUserByIdNameEmail(Member member);
+
+
+	/** 비밀번호 업데이트
+	 * @param memberId
+	 * @param newPassword
+	 * @return
+	 */
+	boolean updatePassword(@Param("memberId") String memberId, @Param("newPassword") String newPassword);
 	
 
 

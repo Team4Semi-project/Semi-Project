@@ -1,6 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("postForm");
 
+  // 제목 입력창 길이 제한 경고문구 처리
+  const titleInput = document.querySelector(".title-input");
+
+  titleInput.addEventListener("input", () => {
+    if (titleInput.value.length >= 100) {
+      alert("최대 글자수를 초과했습니다.");
+    }
+  });
+
   // 남은 바이트 수를 보여줄 UI 요소 추가 (선택적으로 만들기!)
   const byteCountElement = document.createElement("div");
   byteCountElement.classList.add("text-muted", "mt-2");
@@ -46,8 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((res) => res.text())
       .then((imageUrl) => {
-        const imgTag = `<img src="${imageUrl}" style="width:100%;" />`;
-        $("#summernote").summernote("insertImage", imgTag);
+        $("#summernote").summernote("insertImage", imageUrl);
       })
       .catch((err) => {
         console.error("이미지 업로드 실패", err);
@@ -55,7 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // 제출 시점에서만 최종 바이트 길이 검사
+
+
+  // 제출 시점에 내용 바이트 길이 검사
   form.addEventListener("submit", function (e) {
     const content = $("#summernote").summernote("code").trim();
     // html 태그 제거 후 내용만 가져오기

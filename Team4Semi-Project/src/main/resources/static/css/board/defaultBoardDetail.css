@@ -175,6 +175,7 @@ a:hover {
   font-size: var(--ryu-p-3-font-size);
   font-weight: var(--ryu-p-3-weight);
   font-family: var(--ryu-p-3-font-family);
+  box-shadow: var(--SHADOW);
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -211,14 +212,20 @@ a:hover {
   background-color: var(--lemon);
   padding: 10px 0;
   border-radius: 5px;
-  font-weight: 500;
   transition: background-color 0.3s;
   width: 32%;
   height: 45px;
+  box-shadow: var(--SHADOW);
 }
 
 .container-page a:hover {
   background-color: var(--yellow);
+}
+
+.container-page a .text {
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-3-font-weight);
+  font-family: var(--ryu-p-3-font-family);
 }
 
 .container-page .material-symbols-outlined {

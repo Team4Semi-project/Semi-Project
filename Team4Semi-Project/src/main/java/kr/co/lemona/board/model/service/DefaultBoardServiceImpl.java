@@ -90,7 +90,7 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		Board prevBoard = null;
 		Board nextBoard = null;
 		
-		if (searchMap.get("queryb").isEmpty()) { // 검색이 아닌 경우
+		if (searchMap.get("queryb") == null || searchMap.get("queryb").isEmpty()) { // 검색이 아닌 경우
 			log.info("select key : "+searchMap.get("key"));
 			log.info("SEARCHMAP : "+searchMap);
 			// 이전 글

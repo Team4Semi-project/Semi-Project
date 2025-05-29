@@ -30,8 +30,8 @@
     <div class="container-title">
       <div class="container-inner">
         <div class="text-left">
-          <span th:text="${board.boardTitle}" class="board-title">게시글 제목</span>
-          <span class="board-update" th:text="${board.boardCreateDate}">작성일</span>
+          <div th:text="${board.boardTitle}" class="board-title">게시글 제목</div>
+          <div class="board-update" th:text="${board.boardCreateDate}">작성일</div>
         </div>
         <div class="text-right">
           <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"

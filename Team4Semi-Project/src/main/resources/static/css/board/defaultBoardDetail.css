@@ -45,6 +45,7 @@ a:hover {
 }
 
 .board-update {
+  width: 180px;
   color: #888;
   font-size: 0.9rem;
   position: relative;

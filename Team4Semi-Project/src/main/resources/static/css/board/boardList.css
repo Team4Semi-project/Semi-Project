@@ -195,6 +195,10 @@ main {
   color: var(--gray);
   font-size: var(--pre-p-1-font-size);
   font-weight: var(--pre-p-1-font-weight);
+  font-family: var(--pre-p-1-font-family);
+
+  height: 16px;
+  align-self: flex-end;
 }
 
 .recipe-tags {
@@ -202,6 +206,9 @@ main {
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 10px;
+
+  height: 50px;
+  overflow: hidden;
 }
 
 .tag {
@@ -210,13 +217,15 @@ main {
   background-color: var(--lightyellow);
   padding: 2px 8px;
   border-radius: 12px;
+
+  height: 20px;
 }
 
 .recipe-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .author-info {
@@ -244,7 +253,15 @@ main {
 
 .recipe-stats {
   display: flex;
+  flex-direction: row;
   gap: 4px;
+}
+
+.non-href {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* 좋아요/조회수 기능 */

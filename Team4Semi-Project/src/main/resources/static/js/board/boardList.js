@@ -74,6 +74,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // 카드 클릭 시 이동 처리
+  document.querySelectorAll(".recipe-item").forEach(item => {
+    item.addEventListener("click", function (e) {
+      // 클릭한 요소가 .no-click 안에 포함되어 있으면 무시      
+      if (e.target.closest(".non-href")) return;
+      // 해당 카드의 URL로 이동      
+      const url = this.dataset.url; if (url) location.href = url;
+    });
+  });
 
   /* 좋아요 기능 */
   const likes = document.querySelectorAll(".likes");
@@ -141,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
    * 뷰 토글 (아젠다/코지) 초기화
    */
   function saveViewMode(mode) {
-  sessionStorage.setItem("viewMode", mode);
+    sessionStorage.setItem("viewMode", mode);
   }
 
   function getViewMode() {
@@ -212,10 +221,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       indicator.style.width = "50%";
     }
-    
-}
+
+  }
   // 토글 배경 전환 UI 구현 코드
-  
+
 
   viewToggles.forEach((btn, index) => {
     btn.addEventListener("click", () => {
@@ -301,29 +310,29 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
-  
+
 
   /**
    * 정렬 기능 초기화
    */
 
-function initSorting() {
-   const sortSelect = document.getElementById("sortSelect");
+  function initSorting() {
+    const sortSelect = document.getElementById("sortSelect");
 
-   if (sortSelect) {
-     sortSelect.addEventListener("change", function () {
-       const url = new URL(window.location.href);
+    if (sortSelect) {
+      sortSelect.addEventListener("change", function () {
+        const url = new URL(window.location.href);
 
-       // 정렬 파라미터 설정
-       url.searchParams.set("sort", this.value);
+        // 정렬 파라미터 설정
+        url.searchParams.set("sort", this.value);
 
-       // 페이지 파라미터 초기화 (선택사항)
-       url.searchParams.set("page", "1");
+        // 페이지 파라미터 초기화 (선택사항)
+        url.searchParams.set("page", "1");
 
-       window.location.href = url.toString();
-     });
-   }
- }
+        window.location.href = url.toString();
+      });
+    }
+  }
 
   /**
    * 정렬 기능 

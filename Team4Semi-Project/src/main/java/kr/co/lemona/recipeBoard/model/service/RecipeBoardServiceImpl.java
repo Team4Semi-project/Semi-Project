@@ -136,17 +136,27 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		RecipeBoard prevBoard = null;
 		RecipeBoard nextBoard = null;
 		
-		if (searchMap.get("key") == null) { // 검색이 아닌 경우
-			// 이전 글
-			prevBoard = mapper.selectPrevBoard(map);
-			// 다음 글
-			nextBoard = mapper.selectNextBoard(map);
-		}else { // 검색인 경우
-			log.info("keyyyyyyyyyyyyyyyy : "+searchMap.get("key"));
+		if (!searchMap.get("queryb").isEmpty()){ // 레시피 게시판 검색인 경우
+			log.info("searchMap : "+searchMap);
+			log.info("queryb : "+searchMap.get("queryb"));
 			// 이전 글
 			prevBoard = mapper.searchPrevBoard(searchMap);
 			// 다음 글
 			nextBoard = mapper.searchNextBoard(searchMap);
+		} else if (!searchMap.get("querys").isEmpty()){ // 통합 검색인 경우
+			log.info("searchMap : "+searchMap);
+			log.info("querys : "+searchMap.get("querys"));
+			// 이전 글
+			prevBoard = mapper.searchAllPrevBoard(searchMap);
+			// 다음 글
+			nextBoard = mapper.searchAllNextBoard(searchMap);
+		} else {  // 검색이 아닌 경우
+//			log.info("searchMap : "+searchMap);
+			log.info("map : "+map);
+			// 이전 글
+			prevBoard = mapper.selectPrevBoard(map);
+			// 다음 글
+			nextBoard = mapper.selectNextBoard(map);
 		}
 
 		int prevBoardNo = 0;

@@ -410,8 +410,26 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    // 해시태그 길이 검사
+    if (cleanTag.length > 10) {
+      alert("해시태그는 10글자까지 입력 가능합니다.");
+      if (tagText.startsWith("#")) {
+        hashTagInput.value = hashTagInput.value.trim().slice(0, 11);
+      } else {
+        hashTagInput.value = hashTagInput.value.trim().slice(0, 10);
+      }
+      return;
+    }
+
     // 중복 체크
     if (hashTags.includes(cleanTag)) {
+      hashTagInput.value = "";
+      return;
+    }
+
+    // 해시태그 갯수 제한
+    if (hashTags.length == 10) {
+      alert("해시태그는 10개까지만 등록 가능합니다.")
       hashTagInput.value = "";
       return;
     }

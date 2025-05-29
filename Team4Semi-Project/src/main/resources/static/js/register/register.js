@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
- // 이메일 유효성 검사
+  // 이메일 유효성 검사
   memberEmail.addEventListener("input", (e) => {
     const inputEmail = e.target.value.trim();
 
@@ -142,28 +142,28 @@ document.addEventListener("DOMContentLoaded", () => {
     min = initMin;
     sec = initSec;
 
-  // 이전 동작중인 인터벌 클리어(없애기)
-  clearInterval(authTimer);
+    // 이전 동작중인 인터벌 클리어(없애기)
+    clearInterval(authTimer);
 
-  // ****************************************
-  // 비동기로 서버에서 메일 보내기
-  fetch("/email/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: memberEmail.value })
-  })
-    .then((resp) => resp.text())
-    .then((result) => {
-      if (result == 1) {
-        console.log("인증 번호 발송 성공");
-        alert("인증번호가 발송되었습니다.");
-      } else {
-        console.log("인증 번호 발송 실패!!!...");
-      }
-    });
-  // ****************************************
-  // 메일은 비동기로 서버에서 보내라고 놔두고
-  // 화면에서는 타이머 시작하기
+    // ****************************************
+    // 비동기로 서버에서 메일 보내기
+    fetch("/email/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: memberEmail.value }),
+    })
+      .then((resp) => resp.text())
+      .then((result) => {
+        if (result == 1) {
+          console.log("인증 번호 발송 성공");
+          alert("인증번호가 발송되었습니다.");
+        } else {
+          console.log("인증 번호 발송 실패!!!...");
+        }
+      });
+    // ****************************************
+    // 메일은 비동기로 서버에서 보내라고 놔두고
+    // 화면에서는 타이머 시작하기
     authTimer = setInterval(() => {
       authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
 
@@ -305,7 +305,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 실시간 중복 체크 제거
-    nickMessage.innerText = "닉네임 형식 검사 통과. 중복 체크 버튼을 눌러주세요.";
+    nickMessage.innerText =
+      "닉네임 형식 검사 통과. 중복 체크 버튼을 눌러주세요.";
     nickMessage.classList.add("message", "confirm");
     nickMessage.classList.remove("error");
     // checkObj.memberNickname은 버튼 클릭 시에만 업데이트
@@ -402,7 +403,8 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((error) => {
         console.error("Fetch error:", error);
-        pwMessage.textContent = "회원가입 중 오류가 발생했습니다: " + error.message;
+        pwMessage.textContent =
+          "회원가입 중 오류가 발생했습니다: " + error.message;
         pwMessage.className = "message error";
       });
   });

@@ -4,6 +4,13 @@
   margin: 0 auto;
 }
 
+/* 댓글 수 영역 */
+.comment-count-area {
+  font-family: var(--pre-h-2-font-family);
+  font-weight: var(--pre-h-2-font-weight);
+  font-size: var(--pre-h-2-font-size);
+}
+
 /* 댓글 입력 영역 */
 .comment-write-area {
   display: flex;
@@ -17,21 +24,25 @@
   resize: none;
   padding: 10px;
   border: 1px solid #e5e5e5;
-  border-right: none;
-  border-radius: 5px 0 0 5px; /* 왼쪽만 둥글게 */
-  height: 45px;
+  border-radius: 20px; 
+  height: 60px;
 }
 
 .comment-write-area > button {
   flex-basis: 10%;
-  height: 45px;
+  height: 60px;
   border: none;
-  border-radius: 0 5px 5px 0; /* 오른쪽만 둥글게 */
+  border-radius: 30px; 
   background-color: var(--lemon);
   color: var(--darkgray);
   cursor: pointer;
-  margin-left: 0;
+  margin-left: 10px;
   transition: background-color 0.2s;
+
+  padding: 5px 10px;
+  margin-left: 10px;
+  font-size: var(--ryu-h-2-font-size);
+  font-family: var(--ryu-h-2-font-family);
 }
 
 .comment-write-area > button:hover {
@@ -45,12 +56,13 @@
 
 /* 댓글 한 줄(카드형) */
 .comment-row {
+  display: block;
   background: #fff;
-  border-radius: 20px 0 20px 0;
+  border-radius: 25px 0 25px 0;
   box-shadow:
-    inset 0 0 0 0.2px #ccc, /* 0.5px로 얇은 회색 테두리 효과 */
+    inset 0 0 0 0.2px var(--lightgray), /* 0.5px로 얇은 회색 테두리 효과 */
     inset 0 0 0 5px var(--milk), /* 안쪽 milk 테두리 */
-    0 0 5px rgba(0, 0, 0, 0.05); /* 바깥쪽 연한 그림자 */
+    var(--SHADOW); /* 바깥쪽 연한 그림자 */
   padding: 15px;
   margin-bottom: 15px;
 }
@@ -139,13 +151,14 @@
 
 .comment-btn-area button {
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   background-color: var(--lemon);
   color: var(--darkgray);
-  padding: 5px 10px;
+  padding: 10px 20px;
   margin-left: 10px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: var(--ryu-p-1-font-size);
+  font-family: var(--ryu-p-1-font-family);
   transition: background-color 0.2s;
 }
 
@@ -170,5 +183,4 @@
 .update-textarea:focus,
 .commentInsertContent:focus {
   outline: none; /* 검은색 테두리 제거 */
-  box-shadow: none; /* 혹시 생길 수 있는 그림자 효과도 제거 */
 }

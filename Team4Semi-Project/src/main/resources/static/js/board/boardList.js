@@ -122,8 +122,6 @@ document.addEventListener("DOMContentLoaded", function () {
               return;
             }
 
-            // console.log(count)
-
             // 상태 토글 및 반영
             likeCK = likeCK === 0 ? 1 : 0;
             this.dataset.likeCheck = likeCK;
@@ -313,34 +311,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /**
-  * 정렬 기능 초기화
-  */
-  document.addEventListener("DOMContentLoaded", function () {
-    initSorting();
-  });
 
-  function initSorting() {
-    const sortSelect = document.getElementById("sortSelect");
-
-    if (sortSelect) {
-      sortSelect.addEventListener("change", function () {
-        const url = new URL(window.location.href);
-
-        // 정렬 파라미터 설정
-        url.searchParams.set("sort", this.value);
-
-        // 페이지 파라미터 초기화 (선택사항)
-        url.searchParams.set("page", "1");
-
-        window.location.href = url.toString();
-      });
-    }
-  }
   /**
    * 정렬 기능 초기화
    */
-
 
   function initSorting() {
     const sortSelect = document.getElementById("sortSelect");
@@ -361,9 +335,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * 정렬 기능 초기화
+   * 정렬 기능 
    */
-
 
   function changeSorting() {
     if (sortSelect) {
@@ -374,31 +347,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // 페이지 파라미터 초기화 (선택사항)
         url.searchParams.set("page", "1");
 
-        window.location.href = url.toString();
-      });
-    }
-  }
-
-  function setSortSelected() {
-    const url = new URL(window.location.href);
-    const currentSort = url.searchParams.get("sort");
-
-    if (currentSort) {
-      //const sortSelect = document.getElementById("sortSelect");
-      sortSelect.value = currentSort;
-    }
-  }
-
-
-  /**
-   * 정렬 기능 초기화
-   */
-
-  function changeSorting() {
-    if (sortSelect) {
-      sortSelect.addEventListener("change", function () {
-        const url = new URL(window.location.href);
-        url.searchParams.set("sort", this.value);
         window.location.href = url.toString();
       });
     }

@@ -1,10 +1,12 @@
 package kr.co.lemona.myPage.model.service;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -13,14 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.lemona.common.util.Utility;
+import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.member.model.dto.Member;
-import kr.co.lemona.myPage.model.dto.UploadFile;
 import kr.co.lemona.myPage.model.mapper.MyPageMapper;
+import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
 @PropertySource("classpath:/config.properties")
+@Slf4j
 public class MyPageServiceImpl implements MyPageService {
 
 	@Autowired
@@ -36,24 +40,6 @@ public class MyPageServiceImpl implements MyPageService {
 	@Value("${my.profile.folder-path}")
 	private String profileFolderPath; // C:/uploadFiles/profile/
 
-// 주소 변경?!
-//	@Override
-// 	public int updateInfo(Member inputMember, String[] memberAddress) {
-//		
-//		// 입력된 주소가 있을 경우
-//		if(!inputMember.getMemberAddress().equals(",,")) {
-//			
-//			String address = String.join("^^^", memberAddress);
-//			inputMember.setMemberAddress(address);
-//			
-//		} else {
-//		// 없을 경우
-//			inputMember.setMemberAddress(null);
-//			
-//		}
-//		
-//		return mapper.updateInfo(inputMember);
-//	}
 
 	// 비밀번호 변경 서비스
 	@Override
@@ -104,208 +90,77 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.secession(memberNo);
 	}
 
-	// 파일 업로드 테스트 1
-	@Override
-	public String fileUpload1(MultipartFile uploadFile) throws Exception {
-
-		// MultipartFile 이 제공하는 메소드
-		// - getSize() : 파일 크기
-		// - isEmpty() : 업로드한 파일이 없을 경우 true / 있다면 false
-		// - getOriginalFileName() : 원본 파일명
-		// - transferTo(경로) :
-		// 메모리 또는 임시 저장 경로에 업로드된 파일을
-		// 원하는 경로에 실제로 전송(서버 어떤 경로 폴더에 저장할지 지정)
-
-		// 업로드한 파일이 없을 경우
-		if (uploadFile.isEmpty()) {
-			return null;
-		}
-
-		// 업로드한 파일이 있을 경우
-		// C:/uploadFiles/test/파일명 으로 서버에 저장
-		uploadFile.transferTo(new File("C:/uploadFiles/test/" + uploadFile.getOriginalFilename()));
-
-		// 웹에서 해당 파일에 접근할 수 있는 경로를 반환
-		// 서버 : C:/uploadFiles/test/A.jpg
-		// 웹 접근 주소 : /myPage/file/A.jpg
-
-		return "/myPage/file/" + uploadFile.getOriginalFilename();
-	}
-
-	// 파일 업로드 테스트 2 (+DB)
-	@Override
-	public int fileUpload2(MultipartFile uploadFile, int memberNo) throws Exception {
-
-		// 업로드된 파일이 없을때
-		if (uploadFile.isEmpty()) {
-			return 0;
-		}
-
-		/*
-		 * DB에 파일 저장이 가능은 하지만 DB 부하를 줄이기 위해서
-		 * 
-		 * 1) DB 에는 서버에 저장할 파일 경로를 저장
-		 * 
-		 * 2) DB 삽입 / 수정 성공 후 서버에 파일을 저장
-		 * 
-		 * 3) 만약에 파일 저장 실패 시 -> 예외 발생 -> @Transactional을 이용해서 rollback 수행
-		 * 
-		 */
-
-		// 1. 서버에 저장할 파일 경로 만들기
-
-		// 파일이 저장될 서버 폴더 경로
-		String folderPath = "C:/uploadFiles/test/";
-
-		// 클라이언트가 파일이 저장된 폴더에 접근할 수 있는 주소(정적리소스 요청 주소)
-		String webPath = "/myPage/file/";
-
-		// 2. DB에 전달할 데이터를 DTO로 묶기
-		// webPath, memberNo, 원본 파일명, 변경된 파일명
-		String fileRename = Utility.fileRename(uploadFile.getOriginalFilename());
-
-		// Builder 패턴을 이용해서 UploadFile 객체 생성
-		// 장점 1) 반복되는 참조변수명, set 구문 생략
-		// 장점 2) method chaining을 이용하여 한줄로 작성 가능
-		// 장점 3) 매개변수 생성자 불필요
-		UploadFile uf = UploadFile.builder().memberNo(memberNo).filePath(webPath)
-				.fileOriginalName(uploadFile.getOriginalFilename()).fileRename(fileRename).build();
-
-		// 3. DTO 객체를 DB에 전달하기 (INSERT 하기)
-		int result = mapper.insertUploadFile(uf);
-
-		// 4. 삽입 성공 시 파일을 지정된 서버 폴더에 저장
-		if (result == 0)
-			return 0;
-
-		// folderPath경로(C:/uploadFiles/test/변경된파일명) 으로
-		// 파일을 서버 컴퓨터에 저장!
-		uploadFile.transferTo(new File(folderPath + fileRename));
-		// C:/uploadFiles/test/20250424150830_00001.jpg
-
-		return result;
-	}
-
-	@Override
-	public List<UploadFile> fileList(int memberNo) {
-		return mapper.fileList(memberNo);
-	}
-
-	// 여러 파일 업로드 서비스
-	@Override
-	public int fileUpload3(List<MultipartFile> aaaList, List<MultipartFile> bbbList, int memberNo) throws Exception {
-
-		// 1. aaaList 처리
-		int result1 = 0; // 결과(INSERT된 행의 갯수)를 저장할 변수
-
-		// 업로드된 파일이 없을 경우를 제외하고 업로드
-		for (MultipartFile file : aaaList) {
-
-			if (file.isEmpty()) { // 파일이 없으면 다음 파일
-				continue;
-			}
-
-			// DB에 저장 + 서버 실제로 저장
-			// fileUpload2() 메서드를 호출(재활용)
-			result1 += fileUpload2(file, memberNo);
-		}
-
-		// 2. bbbList 처리
-		int result2 = 0; // 결과(INSERT된 행의 갯수)를 저장할 변수
-
-		// 업로드된 파일이 없을 경우를 제외하고 업로드
-		for (MultipartFile file : bbbList) {
-
-			if (file.isEmpty()) { // 파일이 없으면 다음 파일
-				continue;
-			}
-
-			// DB에 저장 + 서버 실제로 저장
-			// fileUpload2() 메서드를 호출(재활용)
-			result2 += fileUpload2(file, memberNo);
-		}
-
-		return result1 + result2;
-	}
-
-	// 프로필 이미지 변경 서비스
-	@Override
-	public int profile(MultipartFile profileImg, Member loginMember) throws Exception {
-
-		// 프로필 이미지 경로
-		String updatePath = null;
-
-		// 변경명 저장
-		String rename = null;
-
-		// 업로드한 이미지가 있을 경우
-		// - 있을 경우 : 경로 조합 (클라이언트 접근 경로 + 리네임파일명)
-		if (!profileImg.isEmpty()) {
-			// 1. 파일명 변경
-			rename = Utility.fileRename(profileImg.getOriginalFilename());
-
-			// 2. /myPage/profile/변경된파일명
-			updatePath = profileWebPath + rename;
-		}
-
-		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
-		Member member = Member.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath).build();
-
-		int result = mapper.profile(member);
-
-		if (result > 0) {
-
-			// 프로필 이미지를 없애는 update 를 한 경우를 제외
-			// -> 업로드한 이미지가 있을 경우
-			if (!profileImg.isEmpty()) {
-				// 파일을 서버에 저장
-				profileImg.transferTo(new File(profileFolderPath + rename));
-				// C:/uploadFiles/profile/변경한이름
-			}
-
-			// 세션에 저장된 loginMember의 프로필 이미지 경로를
-			// DB와 동기화
-			loginMember.setProfileImg(updatePath);
-
-		}
-
-		return result;
-	}
-
+	
 	@Override
 	public int updateInfo(Member inputMember) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public int profile(MultipartFile profileImg, Member loginMember) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/** 사용자 조회 / 특정 사용자가 쓴 글 목록
+	 *
+	 * @author miae
+	 */
+	@Override
+	public Map<String, Object> selectMemberInfo(Map<String, Object> inputMap) {
+		int memberNo = (int) inputMap.get("memberNo");
+		int cp = (int) inputMap.get("cp");
+		int listCount = 0;
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		// 사용자 조회
+		Member member = mapper.selectMember(memberNo);
+		log.info("member 들어오는지 확인하기 : " + member.toString());
+		
+		// 특정 사용자가 쓴 글 목록
+		List<RecipeBoard> recipeBoardList = null;
+		
+		
+		
 
-//	@Override
-//	public int getWrittenPostsCount(String memberId) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public List<PostDTO> getWrittenPosts(String memberId, int currentPage, int limit) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public int getCommentCount(String memberId) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public int getLikedPostsCount(String memberId) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public List<PostDTO> getLikedPosts(String memberId, int currentPage, int limit) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+		// 1. 특정 사용자가 작성한 레시피 중 삭제 되지 않은 게시글 수를 조회
+		listCount = mapper.getMemberRecipeListCount(memberNo);
+
+
+		// 2. 1번의 결과 + cp 를 이용해서 Pagination 객체를 생성
+		Pagination pagination = new Pagination(cp, listCount);
+
+		// 3. 특정 게시판의 지정된 페이지 목록 조회
+		int limit = pagination.getLimit(); // 한 페이지 내에 보여줄 게시글 수
+		int offset = (cp - 1) * limit; // 보여줄 페이지의 앞에 건너뛸 게시글 개수
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+
+		// 조회 결과를 리스트에 저장
+		recipeBoardList = mapper.selectMemberRecipeList(memberNo, rowBounds);
+
+
+		// 해시태그 받아오는 부분
+		for (RecipeBoard recipeBoard : recipeBoardList) {
+			String tags = recipeBoard.getTags();
+			if (tags != null && !tags.isEmpty()) {
+				List<String> tagList = Arrays.stream(tags.split(",")).map(String::trim).collect(Collectors.toList());
+				recipeBoard.setHashTagList(tagList);
+			}
+		}
+
+		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
+		map.put("member", member);
+		map.put("pagination", pagination);
+		map.put("recipeBoardList", recipeBoardList);
+		
+		
+		
+		return map;
+	}
+
+
 
 }

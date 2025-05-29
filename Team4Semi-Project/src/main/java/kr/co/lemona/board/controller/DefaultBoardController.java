@@ -140,6 +140,9 @@ public class DefaultBoardController {
 	 */
 	@GetMapping("{boardNo:[0-9]+}") // 자유, 공지(2,3) 요청만 받기
 	public String defaultBoardDetail(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
+			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
+			@RequestParam(value = "key", required = false, defaultValue = "") String key,
+			@RequestParam(value = "queryb", required = false, defaultValue = "") String queryb,
 			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
 			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠키 얻어오기
 			HttpServletResponse resp // 새로운 쿠키 만들어서 응답하기
@@ -148,8 +151,37 @@ public class DefaultBoardController {
 
 		// 1) Map으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
+		Map<String, String> searchMap = new HashMap<>();
+		
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
+		searchMap.put("boardNo", String.valueOf(boardNo));
+		searchMap.put("boardCode", String.valueOf(boardCode));
+		searchMap.put("boardNo", String.valueOf(boardNo));
+		
+		// 이전글/다음글을 위한 sort 전달
+		int sortNo = 0;
+		switch (sort) {
+		case "latest" : sortNo = 1; break;
+		case "oldest" : sortNo = 2; break;
+		case "popular" : sortNo = 3; break;
+		case "views" : sortNo = 4; break;
+		default:
+			sortNo = 1;
+		}
+		
+		// 이전글/다음글을 위한 key 전달
+		int keyNo = 0;
+		switch (key) {
+		case "t" : keyNo = 1; break;
+		case "c" : keyNo = 2; break;
+		case "tc" : keyNo = 3; break;
+		case "w" : keyNo = 4; break;
+		}
+		
+		searchMap.put("sort", String.valueOf(sortNo));
+		searchMap.put("key", String.valueOf(keyNo));
+		searchMap.put("queryb", queryb);
 
 		// 로그인 상태인 경우 memberNo 추가
 		if (loginMember != null) {
@@ -159,7 +191,7 @@ public class DefaultBoardController {
 		}
 
 		// 2) 서비스 호출
-		Map<String, Object> boardMap = service.selectOne(map);
+		Map<String, Object> boardMap = service.selectOne(map, searchMap);
 
 		String path = null;
 

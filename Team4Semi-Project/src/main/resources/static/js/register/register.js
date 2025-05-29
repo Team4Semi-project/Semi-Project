@@ -1,33 +1,57 @@
+// DOM이 완전히 로드된 후 실행
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM fully loaded and parsed");
 
-  const form = document.getElementById("registerForm");
-  if (!form) {
-    console.error("Form element not found!");
-    return;
-  }
+  // 필수 입력 항목의 유효성 검사 여부를 체크하기 위한 JS 객체
+  const checkObj = {
+    memberId: false,
+    memberEmail: false,
+    authKey: false,
+    memberPw: false,
+    memberPwConfirm: false,
+    memberNickname: false,
+  };
+
+  // 아이디 관련 요소
   const memberId = document.getElementById("memberId");
   const idCheckBtn = document.getElementById("idCheckBtn");
   const idCheckMessage = document.getElementById("idCheckMessage");
 
-  const emailInput = document.getElementById("emailId");
-  const sendCodeBtn = document.getElementById("sendCodeBtn");
+  // 이메일 관련 요소
+  const memberEmail = document.getElementById("emailId");
+  const sendAuthKeyBtn = document.getElementById("sendCodeBtn");
+  const authKey = document.getElementById("emailCodeInput");
+  const checkAuthKeyBtn = document.getElementById("verifyCodeBtn");
   const emailMessage = document.getElementById("emailMessage");
+  const authKeyMessage = document.getElementById("authCodeMessage");
 
-  const emailCodeInput = document.getElementById("emailCodeInput");
-  const verifyCodeBtn = document.getElementById("verifyCodeBtn");
-  const authCodeMessage = document.getElementById("authCodeMessage");
+  // 비밀번호 관련 요소
+  const memberPw = document.getElementById("passwordInput");
+  const memberPwConfirm = document.getElementById("confirmPasswordInput");
+  const pwMessage = document.getElementById("confirmPasswordMessage");
 
-  const passwordInput = document.getElementById("passwordInput");
-  const confirmPasswordInput = document.getElementById("confirmPasswordInput");
-  const confirmPasswordMessage = document.getElementById(
-    "confirmPasswordMessage"
-  );
-
-  const memberNameInput = document.querySelector('input[name="memberName"]');
-  const nicknameInput = document.getElementById("nicknameInput");
+  // 닉네임 관련 요소
+  const memberNickname = document.getElementById("nicknameInput");
   const nicknameCheckBtn = document.getElementById("nicknameCheckBtn");
-  const nicknameMessage = document.getElementById("nicknameMessage");
+  const nickMessage = document.getElementById("nicknameMessage");
+
+  // 폼 요소
+  const registerForm = document.getElementById("registerForm");
+
+  let authTimer; // 타이머 역할을 할 setInterval 함수를 저장할 변수
+
+  const initMin = 4; // 타이머 초기값 (분)
+  const initSec = 59; // 타이머 초기값 (초)
+  const initTime = "05:00";
+
+  // 실제 줄어드는 시간을 저장할 변수
+  let min = initMin;
+  let sec = initSec;
+
+  // 매개변수 전달받은 숫자가 10 미만인 경우 앞에 0 붙여서 반환
+  function addZero(number) {
+    return number < 10 ? "0" + number : number;
+  }
 
   // 아이디 중복 체크
   idCheckBtn.addEventListener("click", () => {
@@ -37,22 +61,22 @@ document.addEventListener("DOMContentLoaded", () => {
       idCheckMessage.className = "message error";
       return;
     }
-    fetch(`/member/checkId?memberId=${id}`,  {
-		method : "POST",
-					headers : {
-						"Content-Type" : "application/json"
-					}
-					, body : id
-				}
-		)
+    fetch(`/member/checkId?memberId=${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((resp) => resp.text())
       .then((count) => {
         if (count == 1) {
           idCheckMessage.textContent = "이미 사용 중인 아이디입니다.";
           idCheckMessage.className = "message error";
+          checkObj.memberId = false;
         } else {
           idCheckMessage.textContent = "사용 가능한 아이디입니다.";
           idCheckMessage.className = "message confirm";
+          checkObj.memberId = true;
         }
       })
       .catch(() => {
@@ -61,256 +85,334 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  // 이메일 유효성 검사 및 인증번호 전송
-  sendCodeBtn.addEventListener("click", () => {
-    const email = emailInput.value.trim();
-    const reg = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,6}$/;
-    if (!email) {
-      emailMessage.textContent = "이메일을 입력해주세요.";
-      emailMessage.className = "message error";
+ // 이메일 유효성 검사
+  memberEmail.addEventListener("input", (e) => {
+    const inputEmail = e.target.value.trim();
+
+    checkObj.authKey = false; // 이메일 변경 시 인증 무효화
+    authKeyMessage.innerText = "";
+    clearInterval(authTimer);
+
+    if (inputEmail.length === 0) {
+      emailMessage.innerText = "메일을 받을 수 있는 이메일을 입력해주세요.";
+      emailMessage.classList.remove("message", "confirm", "error");
+      checkObj.memberEmail = false;
+      memberEmail.value = "";
       return;
     }
-    if (!reg.test(email)) {
-      emailMessage.textContent = "올바른 이메일 형식을 입력해주세요.";
-      emailMessage.className = "message error";
+
+    const regExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!regExp.test(inputEmail)) {
+      emailMessage.innerText = "알맞은 이메일 형식으로 작성해주세요.";
+      emailMessage.classList.add("message", "error");
+      emailMessage.classList.remove("confirm");
+      checkObj.memberEmail = false;
       return;
     }
-    emailMessage.textContent =
-      "인증번호가 전송되었습니다. 메일함을 확인해주세요.";
-    emailMessage.className = "message confirm";
-    // 서버로 인증번호 전송 로직 추가
-  });
 
-  // 인증번호 확인
-  verifyCodeBtn.addEventListener("click", () => {
-    const code = emailCodeInput.value.trim();
-    if (!code) {
-      authCodeMessage.textContent = "인증번호를 입력해주세요.";
-      authCodeMessage.className = "message error";
-      return;
-    }
-    if (code === "123456") {
-      authCodeMessage.textContent = "인증에 성공했습니다.";
-      authCodeMessage.className = "message confirm";
-    } else {
-      authCodeMessage.textContent = "인증번호가 일치하지 않습니다.";
-      authCodeMessage.className = "message error";
-    }
-  });
-
-  // 비밀번호 실시간 확인 함수
-  const checkPasswords = () => {
-    const password = passwordInput.value.trim();
-    const confirmPassword = confirmPasswordInput.value.trim();
-
-    if (!password) {
-      confirmPasswordMessage.textContent = "비밀번호를 입력해주세요.";
-      confirmPasswordMessage.className = "message error";
-    } else if (password !== confirmPassword) {
-      confirmPasswordMessage.textContent = "비밀번호가 일치하지 않습니다.";
-      confirmPasswordMessage.className = "message error";
-    } else {
-      confirmPasswordMessage.textContent = "비밀번호가 일치합니다.";
-      confirmPasswordMessage.className = "message confirm";
-    }
-  };
-
-  // 비밀번호 입력 시 실시간 확인
-  passwordInput.addEventListener("input", checkPasswords);
-  confirmPasswordInput.addEventListener("input", checkPasswords);
-
-  // 닉네임 중복 체크
-  nicknameCheckBtn.addEventListener("click", () => {
-    const nickname = nicknameInput.value.trim();
-    if (!nickname) {
-      nicknameMessage.textContent = "닉네임을 입력해주세요.";
-      nicknameMessage.className = "message error";
-      return;
-    }
-    if (nickname.length < 2) {
-      nicknameMessage.textContent = "닉네임은 2자 이상이어야 합니다.";
-      nicknameMessage.className = "message error";
-      return;
-    }
-    fetch(`/member/checkNickname?memberNickname=${nickname}`,
-		{
-			method : "POST",
-			headers : {
-				"Content-Type" : "application/json"
-			}
-			, body : nickname
-		}
-		
-	)
+    fetch(`/member/checkEmail?memberEmail=${inputEmail}`)
       .then((resp) => resp.text())
       .then((count) => {
         if (count == 1) {
-          nicknameMessage.textContent = "이미 사용 중인 닉네임입니다.";
-          nicknameMessage.className = "message error";
-        } else {
-          nicknameMessage.textContent = "사용 가능한 닉네임입니다.";
-          nicknameMessage.className = "message confirm";
+          emailMessage.innerText = "이미 사용중인 이메일입니다.";
+          emailMessage.classList.add("message", "error");
+          emailMessage.classList.remove("confirm");
+          checkObj.memberEmail = false;
+          return;
         }
+        emailMessage.innerText = "사용 가능한 이메일입니다.";
+        emailMessage.classList.add("message", "confirm");
+        emailMessage.classList.remove("error");
+        checkObj.memberEmail = true;
+      })
+      .catch((err) => console.log(err));
+  });
+
+  // 인증번호 받기 버튼 클릭 시
+  sendAuthKeyBtn.addEventListener("click", () => {
+    checkObj.authKey = false;
+    authKeyMessage.innerText = "";
+    clearInterval(authTimer);
+
+    if (!checkObj.memberEmail) {
+      alert("유효한 이메일을 작성 후 클릭해주세요.");
+      return;
+    }
+
+    min = initMin;
+    sec = initSec;
+
+  // 이전 동작중인 인터벌 클리어(없애기)
+  clearInterval(authTimer);
+
+  // ****************************************
+  // 비동기로 서버에서 메일 보내기
+  fetch("/email/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: memberEmail.value })
+  })
+    .then((resp) => resp.text())
+    .then((result) => {
+      if (result == 1) {
+        console.log("인증 번호 발송 성공");
+        alert("인증번호가 발송되었습니다.");
+      } else {
+        console.log("인증 번호 발송 실패!!!...");
+      }
+    });
+  // ****************************************
+  // 메일은 비동기로 서버에서 보내라고 놔두고
+  // 화면에서는 타이머 시작하기
+    authTimer = setInterval(() => {
+      authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
+
+      if (min == 0 && sec == 0) {
+        checkObj.authKey = false;
+        clearInterval(authTimer);
+        authKeyMessage.innerText = "인증번호 입력 시간이 만료되었습니다.";
+        authKeyMessage.classList.add("message", "error");
+        authKeyMessage.classList.remove("confirm");
+        return;
+      }
+
+      if (sec == 0) {
+        sec = 60;
+        min--;
+      }
+
+      sec--;
+    }, 1000);
+  });
+
+  // 인증번호 확인 버튼 클릭 시
+  checkAuthKeyBtn.addEventListener("click", () => {
+    if (min === 0 && sec === 0) {
+      alert("인증번호 입력 시간이 만료되었습니다. 다시 발급해주세요.");
+      return;
+    }
+
+    if (!authKey.value.trim()) {
+      authKeyMessage.innerText = "인증번호를 입력해주세요.";
+      authKeyMessage.classList.add("message", "error");
+      return;
+    }
+
+    const obj = {
+      email: memberEmail.value,
+      authKey: authKey.value.trim(),
+    };
+
+    fetch("/email/checkAuthKey", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(obj),
+    })
+      .then((resp) => resp.text())
+      .then((result) => {
+        if (result == 0) {
+          authKeyMessage.innerText = "인증번호가 다릅니다.";
+          authKeyMessage.classList.add("message", "error");
+          authKeyMessage.classList.remove("confirm");
+          checkObj.authKey = false;
+          return;
+        }
+        clearInterval(authTimer);
+        authKeyMessage.innerText = "인증되었습니다.";
+        authKeyMessage.classList.add("message", "confirm");
+        authKeyMessage.classList.remove("error");
+        checkObj.authKey = true;
       })
       .catch(() => {
-        nicknameMessage.textContent = "서버와의 통신에 실패했습니다.";
-        nicknameMessage.className = "message error";
+        authKeyMessage.innerText = "서버와의 통신에 실패했습니다.";
+        authKeyMessage.classList.add("message", "error");
       });
   });
 
-  // 폼 제출 처리
-  form.addEventListener("submit", (e) => {
-    e.preventDefault(); // 기본 폼 제출 방지
-    console.log("Form submission triggered");
+  // 비밀번호 유효성 검사
+  memberPw.addEventListener("input", (e) => {
+    const inputPw = e.target.value.trim();
 
-    // 아이디 검증
-    const id = memberId.value.trim();
-    console.log("Member ID:", id);
-    if (!id) {
-      idCheckMessage.textContent = "아이디를 입력해주세요.";
-      idCheckMessage.className = "message error";
-      console.log("ID validation failed");
-      return;
-    }
-    if (idCheckMessage.textContent !== "사용 가능한 아이디입니다.") {
-      idCheckMessage.textContent = "아이디 중복 체크를 완료해주세요.";
-      idCheckMessage.className = "message error";
-      console.log("ID check validation failed");
+    if (inputPw.length === 0) {
+      // pwMessage.innerText = "영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.";
+      pwMessage.classList.remove("message", "confirm", "error");
+      checkObj.memberPw = false;
+      memberPw.value = "";
       return;
     }
 
-    // 이메일 검증
-    const email = emailInput.value.trim();
-    console.log("Email:", email);
-    const reg = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,6}$/;
-    if (!email) {
-      emailMessage.textContent = "이메일을 입력해주세요.";
-      emailMessage.className = "message error";
-      console.log("Email validation failed");
-      return;
-    }
-    if (!reg.test(email)) {
-      emailMessage.textContent = "올바른 이메일 형식을 입력해주세요.";
-      emailMessage.className = "message error";
-      console.log("Email format validation failed");
-      return;
-    }
-    if (
-      emailMessage.textContent !==
-      "인증번호가 전송되었습니다. 메일함을 확인해주세요."
-    ) {
-      emailMessage.textContent = "이메일 인증을 완료해주세요.";
-      emailMessage.className = "message error";
-      console.log("Email verification validation failed");
+    const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
+    if (!regExp.test(inputPw)) {
+      pwMessage.innerText = "비밀번호가 유효하지 않습니다.";
+      pwMessage.classList.add("message", "error");
+      pwMessage.classList.remove("confirm");
+      checkObj.memberPw = false;
       return;
     }
 
-    // 인증번호 검증
-    const emailCode = emailCodeInput.value.trim();
-    console.log("Email Code:", emailCode);
-    if (!emailCode) {
-      authCodeMessage.textContent = "인증번호를 입력해주세요.";
-      authCodeMessage.className = "message error";
-      console.log("Email code validation failed");
+    pwMessage.innerText = "유효한 비밀번호 형식입니다.";
+    pwMessage.classList.add("message", "confirm");
+    pwMessage.classList.remove("error");
+    checkObj.memberPw = true;
+
+    if (memberPwConfirm.value.length > 0) {
+      checkPw();
+    }
+  });
+
+  // 비밀번호 확인 유효성 검사
+  const checkPw = () => {
+    if (memberPw.value === memberPwConfirm.value) {
+      pwMessage.innerText = "비밀번호가 일치합니다.";
+      pwMessage.classList.add("message", "confirm");
+      pwMessage.classList.remove("error");
+      checkObj.memberPwConfirm = true;
       return;
     }
-    if (authCodeMessage.textContent !== "인증에 성공했습니다.") {
-      authCodeMessage.textContent = "인증번호 확인을 완료해주세요.";
-      authCodeMessage.className = "message error";
-      console.log("Email code verification failed");
+    pwMessage.innerText = "비밀번호가 일치하지 않습니다.";
+    pwMessage.classList.add("message", "error");
+    pwMessage.classList.remove("confirm");
+    checkObj.memberPwConfirm = false;
+  };
+
+  memberPwConfirm.addEventListener("input", () => {
+    if (checkObj.memberPw) {
+      checkPw();
+      return;
+    }
+    checkObj.memberPwConfirm = false;
+  });
+
+  // 닉네임 유효성 검사 (입력 시 형식만 검사)
+  memberNickname.addEventListener("input", (e) => {
+    const inputNickname = e.target.value.trim();
+
+    if (inputNickname.length === 0) {
+      nickMessage.innerText = "한글,영어,숫자로만 2~10글자";
+      nickMessage.classList.remove("message", "confirm", "error");
+      checkObj.memberNickname = false;
+      memberNickname.value = "";
       return;
     }
 
-    // 비밀번호 검증
-    const password = passwordInput.value.trim();
-    const confirmPassword = confirmPasswordInput.value.trim();
-    console.log("Password:", password, "Confirm Password:", confirmPassword);
-    if (!password) {
-      confirmPasswordMessage.textContent = "비밀번호를 입력해주세요.";
-      confirmPasswordMessage.className = "message error";
-      console.log("Password validation failed");
-      return;
-    }
-    if (password !== confirmPassword) {
-      confirmPasswordMessage.textContent = "비밀번호가 일치하지 않습니다.";
-      confirmPasswordMessage.className = "message error";
-      console.log("Password match validation failed");
+    const regExp = /^[가-힣\w\d]{2,10}$/;
+    if (!regExp.test(inputNickname)) {
+      nickMessage.innerText = "유효하지 않은 닉네임 형식입니다.";
+      nickMessage.classList.add("message", "error");
+      nickMessage.classList.remove("confirm");
+      checkObj.memberNickname = false;
       return;
     }
 
-    // 사용자 이름 검증
-    const memberName = memberNameInput.value.trim();
-    console.log("Member Name:", memberName);
-    if (!memberName) {
-      confirmPasswordMessage.textContent = "사용자 이름을 입력해주세요.";
-      confirmPasswordMessage.className = "message error";
-      console.log("Member name validation failed");
-      return;
-    }
+    // 실시간 중복 체크 제거
+    nickMessage.innerText = "닉네임 형식 검사 통과. 중복 체크 버튼을 눌러주세요.";
+    nickMessage.classList.add("message", "confirm");
+    nickMessage.classList.remove("error");
+    // checkObj.memberNickname은 버튼 클릭 시에만 업데이트
+  });
 
-    // 닉네임 검증
-    const nickname = nicknameInput.value.trim();
-    console.log("Nickname:", nickname);
+  // 닉네임 중복 체크 버튼 (DB와 비교)
+  nicknameCheckBtn.addEventListener("click", () => {
+    const nickname = memberNickname.value.trim();
     if (!nickname) {
-      nicknameMessage.textContent = "닉네임을 입력해주세요.";
-      nicknameMessage.className = "message error";
-      console.log("Nickname validation failed");
+      nickMessage.textContent = "닉네임을 입력해주세요.";
+      nickMessage.className = "message error";
+      checkObj.memberNickname = false;
       return;
     }
     if (nickname.length < 2) {
-      nicknameMessage.textContent = "닉네임은 2자 이상이어야 합니다.";
-      nicknameMessage.className = "message error";
-      console.log("Nickname length validation failed");
-      return;
-    }
-    if (nicknameMessage.textContent !== "사용 가능한 닉네임입니다.") {
-      nicknameMessage.textContent = "닉네임 중복 체크를 완료해주세요.";
-      nicknameMessage.className = "message error";
-      console.log("Nickname check validation failed");
+      nickMessage.textContent = "닉네임은 2자 이상이어야 합니다.";
+      nickMessage.className = "message error";
+      checkObj.memberNickname = false;
       return;
     }
 
-    // 모든 검증 통과 시 서버에 POST 요청
-    const formData = new FormData(form);
-    console.log("Submitting form data:", Array.from(formData.entries()));
-    console.log("Sending POST request to /member/register");
+    // DB와 비교
+    fetch(`/member/checkNickname?memberNickname=${nickname}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((resp) => resp.text())
+      .then((count) => {
+        if (count == 1) {
+          nickMessage.textContent = "이미 사용중인 닉네임 입니다.";
+          nickMessage.className = "message error";
+          checkObj.memberNickname = false;
+        } else {
+          nickMessage.textContent = "사용 가능한 닉네임 입니다.";
+          nickMessage.className = "message confirm";
+          checkObj.memberNickname = true;
+        }
+      })
+      .catch(() => {
+        nickMessage.textContent = "서버와의 통신에 실패했습니다.";
+        nickMessage.className = "message error";
+        checkObj.memberNickname = false;
+      });
+  });
 
+  // 폼 제출 시 유효성 검사
+  registerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    for (let key in checkObj) {
+      if (!checkObj[key]) {
+        let str;
+        switch (key) {
+          case "memberId":
+            str = "아이디 중복 체크를 완료해주세요.";
+            break;
+          case "memberEmail":
+            str = "이메일이 유효하지 않습니다.";
+            break;
+          case "authKey":
+            str = "이메일이 인증되지 않았습니다.";
+            break;
+          case "memberPw":
+            str = "비밀번호가 유효하지 않습니다.";
+            break;
+          case "memberPwConfirm":
+            str = "비밀번호가 일치하지 않습니다.";
+            break;
+          case "memberNickname":
+            str = "닉네임 중복 체크를 완료해주세요.";
+            break;
+        }
+        alert(str);
+        document.getElementById(key).focus();
+        return;
+      }
+    }
+
+    const formData = new FormData(registerForm);
     fetch("/member/register", {
       method: "POST",
       body: formData,
     })
       .then((response) => {
-        console.log("Response status:", response.status);
         if (!response.ok) {
-          return response.text().then((text) => {
-            throw new Error(
-              `HTTP error! status: ${response.status}, body: ${text}`
-            );
-          });
+          throw new Error("HTTP error! status: " + response.status);
         }
         return response.text();
       })
       .then((message) => {
-        console.log("Received message:", message);
         if (confirm(message)) {
-          window.location.href = "/login";
+          window.location.href = "/member/login";
         }
       })
       .catch((error) => {
         console.error("Fetch error:", error);
-        confirmPasswordMessage.textContent =
-          "회원가입 중 오류가 발생했습니다: " + error.message;
-        confirmPasswordMessage.className = "message error";
+        pwMessage.textContent = "회원가입 중 오류가 발생했습니다: " + error.message;
+        pwMessage.className = "message error";
       });
   });
 
-  // DOM 요소가 제대로 로드되었는지 확인
-  console.log("Form:", form);
+  // DOM 요소 로깅
+  console.log("Form:", registerForm);
   console.log("Member ID:", memberId);
-  console.log("Email Input:", emailInput);
-  console.log("Email Code Input:", emailCodeInput);
-  console.log("Password Input:", passwordInput);
-  console.log("Confirm Password Input:", confirmPasswordInput);
-  console.log("Member Name Input:", memberNameInput);
-  console.log("Nickname Input:", nicknameInput);
+  console.log("Email Input:", memberEmail);
+  console.log("Auth Key Input:", authKey);
+  console.log("Password Input:", memberPw);
+  console.log("Confirm Password Input:", memberPwConfirm);
+  console.log("Nickname Input:", memberNickname);
 });

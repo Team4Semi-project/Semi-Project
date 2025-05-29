@@ -251,3 +251,11 @@ a:hover {
     margin: 5px 0;
   }
 }
+
+/* 글이 영역 뚫고 나가는거 방지 */
+.board-title {
+  word-break: break-all;
+}
+.container-content .mt-4 {
+  word-break: break-all;
+}

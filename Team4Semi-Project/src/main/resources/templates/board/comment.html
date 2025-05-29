@@ -1,7 +1,7 @@
 <div id="commentArea">
   <!-- 댓글 수 -->
   <div class="comment-count-area">
-    <p><span>댓글</span><span th:text="${board.commentCount}">0</span></p>
+    <p><span>댓글 </span><span th:text="${board.commentCount}">0</span></p>
   </div>
   <!-- 댓글 작성 부분 -->
   <div class="comment-write-area">
@@ -51,13 +51,13 @@
           <!-- 버튼 영역 -->
           <div class="comment-btn-area">
             <th:block th:if="${session.loginMember != null}">
-              <button th:onclick="|showInsertComment(${comment.commentNo}, this)|">답글</button>
+              <button th:onclick="|showInsertComment(${comment.commentNo}, this)|">답변하기</button>
 
               <!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
               <th:block th:with="writerNo=${comment.memberNo}">
                 <th:block th:if="${session.loginMember.memberNo == writerNo}">
-                  <button th:onclick="|showUpdateComment(${comment.commentNo}, this)|">수정</button>
-                  <button th:onclick="|deleteComment(${comment.commentNo})|">삭제</button>
+                  <button th:onclick="|showUpdateComment(${comment.commentNo}, this)|">수정하기</button>
+                  <button th:onclick="|deleteComment(${comment.commentNo})|">삭제하기</button>
                 </th:block>
               </th:block>
             </th:block>

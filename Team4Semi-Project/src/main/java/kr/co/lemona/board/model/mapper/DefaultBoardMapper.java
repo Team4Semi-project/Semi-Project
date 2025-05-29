@@ -114,4 +114,18 @@ public interface DefaultBoardMapper {
 	 * @author jihyun
 	 */
 	Board searchNextBoard(Map<String, String> searchMap);
+
+	/** 통합 검색 시 이전글
+	 * @param searchMap
+	 * @return
+	 * @author jihyun
+	 */
+	Board searchAllPrevBoard(Map<String, String> searchMap);
+
+	/** 통합 검색 시 다음글
+	 * @param searchMap
+	 * @return
+	 * @author jihyun
+	 */
+	Board searchAllNextBoard(Map<String, String> searchMap);
 }

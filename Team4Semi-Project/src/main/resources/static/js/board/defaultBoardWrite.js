@@ -46,7 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((res) => res.text())
       .then((imageUrl) => {
-        $("#summernote").summernote("insertImage", imageUrl);
+        const imgTag = `<img src="${imageUrl}" style="width:100%;" />`;
+        $("#summernote").summernote("insertImage", imgTag);
       })
       .catch((err) => {
         console.error("이미지 업로드 실패", err);

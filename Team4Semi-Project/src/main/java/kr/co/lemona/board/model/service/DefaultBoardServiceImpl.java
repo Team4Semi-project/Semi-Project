@@ -90,6 +90,8 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		Board prevBoard = null;
 		Board nextBoard = null;
 		
+
+
 		if (searchMap.get("queryb") == null || searchMap.get("queryb").isEmpty()) { // 검색이 아닌 경우
 			log.info("select key : "+searchMap.get("key"));
 			log.info("SEARCHMAP : "+searchMap);
@@ -97,14 +99,21 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 			prevBoard = mapper.selectPrevBoard(map);
 			// 다음 글
 			nextBoard = mapper.selectNextBoard(map);
-		}else { // 검색인 경우
-			log.info("search key : "+searchMap.get("key"));
-			log.info("SEARCHMAP : "+searchMap);
+		} else if (!searchMap.get("querys").isEmpty()){ // 통합 검색인 경우
+			log.info("searchMap : "+searchMap);
+			log.info("querys : "+searchMap.get("querys"));
 			// 이전 글
-			prevBoard = mapper.searchPrevBoard(searchMap);
+			prevBoard = mapper.searchAllPrevBoard(searchMap);
 			// 다음 글
-			nextBoard = mapper.searchNextBoard(searchMap);
+			nextBoard = mapper.searchAllNextBoard(searchMap);
+		} else {  // 검색이 아닌 경우
+			log.info("map : "+ map);
+			// 이전 글
+			prevBoard = mapper.selectPrevBoard(map);
+			// 다음 글
+			nextBoard = mapper.selectNextBoard(map);
 		}
+
 //
 //		// 이전 글
 //		Board prevBoard = mapper.selectPrevBoard(map);

@@ -580,5 +580,352 @@ AND BOARD_CODE = #{boardCode}
 			</when>
 		</choose>
 	</select>
+	
+	<select id="searchAllPrevBoard">
+<!-- 지현 / 통합 검색 시 이전 글 조회 -->
+WITH SEARCH_RESULT AS (
+    SELECT
+        ROW_NUMBER() OVER (ORDER BY
+												<choose>
+                       <when test="sort == 1">
+                           BOARD_NO DESC
+                       </when>
+                       <when test="sort == 2">
+                           BOARD_NO ASC
+                       </when>
+                       <when test="sort == 3">
+                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_NO DESC
+                       </when>
+                       <when test="sort == 4">
+                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_NO DESC
+                       </when>
+                   </choose> ) AS RN,
+        BOARD_NO,
+        BOARD_TITLE,
+        READ_COUNT,
+        MEMBER_NICKNAME,
+        BOARD_CODE,
+        PROFILE_IMG,
+        COMMENT_COUNT,
+        LIKE_COUNT,
+        THUMBNAIL_IMG_PATH,
+        THUMBNAIL_IMG_RENAME,
+        TAGS,
+        RAW_DATE,
+        BOARD_CREATE_DATE,
+        BOARD_TYPE
+    FROM (
+        SELECT
+            B.BOARD_NO,
+            B.BOARD_TITLE,
+            B.READ_COUNT,
+            M.MEMBER_NICKNAME,
+            B.BOARD_CODE,
+            M.PROFILE_IMG,
+            (SELECT COUNT(*) FROM DEFAULT_COMMENT C WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+            (SELECT COUNT(*) FROM DEFAULT_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+            S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+            S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+            NULL AS TAGS,
+            B.BOARD_CREATE_DATE AS RAW_DATE,
+            <![CDATA[
+            CASE
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+                ELSE TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+            END 
+            ]]>
+            AS BOARD_CREATE_DATE,
+            'DEFAULT' AS BOARD_TYPE
+        FROM BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+            FROM BOARD_STEP
+            WHERE THUMBNAIL_CHECK = 'Y'
+        ) S ON B.BOARD_NO = S.BOARD_NO
+        
+        WHERE B.BOARD_DEL_FL = 'N'
+        
+          <choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+				OR
+				B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND 1 = 0
+			</when>
+		</choose>
+
+        UNION ALL
+
+        SELECT
+            B.BOARD_NO,
+            B.BOARD_TITLE,
+            B.READ_COUNT,
+            M.MEMBER_NICKNAME,
+            B.BOARD_CODE,
+            M.PROFILE_IMG,
+            (SELECT COUNT(*) FROM RECIPE_COMMENT C WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+            (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+            S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+            S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+            (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+             FROM BOARD_HASHTAG BH
+             JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+             WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
+            B.BOARD_CREATE_DATE AS RAW_DATE,
+            <![CDATA[
+            CASE
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+                ELSE TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+            END 
+            ]]>
+            AS BOARD_CREATE_DATE,
+            'RECIPE' AS BOARD_TYPE
+        FROM RECIPE_BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+            FROM BOARD_STEP
+            WHERE THUMBNAIL_CHECK = 'Y'
+        ) S ON B.BOARD_NO = S.BOARD_NO
+
+        LEFT JOIN (
+            SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+            FROM BOARD_STEP
+            GROUP BY BOARD_NO
+        ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+        
+        WHERE B.BOARD_DEL_FL = 'N'
+          <choose>
+            <when test='key == 1'>
+                AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+            </when>
+            <when test='key == 2'>
+                AND STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
+            </when>
+            <when test='key == 3'>
+                AND (
+                    B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+                    OR STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
+                )
+            </when>
+            <when test='key == 4'>
+                AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
+            </when>
+            <when test='key == 5'>
+                AND EXISTS (
+                    SELECT 1
+                    FROM BOARD_HASHTAG BH
+                    JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                    WHERE BH.BOARD_NO = B.BOARD_NO
+                    AND HT.TAG_NAME = REPLACE(#{querys}, '#', '')
+                )
+            </when>
+        </choose>
+    ) 
+),
+TARGET AS (
+    SELECT RN
+    FROM SEARCH_RESULT
+    WHERE BOARD_NO = ${boardNo} AND BOARD_CODE = ${boardCode}
+)
+SELECT *
+FROM SEARCH_RESULT
+WHERE RN = (SELECT RN + 1 FROM TARGET)
+</select>
+
+<select id="searchAllNextBoard">
+<!-- 지현 / 통합 검색 시 다음 글 조회 -->
+WITH SEARCH_RESULT AS (
+    SELECT
+        ROW_NUMBER() OVER (ORDER BY
+						<choose>
+                       <when test="sort == 1">
+                           BOARD_NO DESC
+                       </when>
+                       <when test="sort == 2">
+                           BOARD_NO ASC
+                       </when>
+                       <when test="sort == 3">
+                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_NO DESC
+                       </when>
+                       <when test="sort == 4">
+                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_NO DESC
+                       </when>
+                   </choose> ) AS RN,
+        BOARD_NO,
+        BOARD_TITLE,
+        READ_COUNT,
+        MEMBER_NICKNAME,
+        BOARD_CODE,
+        PROFILE_IMG,
+        COMMENT_COUNT,
+        LIKE_COUNT,
+        THUMBNAIL_IMG_PATH,
+        THUMBNAIL_IMG_RENAME,
+        TAGS,
+        RAW_DATE,
+        BOARD_CREATE_DATE,
+        BOARD_TYPE
+    FROM (
+        SELECT
+            B.BOARD_NO,
+            B.BOARD_TITLE,
+            B.READ_COUNT,
+            M.MEMBER_NICKNAME,
+            B.BOARD_CODE,
+            M.PROFILE_IMG,
+            (SELECT COUNT(*) FROM DEFAULT_COMMENT C WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+            (SELECT COUNT(*) FROM DEFAULT_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+            S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+            S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+            NULL AS TAGS,
+            B.BOARD_CREATE_DATE AS RAW_DATE,
+            <![CDATA[
+            CASE
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+                ELSE TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+            END 
+            ]]>
+            AS BOARD_CREATE_DATE,
+            'DEFAULT' AS BOARD_TYPE
+        FROM BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+            FROM BOARD_STEP
+            WHERE THUMBNAIL_CHECK = 'Y'
+        ) S ON B.BOARD_NO = S.BOARD_NO
+        
+        WHERE B.BOARD_DEL_FL = 'N'
+        
+          <choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+				OR
+				B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND 1 = 0
+			</when>
+		</choose>
+
+        UNION ALL
+
+        SELECT
+            B.BOARD_NO,
+            B.BOARD_TITLE,
+            B.READ_COUNT,
+            M.MEMBER_NICKNAME,
+            B.BOARD_CODE,
+            M.PROFILE_IMG,
+            (SELECT COUNT(*) FROM RECIPE_COMMENT C WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+            (SELECT COUNT(*) FROM RECIPE_BOARD_LIKE L WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+            S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+            S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+            (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+             FROM BOARD_HASHTAG BH
+             JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+             WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
+            B.BOARD_CREATE_DATE AS RAW_DATE,
+            <![CDATA[
+            CASE
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+                WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+                ELSE TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+            END 
+            ]]>
+            AS BOARD_CREATE_DATE,
+            'RECIPE' AS BOARD_TYPE
+        FROM RECIPE_BOARD B
+        JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+        
+                LEFT JOIN (
+            SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+            FROM BOARD_STEP
+            WHERE THUMBNAIL_CHECK = 'Y'
+        ) S ON B.BOARD_NO = S.BOARD_NO
+        
+        LEFT JOIN (
+            SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+            FROM BOARD_STEP
+            WHERE THUMBNAIL_CHECK = 'Y'
+        ) S ON B.BOARD_NO = S.BOARD_NO
+        
+                LEFT JOIN (
+            SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO) AS STEP_CONTENTS
+            FROM BOARD_STEP
+            GROUP BY BOARD_NO
+        ) STEP ON B.BOARD_NO = STEP.BOARD_NO
+        
+        WHERE B.BOARD_DEL_FL = 'N'
+          <choose>
+            <when test='key == 1'>
+                AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+            </when>
+            <when test='key == 2'>
+                AND STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
+            </when>
+            <when test='key == 3'>
+                AND (
+                    B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+                    OR STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
+                )
+            </when>
+            <when test='key == 4'>
+                AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
+            </when>
+            <when test='key == 5'>
+                AND EXISTS (
+                    SELECT 1
+                    FROM BOARD_HASHTAG BH
+                    JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+                    WHERE BH.BOARD_NO = B.BOARD_NO
+                    AND HT.TAG_NAME = REPLACE(#{querys}, '#', '')
+                )
+            </when>
+        </choose>
+    )
+),
+TARGET AS (
+    SELECT RN
+    FROM SEARCH_RESULT
+    WHERE BOARD_NO = ${boardNo} AND BOARD_CODE = ${boardCode}
+)
+SELECT *
+FROM SEARCH_RESULT
+WHERE RN = (SELECT RN - 1 FROM TARGET)
+</select>
 
 </mapper>

@@ -50,6 +50,7 @@ a:hover {
   font-size: 0.9rem;
   position: relative;
   margin: 0 15px;
+  margin-top: 15px;
 }
 
 .board-update::before,
@@ -73,7 +74,7 @@ a:hover {
 
 /* 좋아요 조회수 컨테이너 */
 .text-right {
-  display: block;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
@@ -259,4 +260,10 @@ a:hover {
 }
 .container-content .mt-4 {
   word-break: break-all;
+}
+
+/* jpg에도 width 100% 강제 적용 */
+.container-content img {
+  width: 100% !important;
+  height: auto !important;
 }

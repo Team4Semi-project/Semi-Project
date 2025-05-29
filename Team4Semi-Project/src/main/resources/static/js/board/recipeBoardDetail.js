@@ -6,6 +6,7 @@ const cp = urlParams.get("cp") || 1;
 const sort = urlParams.get("sort") || "latest";
 const key = urlParams.get("key") || "";
 const queryb = urlParams.get("queryb") || "";
+const querys = urlParams.get("querys") || "";
 
 //const popular = urlParams.get('popular');
 
@@ -31,7 +32,7 @@ goToPrev.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/1/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&sort=${sort}`;
+  location.href = `/board/${boardCode}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
   // http://localhost/board/1/0/90?cp=1&key=t&queryb=%EB%B0%A5&sort=latest
 });
 
@@ -49,7 +50,7 @@ goToNext.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/1/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&sort=${sort}`;
+  location.href = `/board/${boardCode}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 const deleteBtn = document.querySelector("#deleteBtn");

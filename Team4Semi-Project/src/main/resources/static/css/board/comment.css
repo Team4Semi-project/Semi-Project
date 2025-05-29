@@ -26,16 +26,17 @@
   flex: 1 1 0;
   resize: none;
   padding: 12px 20px 16px 20px;
-  border: 1px solid #e5e5e5;
-  border-radius: 20px;
+  border: none;
+  border-bottom: 2px solid #e5e5e5;
+  /* border-radius: 8px; */
 }
 
 #addComment {
   flex: 1 0 1;
   border: none;
-  border-radius: 30px;
+  border-radius: 830px;
   padding: 8px 24px;
-  height: 44px;
+  height: 40px;
 
   cursor: pointer;
   transition: background-color 0.2s;
@@ -109,7 +110,7 @@
 
 /* 댓글 내용 */
 .comment-content {
-  margin: 10px 50px;
+  margin: 10px 50px 50px 50px;
   white-space: pre-wrap;
 }
 
@@ -154,7 +155,8 @@
 /* 버튼 영역 (답글, 수정, 삭제) */
 .comment-btn-area {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
+  justify-content: space-between;
   margin-top: 10px;
 }
 
@@ -184,8 +186,9 @@
   resize: none;
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid #e5e5e5;
-  border-radius: 20px;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+  /* border-radius: 20px; */
   background: var(--white);
 }
 
@@ -193,4 +196,11 @@
 .update-textarea:focus,
 .commentInsertContent:focus {
   outline: none; /* 검은색 테두리 제거 */
+}
+
+.edit-delete-group {
+  width: 174px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

@@ -172,7 +172,6 @@ select {
 .logo {
   display: flex;
   align-items: center;
-  /* width: 120px; */
   flex-shrink: 0;
 }
 
@@ -297,6 +296,8 @@ select {
 .navigation {
   background-color: var(--white);
   border-bottom: 1px solid var(--lightgray);
+
+  padding: 10px 0;
 }
 
 .nav-container {
@@ -311,6 +312,7 @@ select {
 
 .menu-list {
   display: flex;
+  margin: 0;
 }
 
 .menu-item {
@@ -372,7 +374,7 @@ select {
   transition: background-color 0.2s;
 
   background-color: var(--lemon);
-  padding: 8px 20px;
+  padding: 10px 20px;
   box-shadow: var(--SHADOW);
   border-radius: 4px;
   width: 120px;

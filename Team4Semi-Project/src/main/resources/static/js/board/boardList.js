@@ -311,7 +311,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-
   /**
    * 정렬 기능 초기화
    */

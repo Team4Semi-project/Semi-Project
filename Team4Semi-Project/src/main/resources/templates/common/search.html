@@ -221,12 +221,14 @@
         <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
           <!-- 첫 페이지로 이동 -->
           <li>
-            <a th:href="@{/search(cp=1, key=${param.key}, querys=${param.querys})}">&lt;&lt;</a>
+            <a
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=1, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} ">&lt;&lt;</a>
           </li>
 
           <!-- 이전 목록 마지막 번호로 이동 -->
           <li>
-            <a th:href="@{/search(cp=*{prevPage}, key=${param.key}, querys=${param.querys})}">&lt;</a>
+            <a
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{prevPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} ">&lt;</a>
           </li>
 
           <!-- 특정 페이지로 이동 -->
@@ -238,7 +240,8 @@
 
             <!-- 보고있지 않은 페이지 -->
             <li th:unless="${i} == *{currentPage}">
-              <a th:href="@{/search(cp=${i}, key=${param.key}, querys=${param.querys})}" th:text="${i}">이동할 페이지</a>
+              <a th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=${i}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
+                th:text="${i}">이동할 페이지</a>
             </li>
           </th:block>
 
@@ -251,12 +254,14 @@
 
           <!-- 다음 목록 시작 번호로 이동 -->
           <li>
-            <a th:href="@{/search(cp=*{nextPage}, key=${param.key}, querys=${param.querys})}">&gt;</a>
+            <a
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{nextPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} ">&gt;</a>
           </li>
 
           <!-- 끝 페이지로 이동 -->
           <li>
-            <a th:href="@{/search(cp=*{maxPage}, key=${param.key}, querys=${param.querys})}">&gt;&gt;</a>
+            <a
+              th:href="@{/board/1/{categoryNo}(categoryNo=${categoryNo}, cp=*{maxPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&gt;&gt;</a>
           </li>
         </ul>
       </div>

@@ -247,4 +247,18 @@ public interface RecipeBoardMapper {
 	 * @author 재호
 	 */
 	int newThumbnail(Map<String, Integer> map);
+
+	/** 통합 검색 시 이전글 조회
+	 * @param searchMap
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard searchAllPrevBoard(Map<String, String> searchMap);
+
+	/** 통합 검색 시 다음글 조회
+	 * @param searchMap
+	 * @return
+	 * @author jihyun
+	 */
+	RecipeBoard searchAllNextBoard(Map<String, String> searchMap);
 }

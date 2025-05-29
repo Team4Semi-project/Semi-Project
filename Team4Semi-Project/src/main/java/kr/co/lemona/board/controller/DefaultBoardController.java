@@ -143,6 +143,7 @@ public class DefaultBoardController {
 			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
 			@RequestParam(value = "key", required = false, defaultValue = "") String key,
 			@RequestParam(value = "queryb", required = false, defaultValue = "") String queryb,
+			@RequestParam(value = "querys", required = false, defaultValue = "") String querys,
 			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
 			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠키 얻어오기
 			HttpServletResponse resp // 새로운 쿠키 만들어서 응답하기
@@ -157,7 +158,6 @@ public class DefaultBoardController {
 		map.put("boardNo", boardNo);
 		searchMap.put("boardNo", String.valueOf(boardNo));
 		searchMap.put("boardCode", String.valueOf(boardCode));
-		searchMap.put("boardNo", String.valueOf(boardNo));
 		
 		// 이전글/다음글을 위한 sort 전달
 		int sortNo = 0;
@@ -182,6 +182,7 @@ public class DefaultBoardController {
 		searchMap.put("sort", String.valueOf(sortNo));
 		searchMap.put("key", String.valueOf(keyNo));
 		searchMap.put("queryb", queryb);
+		searchMap.put("querys", querys);
 
 		// 로그인 상태인 경우 memberNo 추가
 		if (loginMember != null) {

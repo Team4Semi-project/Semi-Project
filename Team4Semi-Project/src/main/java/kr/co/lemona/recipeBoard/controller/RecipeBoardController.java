@@ -182,10 +182,12 @@ public class RecipeBoardController {
 	 */
 	@GetMapping("{category}/{boardNo:[0-9]+}")
 	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo,
+			@PathVariable("boardCode") int boardCode,
 			@PathVariable("category") String category,
 			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
 			@RequestParam(value = "key", required = false, defaultValue = "") String key,
 			@RequestParam(value = "queryb", required = false, defaultValue = "") String queryb,
+			@RequestParam(value = "querys", required = false, defaultValue = "") String querys,
 			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
 			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠기 얻어오기
 			HttpServletResponse resp // 새로운 쿠기 만들어서 응답하기
@@ -236,6 +238,8 @@ public class RecipeBoardController {
 		searchMap.put("sort", String.valueOf(sortNo));
 		searchMap.put("key", String.valueOf(keyNo));
 		searchMap.put("queryb", queryb);
+		searchMap.put("querys", querys);
+		searchMap.put("boardCode", String.valueOf(boardCode));
 
 		// 로그인 상태인 경우에만 memberNo 추가
 		if (loginMember != null) {

@@ -90,20 +90,26 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		Board prevBoard = null;
 		Board nextBoard = null;
 		
-		if (searchMap.get("queryb").isEmpty()) { // 검색이 아닌 경우
-			log.info("select key : "+searchMap.get("key"));
-			log.info("SEARCHMAP : "+searchMap);
-			// 이전 글
-			prevBoard = mapper.selectPrevBoard(map);
-			// 다음 글
-			nextBoard = mapper.selectNextBoard(map);
-		}else { // 검색인 경우
-			log.info("search key : "+searchMap.get("key"));
-			log.info("SEARCHMAP : "+searchMap);
+		if (!searchMap.get("queryb").isEmpty()){ // 게시판 검색인 경우
+			log.info("searchMap : "+searchMap);
+			log.info("queryb : "+searchMap.get("queryb"));
 			// 이전 글
 			prevBoard = mapper.searchPrevBoard(searchMap);
 			// 다음 글
 			nextBoard = mapper.searchNextBoard(searchMap);
+		} else if (!searchMap.get("querys").isEmpty()){ // 통합 검색인 경우
+			log.info("searchMap : "+searchMap);
+			log.info("querys : "+searchMap.get("querys"));
+			// 이전 글
+			prevBoard = mapper.searchAllPrevBoard(searchMap);
+			// 다음 글
+			nextBoard = mapper.searchAllNextBoard(searchMap);
+		} else {  // 검색이 아닌 경우
+			log.info("map : "+ map);
+			// 이전 글
+			prevBoard = mapper.selectPrevBoard(map);
+			// 다음 글
+			nextBoard = mapper.selectNextBoard(map);
 		}
 //
 //		// 이전 글

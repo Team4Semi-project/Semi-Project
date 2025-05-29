@@ -9,7 +9,7 @@ public interface MainService {
 	 * @return
 	 * @author jihyun
 	 */
-	Map<String, Object> selectPopularBoardList(int cp);
+	Map<String, Object> selectPopularBoardList(Map<String, Integer> dataMap);
 
 	/** 메인화면에 출력될 최근 레시피 게시글 4개 조회 서비스
 	 * @param categoryNo
@@ -17,7 +17,7 @@ public interface MainService {
 	 * @return
 	 * @author jihyun
 	 */
-	Map<String, Object> selectRecipeBoardList(int categoryNo, int cp);
+	Map<String, Object> selectRecipeBoardList(Map<String, Integer> dataMap);
 
 	/** 전체 게시글 통합 검색 서비스
 	 * @param paramMap

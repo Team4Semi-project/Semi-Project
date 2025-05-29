@@ -261,4 +261,9 @@ public interface RecipeBoardMapper {
 	 * @author jihyun
 	 */
 	RecipeBoard searchAllNextBoard(Map<String, String> searchMap);
+	/** 스텝 내용 수정
+	 * @param content
+	 * @return
+	 */
+	int updateBoardStepContent(Map<String, Object> contentMap);
 }

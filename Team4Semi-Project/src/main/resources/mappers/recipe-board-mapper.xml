@@ -1658,6 +1658,15 @@ WHERE RN = (SELECT RN - 1 FROM TARGET)
 		SET THUMBNAIL_CHECK = 'Y'
 		WHERE BOARD_NO = #{boardNo}
 		AND STEP_ORDER = #{stepNo}
+	</update>	
+	
+	<!-- 스텝 내용 수정 -->
+	<!-- 재호 -->
+	<update id="updateBoardStepContent">
+		UPDATE BOARD_STEP
+		SET STEP_CONTENT = #{content}
+		WHERE BOARD_NO = #{boardNo}
+		AND STEP_ORDER = #{stepOrder}
 	</update>
 	
 </mapper>

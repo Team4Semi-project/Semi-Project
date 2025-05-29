@@ -20,9 +20,11 @@ public class EmailController {
 
 	@ResponseBody
 	@PostMapping("register")
-	public int signup(@RequestBody String email) {
+	public int signup(@RequestBody  Map<String, String> request) {
 
-		String authKey = service.sendEmail("register", email);
+		String email = request.get("email");  // email 추출
+
+	    String authKey = service.sendEmail("register", email);  // email만 넘기기
 
 		if (authKey != null) { // 인증번호 발급 성공 & 이메일 보내기 성공
 			return 1;

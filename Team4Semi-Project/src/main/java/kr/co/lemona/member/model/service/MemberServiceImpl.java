@@ -50,11 +50,11 @@ public class MemberServiceImpl implements MemberService {
 		// 암호화된 비밀번호(loginMember.getMemberPw())
 		// 두 비밀번호가 일치하는지 확인 (bcrypt.matches(평문, 암호화))
 		// 일치하지 않으면
-		log.debug("loginMember : {} ",loginMember);
+		log.debug("loginMember : {} ", loginMember);
 
 		if (!bcrypt.matches(inputMember.getMemberPw(), loginMember.getMemberPw())) {
 			log.debug("????");
-				
+
 			return null;
 		}
 
@@ -92,35 +92,38 @@ public class MemberServiceImpl implements MemberService {
 
 	}
 
+	// 아이디 중복 체크 검사
 	@Override
 	public int checkId(String memberId) {
-		return 0;
+		return mapper.checkId(memberId);
 	}
 
-	// 아이디 찾기 
+	// 아이디 찾기
 	@Override
 	public String findIdByNameAndEmail(Map<String, String> params) {
 		log.debug("입력 name: " + params.get("name"));
-	    log.debug("입력 email: " + params.get("email"));
+		log.debug("입력 email: " + params.get("email"));
 
-	    String result = mapper.findIdByNameAndEmail(params);
+		String result = mapper.findIdByNameAndEmail(params);
 
-	    log.debug("찾은 ID: " + result);
+		log.debug("찾은 ID: " + result);
 
-	    return result;
+		return result;
 	}
-	
+
 	// 비밀번호 찾기
 	@Override
 	public Map<String, String> findUserByIdNameEmail(Member member) {
-	    return mapper.findUserByIdNameEmail(member);
+		return mapper.findUserByIdNameEmail(member);
 	}
-		
+
 	// 비밀번호 재설정
 	@Override
-	public boolean updatePassword(String memberId, String newPassword) {
-		 String encPw = bcrypt.encode(newPassword);  // 암호화
-	    return mapper.updatePassword(memberId, newPassword);
+	public int updatePassword(String memberId, String memberPw) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("memberPw", memberPw);
+		return mapper.updatePassword(map);
 	}
 
 }

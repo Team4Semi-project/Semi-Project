@@ -498,7 +498,7 @@ public class RecipeBoardController {
 	 * @return
 	 * @author 재호
 	 */
-	@GetMapping("{category}/{boardNo:[1-9]+}/update")
+	@GetMapping("{category}/{boardNo:[0-9]+}/update")
 	public String updateRecipeBoard(@PathVariable("category") Object category,
 			@PathVariable("boardNo" ) int boardNo,
 			Model model,
@@ -564,7 +564,7 @@ public class RecipeBoardController {
 	public String updateRecipeBoard(RecipeBoard inputBoard,
 	        @RequestParam(value = "images", required = false) List<MultipartFile> images,
 	        @RequestParam("stepContents") List<String> inputStepContent,
-	        @RequestParam(value = "thumbnailNo", required = false) Integer thumbnailNo,
+	        @RequestParam(value = "thumbnailNo", required = false, defaultValue = "0") Integer thumbnailNo,
 	        @RequestParam(value = "hashTags", required = false) List<String> hashTagList,
 	        RedirectAttributes ra,
 	        @RequestParam("boardNo") int boardNo,

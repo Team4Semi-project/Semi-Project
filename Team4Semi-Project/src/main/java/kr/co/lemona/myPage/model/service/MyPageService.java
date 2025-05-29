@@ -44,6 +44,12 @@ public interface MyPageService {
 	 * @author miae
 	 */
 	Map<String, Object> selectMemberInfo(Map<String, Object> inputMap);
+
+	/** 사용자가 작성한 일반 게시글 조회
+	 * @param inputMap
+	 * @return
+	 */
+	Map<String, Object> selectMemberBoardList(Map<String, Object> inputMap);
 	
 //	/** 내가 쓴 글 수 조회 
 //     * @param memberId

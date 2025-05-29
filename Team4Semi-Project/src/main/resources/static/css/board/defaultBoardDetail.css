@@ -1,3 +1,16 @@
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #333;
+}
+
 /* 밑줄 제거, hover 시 파란색 말고 노란색으로 */
 a:hover {
   text-decoration: none;
@@ -6,7 +19,7 @@ a:hover {
 
 /* 전체 섹션 스타일 */
 .board-detail {
-  width: 60%;
+  max-width: 1200px;
   padding: 0;
   display: block;
   position: relative;
@@ -55,7 +68,7 @@ a:hover {
 
 .board-update::before,
 .board-update::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   width: 1px;
@@ -80,7 +93,8 @@ a:hover {
 }
 
 /* 좋아요/조회수 기능 */
-.likes, .views{
+.likes,
+.views {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,7 +121,8 @@ a:hover {
   color: var(--darkgray);
 }
 
-.likes span, .views span {
+.likes span,
+.views span {
   font-size: var(--pre-p-2-font-size);
   font-family: var(--pre-p-2-font-family);
   font-weight: var(--pre-p-2-font-size);
@@ -171,13 +186,13 @@ a:hover {
   color: var(--darkgray);
   border: none;
   border-radius: 30px;
-  padding: 8px 20px;
+  padding: 8px 24px;
   font-size: var(--ryu-p-3-font-size);
-  font-weight: var(--ryu-p-3-weight);
-  font-family: var(--ryu-p-3-font-family);
-  box-shadow: var(--SHADOW);
+  font-weight: var(--ryu-p-2-weight);
+  font-family: var(--ryu-p-2-font-family);
   cursor: pointer;
   transition: background-color 0.2s;
+  box-shadow: var(--SHADOW);
 }
 
 .updateBtn:hover,

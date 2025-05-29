@@ -9,12 +9,9 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/board/defaultBoardDetail.css">
   <link rel="stylesheet" href="/css/board/comment.css">
-  <th:block th:replace="~{common/common}"></th:block>
-
-  <!-- 아이콘 -->
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 
 <body>
@@ -84,10 +81,10 @@
         <sapn class="text">다음 글</sapn><span class="material-symbols-outlined align-middle">chevron_right</span>
       </a>
     </div>
-  </section>
 
-  <!-- 댓글 영역-->
-  <th:block th:replace="~{board/comment}"></th:block>
+    <!-- 댓글 영역-->
+    <th:block th:replace="~{board/comment}"></th:block>
+  </section>
 
   <!-- 푸터 프래그먼트 -->
   <footer th:replace="~{common/footer :: footer}"></footer>

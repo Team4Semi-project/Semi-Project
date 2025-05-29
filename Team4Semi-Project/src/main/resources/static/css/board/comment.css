@@ -72,7 +72,13 @@
 /* 대댓글 */
 .child-comment {
   margin-left: 50px;
-  background: #fffef9;
+  background: var(--white);
+}
+
+/* 댓글 상단(프로필, 작성자, 날짜, 좋아요) */
+.comment-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* 작성자 정보 */
@@ -103,7 +109,7 @@
 
 /* 댓글 내용 */
 .comment-content {
-  margin: 5px 0;
+  margin: 10px 50px;
   white-space: pre-wrap;
 }
 
@@ -163,6 +169,7 @@
   font-size: var(--ryu-p-1-font-size);
   font-family: var(--ryu-p-1-font-family);
   transition: background-color 0.2s;
+  box-shadow: var(--SHADOW);
 }
 
 .comment-btn-area button:hover {
@@ -178,8 +185,8 @@
   margin-top: 10px;
   padding: 10px;
   border: 1px solid #e5e5e5;
-  border-radius: 5px;
-  background: #fafafa;
+  border-radius: 20px;
+  background: var(--white);
 }
 
 .comment-write-area > textarea:focus,

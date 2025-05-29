@@ -199,6 +199,7 @@ const showInsertComment = (parentCommentNo, btn) => {
   const textarea = document.createElement("textarea");
   textarea.classList.add("commentInsertContent");
   textarea.placeholder = "답글을 입력하세요";
+  textarea.maxLength="100";
   // 답글 버튼의 부모의 뒤쪽에 textarea 추가
   // after(요소) : 뒤쪽에 추가
   btn.parentElement.after(textarea);
@@ -414,6 +415,7 @@ const updateComment = (commentNo, btn) => {
     })
 
 }
+
 /* 좋아요 기능 */
 const commentLikes = document.querySelectorAll(".commentLikes");
 if (commentLikes) {

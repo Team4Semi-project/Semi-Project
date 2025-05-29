@@ -3,6 +3,7 @@
 <mapper namespace="kr.co.lemona.email.model.mapper.EmailMapper">
 
 	<!-- 전달받은 파라미터가 Map -> key 접근 DTO -> 필드명 접근 -->
+	
 	<!-- 인증 번호 수정 -->
 	<update id="updateAuthKey">
 		UPDATE "AUTH_KEY" 
@@ -15,8 +16,6 @@
 		INSERT INTO AUTH_KEY
 		VALUES(SEQ_KEY_NO.NEXTVAL, #{email}, #{authKey}, DEFAULT) 
 	</insert>
- 
-	
 
 	<!-- 이메일 + 인증번호 확인 -->
 	<select id="checkAuthKey">

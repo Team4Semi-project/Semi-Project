@@ -56,7 +56,14 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	int profile(Member member);
-
+	
+	/** 사용자 No 조회
+	 * @param nickname
+	 * @return
+	 * @author 민장
+	 */
+	int searchMemberNo(String nickname);
+	
 	/** 사용자 조회
 	 * @param loginMember
 	 * @return
@@ -90,6 +97,7 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	List<Board> selectMemberBoardList(int memberNo, RowBounds rowBounds);
+
 
 
 }

@@ -97,6 +97,10 @@
   border: 1px solid #e5e5e5;
 }
 
+.profileImg:hover, .nickname:hover {
+  cursor: pointer;
+}
+
 .comment-writer > span {
   font-weight: 600;
   margin-left: 10px;

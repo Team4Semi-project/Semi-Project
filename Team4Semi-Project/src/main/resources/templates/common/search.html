@@ -87,7 +87,6 @@
                 </a>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
-
               <!-- 레시피 게시판 해시태그 -->
               <div th:if="${board.boardCode == 1}" class="recipe-tags">
                 <span class="tag" th:each="tag : ${board.hashTagList}" th:utext="'#' +${tag}">#레몬</span>

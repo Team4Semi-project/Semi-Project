@@ -60,9 +60,8 @@ public class MyPageController {
 		return "myPage/myPage-secession";
 	}
 
-
 	@GetMapping("userProfile")
-	public String selectMemberInfo(@SessionAttribute("loginMember") Member loginMember,
+	public String selectMemberInfo(@RequestParam("memberNickname") String memberNickname,
 			@RequestParam(value = "type", required = false, defaultValue = "recipe") String type,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			Model model, RedirectAttributes ra) {
@@ -73,13 +72,12 @@ public class MyPageController {
 		String message = null;
 		int memberNo = 0;
 
-		
-		if (loginMember == null) {
-			message = "로그인 멤버 없으면 나중에 처리할게용.";
+		if (memberNickname == null) {
+			message = "닉네임 : null";
 			path = "redirect:/";
 		} else {
 			
-			memberNo = loginMember.getMemberNo();
+			memberNo = service.searchMemberNo(memberNickname);
 		}
 		
 		inputMap.put("memberNo", memberNo);

@@ -162,6 +162,7 @@ main {
   transform: translateY(-5px);
   box-shadow: var(--SHADOW);
   background-color: var(--milk);
+  cursor: pointer;
 }
 
 .recipe-image {

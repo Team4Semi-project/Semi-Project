@@ -27,11 +27,11 @@
           <div class="comment-header">
             <p class="comment-writer">
               <!-- 프로필 이미지 없을 경우 -->
-              <img th:unless="${comment.profileImg}" th:src="#{user.default.image}">
+              <img class="profileImg" th:unless="${comment.profileImg}" th:src="#{user.default.image}" th:data-nickname="${comment.memberNickname}">
               <!-- 프로필 이미지 있을 경우 -->
-              <img th:if="${comment.profileImg}" th:src="${comment.profileImg}">
+              <img class="profileImg" th:if="${comment.profileImg}" th:src="${comment.profileImg}" th:data-nickname="${comment.memberNickname}">
 
-              <span th:text="${comment.memberNickname}">닉네임</span>
+              <span class="nickname" th:text="${comment.memberNickname}" th:data-nickname="${comment.memberNickname}">닉네임</span>
               <span class="comment-date" th:text="${comment.commentWriteDate}">작성일</span>
             </p>
 

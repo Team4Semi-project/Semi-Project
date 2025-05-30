@@ -141,6 +141,7 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		if (searchMap.get("queryb") != null && !searchMap.get("queryb").isEmpty()){ // 레시피 게시판 검색인 경우
 			log.info("searchMap : "+searchMap);
 			log.info("queryb : "+searchMap.get("queryb"));
+			
 			// 이전 글
 			prevBoard = mapper.searchPrevBoard(searchMap);
 			// 다음 글
@@ -164,19 +165,20 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 			nextBoard = mapper.selectNextBoard(map);
 		}
 
-		int prevBoardNo = 0;
-		int nextBoardNo = 0;
-
 		// 이전 글 다음글 목록이 있을때만 값을 받아오기
-		if (prevBoard != null) {
-			prevBoardNo = prevBoard.getBoardNo();
-			log.info("prevBoardNo prevBoardNo: "+prevBoardNo);
-		}
+		int prevBoardNo = (prevBoard != null) ? prevBoardNo = prevBoard.getBoardNo() : 0;
+		int nextBoardNo = (nextBoard != null) ? nextBoardNo = nextBoard.getBoardNo() : 0;
+		
+		int prevBoardCode = (prevBoard != null) ? prevBoardCode = prevBoard.getBoardCode() : 0;
+		int nextBoardCode = (nextBoard != null) ? nextBoardCode = nextBoard.getBoardCode() : 0;
+		
+		log.info("prevBoardNo : "+prevBoardNo);
+		log.info("nextBoardNo : "+nextBoardNo);
+		
+		log.info("prevBoardCode : "+ prevBoardCode);
+		log.info("nextBoardCode : "+ nextBoardCode);
 
-		if (nextBoard != null) {
-			nextBoardNo = nextBoard.getBoardNo();
-			log.info("nextBoardNo nextBoardNo: "+nextBoardNo);
-		}
+		
 		
 		// 댓글 목록 (로그인 회원의 댓글 좋아요 여부 포함)
 		Map<String, Object> commentMap = new HashMap<>();
@@ -194,6 +196,8 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		map2.put("nextBoardNo", nextBoardNo);
 		map2.put("prevBoard", prevBoard);
 		map2.put("nextBoard", nextBoard);
+		map2.put("prevBoardCode", prevBoardCode);
+		map2.put("nextBoardCode", nextBoardCode);
 
 		return map2;
 	}

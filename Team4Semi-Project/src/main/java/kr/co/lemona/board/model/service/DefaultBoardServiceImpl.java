@@ -118,13 +118,6 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 			nextBoard = mapper.selectNextBoard(map);
 		}
 
-//
-//		// 이전 글
-//		Board prevBoard = mapper.selectPrevBoard(map);
-//
-//		// 다음 글
-//		Board nextBoard = mapper.selectNextBoard(map);
-
 		// 이전 글 다음글 목록이 있을때만 값을 받아오기
 		int prevBoardNo = (prevBoard != null) ? prevBoardNo = prevBoard.getBoardNo() : 0;
 		int nextBoardNo = (nextBoard != null) ? nextBoardNo = nextBoard.getBoardNo() : 0;
@@ -134,6 +127,9 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 
 		log.info("prevBoardNo : "+prevBoardNo);
 		log.info("nextBoardNo : "+nextBoardNo);
+		
+		log.info("prevBoardCode : "+ prevBoardCode);
+		log.info("nextBoardCode : "+ nextBoardCode);
 		
 		// 3. 댓글 목록 (로그인 회원의 댓글 좋아요 여부 포함)
 		Map<String, Object> commentMap = new HashMap<>();
@@ -151,6 +147,8 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		resultMap.put("nextBoardNo", nextBoardNo);
 		resultMap.put("prevBoard", prevBoard);
 		resultMap.put("nextBoard", nextBoard);
+		resultMap.put("prevBoardCode", prevBoardCode);
+		resultMap.put("nextBoardCode", nextBoardCode);
 
 		return resultMap;
 	}

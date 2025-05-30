@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.recipeBoard.model.dto.BoardStep;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
@@ -264,6 +265,8 @@ public class RecipeBoardController {
 			List<BoardStep> boardStepList = (List<BoardStep>) recipeMap.get("boardStepList");
 			int prevBoardNo = (int) recipeMap.get("prevBoardNo");
 			int nextBoardNo = (int) recipeMap.get("nextBoardNo");
+			RecipeBoard prevBoard = (RecipeBoard) recipeMap.get("prevBoard");
+			RecipeBoard nextBoard = (RecipeBoard) recipeMap.get("nextBoard");
 
 			/*--------------------- 쿠키를 이용한 조회수 증가 시작 ------------------------*/
 
@@ -342,6 +345,8 @@ public class RecipeBoardController {
 				model.addAttribute("prevBoardNo", prevBoardNo);
 				model.addAttribute("nextBoardNo", nextBoardNo);
 				model.addAttribute("loginMember", loginMember);
+				model.addAttribute("prevBoard", prevBoard.getBoardCode());
+				model.addAttribute("nextBoard", nextBoard.getBoardCode());
 
 				// 조회된 이미지 목록이 있을 경우
 				/*

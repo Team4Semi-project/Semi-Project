@@ -86,12 +86,13 @@
                   <div class="recipe-meta non-href">
                     <!-- 사용자 정보 -->
                     <div class="author-info">
-                      <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                        alt="프로필 이미지" class="author-image" />
-                      <span class="author-name" th:utext="${board.memberNickname}">장미애 님</span>
+                      <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+                        th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                        th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                      <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
+                      <!-- 작성일 -->
+                      <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                     </div>
-                    <!-- 작성일 -->
-                    <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                   </div>
 
                   <!-- 좋아요/조회수 -->
@@ -142,8 +143,9 @@
                     <div class="author-info">
                       <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                         th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                        alt="프로필 이미지" />
-                      <span class="author-name" th:utext="${board.memberNickname}">장미애 님</span>
+                        th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                      <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
+                      <!-- 작성일 -->
                       <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                     </div>
                   </div>
@@ -208,8 +210,8 @@
                   <div class="recipe-meta non-href">
                     <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                       th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                      alt="프로필 이미지" />
-                    <span class="author-name" th:utext="${board.memberNickname}">김아가 님</span>
+                      th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                    <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
                     <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                   </div>
 
@@ -256,8 +258,8 @@
                   <div class="recipe-meta non-href">
                     <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                       th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                      alt="프로필 이미지" />
-                    <span class="author-name" th:utext="${board.memberNickname}">김아가 님</span>
+                      th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                    <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
                     <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                   </div>
 

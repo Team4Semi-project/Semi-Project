@@ -26,12 +26,12 @@
         <th:block th:if="${comment.commentDelFl == 'N'}">
           <div class="comment-header">
             <p class="comment-writer">
-              <!-- 프로필 이미지 없을 경우 -->
-              <img class="profileImg" th:unless="${comment.profileImg}" th:src="#{user.default.image}" th:data-nickname="${comment.memberNickname}">
-              <!-- 프로필 이미지 있을 경우 -->
-              <img class="profileImg" th:if="${comment.profileImg}" th:src="${comment.profileImg}" th:data-nickname="${comment.memberNickname}">
+              <img class="profileImg" onerror="this.onerror=null; this.src='/images/user.png';"
+                th:src="${#strings.isEmpty(comment.profileImg) ? '/images/user.png' : comment.profileImg}"
+                th:data-nickname="${comment.memberNickname}" alt="프로필 이미지">
 
-              <span class="nickname" th:text="${comment.memberNickname}" th:data-nickname="${comment.memberNickname}">닉네임</span>
+              <span class="nickname" th:text="${comment.memberNickname}"
+                th:data-nickname="${comment.memberNickname}">닉네임</span>
               <span class="comment-date" th:text="${comment.commentWriteDate}">작성일</span>
             </p>
 

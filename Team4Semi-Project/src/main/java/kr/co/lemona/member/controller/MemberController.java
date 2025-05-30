@@ -36,7 +36,7 @@ public class MemberController {
 	
 	 @GetMapping("login")
 	    public String loginForm() {
-	        return "member/login"; // templates/member/login.html
+	        return "login/login"; // templates/login/login.html
 	    }
 
 	@PostMapping("login") // Post 방식 로그인
@@ -107,26 +107,22 @@ public class MemberController {
 
 	// 회원가입
 	@PostMapping("register")
-	public String register(Member inputMember, RedirectAttributes ra) {
+	@ResponseBody
+	public int register(Member inputMember, RedirectAttributes ra) {
 
 		// 회원가입 서비스 호출
 		int result = service.register(inputMember);
+		log.info("결과보기 : " + result );
+		/*
+		 * String path = null; // 리다이렉트 경로 저장 String message = null; if (result > 0) {
+		 * // 성공 시 message = "가입성공! 로그인 ㄱ"; //ra.addFlashAttribute("nickname",
+		 * inputMember.getMemberNickname()); path = "/login"; // 로그인 페이지로 이동
+		 * 
+		 * } else { // 실패 시 message = "회원가입 실패"; path = "/member/register"; }
+		 * ra.addFlashAttribute("message", message);
+		 */
 
-		String path = null; // 리다이렉트 경로 저장
-		String message = null; // 메시지 보여줌
-
-		if (result > 0) { // 성공 시
-			message = inputMember.getMemberNickname() + "님의 가입을 환영합니다!";
-			path = "/login"; // 메인 페이지로 이동
-
-		} else { // 실패 시
-			message = "회원 가입 실패..";
-			path = "redirect:/member/register";
-		}
-
-		ra.addFlashAttribute("message", message);
-
-		return path;
+		return result;
 		// 성공 -> redirect:/
 		// 실패 -> redirect:register (상대경로)
 		// 현재 주소 /register (GET 방식 요청)

@@ -198,5 +198,11 @@ public class MyPageController {
 
 		return "redirect:profile";
 	}
+	
+	// 마이페이지 에서 톱니바퀴 누르면 회원 정보 수정 페이지로 ㅇ
+	@GetMapping("/editProfile")
+    public String editProfile() {
+        return "myPage/editProfile"; // templates/myPage/editProfile.html을 렌더링
+    }
 
 }

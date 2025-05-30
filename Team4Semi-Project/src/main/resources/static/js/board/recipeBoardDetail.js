@@ -33,7 +33,7 @@ goToPrev.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/${prevBoard}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  location.href = `/board/1/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 // 다음글 버튼
@@ -51,7 +51,7 @@ goToNext.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/${nextBoard}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  location.href = `/board/1/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 const deleteBtn = document.querySelector("#deleteBtn");

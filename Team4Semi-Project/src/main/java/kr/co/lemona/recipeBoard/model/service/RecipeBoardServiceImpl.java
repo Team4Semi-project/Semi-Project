@@ -138,14 +138,14 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		RecipeBoard prevBoard = null;
 		RecipeBoard nextBoard = null;
 		
-		if (!searchMap.get("queryb").isEmpty()){ // 레시피 게시판 검색인 경우
+		if (searchMap.get("queryb") != null && !searchMap.get("queryb").isEmpty()){ // 레시피 게시판 검색인 경우
 			log.info("searchMap : "+searchMap);
 			log.info("queryb : "+searchMap.get("queryb"));
 			// 이전 글
 			prevBoard = mapper.searchPrevBoard(searchMap);
 			// 다음 글
 			nextBoard = mapper.searchNextBoard(searchMap);
-		} else if (!searchMap.get("querys").isEmpty()){ // 통합 검색인 경우
+		} else if (searchMap.get("querys")!=null && !searchMap.get("querys").isEmpty()){ // 통합 검색인 경우
 			log.info("searchMap : "+searchMap);
 			log.info("querys : "+searchMap.get("querys"));
 			// 이전 글

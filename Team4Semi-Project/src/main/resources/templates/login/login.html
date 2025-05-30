@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LEMONA - 로그인</title>
+  <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/login.css" />
 </head>
 <!-- login 안에 login -->
@@ -46,6 +47,11 @@
     <!-- 로그인 입력 안 하면 X-->
     <script src="/js/main.js"></script>
     <script src="/js/login/login.js"></script>
+    <script th:inline="javascript">
+      const message =  /*[[${message}]]*/ "전달 받은 message";
+
+      if (message != null) alert(message);
+    </script>
 </body>
 
 </html>

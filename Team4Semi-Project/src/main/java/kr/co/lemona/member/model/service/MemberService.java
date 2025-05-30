@@ -54,4 +54,12 @@ public interface MemberService {
 	 */
 	int updatePassword(String memberId, String memberPw);
 
+	/** 회원정보 수정
+	 * @return
+	 */
+	static Member getCurrentMember() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

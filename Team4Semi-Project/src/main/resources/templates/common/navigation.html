@@ -33,9 +33,9 @@
     <!-- 로그인한 사용자에게만 버튼 표시 -->
     <div th:if="${session.loginMember != null}" class="write-button-container">
       <!-- 레시피 게시판 (boardCode == 1) -->
-      <a th:if="${boardCode == 1}" th:href="@{/board/1/insert}" class="write-button">
+      <!-- <a th:if="${boardCode == 1}" th:href="@{/board/1/insert}" class="write-button">
         레시피 작성
-      </a>
+      </a> -->
 
       <!-- 자유게시판 (boardCode == 2) -->
       <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">

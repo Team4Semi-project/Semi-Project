@@ -1,0 +1,99 @@
+.myPage-content {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.side-menu {
+  width: 200px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+
+.side-menu h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  background-color: #ffd700;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.side-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.side-menu ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  display: block;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.side-menu ul li a:hover {
+  background-color: #ffd700;
+  color: #fff;
+}
+
+.myPage-main {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.myPage-title {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.myPage-subject {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.myPage-row {
+  margin-bottom: 15px;
+}
+
+.myPage-row label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.myPage-row input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fffaf0;
+}
+
+.myPage-submit {
+  background-color: #ffd700;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.myPage-submit:hover {
+  background-color: #e6c200;
+}

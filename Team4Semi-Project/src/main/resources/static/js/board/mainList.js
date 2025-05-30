@@ -333,3 +333,26 @@ document.addEventListener("DOMContentLoaded", function () {
   // 이미지 지연 로딩 초기화
   lazyLoadImages();
 });
+
+/* 프로필, 닉네임 클릭 시 유저 페이지로 이동 */
+document.addEventListener("DOMContentLoaded", function () {
+  // 닉네임 클릭
+  document.querySelectorAll(".author-name").forEach((el) => {
+    el.addEventListener("click", function () {
+      const nickname = this.dataset.nickname;
+      if (nickname) {
+        window.location.href = `/mypage/userProfile?memberNickname=${encodeURIComponent(nickname)}`;
+      }
+    });
+  });
+
+  // 프로필 이미지 클릭
+  document.querySelectorAll(".author-image").forEach((el) => {
+    el.addEventListener("click", function () {
+      const nickname = this.dataset.nickname;
+      if (nickname) {
+        window.location.href = `/mypage/userProfile?memberNickname=${encodeURIComponent(nickname)}`;
+      }
+    });
+  });
+});

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.lemona.member.model.dto.Member;
-import kr.co.lemona.myPage.model.dto.UploadFile;
+
 
 public interface MyPageService {
 
@@ -50,6 +50,8 @@ public interface MyPageService {
 	 * @return
 	 */
 	Map<String, Object> selectMemberBoardList(Map<String, Object> inputMap);
+
+
 	
 //	/** 내가 쓴 글 수 조회 
 //     * @param memberId

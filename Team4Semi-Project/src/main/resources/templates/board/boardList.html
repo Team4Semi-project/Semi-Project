@@ -52,6 +52,7 @@
       </div>
       <!-- 게시글 컨테이너 (Cozy View) -->
       <div class="recipe-container cozy-view" id="cozy">
+
         <!-- 게시글 없을 때 -->
         <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
           <p>등록된 게시글이 없습니다.</p>
@@ -59,6 +60,7 @@
 
         <!-- 게시글 목록 -->
         <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
+
           <div th:each="board : ${boardList}" class="recipe-item"
             th:data-url="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
             <div class="recipe-image">
@@ -237,7 +239,7 @@
           <li>
             <a
               th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&gt;</a>
-              
+
           </li>
 
           <!-- 끝 페이지로 이동 -->

@@ -184,6 +184,8 @@ main {
 .recipe-title {
   margin-bottom: 10px;
   display: flex;
+  flex-direction: row;
+  width: 100%;
   justify-content: space-between;
   color: var(--deepbrown);
 }
@@ -195,6 +197,12 @@ main {
   text-overflow: ellipsis;
   overflow: hidden;
 
+  font-family: var(--pre-h-2-font-family);
+  font-weight: var(--pre-h-2-font-weight);
+  font-size: var(--pre-h-2-font-size);
+}
+
+.titleText > span {
   font-family: var(--pre-h-2-font-family);
   font-weight: var(--pre-h-2-font-weight);
   font-size: var(--pre-h-2-font-size);
@@ -430,13 +438,14 @@ main {
 }
 
 .agenda-view .recipe-image {
-  width: 140px;
-  height: 100%;
-  margin-right: 15px;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  /* margin-right: 15px; */
 }
 
 .agenda-view .recipe-details {
-  width: 100%;
+  flex: 1;
   padding: 15px;
 }
 

@@ -50,6 +50,13 @@ if (deleteBtn != null) {
 
 // 목록으로 버튼 클릭 시 이동
 goToListBtn.addEventListener("click", () => {
+   const userProfile = naviBtn.dataset.userProfile;
+   console.log("userProfile : " , userProfile);
+  if(userProfile == 'Y'){
+    location.href = `/mypage/userProfile?cp=${cp}`;
+    return;
+  } 
+
   location.href = `/board/${boardCode}?cp=${cp}`;
   return;
 });
@@ -58,7 +65,7 @@ goToListBtn.addEventListener("click", () => {
 goToPrev.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const prevBoardNo = naviBtn.dataset.prevBoardNo;
-  // const prevBoard = naviBtn.dataset.prevBoard;
+  const prevBoardCode = naviBtn.dataset.prevBoard;
   if (prevBoardNo == 0) {
     alert("이전 글이 없습니다.");
     return;
@@ -68,19 +75,23 @@ goToPrev.addEventListener("click", () => {
   const queryb = urlParams.get("queryb") || "";
   const querys = urlParams.get("querys") || "";
   const sort = urlParams.get("sort") || "";
+
+  const pathname = window.location.pathname;
+  const segments = pathname.split("/");
+  const categoryNo = segments[3];
 // 문자열 비교로 수정
-  // if (prevBoard === "1") {
-  //   location.href = `/board/${prevBoard}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
-  // } else {
-    location.href = `/board/${boardCode}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
-  // }
+  if (prevBoardCode == 1) {
+    location.href = `/board/${prevBoardCode}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  } else {
+    location.href = `/board/${prevBoardCode}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  }
 });
 
 // 다음글 버튼
 goToNext.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const nextBoardNo = naviBtn.dataset.nextBoardNo;
-  // const nextBoard = naviBtn.dataset.nextBoard;
+  const nextBoardCode = naviBtn.dataset.nextBoard;
   if (nextBoardNo == 0) {
     alert("다음 글이 없습니다.");
     return;
@@ -90,15 +101,18 @@ goToNext.addEventListener("click", () => {
   const queryb = urlParams.get("queryb") || "";
   const querys = urlParams.get("querys") || "";
   const sort = urlParams.get("sort") || "";
+
+
+  const pathname = window.location.pathname;
+  const segments = pathname.split("/");
+  const categoryNo = segments[3];
   // 문자열 비교로 수정
-//   if (prevBoard === "1") {
-//     location.href = `/board/${nextBoard}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
-//     console.log("nextBoard" + nextBoard);
-//   } else {
-//     location.href = `/board/${nextBoard}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
-//     console.log("nextBoard" + nextBoard);
-// }
-location.href = `/board/${boardCode}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+    if (nextBoardCode == 1) {
+    location.href = `/board/${nextBoardCode}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  } else {
+    location.href = `/board/${nextBoardCode}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  }
+// location.href = `/board/${nextBoardCode}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 /* 좋아요 기능 */

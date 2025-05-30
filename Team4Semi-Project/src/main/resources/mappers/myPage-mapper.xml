@@ -86,7 +86,7 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</select>
 
-	<!-- 특정 사용자의 게시글 수 조회 -->
+	<!-- 특정 사용자의 레시피 수 조회 -->
 	<!-- 미애 -->
 	<select id="getMemberRecipeListCount">
 		SELECT COUNT(*)
@@ -162,7 +162,7 @@
 		
 		<!-- 사용자 번호로 조회 -->
 		AND B.MEMBER_NO = ${memberNo}
-
+		ORDER BY BOARD_NO DESC
 	</select>
 	
 	<!-- 사용자가 작성한 일반 게시글 갯수 조회 -->
@@ -183,6 +183,7 @@
 		M.MEMBER_NICKNAME, 
 		B.BOARD_CODE,
 		B.BOARD_CONTENT,
+		M.PROFILE_IMG,
 		
 		(SELECT COUNT(*) FROM "DEFAULT_COMMENT" C WHERE
 		C.BOARD_NO = B.BOARD_NO AND COMMENT_DEL_FL = 'N') COMMENT_COUNT,
@@ -220,7 +221,21 @@
 		
 		<!-- 사용자 번호로 조회 -->
 		AND B.MEMBER_NO = #{memberNo}
-		
+		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<!-- 사용자가 쓴 레시피 게시판 코멘트 -->
+	<select id="selectRecipeCommentCount">
+		SELECT COUNT(*) FROM
+		RECIPE_BOARD
+		WHERE MEMBER_NO=#{memberNo}
+	</select>
+	
+	<!-- 사용자가 쓴 일반 게시판 코멘트 -->
+	<select id="selectCommentCount">
+		SELECT COUNT(*) FROM
+		DEFAULT_COMMENT
+		WHERE MEMBER_NO=#{memberNo}
 	</select>
 	
 </mapper>

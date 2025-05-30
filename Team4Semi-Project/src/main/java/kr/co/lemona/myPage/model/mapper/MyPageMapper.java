@@ -97,6 +97,20 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	List<Board> selectMemberBoardList(int memberNo, RowBounds rowBounds);
+	
+	
+	
+	/** 특정 사용자가 쓴 레시피 게시판 댓글 목록
+	 * @param memberNo
+	 * @return
+	 */
+	int selectRecipeCommentCount(int memberNo);
+	
+	/** 특정 사용자가 쓴 일반 게시판 댓글 목록
+	 * @param memberNo
+	 * @return
+	 */
+	int selectCommentCount(int memberNo);
 
 
 

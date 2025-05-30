@@ -92,14 +92,14 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		
 
 
-		if (searchMap.get("queryb") == null || searchMap.get("queryb").isEmpty()) { // 검색이 아닌 경우
-			log.info("select key : "+searchMap.get("key"));
-			log.info("SEARCHMAP : "+searchMap);
+		if (searchMap.get("queryb") != null && !searchMap.get("queryb").isEmpty()) { // 게시판 검색인 경우
+			log.info("queryb : "+searchMap.get("queryb"));
+			log.info("searchMap : "+searchMap);
 			// 이전 글
-			prevBoard = mapper.selectPrevBoard(map);
+			prevBoard = mapper.searchPrevBoard(searchMap);
 			// 다음 글
-			nextBoard = mapper.selectNextBoard(map);
-		} else if (!searchMap.get("querys").isEmpty()){ // 통합 검색인 경우
+			nextBoard = mapper.searchNextBoard(searchMap);
+		} else if (searchMap.get("querys") != null && !searchMap.get("querys").isEmpty()){ // 통합 검색인 경우
 			log.info("searchMap : "+searchMap);
 			log.info("querys : "+searchMap.get("querys"));
 			// 이전 글
@@ -118,19 +118,18 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 			nextBoard = mapper.selectNextBoard(map);
 		}
 
-//
-//		// 이전 글
-//		Board prevBoard = mapper.selectPrevBoard(map);
-//
-//		// 다음 글
-//		Board nextBoard = mapper.selectNextBoard(map);
-
 		// 이전 글 다음글 목록이 있을때만 값을 받아오기
 		int prevBoardNo = (prevBoard != null) ? prevBoardNo = prevBoard.getBoardNo() : 0;
 		int nextBoardNo = (nextBoard != null) ? nextBoardNo = nextBoard.getBoardNo() : 0;
+		
+		int prevBoardCode = (prevBoard != null) ? prevBoardCode = prevBoard.getBoardCode() : 0;
+		int nextBoardCode = (nextBoard != null) ? nextBoardCode = nextBoard.getBoardCode() : 0;
 
 		log.info("prevBoardNo : "+prevBoardNo);
 		log.info("nextBoardNo : "+nextBoardNo);
+		
+		log.info("prevBoardCode : "+ prevBoardCode);
+		log.info("nextBoardCode : "+ nextBoardCode);
 		
 		// 3. 댓글 목록 (로그인 회원의 댓글 좋아요 여부 포함)
 		Map<String, Object> commentMap = new HashMap<>();
@@ -148,6 +147,8 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		resultMap.put("nextBoardNo", nextBoardNo);
 		resultMap.put("prevBoard", prevBoard);
 		resultMap.put("nextBoard", nextBoard);
+		resultMap.put("prevBoardCode", prevBoardCode);
+		resultMap.put("nextBoardCode", nextBoardCode);
 
 		return resultMap;
 	}

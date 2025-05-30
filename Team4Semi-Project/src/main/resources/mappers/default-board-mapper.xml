@@ -589,24 +589,25 @@
 		</choose>
 	</select>
 
-	<select id="searchAllPrevBoard">
 
 <!-- 지현 / 통합 검색 시 이전 글 조회 -->
+	<select id="searchAllPrevBoard">
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
+        ROW_NUMBER() OVER (ORDER BY
 					<choose>
                        <when test="sort == 1">
+                           BOARD_CREATE_DATE DESC,
                            BOARD_NO DESC
                        </when>
                        <when test="sort == 2">
-                           BOARD_NO ASC
+                           BOARD_CREATE_DATE ASC
                        </when>
                        <when test="sort == 3">
-                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_NO DESC
+                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                        <when test="sort == 4">
-                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_NO DESC
+                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                    </choose> ) AS RN,
         BOARD_NO,
@@ -766,19 +767,20 @@ WHERE RN = (SELECT RN + 1 FROM TARGET)
 <!-- 지현 / 통합 검색 시 다음 글 조회 -->
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
-						<choose>
+        ROW_NUMBER() OVER (ORDER BY
+					<choose>
                        <when test="sort == 1">
+                           BOARD_CREATE_DATE DESC,
                            BOARD_NO DESC
                        </when>
                        <when test="sort == 2">
-                           BOARD_NO ASC
+                           BOARD_CREATE_DATE ASC
                        </when>
                        <when test="sort == 3">
-                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_NO DESC
+                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                        <when test="sort == 4">
-                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_NO DESC
+                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                    </choose> ) AS RN,
         BOARD_NO,

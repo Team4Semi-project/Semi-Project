@@ -16,6 +16,10 @@ goToListBtn.addEventListener("click", () => {
   const segments = pathname.split("/"); // ['', 'board', '1', '0', '3']
   const categoryNo = segments[3]; // 인덱스 3에 있는 게 바로 '0'
 
+  if(categoryNo == 'userProfile'){
+    location.href = `/mypage/${categoryNo}?cp=${cp}`;
+    return;
+  } 
   location.href = `/board/1/${categoryNo}?cp=${cp}&sort=${sort}`;
 });
 
@@ -23,7 +27,7 @@ goToListBtn.addEventListener("click", () => {
 goToPrev.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const prevBoardNo = naviBtn.dataset.prevBoardNo;
-  const prevBoard = naviBtn.dataset.prevBoard;
+  const prevBoardCode = naviBtn.dataset.prevBoard;
   if (prevBoardNo == 0) {
     alert("이전 글이 없습니다.");
     return;
@@ -33,14 +37,19 @@ goToPrev.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/${prevBoard}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  if (prevBoardCode == 1) {
+    location.href = `/board/${prevBoardCode}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  } else {
+    location.href = `/board/${prevBoardCode}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  }
+
 });
 
 // 다음글 버튼
 goToNext.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const nextBoardNo = naviBtn.dataset.nextBoardNo;
-  const nextBoard = naviBtn.dataset.nextBoard;
+  const nextBoardCode = naviBtn.dataset.nextBoard;
   // console.log(nextBoardNo);
   if (nextBoardNo == 0) {
     alert("다음 글이 없습니다.");
@@ -51,7 +60,12 @@ goToNext.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/${nextBoard}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+    if (nextBoardCode == 1) {
+    location.href = `/board/${nextBoardCode}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  } else {
+    location.href = `/board/${nextBoardCode}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  }
+// location.href = `/board/${nextBoardCode}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 const deleteBtn = document.querySelector("#deleteBtn");

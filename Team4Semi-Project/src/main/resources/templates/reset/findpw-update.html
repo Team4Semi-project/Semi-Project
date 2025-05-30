@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LEMONA - 비밀번호 재설정</title>
+  <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/find-pw.css" />
 </head>
 
@@ -45,7 +46,6 @@
         <div th:if="${success}" class="success-message" th:text="${success}"></div>
       </div>
     </main>
-
 
   </div>
 

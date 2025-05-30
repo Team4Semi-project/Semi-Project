@@ -465,18 +465,20 @@
 		</choose>
 		) B
 		<!-- 정렬 -->
+		ORDER BY
 		<choose>
 		    <when test="sort == null or sort == '' or sort == 'latest'">
-		        ORDER BY B.RAW_DATE DESC
+		        B.BOARD_CREATE_DATE DESC,
+                B.BOARD_NO DESC
 		    </when>
 		    <when test="sort == 'oldest'">
-		        ORDER BY B.RAW_DATE ASC
+		        B.BOARD_CREATE_DATE ASC
 		    </when>
 		    <when test="sort == 'popular'">
-		        ORDER BY B.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_NO DESC
+		        B.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_CREATE_DATE DESC
 		    </when>
 		    <when test="sort == 'views'">
-		        ORDER BY B.READ_COUNT DESC, B.LIKE_COUNT DESC, B.BOARD_NO DESC
+		        B.READ_COUNT DESC, B.LIKE_COUNT DESC, B.BOARD_CREATE_DATE DESC
 		    </when>
 		</choose>
 

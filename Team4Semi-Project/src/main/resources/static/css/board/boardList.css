@@ -160,8 +160,11 @@ main {
 
 .recipe-item:hover {
   transform: translateY(-5px);
-  box-shadow: var(--SHADOW);
-  background-color: var(--milk);
+  box-shadow: inset 0 0 0 0.2px #ccc,
+    /* 0.5px로 얇은 회색 테두리 효과 */ inset 0 0 0 8px var(--lightyellow),
+    /* 안쪽 milk 테두리 */ 0 0 5px rgba(0, 0, 0, 0.15);
+  /* 바깥쪽 연한 그림자 */
+  /* background-color: var(--milk); */
   cursor: pointer;
 }
 
@@ -182,13 +185,30 @@ main {
 }
 
 .recipe-title {
-  font-family: var(--pre-h-1-font-family);
-  font-weight: var(--pre-h-1-font-weight);
-  font-size: var(--pre-h-1-font-size);
   margin-bottom: 10px;
   display: flex;
+  flex-direction: row;
+  width: 100%;
   justify-content: space-between;
   color: var(--deepbrown);
+}
+
+.titleText {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 최대 1줄까지만 보이도록 설정 */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  font-family: var(--pre-h-2-font-family);
+  font-weight: var(--pre-h-2-font-weight);
+  font-size: var(--pre-h-2-font-size);
+}
+
+.titleText > span {
+  font-family: var(--pre-h-2-font-family);
+  font-weight: var(--pre-h-2-font-weight);
+  font-size: var(--pre-h-2-font-size);
 }
 
 .comment-count {
@@ -231,7 +251,6 @@ main {
 .author-info {
   display: flex;
   align-items: center;
-  gap: 5px;
 }
 
 .author-image {
@@ -244,6 +263,7 @@ main {
 .author-name {
   font-size: var(--pre-p-1-font-size);
   color: var(--deepgray);
+  margin: 0 12px;
 }
 
 .recipe-date {
@@ -257,7 +277,7 @@ main {
   gap: 4px;
 }
 
-.non-href {
+.rowBox {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -421,9 +441,15 @@ main {
 }
 
 .agenda-view .recipe-image {
-  width: 100px;
-  height: 100px;
-  margin-right: 15px;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  /* margin-right: 15px; */
+}
+
+.agenda-view .recipe-details {
+  flex: 1;
+  padding: 15px;
 }
 
 .agenda-view .recipe-info {
@@ -431,11 +457,19 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 0;
 }
 
 .agenda-view .recipe-title {
   font-size: var(--pre-h-1-font-size);
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.agenda-view .recipe-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .agenda-view .recipe-meta {

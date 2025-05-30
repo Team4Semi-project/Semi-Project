@@ -72,7 +72,7 @@ public class RecipeBoardController {
 		}
 		inputMap.put("cp", cp);
 		inputMap.put("categoryNo", categoryNo);
-		inputMap.put("sort", sort);	// 정렬
+		inputMap.put("sort", sort); // 정렬
 
 		// 조회 서비스 호출 후 결과 반환 받기.
 		Map<String, Object> map = null;
@@ -87,8 +87,8 @@ public class RecipeBoardController {
 			// 검색 서비스 호출
 			if (categoryNo.equals("popular")) {
 				map = service.searchPopularList(paramMap, cp, sort);
-				log.debug("popularmap : "+map);
-				
+				log.debug("popularmap : " + map);
+
 				// 검색어 강조 처리
 				String query = (String) paramMap.get("queryb");
 				String searchKey = (String) paramMap.get("key");
@@ -116,14 +116,13 @@ public class RecipeBoardController {
 												+ "</span>"));
 							}
 						}
-						
+
 					}
 				}
-				
-				
+
 			} else {
 				map = service.searchList(paramMap, inputMap);
-				log.debug("map : "+map);
+				log.debug("map : " + map);
 
 				// 검색어 강조 처리
 				String query = (String) paramMap.get("queryb");
@@ -152,7 +151,7 @@ public class RecipeBoardController {
 												+ "</span>"));
 							}
 						}
-						
+
 					}
 				}
 			}
@@ -182,15 +181,14 @@ public class RecipeBoardController {
 	 * @author miae
 	 */
 	@GetMapping("{category}/{boardNo:[0-9]+}")
-	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo,
-			@PathVariable("boardCode") int boardCode,
+	public String recipeBoardDetail(@PathVariable("boardNo") int boardNo, @PathVariable("boardCode") int boardCode,
 			@PathVariable("category") String category,
 			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
 			@RequestParam(value = "key", required = false, defaultValue = "") String key,
 			@RequestParam(value = "queryb", required = false, defaultValue = "") String queryb,
-			@RequestParam(value = "querys", required = false, defaultValue = "") String querys,
-			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
-			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠기 얻어오기
+			@RequestParam(value = "querys", required = false, defaultValue = "") String querys, Model model,
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember, RedirectAttributes ra,
+			HttpServletRequest req, // 요청에 담긴 쿠기 얻어오기
 			HttpServletResponse resp // 새로운 쿠기 만들어서 응답하기
 	) {
 
@@ -200,42 +198,66 @@ public class RecipeBoardController {
 
 		// caterogy에 인기글(popular) 이 들어올 경우 categoryNo를 0으로 하고
 		// 그렇지 않을 경우에는 int형으로 변환 후 categoryNo값 넘겨줌
-		if (!category.equals("popular")) {
-			int categoryNo = 0;
-			categoryNo = Integer.parseInt(category);
-			map.put("categoryNo", categoryNo);
-			searchMap.put("categoryNo", String.valueOf(categoryNo));
+		
+		if (!category.equals("userProfile")) {
+			if (!category.equals("popular")) {
+				int categoryNo = 0;
+				categoryNo = Integer.parseInt(category);
+				map.put("categoryNo", categoryNo);
+				searchMap.put("categoryNo", String.valueOf(categoryNo));
+			} else {
+				map.put("popular", 1);
+				map.put("categoryNo", 0);
+				searchMap.put("popular", "1");
+				searchMap.put("categoryNo", "0");
+			}
 		} else {
-			map.put("popular", 1);
 			map.put("categoryNo", 0);
-			searchMap.put("popular", "1");
-			searchMap.put("categoryNo", "0");
 		}
 		map.put("boardNo", boardNo);
 		searchMap.put("boardNo", String.valueOf(boardNo));
-		
+
 		// 이전글/다음글을 위한 sort 전달
 		int sortNo = 0;
 		switch (sort) {
-		case "latest" : sortNo = 1; break;
-		case "oldest" : sortNo = 2; break;
-		case "popular" : sortNo = 3; break;
-		case "views" : sortNo = 4; break;
+		case "latest":
+			sortNo = 1;
+			break;
+		case "oldest":
+			sortNo = 2;
+			break;
+		case "popular":
+			sortNo = 3;
+			break;
+		case "views":
+			sortNo = 4;
+			break;
 		default:
 			sortNo = 1;
 		}
-		
+
 		// 이전글/다음글을 위한 key 전달
 		int keyNo = 0;
 		switch (key) {
-		case "t" : keyNo = 1; break;
-		case "c" : keyNo = 2; break;
-		case "tc" : keyNo = 3; break;
-		case "w" : keyNo = 4; break;
-		case "h" : keyNo = 5; break;
+		case "t":
+			keyNo = 1;
+			break;
+		case "c":
+			keyNo = 2;
+			break;
+		case "tc":
+			keyNo = 3;
+			break;
+		case "w":
+			keyNo = 4;
+			break;
+		case "h":
+			keyNo = 5;
+			break;
 		}
-		
+
 		map.put("sort", sortNo);
+		map.put("boardCode", boardCode);
 		searchMap.put("sort", String.valueOf(sortNo));
 		searchMap.put("key", String.valueOf(keyNo));
 		searchMap.put("queryb", queryb);
@@ -267,6 +289,8 @@ public class RecipeBoardController {
 			int nextBoardNo = (int) recipeMap.get("nextBoardNo");
 			RecipeBoard prevBoard = (RecipeBoard) recipeMap.get("prevBoard");
 			RecipeBoard nextBoard = (RecipeBoard) recipeMap.get("nextBoard");
+			int prevBoardCode = (int) recipeMap.get("prevBoardCode");
+			int nextBoardCode = (int) recipeMap.get("nextBoardCode");
 
 			/*--------------------- 쿠키를 이용한 조회수 증가 시작 ------------------------*/
 
@@ -345,6 +369,8 @@ public class RecipeBoardController {
 				model.addAttribute("prevBoardNo", prevBoardNo);
 				model.addAttribute("nextBoardNo", nextBoardNo);
 				model.addAttribute("loginMember", loginMember);
+				model.addAttribute("prevBoardCode", prevBoardCode);
+				model.addAttribute("nextBoardCode", nextBoardCode);
 
 				// 조회된 이미지 목록이 있을 경우
 				/*
@@ -396,30 +422,29 @@ public class RecipeBoardController {
 			@RequestParam("stepContents") List<String> inputStepContent,
 			@RequestParam(value = "thumbnailNo", required = false) int thumbnailNo,
 			@RequestParam(value = "hashTags", required = false) List<String> hashTagList, RedirectAttributes ra,
-			@RequestParam("imageExists") List<Boolean> imageExists)
-			throws Exception {
+			@RequestParam("imageExists") List<Boolean> imageExists) throws Exception {
 
 		// 1. 로그인한 회원번호 세팅
 		inputBoard.setMemberNo(loginMember.getMemberNo());
 		inputBoard.setHashTagList(hashTagList);
 		// memberNo title categoryNo hashTagList
-		
+
 		// 빈 배열을 포함한 imageList
 		List<MultipartFile> imageList = new ArrayList<>();
 		if (images != null && imageExists != null) {
-		    int index = 0;
+			int index = 0;
 
-		    for (int i = 0; i < imageExists.size(); i++) {
-		        if (imageExists.get(i)) {
-		            if (index < images.size()) {
-		                imageList.add(images.get(index++));
-		            } else {
-		                imageList.add(null); // 오류 방지용 fallback
-		            }
-		        } else {
-		            imageList.add(null);
-		        }
-		    }
+			for (int i = 0; i < imageExists.size(); i++) {
+				if (imageExists.get(i)) {
+					if (index < images.size()) {
+						imageList.add(images.get(index++));
+					} else {
+						imageList.add(null); // 오류 방지용 fallback
+					}
+				} else {
+					imageList.add(null);
+				}
+			}
 		}
 
 		// 2. 서비스 메서드 호출 후 결과 반환 받기
@@ -495,18 +520,18 @@ public class RecipeBoardController {
 		return "redirect:" + path;
 	}
 
-	/** 업데이트 페이지 출력
+	/**
+	 * 업데이트 페이지 출력
+	 * 
 	 * @param boardNo
 	 * @param model
 	 * @return
 	 * @author 재호
 	 */
 	@GetMapping("{category}/{boardNo:[0-9]+}/update")
-	public String updateRecipeBoard(@PathVariable("category") Object category,
-			@PathVariable("boardNo" ) int boardNo,
-			Model model,
-			RedirectAttributes ra,
-			@RequestParam(value="sort", required = false, defaultValue = "lastest") String sort) {
+	public String updateRecipeBoard(@PathVariable("category") Object category, @PathVariable("boardNo") int boardNo,
+			Model model, RedirectAttributes ra,
+			@RequestParam(value = "sort", required = false, defaultValue = "lastest") String sort) {
 
 		// 1) Map 으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
@@ -514,9 +539,9 @@ public class RecipeBoardController {
 
 		// caterogy에 인기글(popular) 이 들어올 경우 categoryNo를 0으로 하고
 		// 그렇지 않을 경우에는 int형으로 변환 후 categoryNo값 넘겨줌
-		if (!((String)category).equals("popular")) {
+		if (!((String) category).equals("popular")) {
 			int categoryNo = 0;
-			categoryNo = Integer.parseInt((String)category);
+			categoryNo = Integer.parseInt((String) category);
 			map.put("categoryNo", categoryNo);
 		} else {
 			map.put("popular", 1);
@@ -527,22 +552,30 @@ public class RecipeBoardController {
 		// 이전글/다음글을 위한 sort 전달
 		int sortNo = 0;
 		switch (sort) {
-		case "latest" : sortNo = 1; break;
-		case "oldest" : sortNo = 2; break;
-		case "popular" : sortNo = 3; break;
-		case "views" : sortNo = 4; break;
+		case "latest":
+			sortNo = 1;
+			break;
+		case "oldest":
+			sortNo = 2;
+			break;
+		case "popular":
+			sortNo = 3;
+			break;
+		case "views":
+			sortNo = 4;
+			break;
 		default:
 			sortNo = 1;
 		}
-		
+
 		map.put("sort", sortNo);
-		
+
 		// 2) 서비스 호출
 		Map<String, Object> recipeMap = service.selectOneRecipe(map, searchMap);
 
 		// 조회 결과가 없는 경우
 		if (recipeMap == null) {
-			
+
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
 			return String.format("redirect:/board/1/%s/%d", category, boardNo);
 
@@ -561,41 +594,39 @@ public class RecipeBoardController {
 		}
 		return "board/recipeBoardUpdate";
 	}
-	
+
 	@PostMapping("update")
 	@ResponseBody
 	public String updateRecipeBoard(RecipeBoard inputBoard,
-	        @RequestParam(value = "images", required = false) List<MultipartFile> images,
-	        @RequestParam("stepContents") List<String> inputStepContent,
-	        @RequestParam(value = "thumbnailNo", required = false, defaultValue = "0") Integer thumbnailNo,
-	        @RequestParam(value = "hashTags", required = false) List<String> hashTagList,
-	        RedirectAttributes ra,
-	        @RequestParam("boardNo") int boardNo,
-	        @RequestParam("categoryNo") String category,
-	        @RequestParam("stepNoList") List<Integer> stepNoList) throws Exception {
+			@RequestParam(value = "images", required = false) List<MultipartFile> images,
+			@RequestParam("stepContents") List<String> inputStepContent,
+			@RequestParam(value = "thumbnailNo", required = false, defaultValue = "0") Integer thumbnailNo,
+			@RequestParam(value = "hashTags", required = false) List<String> hashTagList, RedirectAttributes ra,
+			@RequestParam("boardNo") int boardNo, @RequestParam("categoryNo") String category,
+			@RequestParam("stepNoList") List<Integer> stepNoList) throws Exception {
 
-	    inputBoard.setHashTagList(hashTagList);
-	    inputBoard.setBoardNo(boardNo);
-	    
-	    log.debug("====stepNoList==== : {}",stepNoList);
-	    log.debug("======images====== : {}",images);
-	    log.debug("====thumbnailNo=== : {}",thumbnailNo);
+		inputBoard.setHashTagList(hashTagList);
+		inputBoard.setBoardNo(boardNo);
 
-	    int result = service.updateRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo, stepNoList);
+		log.debug("====stepNoList==== : {}", stepNoList);
+		log.debug("======images====== : {}", images);
+		log.debug("====thumbnailNo=== : {}", thumbnailNo);
 
-	    String message;
-	    String path;
+		int result = service.updateRecipeBoard(inputBoard, images, inputStepContent, thumbnailNo, stepNoList);
 
-	    if (result > 0) {
-	        message = "레시피가 수정되었습니다.";
-	        path = String.format("/board/1/%s/%d", category, boardNo);
-	    } else {
-	        message = "레시피 수정에 실패했습니다.";
-	        path = String.format("/board/1/%s/%d/update", category, boardNo);
-	    }
+		String message;
+		String path;
 
-	    ra.addFlashAttribute("message", message);
-	    return path;
+		if (result > 0) {
+			message = "레시피가 수정되었습니다.";
+			path = String.format("/board/1/%s/%d", category, boardNo);
+		} else {
+			message = "레시피 수정에 실패했습니다.";
+			path = String.format("/board/1/%s/%d/update", category, boardNo);
+		}
+
+		ra.addFlashAttribute("message", message);
+		return path;
 	}
 
 }

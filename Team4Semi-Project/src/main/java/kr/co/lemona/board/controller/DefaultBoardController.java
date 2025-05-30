@@ -210,6 +210,8 @@ public class DefaultBoardController {
 			Board nextBoard = (Board) boardMap.get("nextBoard");
 			int prevBoardNo = (int) boardMap.get("prevBoardNo");
 			int nextBoardNo = (int) boardMap.get("nextBoardNo");
+			int prevBoardCode = (int) boardMap.get("prevBoardCode");
+			int nextBoardCode = (int) boardMap.get("nextBoardCode");
 			/*--------------------- 쿠키를 이용한 조회수 증가 시작 ------------------------*/
 
 			// 비회원 또는 로그인한 회원의 글이 아닌 경우( == 글쓴이를 뺀 다른사람)
@@ -285,11 +287,9 @@ public class DefaultBoardController {
 				model.addAttribute("board", board);
 				model.addAttribute("prevBoardNo", prevBoardNo);
 				model.addAttribute("nextBoardNo", nextBoardNo);
-//				model.addAttribute("prevBoard", prevBoard.getBoardCode());
-//				model.addAttribute("nextBoard", nextBoard.getBoardCode());
-				
-//				log.info("prevBoard code : "+prevBoard.getBoardCode());
-//				log.info("nextBoard code : "+nextBoard.getBoardCode());
+				model.addAttribute("loginMember", loginMember);
+				model.addAttribute("prevBoardCode", prevBoardCode);
+				model.addAttribute("nextBoardCode", nextBoardCode);
 
 				// 조회된 이미지 목록이 있을 경우
 				/*

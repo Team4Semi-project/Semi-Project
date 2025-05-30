@@ -597,16 +597,17 @@ WITH SEARCH_RESULT AS (
         ROW_NUMBER() OVER (ORDER BY
 					<choose>
                        <when test="sort == 1">
+                           BOARD_CREATE_DATE DESC,
                            BOARD_NO DESC
                        </when>
                        <when test="sort == 2">
-                           BOARD_NO ASC
+                           BOARD_CREATE_DATE ASC
                        </when>
                        <when test="sort == 3">
-                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_NO DESC
+                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                        <when test="sort == 4">
-                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_NO DESC
+                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                    </choose> ) AS RN,
         BOARD_NO,
@@ -767,18 +768,19 @@ WHERE RN = (SELECT RN + 1 FROM TARGET)
 WITH SEARCH_RESULT AS (
     SELECT
         ROW_NUMBER() OVER (ORDER BY
-						<choose>
+					<choose>
                        <when test="sort == 1">
+                           BOARD_CREATE_DATE DESC,
                            BOARD_NO DESC
                        </when>
                        <when test="sort == 2">
-                           BOARD_NO ASC
+                           BOARD_CREATE_DATE ASC
                        </when>
                        <when test="sort == 3">
-                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_NO DESC
+                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                        <when test="sort == 4">
-                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_NO DESC
+                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                    </choose> ) AS RN,
         BOARD_NO,

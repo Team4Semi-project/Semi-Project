@@ -236,6 +236,7 @@ public class RecipeBoardController {
 		}
 		
 		map.put("sort", sortNo);
+		map.put("boardCode", boardCode);
 		searchMap.put("sort", String.valueOf(sortNo));
 		searchMap.put("key", String.valueOf(keyNo));
 		searchMap.put("queryb", queryb);
@@ -267,6 +268,8 @@ public class RecipeBoardController {
 			int nextBoardNo = (int) recipeMap.get("nextBoardNo");
 			RecipeBoard prevBoard = (RecipeBoard) recipeMap.get("prevBoard");
 			RecipeBoard nextBoard = (RecipeBoard) recipeMap.get("nextBoard");
+			int prevBoardCode = (int) recipeMap.get("prevBoardCode");
+			int nextBoardCode = (int) recipeMap.get("nextBoardCode");
 
 			/*--------------------- 쿠키를 이용한 조회수 증가 시작 ------------------------*/
 
@@ -345,8 +348,8 @@ public class RecipeBoardController {
 				model.addAttribute("prevBoardNo", prevBoardNo);
 				model.addAttribute("nextBoardNo", nextBoardNo);
 				model.addAttribute("loginMember", loginMember);
-//				model.addAttribute("prevBoard", prevBoard.getBoardCode());
-//				model.addAttribute("nextBoard", nextBoard.getBoardCode());
+				model.addAttribute("prevBoardCode", prevBoardCode);
+				model.addAttribute("nextBoardCode", nextBoardCode);
 
 				// 조회된 이미지 목록이 있을 경우
 				/*

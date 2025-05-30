@@ -991,11 +991,11 @@
 	<!-- 지현 -->
    	<select id="searchPrevBoard">
 SELECT R.BOARD_NO, R.BOARD_TITLE, R.READ_COUNT, R.MEMBER_NO,
-       R.IMG_PATH, R.IMG_RENAME, R.STEP_CONTENTS, R.RN
+       R.IMG_PATH, R.IMG_RENAME, R.STEP_CONTENTS, R.RN, R.BOARD_CODE
 FROM (
     SELECT B.BOARD_NO, B.BOARD_TITLE, B.READ_COUNT, B.MEMBER_NO,
            S.IMG_PATH, S.IMG_RENAME, STEP.STEP_CONTENTS,
-           NVL(L.LIKE_COUNT, 0) AS LIKE_COUNT,
+           NVL(L.LIKE_COUNT, 0) AS LIKE_COUNT, B.BOARD_CODE,
            ROW_NUMBER() OVER (
                ORDER BY 
                <choose>
@@ -1140,11 +1140,11 @@ WHERE R.RN = (
    <!-- 지현 -->
    	<select id="searchNextBoard">
 SELECT R.BOARD_NO, R.BOARD_TITLE, R.READ_COUNT, R.MEMBER_NO,
-       R.IMG_PATH, R.IMG_RENAME, R.STEP_CONTENTS, R.RN
+       R.IMG_PATH, R.IMG_RENAME, R.STEP_CONTENTS, R.RN, R.BOARD_CODE
 FROM (
     SELECT B.BOARD_NO, B.BOARD_TITLE, B.READ_COUNT, B.MEMBER_NO,
            S.IMG_PATH, S.IMG_RENAME, STEP.STEP_CONTENTS,
-           NVL(L.LIKE_COUNT, 0) AS LIKE_COUNT,
+           NVL(L.LIKE_COUNT, 0) AS LIKE_COUNT, B.BOARD_CODE,
            ROW_NUMBER() OVER (
                ORDER BY 
                <choose>
@@ -1290,16 +1290,17 @@ WITH SEARCH_RESULT AS (
         ROW_NUMBER() OVER (ORDER BY
 					<choose>
                        <when test="sort == 1">
+                           BOARD_CREATE_DATE DESC,
                            BOARD_NO DESC
                        </when>
                        <when test="sort == 2">
-                           BOARD_NO ASC
+                           BOARD_CREATE_DATE ASC
                        </when>
                        <when test="sort == 3">
-                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_NO DESC
+                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                        <when test="sort == 4">
-                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_NO DESC
+                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                    </choose> ) AS RN,
         BOARD_NO,
@@ -1458,18 +1459,19 @@ WHERE RN = (SELECT RN + 1 FROM TARGET)
 WITH SEARCH_RESULT AS (
     SELECT
         ROW_NUMBER() OVER (ORDER BY
-						<choose>
+					<choose>
                        <when test="sort == 1">
+                           BOARD_CREATE_DATE DESC,
                            BOARD_NO DESC
                        </when>
                        <when test="sort == 2">
-                           BOARD_NO ASC
+                           BOARD_CREATE_DATE ASC
                        </when>
                        <when test="sort == 3">
-                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_NO DESC
+                           LIKE_COUNT DESC, READ_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                        <when test="sort == 4">
-                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_NO DESC
+                           READ_COUNT DESC, LIKE_COUNT DESC, BOARD_CREATE_DATE DESC
                        </when>
                    </choose> ) AS RN,
         BOARD_NO,

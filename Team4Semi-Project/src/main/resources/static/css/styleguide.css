@@ -119,10 +119,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--pre-p-1-font-family);
-  font-weight: var(--pre-p-1-font-weight);
-  font-size: var(--pre-p-1-font-size);
-  line-height: var(--pre-p-1-line-height);
+  font-family: var(--pre-p-2-font-family);
+  font-weight: var(--pre-p-2-font-weight);
+  font-size: var(--pre-p-2-font-size);
+  line-height: var(--pre-p-2-line-height);
 }
 
 body {

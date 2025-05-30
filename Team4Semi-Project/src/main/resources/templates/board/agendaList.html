@@ -81,7 +81,7 @@
 
         <div class="recipe-info">
           <!-- 작성자 정보 -->
-          <div class="recipe-meta">
+          <div class="recipe-meta non-href">
             <img class="author-image" onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
               th:src="${#strings.isEmpty(board.profileImg) ? '/images/lemona-logo.png' : board.profileImg}"
               alt="레시피 이미지" />
@@ -90,7 +90,7 @@
           </div>
 
           <!-- 좋아요 / 조회수-->
-          <div class="recipe-stats">
+          <div class="recipe-stats non-href">
             <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
               th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
               th:data-like-check="${board.likeCheck}"

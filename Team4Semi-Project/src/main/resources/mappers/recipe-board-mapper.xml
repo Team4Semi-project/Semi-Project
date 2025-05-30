@@ -894,12 +894,30 @@
 			</when>
 		</choose>
 
-		ORDER BY
-		(SELECT COUNT(*)
-		FROM "RECIPE_BOARD_LIKE" L
-		WHERE L.BOARD_NO = B.BOARD_NO) DESC,
-		B.READ_COUNT DESC,
-		B.BOARD_NO DESC
+		<!-- 정렬 -->
+		<choose>
+			<when test="sort == null or sort == '' or sort == 'latest'">
+				ORDER BY B.BOARD_NO DESC
+			</when>
+			<when test="sort == 'oldest'">
+				ORDER BY B.BOARD_NO ASC
+			</when>
+			<when test="sort == 'popular'">
+				ORDER BY 
+				(SELECT COUNT(*)
+			      FROM "RECIPE_BOARD_LIKE" L
+			      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+			      B.READ_COUNT DESC,
+			      B.BOARD_NO DESC
+			</when>
+			<when test="sort == 'views'">
+				ORDER BY B.READ_COUNT DESC,
+				(SELECT COUNT(*)
+			      FROM "RECIPE_BOARD_LIKE" L
+			      WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+			      B.BOARD_NO DESC
+			</when>
+		</choose>
 	</select>	
 	
 	<!-- 좋아요 해제 -->
@@ -1269,8 +1287,8 @@ WHERE R.RN = (
 <!-- 지현 / 통합 검색 시 이전 글 조회 -->
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY
-												<choose>
+        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
+					<choose>
                        <when test="sort == 1">
                            BOARD_NO DESC
                        </when>
@@ -1333,23 +1351,23 @@ WITH SEARCH_RESULT AS (
         WHERE B.BOARD_DEL_FL = 'N'
         
           <choose>
-			<when test='key == "t"'>
+			<when test='key == 1'>
 				AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
 			</when>
-			<when test='key == "c"'>
+			<when test='key == 2'>
 				AND B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
 			</when>
-			<when test='key == "tc"'>
+			<when test='key == 3'>
 				AND (
 				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
 				OR
 				B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
 				)
 			</when>
-			<when test='key == "w"'>
+			<when test='key == 4'>
 				AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
 			</when>
-			<when test='key == "h"'>
+			<when test='key == 5'>
 				AND 1 = 0
 			</when>
 		</choose>
@@ -1439,7 +1457,7 @@ WHERE RN = (SELECT RN + 1 FROM TARGET)
 <!-- 지현 / 통합 검색 시 다음 글 조회 -->
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY
+        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
 						<choose>
                        <when test="sort == 1">
                            BOARD_NO DESC
@@ -1503,23 +1521,23 @@ WITH SEARCH_RESULT AS (
         WHERE B.BOARD_DEL_FL = 'N'
         
           <choose>
-			<when test='key == "t"'>
+			<when test='key == 1'>
 				AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
 			</when>
-			<when test='key == "c"'>
+			<when test='key == 2'>
 				AND B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
 			</when>
-			<when test='key == "tc"'>
+			<when test='key == "3'>
 				AND (
 				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
 				OR
 				B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
 				)
 			</when>
-			<when test='key == "w"'>
+			<when test='key == 4'>
 				AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
 			</when>
-			<when test='key == "h"'>
+			<when test='key == 5'>
 				AND 1 = 0
 			</when>
 		</choose>

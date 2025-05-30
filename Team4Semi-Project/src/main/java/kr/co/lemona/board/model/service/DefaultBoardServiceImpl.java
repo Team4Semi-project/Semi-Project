@@ -106,6 +106,10 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 			prevBoard = mapper.searchAllPrevBoard(searchMap);
 			// 다음 글
 			nextBoard = mapper.searchAllNextBoard(searchMap);
+			
+			log.info("querys - prevBoard : "+ prevBoard);
+			log.info("querys - nextBoard : "+ nextBoard);
+			
 		} else {  // 검색이 아닌 경우
 			log.info("map : "+ map);
 			// 이전 글
@@ -134,13 +138,16 @@ public class DefaultBoardServiceImpl implements DefaultBoardService {
 		commentMap.put("memberNo", map.getOrDefault("memberNo", 0)); // 있으면 가져오고 없으면 0 : 에러 방지
 
 		List<DefaultComment> commentList = mapper.selectCommentList(commentMap);
-
+		log.info("commentList : " + commentList.toString());
+		log.info("board : " + board.toString());
 		// 4. Board 에 댓글 목록 추가
 		board.setCommentList(commentList);
 
 		resultMap.put("board", board);
 		resultMap.put("prevBoardNo", prevBoardNo);
 		resultMap.put("nextBoardNo", nextBoardNo);
+		resultMap.put("prevBoard", prevBoard);
+		resultMap.put("nextBoard", nextBoard);
 
 		return resultMap;
 	}

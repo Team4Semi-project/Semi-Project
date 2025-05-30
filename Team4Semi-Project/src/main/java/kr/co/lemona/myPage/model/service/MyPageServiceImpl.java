@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.board.model.dto.Pagination;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.myPage.model.mapper.MyPageMapper;
@@ -155,6 +156,63 @@ public class MyPageServiceImpl implements MyPageService {
 		map.put("member", member);
 		map.put("pagination", pagination);
 		map.put("recipeBoardList", recipeBoardList);
+		
+		
+		
+		return map;
+	}
+
+	/** 사용자 조회 / 특정 사용자가 쓴 일반 게시글 목록
+	 * @author jihyun / miae
+	 */
+	@Override
+	public Map<String, Object> selectMemberBoardList(Map<String, Object> inputMap) {
+		int memberNo = (int) inputMap.get("memberNo");
+		int cp = (int) inputMap.get("cp");
+		int listCount = 0;
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		// 사용자 조회
+		Member member = mapper.selectMember(memberNo);
+		log.info("member 들어오는지 확인하기 : " + member.toString());
+		
+		// 특정 사용자가 쓴 글 목록
+		List<Board> boardList = null;
+		
+		
+		
+
+		// 1. 특정 사용자가 작성한 글 중 삭제 되지 않은 게시글 수를 조회
+		listCount = mapper.getMemberDefaultListCount(memberNo);
+
+
+		// 2. 1번의 결과 + cp 를 이용해서 Pagination 객체를 생성
+		Pagination pagination = new Pagination(cp, listCount);
+
+		// 3. 특정 게시판의 지정된 페이지 목록 조회
+		int limit = pagination.getLimit(); // 한 페이지 내에 보여줄 게시글 수
+		int offset = (cp - 1) * limit; // 보여줄 페이지의 앞에 건너뛸 게시글 개수
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+
+		// 조회 결과를 리스트에 저장
+		boardList = mapper.selectMemberBoardList(memberNo, rowBounds);
+
+
+		// 해시태그 받아오는 부분
+		for (Board list : boardList) {
+			String tags = list.getTags();
+			if (tags != null && !tags.isEmpty()) {
+				List<String> tagList = Arrays.stream(tags.split(",")).map(String::trim).collect(Collectors.toList());
+				list.setHashTagList(tagList);
+			}
+		}
+
+		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
+		map.put("member", member);
+		map.put("pagination", pagination);
+		map.put("boardList", boardList);
 		
 		
 		

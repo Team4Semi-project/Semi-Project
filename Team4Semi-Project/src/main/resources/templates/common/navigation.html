@@ -1,9 +1,11 @@
 <!-- 네비게이션 프래그먼트 -->
 <nav th:fragment="navigation" class="navigation">
-
   <div class="nav-container">
     <ul class="menu-list">
-      <li class="menu-item recipe-menu" th:classappend="${currentMenu == 'recipe'} ? 'active' : ''">
+      <li
+        class="menu-item recipe-menu"
+        th:classappend="${currentMenu == 'recipe'} ? 'active' : ''"
+      >
         <a th:href="@{/board/1/0}">레시피</a>
         <!-- 레시피 메뉴 호버 시 나타나는 서브 메뉴 -->
         <div class="submenu">
@@ -16,13 +18,22 @@
           </ul>
         </div>
       </li>
-      <li class="menu-item" th:classappend="${currentMenu == 'popular'} ? 'active' : ''">
+      <li
+        class="menu-item"
+        th:classappend="${currentMenu == 'popular'} ? 'active' : ''"
+      >
         <a th:href="@{/board/1/popular}">인기 레시피</a>
       </li>
-      <li class="menu-item" th:classappend="${currentMenu == 'free'} ? 'active' : ''">
+      <li
+        class="menu-item"
+        th:classappend="${currentMenu == 'free'} ? 'active' : ''"
+      >
         <a th:href="@{/board/2}">자유 게시판</a>
       </li>
-      <li class="menu-item" th:classappend="${currentMenu == 'notice'} ? 'active' : ''">
+      <li
+        class="menu-item"
+        th:classappend="${currentMenu == 'notice'} ? 'active' : ''"
+      >
         <a th:href="@{/board/3}">공지사항</a>
       </li>
     </ul>
@@ -33,16 +44,23 @@
     <!-- 로그인한 사용자에게만 버튼 표시 -->
     <div th:if="${session.loginMember != null}" class="write-button-container">
       <!-- 레시피 게시판 (boardCode == 1) -->
-      <a th:if="${boardCode != 2 && boardCode != 3}" th:href="@{/board/1/insert}" class="write-button">
+
+      <a
+        th:if="${boardCode != 2 && boardCode != 3}"
+        th:href="@{/board/1/insert}"
+        class="write-button"
+      >
         레시피 작성
       </a>
 
       <!-- 자유게시판 (boardCode == 2) -->
-      <a th:if="${boardCode == 2}" th:href="@{/editBoard/2/insert}" class="write-button">
+      <a
+        th:if="${boardCode == 2}"
+        th:href="@{/editBoard/2/insert}"
+        class="write-button"
+      >
         글 작성
       </a>
     </div>
-
-
   </div>
 </nav>

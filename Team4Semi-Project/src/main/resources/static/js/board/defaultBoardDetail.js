@@ -58,6 +58,7 @@ goToListBtn.addEventListener("click", () => {
 goToPrev.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const prevBoardNo = naviBtn.dataset.prevBoardNo;
+  // const prevBoard = naviBtn.dataset.prevBoard;
   if (prevBoardNo == 0) {
     alert("이전 글이 없습니다.");
     return;
@@ -67,13 +68,19 @@ goToPrev.addEventListener("click", () => {
   const queryb = urlParams.get("queryb") || "";
   const querys = urlParams.get("querys") || "";
   const sort = urlParams.get("sort") || "";
-  location.href = `/board/${boardCode}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+// 문자열 비교로 수정
+  // if (prevBoard === "1") {
+  //   location.href = `/board/${prevBoard}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  // } else {
+    location.href = `/board/${boardCode}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  // }
 });
 
 // 다음글 버튼
 goToNext.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const nextBoardNo = naviBtn.dataset.nextBoardNo;
+  // const nextBoard = naviBtn.dataset.nextBoard;
   if (nextBoardNo == 0) {
     alert("다음 글이 없습니다.");
     return;
@@ -83,7 +90,15 @@ goToNext.addEventListener("click", () => {
   const queryb = urlParams.get("queryb") || "";
   const querys = urlParams.get("querys") || "";
   const sort = urlParams.get("sort") || "";
-  location.href = `/board/${boardCode}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  // 문자열 비교로 수정
+//   if (prevBoard === "1") {
+//     location.href = `/board/${nextBoard}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+//     console.log("nextBoard" + nextBoard);
+//   } else {
+//     location.href = `/board/${nextBoard}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+//     console.log("nextBoard" + nextBoard);
+// }
+location.href = `/board/${boardCode}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 /* 좋아요 기능 */

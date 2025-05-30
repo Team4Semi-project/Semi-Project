@@ -206,6 +206,8 @@ public class DefaultBoardController {
 			// 조회 결과가 있는 경우
 
 			Board board = (Board) boardMap.get("board");
+			Board prevBoard = (Board) boardMap.get("prevBoard");
+			Board nextBoard = (Board) boardMap.get("nextBoard");
 			int prevBoardNo = (int) boardMap.get("prevBoardNo");
 			int nextBoardNo = (int) boardMap.get("nextBoardNo");
 			/*--------------------- 쿠키를 이용한 조회수 증가 시작 ------------------------*/
@@ -283,6 +285,8 @@ public class DefaultBoardController {
 				model.addAttribute("board", board);
 				model.addAttribute("prevBoardNo", prevBoardNo);
 				model.addAttribute("nextBoardNo", nextBoardNo);
+//				model.addAttribute("prevBoard", prevBoard.getBoardCode());
+//				model.addAttribute("nextBoard", nextBoard.getBoardCode());
 
 				// 조회된 이미지 목록이 있을 경우
 				/*

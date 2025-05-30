@@ -23,6 +23,7 @@ goToListBtn.addEventListener("click", () => {
 goToPrev.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const prevBoardNo = naviBtn.dataset.prevBoardNo;
+  const prevBoard = naviBtn.dataset.prevBoard;
   if (prevBoardNo == 0) {
     alert("이전 글이 없습니다.");
     return;
@@ -32,14 +33,14 @@ goToPrev.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/${boardCode}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
-  // http://localhost/board/1/0/90?cp=1&key=t&queryb=%EB%B0%A5&sort=latest
+  location.href = `/board/${prevBoard}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 // 다음글 버튼
 goToNext.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const nextBoardNo = naviBtn.dataset.nextBoardNo;
+  const nextBoard = naviBtn.dataset.nextBoard;
   // console.log(nextBoardNo);
   if (nextBoardNo == 0) {
     alert("다음 글이 없습니다.");
@@ -50,7 +51,7 @@ goToNext.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/${boardCode}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  location.href = `/board/${nextBoard}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 const deleteBtn = document.querySelector("#deleteBtn");

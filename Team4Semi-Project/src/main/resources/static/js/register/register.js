@@ -125,13 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
         emailMessage.classList.remove("error");
         checkObj.memberEmail = true;
       })
-      .catch((err) => console.log(err));
+      // .catch((err) => console.log(err));
   });
 
   // 인증번호 받기 버튼 클릭 시
   sendAuthKeyBtn.addEventListener("click", () => {
     checkObj.authKey = false;
-    authKeyMessage.innerText = "";
+    // authKeyMessage.innerText = "";
     clearInterval(authTimer);
 
     if (!checkObj.memberEmail) {
@@ -237,20 +237,20 @@ document.addEventListener("DOMContentLoaded", () => {
       // pwMessage.innerText = "영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.";
       pwMessage.classList.remove("message", "confirm", "error");
       checkObj.memberPw = false;
-      memberPw.value = "";
+      // memberPw.value = "";
       return;
     }
 
     const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
     if (!regExp.test(inputPw)) {
-      pwMessage.innerText = "비밀번호가 유효하지 않습니다.";
+      // pwMessage.innerText = "비밀번호가 유효하지 않습니다.";
       pwMessage.classList.add("message", "error");
       pwMessage.classList.remove("confirm");
       checkObj.memberPw = false;
       return;
     }
 
-    pwMessage.innerText = "유효한 비밀번호 형식입니다.";
+    // pwMessage.innerText = "유효한 비밀번호 형식입니다.";
     pwMessage.classList.add("message", "confirm");
     pwMessage.classList.remove("error");
     checkObj.memberPw = true;
@@ -263,15 +263,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // 비밀번호 확인 유효성 검사
   const checkPw = () => {
     if (memberPw.value === memberPwConfirm.value) {
-      pwMessage.innerText = "비밀번호가 일치합니다.";
+      // pwMessage.innerText = "비밀번호가 일치합니다.";
       pwMessage.classList.add("message", "confirm");
-      pwMessage.classList.remove("error");
+      // pwMessage.classList.remove("error");
       checkObj.memberPwConfirm = true;
       return;
     }
-    pwMessage.innerText = "비밀번호가 일치하지 않습니다.";
+    // pwMessage.innerText = "비밀번호가 일치하지 않습니다."; 
     pwMessage.classList.add("message", "error");
-    pwMessage.classList.remove("confirm");
+    // pwMessage.classList.remove("confirm");
     checkObj.memberPwConfirm = false;
   };
 
@@ -390,31 +390,35 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       body: formData,
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("HTTP error! status: " + response.status);
-        }
-        return response.text();
-      })
-      .then((message) => {
-        if (confirm(message)) {
+      .then((resp) => resp.text())
+      .then((result) => {
+        //console.log(result);
+        // 1 or 0
+        if (result > 0) {
+          alert("회원가입 성공! 로그인해주세요!");
           window.location.href = "/member/login";
+        } else {
+          alert("회원가입 실패..");
+          return;
         }
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-        pwMessage.textContent =
-          "회원가입 중 오류가 발생했습니다: " + error.message;
-        pwMessage.className = "message error";
       });
+    // .then((response) => {
+    //   response.text();
+    // })
+    // .then((message) => {
+    //   console.log(message);
+    //   if (confirm(message)) {
+    //     window.location.href = "/member/login";
+    //   }
+    // });
   });
 
   // DOM 요소 로깅
-  console.log("Form:", registerForm);
-  console.log("Member ID:", memberId);
-  console.log("Email Input:", memberEmail);
-  console.log("Auth Key Input:", authKey);
-  console.log("Password Input:", memberPw);
-  console.log("Confirm Password Input:", memberPwConfirm);
-  console.log("Nickname Input:", memberNickname);
+  // console.log("Form:", registerForm);
+  // console.log("Member ID:", memberId);
+  // console.log("Email Input:", memberEmail);
+  // console.log("Auth Key Input:", authKey);
+  // console.log("Password Input:", memberPw);
+  // console.log("Confirm Password Input:", memberPwConfirm);
+  // console.log("Nickname Input:", memberNickname);
 });

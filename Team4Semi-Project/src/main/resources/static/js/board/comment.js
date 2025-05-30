@@ -536,3 +536,26 @@ if (commentLikes) {
     });
   });
 };
+
+/* 프로필, 닉네임 클릭 시 유저 페이지로 이동 */
+document.addEventListener("DOMContentLoaded", function () {
+  // 닉네임 클릭
+  document.querySelectorAll(".nickname").forEach((el) => {
+    el.addEventListener("click", function () {
+      const nickname = this.dataset.nickname;
+      if (nickname) {
+        window.location.href = `/mypage/userProfile?memberNickname=${encodeURIComponent(nickname)}`;
+      }
+    });
+  });
+
+  // 프로필 이미지 클릭
+  document.querySelectorAll(".profileImg").forEach((el) => {
+    el.addEventListener("click", function () {
+      const nickname = this.dataset.nickname;
+      if (nickname) {
+        window.location.href = `/mypage/userProfile?memberNickname=${encodeURIComponent(nickname)}`;
+      }
+    });
+  });
+});

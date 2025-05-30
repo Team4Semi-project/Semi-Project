@@ -35,7 +35,7 @@
     <form id="postForm" method="post"
       th:action=" @{${board != null ? '/editBoard/' + board.boardCode + '/' + board.boardNo + '/update' : '/editBoard/2/insert'}} ">
       <!-- 제목 -->
-      <input type="text" maxlength="100" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글 제목을 입력해주세요"
+      <input type="text" maxlength="40" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글 제목을 입력해주세요"
         required>
 
       <!-- 서머노트(내용) -->

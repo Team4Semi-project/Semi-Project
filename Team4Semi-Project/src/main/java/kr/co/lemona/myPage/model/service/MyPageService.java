@@ -38,6 +38,13 @@ public interface MyPageService {
 	 */
 	int profile(MultipartFile profileImg, Member loginMember) throws Exception;
 
+	/**	사용자 No 조회
+	 * @param memberNickname
+	 * @return
+	 * @author 민장
+	 */
+	int searchMemberNo(String memberNickname);
+	
 	/** 사용자 조회
 	 * @param loginMember
 	 * @return
@@ -50,8 +57,6 @@ public interface MyPageService {
 	 * @return
 	 */
 	Map<String, Object> selectMemberBoardList(Map<String, Object> inputMap);
-
-
 	
 //	/** 내가 쓴 글 수 조회 
 //     * @param memberId

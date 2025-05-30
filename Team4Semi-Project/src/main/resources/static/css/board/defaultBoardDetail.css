@@ -235,6 +235,7 @@ a:hover {
 
 .container-page a:hover {
   background-color: var(--yellow);
+  cursor: pointer;
 }
 
 .container-page a .text {

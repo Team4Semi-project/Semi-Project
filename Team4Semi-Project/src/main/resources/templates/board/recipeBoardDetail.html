@@ -52,11 +52,12 @@
         <div class="author-section">
             <div class="author-info">
                 <div class="author-avatar">
-                    <img onerror="this.onerror=null; this.src='/images/user.png';"
+                    <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                         th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                        alt="Author profile">
+                        th:data-nickname="${board.memberNickname}" alt="Author profile">
                 </div>
-                <span class="author-name" th:text="${board.memberNickname}">장미애 님</span>
+                <span class="author-name" th:text="${board.memberNickname}"
+                    th:data-nickname="${board.memberNickname}">장미애 님</span>
             </div>
 
             <div class="action-buttons" th:if="${loginMember != null and loginMember.memberNo == board.memberNo}">

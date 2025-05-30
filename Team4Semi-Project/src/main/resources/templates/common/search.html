@@ -74,7 +74,6 @@
                 <div class="titleText" th:utext="${board.boardTitle}">레몬 팬케이크</div>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
-
               <!-- 레시피 게시판 해시태그 -->
               <div class="recipe-tags">
                 <span th:if="${board.boardCode == 1}" class="tag" th:each="tag : ${board.hashTagList}"

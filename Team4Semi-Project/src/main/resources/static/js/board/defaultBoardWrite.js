@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const titleInput = document.querySelector(".title-input");
 
   titleInput.addEventListener("input", () => {
-    if (titleInput.value.length >= 100) {
+    if (titleInput.value.length >= 40) {
       alert("최대 글자수를 초과했습니다.");
     }
   });

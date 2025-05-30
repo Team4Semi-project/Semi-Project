@@ -103,9 +103,16 @@ public class MyPageServiceImpl implements MyPageService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	/**
-	 * 사용자 조회 / 특정 사용자가 쓴 글 목록
+  
+	/** 사용자 No 조회
+	 * @author 민장
+	 */
+	@Override
+	public int searchMemberNo(String memberNickname) {
+		return mapper.searchMemberNo(memberNickname);
+	}
+	
+	/** 사용자 조회 / 특정 사용자가 쓴 글 목록
 	 *
 	 * @author miae
 	 */

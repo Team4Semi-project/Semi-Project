@@ -1,222 +1,260 @@
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* editProfile-style.css - 프로필 수정 페이지 전용 스타일 */
+
+body {
+    background-color: #f9f1e0; /* 연한 노란색 배경 */
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-.logo-icon {
-  width: 30px;
-  height: 30px;
-  background-color: #ffd700;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
+/* 전체 컨테이너 - 사이드 메뉴 + 콘텐츠 */
+.my-page-container {
+    display: flex;
+    max-width: 1000px;
+    margin: 30px auto;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    border: none;
 }
 
-.logo-text {
-  font-weight: bold;
-  font-size: 16px;
+/* 사이드 메뉴 스타일 */
+.side-menu {
+    width: 220px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 20px 0 0 20px;
 }
 
-.nav-button {
-  background-color: #ffd700;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  cursor: pointer;
+.side-menu-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    background-color: #ffd700;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
 }
 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+.side-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.search-icon,
-.menu-icon {
-  cursor: pointer;
-  font-size: 18px;
+.side-menu-item {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px;
+    background-color: #fffaf0;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    text-align: center;
+    transition: background-color 0.3s;
 }
 
-.page-title {
-  padding: 20px;
-  color: #333;
-  font-weight: bold;
-  font-size: 16px;
+.side-menu-item:hover,
+.side-menu-item.active {
+    background-color: #ffd700;
+    color: #fff;
 }
 
-.container {
-  display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
-  gap: 20px;
-  padding: 20px;
+/* 메인 콘텐츠 영역 */
+.my-page-content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 0 20px 20px 0;
 }
 
-.sidebar {
-  width: 200px;
+/* 타이틀 & 설명 */
+.my-page-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-.sidebar-card {
-  background-color: #ffd700;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 10px;
+.my-page-subject {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
-.sidebar-title {
-  background-color: #ffd700;
-  padding: 15px;
-  font-weight: bold;
-  text-align: center;
+/* 프로필 이미지 영역 */
+.profile-image {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
 }
 
-.sidebar-menu {
-  background-color: white;
+.profile-img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
 }
 
-.menu-item {
-  padding: 12px 20px;
-  border-bottom: 1px solid #f0f0f0;
-  cursor: pointer;
-  transition: background-color 0.2s;
+/* 이미지 삭제 버튼 */
+.remove-image-btn {
+    position: absolute;
+    top: 0;
+    right: 80px;
+    width: 20px;
+    height: 20px;
+    background-color: #ff4444;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    line-height: 20px;
+    text-align: center;
 }
 
-.menu-item:hover {
-  background-color: #f9f9f9;
+/* 이미지 선택 버튼 그룹 */
+.image-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
-.menu-item:last-child {
-  border-bottom: none;
+.image-btn {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background: #fffaf0;
+    color: #666;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-.main-content {
-  flex: 1;
-  background-color: white;
-  border-radius: 8px;
-  padding: 30px;
+.image-btn:hover {
+    background: #f8f1e0;
+    border-color: #ccc;
 }
 
-.profile-header {
-  margin-bottom: 30px;
+/* 메인 버튼 (저장, 등) */
+.image-btn.primary {
+    background: #ffd700;
+    border-color: #ffd700;
+    color: #333;
 }
 
-.profile-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
+.image-btn.primary:hover {
+    background: #e6c200;
 }
 
-.profile-subtitle {
-  color: #666;
-  font-size: 14px;
+/* 프로필 수정 폼 */
+#editProfileForm {
+    max-width: 450px;
+    margin: 0 auto;
 }
 
-.profile-card {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.profile-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #ffd700, #ffa500);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  position: relative;
-}
-
-.profile-avatar::after {
-  content: "👑";
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  font-size: 20px;
-}
-
-.profile-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.btn-primary {
-  background-color: #ffd700;
-  color: #333;
-}
-
-.btn-secondary {
-  background-color: #ffd700;
-  color: #333;
-}
-
+/* 각 입력 칸 그룹 */
 .form-group {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
-.form-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  font-size: 14px;
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+    font-size: 15px;
 }
 
-.form-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fffaf0;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
 }
 
-.form-textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  min-height: 60px;
-  resize: vertical;
+.form-group input[readonly] {
+    background: #f5f5f5;
+    color: #666;
+    cursor: not-allowed;
 }
 
-.form-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 30px;
+.form-group input:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 0 2px rgba(255,215,0,0.2);
 }
 
-.btn-cancel {
-  background-color: #f0f0f0;
-  color: #666;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+/* 제출 버튼 */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: #ffd700;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-.btn-submit {
-  background-color: #ffd700;
-  color: #333;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
+.submit-btn:hover {
+    background: #e6c200;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .my-page-container {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .side-menu {
+        width: 100%;
+        margin-bottom: 20px;
+        border-radius: 20px;
+    }
+
+    .my-page-content {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    #editProfileForm {
+        max-width: 100%;
+    }
+
+    .image-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .image-btn {
+        width: 140px;
+    }
+}
+
+/* 포커스 시 윤곽선 (접근성) */
+.image-btn:focus, 
+.submit-btn:focus, 
+.remove-image-btn:focus {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
 }

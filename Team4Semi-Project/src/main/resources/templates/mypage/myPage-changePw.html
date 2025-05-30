@@ -1,74 +1,75 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Page</title>
 
   <!-- 공용 css/js 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
 
   <!-- myPage 전용 CSS -->
-  <link rel="stylesheet" href="/css/myPage/myPage-style.css">
+  <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
+  <link rel="stylesheet" href="/css/myPage/myPage-changePw.css" />
 </head>
+
 <body>
-
   <main>
-
     <!-- 헤더 추가 -->
     <th:block th:replace="~{common/header}"></th:block>
 
     <section class="myPage-content">
-
       <!-- 사이드 메뉴(왼쪽) 추가 -->
       <th:block th:replace="~{myPage/sideMenu}"></th:block>
 
       <!-- 마이페이지 본문(오른쪽) -->
       <section class="myPage-main">
-
         <h1 class="myPage-title">비밀번호 변경</h1>
         <span class="myPage-subject">
-          현재 비밀번호가 일치하는 경우 
-          새 비밀번호로 변경할 수 있습니다.
+          현재 비밀번호가 일치하는 경우 새 비밀번호로 변경할 수 있습니다.
         </span>
 
-          <!-- action : 상대경로로 작성되어있음
-              현재 주소 : /myPage/changePw (GET)
-              목표 주소 : /myPage/changePw (POST)
-          -->
+        <!-- 현재 주소 : /myPage/changePw (GET)
+             목표 주소 : /myPage/changePw (POST)
+        -->
         <form action="changePw" method="POST" name="myPageFrm" id="changePw">
 
+          <!-- 현재 비밀번호 -->
           <div class="myPage-row">
-              <label>현재 비밀번호</label>
-              <input type="password" name="currentPw" id="currentPw" maxlength="30" >              
+            <label>현재 비밀번호</label>
+            <input type="password" name="currentPw" id="currentPw" maxlength="30" />
+            <span class="error-message" id="currentPwError">※비밀번호가 일치하지 않습니다.</span>
           </div>
 
+          <!-- 새 비밀번호 -->
           <div class="myPage-row">
-              <label>새 비밀번호</label>
-              <input type="password" name="newPw" id="newPw" maxlength="30">              
+            <label>새 비밀번호</label>
+            <input type="password" name="newPw" id="newPw" maxlength="30" />
+            <span class="error-message" id="newPwError">※비밀번호는 영문+숫자+특수문자를 조합해서 작성해주세요.</span>
           </div>
 
+          <!-- 새 비밀번호 확인 -->
           <div class="myPage-row">
-              <label>새 비밀번호 확인</label>
-              <input type="password" name="newPwConfirm" id="newPwConfirm" maxlength="30">              
+            <label>새 비밀번호 확인</label>
+            <input type="password" name="newPwConfirm" id="newPwConfirm" maxlength="30" />
+            <span class="error-message" id="confirmPwError">※비밀번호가 일치하지 않습니다.</span>
           </div>
 
-          <button class="myPage-submit">변경하기</button>
-
-      </form>
-
-
-
-
+          <div class="button-container">
+            <button type="button" class="cancel-btn">취소하기</button>
+            <button type="submit" class="myPage-submit">변경하기</button>
+          </div>
+        </form>
       </section>
-
     </section>
-
   </main>
 
-   <!-- 푸터 추가 -->
-   <th:block th:replace="~{common/footer}"></th:block>
-  
-   <script src="/js/myPage/myPage.js"></script>
+  <!-- 푸터 추가 -->
+  <th:block th:replace="~{common/footer}"></th:block>
+
+  <script src="/js/myPage/myPage.js"></script>
+  <script src="/js/myPage/myPage-changePw.js"></script>
 </body>
+
 </html>

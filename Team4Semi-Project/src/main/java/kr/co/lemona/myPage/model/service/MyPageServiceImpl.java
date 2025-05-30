@@ -95,7 +95,7 @@ public class MyPageServiceImpl implements MyPageService {
 	@Override
 	public int updateInfo(Member inputMember) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.updateInfo(inputMember);
 	}
 	
 	@Override

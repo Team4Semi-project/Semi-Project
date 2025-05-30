@@ -58,7 +58,7 @@ goToListBtn.addEventListener("click", () => {
 goToPrev.addEventListener("click", () => {
   const naviBtn = document.querySelector("#naviBtn");
   const prevBoardNo = naviBtn.dataset.prevBoardNo;
-  // const prevBoard = naviBtn.dataset.prevBoard;
+  const prevBoard = naviBtn.dataset.prevBoard;
   if (prevBoardNo == 0) {
     alert("이전 글이 없습니다.");
     return;

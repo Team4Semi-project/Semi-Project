@@ -589,12 +589,12 @@
 		</choose>
 	</select>
 
-	<select id="searchAllPrevBoard">
 
 <!-- 지현 / 통합 검색 시 이전 글 조회 -->
+	<select id="searchAllPrevBoard">
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
+        ROW_NUMBER() OVER (ORDER BY
 					<choose>
                        <when test="sort == 1">
                            BOARD_NO DESC
@@ -766,7 +766,7 @@ WHERE RN = (SELECT RN + 1 FROM TARGET)
 <!-- 지현 / 통합 검색 시 다음 글 조회 -->
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
+        ROW_NUMBER() OVER (ORDER BY
 						<choose>
                        <when test="sort == 1">
                            BOARD_NO DESC

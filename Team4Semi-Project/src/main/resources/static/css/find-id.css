@@ -1,22 +1,16 @@
-/* ===== 공통 스타일 ===== */
-
-/* 모든 요소에 대해 수직 스크롤 속성을 강제하고 스크롤바를 제거 */
-* {
-  overflow-y: scroll; /* 강제로 Y축 스크롤을 활성화하여 레이아웃 이동 방지 */
-  scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
-  -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨김 */
-}
-
-/* Webkit 기반 브라우저(Chrome, Safari 등)에서 스크롤바 숨김 */
-*::-webkit-scrollbar {
-  display: none; /* 스크롤바를 아예 표시하지 않음 */
-}
-
 /* HTML 요소의 기본 크기와 마진, 패딩 제거 */
 html {
   height: 100%; /* 전체 화면 높이 채우기 */
   margin: 0; /* 기본 마진 제거 */
   padding: 0; /* 기본 패딩 제거 */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
 /* ===== 레이아웃 구성 ===== */
@@ -25,7 +19,7 @@ html {
 .wrap {
   display: flex; /* 플렉스 박스 적용 */
   flex-direction: column; /* 수직 방향 정렬 */
-  min-height: 100vh; /* 화면 전체 높이를 최소로 설정 */
+  flex: 1; /* 화면 전체 높이를 최소로 설정 */
 }
 
 /* 로고 영역 스타일 */
@@ -39,13 +33,16 @@ html {
 /* 탭 컨테이너 */
 .tabs {
   display: flex; /* 가로 정렬 */
-  border: 1px solid #ddd; /* 테두리 적용 */
-  border-bottom: none; /* 하단 테두리는 제거 */
+  /* border: 1px solid #ddd; /* 테두리 적용 */
+  /*  border-bottom: none; /* 하단 테두리는 제거 */
   font-size: 16px; /* 기본 폰트 크기 */
   background-color: #fff; /* 배경 흰색 */
-  border-radius: 6px 6px 0 0; /* 상단 양 끝 모서리 둥글게 */
+  border-radius: 6px; /* 상단 양 끝 모서리 둥글게 */
   max-width: 1000px; /* 최대 너비 설정 */
   margin: 0 auto; /* 가운데 정렬 */
+  margin-top: 32px;
+
+  box-shadow: var(--SHADOW);
 }
 
 /* 개별 탭 버튼 */
@@ -61,6 +58,11 @@ html {
   transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
   text-decoration: none; /* 링크 밑줄 제거 */
   color: black; /* 글자색 검정 */
+  border-radius: 6px; /* 상단 양 끝 모서리 둥글게 */
+}
+
+.header {
+  box-shadow: none !important;
 }
 
 /* 탭에 마우스 올렸을 때 배경 색상 변경 */
@@ -78,6 +80,7 @@ html {
   background-color: #ffd636; /* 배경 노란색 */
   font-weight: bold; /* 글자 굵게 */
   transition: background-color 0.3s;
+  border-radius: 6px 0px 0px 6px;
 }
 
 /* 활성화된 탭에 마우스 올렸을 때 더 진한 노란색 */
@@ -113,11 +116,17 @@ main {
   margin-bottom: 25px; /* 하단 여백 */
 }
 
+#findIdForm {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
 /* 입력창 기본 스타일 */
 .find-box input {
-  width: 95%; /* 입력창 너비 */
+  /* width: 95%; /* 입력창 너비 */
   padding: 12px 14px; /* 안쪽 여백 */
-  margin-bottom: 15px; /* 하단 여백 */
+  margin-bottom: 16px; /* 하단 여백 */
   border: 1px solid #fff9e4; /* 테두리 연노랑 */
   border-radius: 6px; /* 모서리 둥글게 */
   background-color: #fff9e4; /* 배경 연노랑 */
@@ -129,6 +138,12 @@ main {
   background-color: #ffffff; /* 배경 흰색 */
   border: 5px solid #fff9e4; /* 테두리 강조 */
   color: #6d6d6d; /* 글자 회색 */
+
+  margin-top: 32px;
+}
+
+#foundId:focus {
+  outline: none;
 }
 
 /* ===== 하단 버튼 및 링크 영역 ===== */
@@ -144,7 +159,7 @@ main {
 
 /* 회원가입 링크 스타일 */
 .join-link {
-  background-color: #ffd634; /* 노란 배경 */
+  /* background-color: #ffd634; /* 노란 배경 */
   color: #5e5e5e; /* 글자 회색 */
   border: none; /* 테두리 없음 */
   padding: 10px 20px; /* 여백 */
@@ -160,12 +175,13 @@ main {
 
 /* 회원가입 링크에 마우스를 올렸을 때 색상 변화 */
 .join-link:hover {
-  background-color: #f5b400;
+  background-color: var(--yellow);
 }
 
 /* 일반 버튼 스타일 */
-button {
-  background-color: #ffd634;
+button,
+.button {
+  background-color: var(--lemon);
   color: #5e5e5e;
   border: none;
   padding: 10px 20px;
@@ -173,11 +189,40 @@ button {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
+
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-2-weight);
+  font-family: var(--ryu-p-2-font-family);
+}
+
+.whiteBtn {
+  color: var(--yellow);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-2-weight);
+  font-family: var(--ryu-p-2-font-family);
+}
+
+.hide {
+  display: none;
 }
 
 /* 버튼에 마우스를 올렸을 때 색상 변화 */
-button:hover {
-  background-color: #f5b400;
+button:hover,
+.button:hover {
+  background-color: var(--yellow);
+}
+
+.whiteBtn:hover {
+  outline: 1px solid var(--yellow);
+  background-color: var(--white);
+  /* color: var(--white); */
 }
 
 /* ===== 푸터 영역 ===== */

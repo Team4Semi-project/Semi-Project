@@ -237,6 +237,7 @@
           <li>
             <a
               th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&gt;</a>
+              
           </li>
 
           <!-- 끝 페이지로 이동 -->

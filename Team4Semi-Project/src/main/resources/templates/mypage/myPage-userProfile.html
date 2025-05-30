@@ -50,20 +50,43 @@
 
     <!-- 탭 섹션 -->
     <nav class="tabs">
-      <a href="/mypage/main" id="postsTab" class="tab active">내가 쓴 글</a>
-      <a href="/mypage/like" id="lemonaTab" class="tab">내 레모나</a>
+      <!-- <a href="/mypage/userProfile" id="postsTab" class="tab active" th:text="|${member.memberNickname}님이 쓴 레시피|">내가 쓴
+        레시피</a>
+      <a href="/mypage/like" id="lemonaTab" class="tab" th:text="|${member.memberNickname}님이 쓴 게시글|">내가 쓴 게시글</a> -->
+      <a href="#" id="recipeTab" class="tab active">내가 쓴 레시피</a>
+      <a href="#" id="postTab" class="tab">내가 쓴 게시글</a>
     </nav>
+
+    <!-- 내가 쓴 레시피 내용 -->
+    <div id="recipeContent">
+      <div class="recipe-container cozy-view" id="cozy">
+        <div th:replace="~{board/cozyList :: cozyList}"></div>
+      </div>
+
+      <div class="recipe-container agenda-view" id="agenda" style="display: none">
+        <div th:replace="~{board/agendaList :: agendaList}"></div>
+      </div>
+    </div>
+
+    <!-- 내가 쓴 게시글 내용 -->
+    <div id="postContent" style="display: none;">
+      <div class="recipe-container cozy-view" id="cozy">
+        <div th:replace="~{board/cozyList :: cozyList}"></div>
+      </div>
+
+      <div class="recipe-container agenda-view" id="agenda" style="display: none">
+        <div th:replace="~{board/agendaList :: agendaList}"></div>
+      </div>
+    </div>
+
 
     <!-- 게시글 섹션 -->
     <!-- 게시글 컨테이너 (Cozy View) fragment -->
-    <div class="recipe-container cozy-view" id="cozy">
-      <div th:replace="~{board/cozyList :: cozyList}"></div>
-    </div>
 
     <!-- 게시글 컨테이너 (Agenda View) fragment -->
-    <div class="recipe-container agenda-view" id="agenda" style="display: none">
+    <!-- <div class="recipe-container agenda-view" id="agenda" style="display: none">
       <div th:replace="~{board/agendaList :: agendaList}"></div>
-    </div>
+    </div> -->
 
     <!-- 페이지네이션 : 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
     <div class="pagination-area">
@@ -115,6 +138,34 @@
 
   <!-- 공통 스크립트 -->
   <script th:src="@{/js/board/boardList.js}"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const recipeTab = document.getElementById('recipeTab');
+      const postTab = document.getElementById('postTab');
+      const recipeContent = document.getElementById('recipeContent');
+      const postContent = document.getElementById('postContent');
+
+      recipeTab.addEventListener('click', function (e) {
+        e.preventDefault(); // 페이지 이동 막기
+        recipeTab.classList.add('active');
+        postTab.classList.remove('active');
+        recipeContent.style.display = 'block';
+        postContent.style.display = 'none';
+        location.href = '/mypage/userProfile?type=recipe';
+      });
+
+      postTab.addEventListener('click', function (e) {
+        e.preventDefault(); // 페이지 이동 막기
+        postTab.classList.add('active');
+        recipeTab.classList.remove('active');
+        postContent.style.display = 'block';
+        recipeContent.style.display = 'none';
+        location.href = '/mypage/userProfile?type=post';
+      });
+    });
+  </script>
+
 
   <!-- <script>
     function showTab(tabName) {

@@ -22,7 +22,7 @@
     <section class="recipe-section">
       <!-- 섹션 헤더 -->
       <div class="section-header">
-        
+
         <h2 th:if="${boardCode == 2}" class="section-title">자유 게시판</h2>
         <h2 th:if="${boardCode == 3}" class="section-title">공지 게시판</h2>
 
@@ -37,7 +37,7 @@
               <span class="material-symbols-outlined"> view_cozy </span>
             </button>
           </div>
-          
+
           <div class="sort-options">
             <select class="sort-select" id="sortSelect">
               <option value="latest">최신순</option>
@@ -59,44 +59,49 @@
 
         <!-- 게시글 목록 -->
         <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
-          <div th:each="board : ${boardList}" class="recipe-item">
+          <div th:each="board : ${boardList}" class="recipe-item"
+            th:data-url="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
             <div class="recipe-image">
-              <a
-                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} "
-                <!-- 썸네일 -->
-                <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
-                  th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
-                  alt="레시피 이미지" />
-              </a>
+              <!-- 썸네일 -->
+              <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
+                alt="레시피 이미지" />
             </div>
 
             <!-- 글 제목 클릭 시 이동 -->
             <div class="recipe-info">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} "
-                  th:utext="${#strings.length(board.boardTitle) > 25 ? #strings.substring(board.boardTitle, 0, 25) + '...' : board.boardTitle}">레몬 팬케이크
-                </a>
+                <p
+                  th:utext="${#strings.length(board.boardTitle) > 25 ? #strings.substring(board.boardTitle, 0, 25) + '...' : board.boardTitle}">
+                  레몬
+                  팬케이크
+                </p>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
-              <div class="recipe-meta">
-                <div class="author-info">
-                  <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                    alt="프로필 이미지" class="author-image" />
-                  <span class="author-name" th:utext="${board.memberNickname}">장미애 님</span>
+
+              <div class="recipe-tags"></div>
+
+              <div class="non-href">
+                <div class="recipe-meta">
+                  <div class="author-info">
+                    <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                      alt="프로필 이미지" class="author-image" />
+                    <span class="author-name" th:utext="${board.memberNickname}">장미애 님</span>
+                  </div>
+                  <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                 </div>
-                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
-              </div>
-              <div class="recipe-stats">
-                <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
-                  th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
-                  th:data-like-check="${board.likeCheck}"
-                  th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
-                  <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
-                  <span th:text="${board.likeCount}">28</span>
-                </button>
-                <div class="views">
-                  <i class="material-symbols-outlined align-middle">visibility</i>
-                  <span th:text="${board.readCount}">36</span>
+                <div class="recipe-stats">
+                  <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                    th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                    th:data-like-check="${board.likeCheck}"
+                    th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+                    <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+                    <span th:text="${board.likeCount}">28</span>
+                  </button>
+                  <div class="views">
+                    <i class="material-symbols-outlined align-middle">visibility</i>
+                    <span th:text="${board.readCount}">36</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -112,22 +117,22 @@
         </div>
         <!-- 게시글 목록 -->
         <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list">
-          <div th:each="board : ${boardList}" class="recipe-item">
+          <div th:each="board : ${boardList}" class="recipe-item"
+            th:data-url="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
             <div class="recipe-image">
-              <a
-                th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}">
-                <!-- 자유 또는 공지 게시판 썸네일 -->
-                <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
-                  alt="게시판 이미지">
-              </a>
+
+              <!-- 자유 또는 공지 게시판 썸네일 -->
+              <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
+                alt="게시판 이미지">
+
             </div>
 
             <!-- 글 제목 클릭 시 이동-->
             <div class="recipe-details">
               <h3 class="recipe-title">
-                <a th:href="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage})}"
-                  th:utext="${#strings.length(board.boardTitle) > 40 ? #strings.substring(board.boardTitle, 0, 40) + '...' : board.boardTitle}">레몬 팬케이크
-                </a>
+                <p th:utext="${board.boardTitle}">레몬
+                  팬케이크
+                </p>
                 <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
               </h3>
               <div class="recipe-meta">

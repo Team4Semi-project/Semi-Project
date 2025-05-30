@@ -175,6 +175,27 @@ body {
   background-color: #ffd21e;
 }
 
+/* 버튼 스타일 */
+#updateBtn,
+#deleteBtn {
+  background-color: var(--lemon);
+  color: var(--darkgray);
+  border: none;
+  border-radius: 30px;
+  padding: 8px 24px;
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-2-weight);
+  font-family: var(--ryu-p-2-font-family);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: var(--SHADOW);
+}
+
+#updateBtn:hover,
+#deleteBtn:hover {
+  background-color: var(--yellow);
+}
+
 /* Recipe steps */
 .recipe-steps {
   margin-bottom: 30px;

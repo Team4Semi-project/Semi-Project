@@ -22,7 +22,8 @@
 	<update id="defaultBoardUpdate">
 		UPDATE "BOARD"
 		SET BOARD_TITLE = #{boardTitle},
-		BOARD_CONTENT = #{boardContent}
+		BOARD_CONTENT = #{boardContent},
+		BOARD_UPDATE_DATE = SYSDATE
 		WHERE BOARD_CODE = #{boardCode}
 		AND BOARD_NO = #{boardNo}
 		AND MEMBER_NO = #{memberNo}

@@ -162,6 +162,7 @@ main {
   transform: translateY(-5px);
   box-shadow: var(--SHADOW);
   background-color: var(--milk);
+  cursor: pointer;
 }
 
 .recipe-image {
@@ -181,13 +182,22 @@ main {
 }
 
 .recipe-title {
-  font-family: var(--pre-h-1-font-family);
-  font-weight: var(--pre-h-1-font-weight);
-  font-size: var(--pre-h-1-font-size);
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
   color: var(--deepbrown);
+}
+
+.titleText {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 최대 1줄까지만 보이도록 설정 */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  font-family: var(--pre-h-2-font-family);
+  font-weight: var(--pre-h-2-font-weight);
+  font-size: var(--pre-h-2-font-size);
 }
 
 .comment-count {
@@ -230,7 +240,6 @@ main {
 .author-info {
   display: flex;
   align-items: center;
-  gap: 5px;
 }
 
 .author-image {
@@ -243,6 +252,7 @@ main {
 .author-name {
   font-size: var(--pre-p-1-font-size);
   color: var(--deepgray);
+  margin: 0 12px;
 }
 
 .recipe-date {
@@ -420,9 +430,14 @@ main {
 }
 
 .agenda-view .recipe-image {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 100%;
   margin-right: 15px;
+}
+
+.agenda-view .recipe-details {
+  width: 100%;
+  padding: 15px;
 }
 
 .agenda-view .recipe-info {
@@ -430,11 +445,19 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 0;
 }
 
 .agenda-view .recipe-title {
   font-size: var(--pre-h-1-font-size);
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.agenda-view .recipe-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .agenda-view .recipe-meta {

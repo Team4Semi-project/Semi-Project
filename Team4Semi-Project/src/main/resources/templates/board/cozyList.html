@@ -7,7 +7,6 @@
   <!-- 게시글 목록 -->
   <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-grid">
 
-
     <!-- 검색 시 -->
     <div th:if="${key != null}" th:each="board : ${boardList}" class="recipe-item"
       th:data-url="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort}">
@@ -19,10 +18,10 @@
           alt="레시피 이미지" />
       </div>
 
-      <!-- 글 제목 클릭 시 이동 -->
+      <!-- 글 제목 / 댓글 수 -->
       <div class="recipe-info">
         <h3 class="recipe-title">
-          <div th:utext="${board.boardTitle}">레몬 팬케이크</div>
+          <div class="titleText" th:utext="${board.boardTitle}">레몬 팬케이크</div>
           <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
         </h3>
 
@@ -76,10 +75,10 @@
           alt="레시피 이미지" />
       </div>
 
-      <!-- 글 제목 클릭 시 이동 -->
+      <!-- 글 제목 / 댓글 수 -->
       <div class="recipe-info">
         <h3 class="recipe-title">
-          <div th:utext="${board.boardTitle}">레몬 팬케이크</div>
+          <div class="titleText" th:utext="${board.boardTitle}">레몬 팬케이크</div>
           <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
         </h3>
 

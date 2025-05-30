@@ -49,6 +49,7 @@ public class MemberController {
 		if (loginMember == null) {
 			// 로그인 실패 시: 리다이렉트 후 메시지 전달
 			ra.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "redirect:login";
 
 		} else {
 			// 로그인 성공 시: 로그인한 회원 정보를 세션에 저장

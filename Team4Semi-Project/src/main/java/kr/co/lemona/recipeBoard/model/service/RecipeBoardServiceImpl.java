@@ -131,6 +131,8 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 				List<String> tagList = Arrays.stream(tags.split(",")).map(String::trim).collect(Collectors.toList());
 				recipeBoard.setHashTagList(tagList);
 			}
+		} else {
+			return null;
 		}
 		
 		RecipeBoard prevBoard = null;
@@ -150,8 +152,11 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 			prevBoard = mapper.searchAllPrevBoard(searchMap);
 			// 다음 글
 			nextBoard = mapper.searchAllNextBoard(searchMap);
+			
+			log.info("prevBoard : "+ prevBoard);
+			log.info("nextBoard : "+ nextBoard);
+			
 		} else {  // 검색이 아닌 경우
-//			log.info("searchMap : "+searchMap);
 			log.info("map : "+map);
 			// 이전 글
 			prevBoard = mapper.selectPrevBoard(map);
@@ -187,6 +192,8 @@ public class RecipeBoardServiceImpl implements RecipeBoardService {
 		map2.put("boardStepList", boardStepList);
 		map2.put("prevBoardNo", prevBoardNo);
 		map2.put("nextBoardNo", nextBoardNo);
+		map2.put("prevBoard", prevBoard);
+		map2.put("nextBoard", nextBoard);
 
 		return map2;
 	}

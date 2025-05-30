@@ -16,6 +16,10 @@ goToListBtn.addEventListener("click", () => {
   const segments = pathname.split("/"); // ['', 'board', '1', '0', '3']
   const categoryNo = segments[3]; // 인덱스 3에 있는 게 바로 '0'
 
+  if(categoryNo == 'userProfile'){
+    location.href = `/mypage/${categoryNo}?cp=${cp}`;
+    return;
+  } 
   location.href = `/board/1/${categoryNo}?cp=${cp}&sort=${sort}`;
 });
 
@@ -33,7 +37,7 @@ goToPrev.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/${prevBoard}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  location.href = `/board/1/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 // 다음글 버튼
@@ -51,7 +55,7 @@ goToNext.addEventListener("click", () => {
   const segments = pathname.split("/");
   const categoryNo = segments[3];
 
-  location.href = `/board/${nextBoard}/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+  location.href = `/board/1/${categoryNo}/${nextBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
 });
 
 const deleteBtn = document.querySelector("#deleteBtn");

@@ -144,6 +144,7 @@ public class DefaultBoardController {
 			@RequestParam(value = "key", required = false, defaultValue = "") String key,
 			@RequestParam(value = "queryb", required = false, defaultValue = "") String queryb,
 			@RequestParam(value = "querys", required = false, defaultValue = "") String querys,
+			@RequestParam(value = "userProfile", required = false, defaultValue = "") String userProfile,
 			Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
 			RedirectAttributes ra, HttpServletRequest req, // 요청에 담긴 쿠키 얻어오기
 			HttpServletResponse resp // 새로운 쿠키 만들어서 응답하기
@@ -287,6 +288,11 @@ public class DefaultBoardController {
 				model.addAttribute("nextBoardNo", nextBoardNo);
 //				model.addAttribute("prevBoard", prevBoard.getBoardCode());
 //				model.addAttribute("nextBoard", nextBoard.getBoardCode());
+				
+				if(userProfile.equals("Y")) {
+					log.info("userProfile : " + userProfile);
+					model.addAttribute("userProfile", userProfile);
+				}
 
 				// 조회된 이미지 목록이 있을 경우
 				/*

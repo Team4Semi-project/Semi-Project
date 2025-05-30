@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
@@ -40,7 +42,6 @@ public class MyPageServiceImpl implements MyPageService {
 
 	@Value("${my.profile.folder-path}")
 	private String profileFolderPath; // C:/uploadFiles/profile/
-
 
 	// 비밀번호 변경 서비스
 	@Override
@@ -91,20 +92,20 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.secession(memberNo);
 	}
 
-	
 	@Override
 	public int updateInfo(Member inputMember) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public int profile(MultipartFile profileImg, Member loginMember) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/** 사용자 조회 / 특정 사용자가 쓴 글 목록
+
+	/**
+	 * 사용자 조회 / 특정 사용자가 쓴 글 목록
 	 *
 	 * @author miae
 	 */
@@ -113,35 +114,30 @@ public class MyPageServiceImpl implements MyPageService {
 		int memberNo = (int) inputMap.get("memberNo");
 		int cp = (int) inputMap.get("cp");
 		int listCount = 0;
-		
+
 		Map<String, Object> map = new HashMap<>();
-		
+
 		// 사용자 조회
 		Member member = mapper.selectMember(memberNo);
-		log.info("member 들어오는지 확인하기 : " + member.toString());
-		
+		log.info("member 들어오는지 확인하기 : selectMemberInfo : " + member.toString());
+
 		// 특정 사용자가 쓴 글 목록
 		List<RecipeBoard> recipeBoardList = null;
-		
-		
-		
 
 		// 1. 특정 사용자가 작성한 레시피 중 삭제 되지 않은 게시글 수를 조회
 		listCount = mapper.getMemberRecipeListCount(memberNo);
 
-
 		// 2. 1번의 결과 + cp 를 이용해서 Pagination 객체를 생성
 		Pagination pagination = new Pagination(cp, listCount);
+		log.info("pagination : " + pagination.getListCount());
 
 		// 3. 특정 게시판의 지정된 페이지 목록 조회
 		int limit = pagination.getLimit(); // 한 페이지 내에 보여줄 게시글 수
 		int offset = (cp - 1) * limit; // 보여줄 페이지의 앞에 건너뛸 게시글 개수
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
-
 		// 조회 결과를 리스트에 저장
 		recipeBoardList = mapper.selectMemberRecipeList(memberNo, rowBounds);
-
 
 		// 해시태그 받아오는 부분
 		for (RecipeBoard recipeBoard : recipeBoardList) {
@@ -151,18 +147,23 @@ public class MyPageServiceImpl implements MyPageService {
 				recipeBoard.setHashTagList(tagList);
 			}
 		}
-
+		
+		// 레시피 게시판 댓글 수
+		int recipeCommentCount = mapper.selectRecipeCommentCount(memberNo);
+		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		map.put("member", member);
 		map.put("pagination", pagination);
 		map.put("recipeBoardList", recipeBoardList);
-		
-		
-		
+		map.put("listCount", listCount);
+		map.put("recipeCommentCount", recipeCommentCount);
+
 		return map;
 	}
 
-	/** 사용자 조회 / 특정 사용자가 쓴 일반 게시글 목록
+	/**
+	 * 사용자 조회 / 특정 사용자가 쓴 일반 게시글 목록
+	 * 
 	 * @author jihyun / miae
 	 */
 	@Override
@@ -170,22 +171,18 @@ public class MyPageServiceImpl implements MyPageService {
 		int memberNo = (int) inputMap.get("memberNo");
 		int cp = (int) inputMap.get("cp");
 		int listCount = 0;
-		
+
 		Map<String, Object> map = new HashMap<>();
-		
+
 		// 사용자 조회
 		Member member = mapper.selectMember(memberNo);
 		log.info("member 들어오는지 확인하기 : " + member.toString());
-		
+
 		// 특정 사용자가 쓴 글 목록
 		List<Board> boardList = null;
-		
-		
-		
 
 		// 1. 특정 사용자가 작성한 글 중 삭제 되지 않은 게시글 수를 조회
 		listCount = mapper.getMemberDefaultListCount(memberNo);
-
 
 		// 2. 1번의 결과 + cp 를 이용해서 Pagination 객체를 생성
 		Pagination pagination = new Pagination(cp, listCount);
@@ -195,10 +192,25 @@ public class MyPageServiceImpl implements MyPageService {
 		int offset = (cp - 1) * limit; // 보여줄 페이지의 앞에 건너뛸 게시글 개수
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
-
 		// 조회 결과를 리스트에 저장
 		boardList = mapper.selectMemberBoardList(memberNo, rowBounds);
 
+		// 썸네일 추출 추가
+		for (Board board : boardList) {
+			// 글 내용만 가져옴
+			String content = board.getBoardContent();
+			if (content != null) {
+				// 글 내용에서 img 태그의 src 속성 값을 추출하는 정규식을 Patter에 정의
+				// 그 정규식으로 matcher 객체 생성
+				Matcher matcher = Pattern.compile("<img[^>]+src=[\"']([^\"']+)[\"']").matcher(content);
+				// matcher에서 패턴에 정의 된 정규식에 맞는 첫번째 문자열을 찾음
+				if (matcher.find()) {
+					// 문자열을 board의 thumbnail에 세팅 // 0 : img src 태그 전체
+					board.setThumbnail(matcher.group(1)); // 1 : "또는'이 나오기 전까지의 모든 문자(첫번째 ()의 내용인 [^\"']+)
+					log.info("board.Thumbnail : " + board.getThumbnail());
+				}
+			}
+		}
 
 		// 해시태그 받아오는 부분
 		for (Board list : boardList) {
@@ -209,16 +221,17 @@ public class MyPageServiceImpl implements MyPageService {
 			}
 		}
 
+		// 댓글 수 
+		int commentCount = mapper.selectCommentCount(memberNo);
+		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		map.put("member", member);
 		map.put("pagination", pagination);
 		map.put("boardList", boardList);
-		
-		
-		
+		map.put("listCount", listCount);
+		map.put("commentCount", commentCount);
+
 		return map;
 	}
-
-
 
 }

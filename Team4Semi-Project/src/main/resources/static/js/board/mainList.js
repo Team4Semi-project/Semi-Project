@@ -64,6 +64,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // 카드 클릭 시 이동 처리
+  document.querySelectorAll(".recipe-item").forEach(item => {
+    item.addEventListener("click", function (e) {
+      // 클릭한 요소가 .no-click 안에 포함되어 있으면 무시      
+      if (e.target.closest(".non-href")) return;
+      // 해당 카드의 URL로 이동      
+      const url = this.dataset.url; if (url) location.href = url;
+    });
+  });
 
   /* 좋아요 기능 */
   const likes = document.querySelectorAll(".likes");

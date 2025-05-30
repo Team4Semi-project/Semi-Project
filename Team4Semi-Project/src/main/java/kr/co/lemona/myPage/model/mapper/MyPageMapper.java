@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.myPage.model.dto.UploadFile;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
@@ -76,5 +77,19 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	int getMemberRecipeListCount(int memberNo);
+	
+	/** 특정 사용자가 쓴 일반 게시글의 갯수 조회
+	 * @param memberNo
+	 * @return
+	 */
+	int getMemberDefaultListCount(int memberNo);
+
+	/** 특정 사용자가 쓴 일반 게시글 목록
+	 * @param memberNo
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Board> selectMemberBoardList(int memberNo, RowBounds rowBounds);
+
 
 }

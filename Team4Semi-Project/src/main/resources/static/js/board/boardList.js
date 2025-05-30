@@ -311,7 +311,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-
   /**
    * 정렬 기능 초기화
    */
@@ -505,4 +504,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 이미지 지연 로딩 초기화
   lazyLoadImages();
+});
+
+// 제목, 이미지 말고 카드 누르면 이동되게 하는 처리
+document.querySelectorAll(".recipe-item").forEach(item => {
+  item.addEventListener("click", function (e) {
+    // 좋아요나 수정/삭제 버튼 영역 클릭은 제외
+    if (e.target.closest(".non-href") || e.target.closest(".likes") || e.target.tagName === "button") return;
+
+    const url = this.getAttribute("data-url");
+    if (url) {
+      window.location.href = url;
+    }
+  });
 });

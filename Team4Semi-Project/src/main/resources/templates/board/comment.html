@@ -30,11 +30,11 @@
               <img th:unless="${comment.profileImg}" th:src="#{user.default.image}">
               <!-- 프로필 이미지 있을 경우 -->
               <img th:if="${comment.profileImg}" th:src="${comment.profileImg}">
-  
+
               <span th:text="${comment.memberNickname}">닉네임</span>
               <span class="comment-date" th:text="${comment.commentWriteDate}">작성일</span>
             </p>
-  
+
             <!-- 좋아요 하트 -->
             <button type="button" class="commentLikes" th:data-login-member-no="${session.loginMember?.memberNo}"
               th:data-comment-no="${comment.commentNo}" th:data-like-check="${comment.likeCheck}"
@@ -42,7 +42,7 @@
               <!-- 좋아요 누른적이 있으면 fa-solid, 없으면 fa-regular 클래스 추가 -->
               <i class="fa-lemon" th:classappend="${comment.likeCheck == 1} ? 'fa-solid' : 'fa-regular'"></i>
               <!-- <i class="fa-lemon" th:classappend="${comment.likeCheck.toString() == '1'} ? 'fa-solid' : 'fa-regular'"></i> -->
-  
+
               <!-- 좋아요 개수 -->
               <span th:text="${comment.likeCount}">0</span>
             </button>
@@ -51,17 +51,15 @@
           <p class="comment-content" th:text="${comment.commentContent}">댓글 내용</p>
 
           <!-- 버튼 영역 -->
-          <div class="comment-btn-area">
-            <th:block th:if="${session.loginMember != null}">
-              <button th:onclick="|showInsertComment(${comment.commentNo}, this)|">답변하기</button>
+          <div class="comment-btn-area" th:if="${session.loginMember != null}">
+            <button th:onclick="|showInsertComment(${comment.commentNo}, this)|">답변하기</button>
 
-              <!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
-              <th:block th:with="writerNo=${comment.memberNo}">
-                <th:block th:if="${session.loginMember.memberNo == writerNo}">
-                  <button th:onclick="|showUpdateComment(${comment.commentNo}, this)|">수정하기</button>
-                  <button th:onclick="|deleteComment(${comment.commentNo})|">삭제하기</button>
-                </th:block>
-              </th:block>
+            <!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
+            <th:block th:with="writerNo=${comment.memberNo}">
+              <div th:if="${session.loginMember.memberNo == writerNo}" class="edit-delete-group">
+                <button th:onclick="|showUpdateComment(${comment.commentNo}, this)|">수정하기</button>
+                <button th:onclick="|deleteComment(${comment.commentNo})|">삭제하기</button>
+              </div>
             </th:block>
           </div>
         </th:block>
@@ -69,17 +67,3 @@
     </ul>
   </div>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const textarea = document.getElementById("commentContent");
-
-    if (textarea) {
-      textarea.setAttribute("style", "height:auto;overflow-y:hidden;");
-      textarea.addEventListener("input", function () {
-        this.style.height = "auto"; // 초기화
-        this.style.height = (this.scrollHeight) + "px"; // 실제 내용 높이로 설정
-      });
-    }
-  });
-</script>

@@ -136,6 +136,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-right: 12px;
 }
 
 .author-avatar {
@@ -261,7 +262,7 @@ body {
 }
 
 /* Navigation section */
-.navigation {
+.navi {
   display: flex;
   justify-content: space-between;
   margin: 30px 0;

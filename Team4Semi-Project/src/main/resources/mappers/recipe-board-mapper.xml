@@ -470,7 +470,18 @@
 		LIKE_CHECK
 		FROM
 		(SELECT COMMENT_NO, COMMENT_CONTENT,
-		TO_CHAR(COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE,
+		<![CDATA[
+		    CASE
+		        WHEN SYSDATE - COMMENT_WRITE_DATE < 1 / 24 / 60 THEN 
+		            FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24 * 60 * 60) || '초 전'
+		        WHEN SYSDATE - COMMENT_WRITE_DATE < 1 / 24 THEN 
+		            FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24 * 60) || '분 전'
+		        WHEN SYSDATE - COMMENT_WRITE_DATE < 1 THEN 
+		            FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24) || '시간 전'
+		        ELSE 
+		            TO_CHAR(COMMENT_WRITE_DATE, 'YYYY-MM-DD')
+		    END AS COMMENT_WRITE_DATE,
+		]]>
 		BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_COMMENT_NO,
 		COMMENT_DEL_FL
 		FROM "RECIPE_COMMENT"
@@ -1276,7 +1287,7 @@ WHERE R.RN = (
 <!-- 지현 / 통합 검색 시 이전 글 조회 -->
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
+        ROW_NUMBER() OVER (ORDER BY
 					<choose>
                        <when test="sort == 1">
                            BOARD_NO DESC
@@ -1446,7 +1457,7 @@ WHERE RN = (SELECT RN + 1 FROM TARGET)
 <!-- 지현 / 통합 검색 시 다음 글 조회 -->
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
+        ROW_NUMBER() OVER (ORDER BY
 						<choose>
                        <when test="sort == 1">
                            BOARD_NO DESC
@@ -1516,7 +1527,7 @@ WITH SEARCH_RESULT AS (
 			<when test='key == 2'>
 				AND B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
 			</when>
-			<when test='key == "3'>
+			<when test='key == 3'>
 				AND (
 				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
 				OR

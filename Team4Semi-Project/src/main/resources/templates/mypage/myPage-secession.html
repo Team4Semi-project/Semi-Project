@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>My Page</title>
 
   <!-- 공용 css/js 추가 -->
@@ -11,6 +11,7 @@
 
   <!-- myPage 전용 CSS -->
   <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
+
   <link rel="stylesheet" href="/css/myPage/myPage-secession.css" />
 </head>
 
@@ -47,6 +48,7 @@
         </div>
 
         <pre class="secession-terms">제1조
+
 이 약관은 샘플 약관입니다.
 
 ① 약관 내용 1
@@ -70,6 +72,7 @@
 ④ 약관 내용 4
                 </pre>
 
+
         <div class="checkbox-container">
           <input type="checkbox" name="agree" id="agree" />
           <label for="agree">위 약관에 동의합니다.</label>
@@ -80,11 +83,13 @@
     </section>
   </section>
 
+
   <!-- 푸터 추가 -->
   <th:block th:replace="~{common/footer}"></th:block>
 
   <script src="/js/myPage/myPage.js"></script>
   <script src="/js/myPage/myPage-secession.js"></script>
+
 </body>
 
 </html>

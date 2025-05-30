@@ -287,6 +287,9 @@ public class DefaultBoardController {
 				model.addAttribute("nextBoardNo", nextBoardNo);
 //				model.addAttribute("prevBoard", prevBoard.getBoardCode());
 //				model.addAttribute("nextBoard", nextBoard.getBoardCode());
+				
+//				log.info("prevBoard code : "+prevBoard.getBoardCode());
+//				log.info("nextBoard code : "+nextBoard.getBoardCode());
 
 				// 조회된 이미지 목록이 있을 경우
 				/*

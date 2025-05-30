@@ -424,19 +424,20 @@
 		LIKE_CHECK
 		FROM
 		(SELECT COMMENT_NO, COMMENT_CONTENT,
-          <![CDATA[
-          CASE
-            WHEN SYSDATE - COMMENT_WRITE_DATE < 1 / 24 / 60 THEN 
-              FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24 * 60 * 60) || '초 전'
-            WHEN SYSDATE - COMMENT_WRITE_DATE < 1 / 24 THEN 
-              FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24 * 60) || '분 전'
-            WHEN SYSDATE - COMMENT_WRITE_DATE < 1 THEN 
-              FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24) || '시간 전'
-            ELSE 
-              TO_CHAR(COMMENT_WRITE_DATE, 'YYYY-MM-DD')
-          END
-          ]]>
-		AS COMMENT_WRITE_DATE,
+
+		<![CDATA[
+		    CASE
+		        WHEN SYSDATE - COMMENT_WRITE_DATE < 1 / 24 / 60 THEN 
+		            FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24 * 60 * 60) || '초 전'
+		        WHEN SYSDATE - COMMENT_WRITE_DATE < 1 / 24 THEN 
+		            FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24 * 60) || '분 전'
+		        WHEN SYSDATE - COMMENT_WRITE_DATE < 1 THEN 
+		            FLOOR((SYSDATE - COMMENT_WRITE_DATE) * 24) || '시간 전'
+		        ELSE 
+		            TO_CHAR(COMMENT_WRITE_DATE, 'YYYY-MM-DD')
+		    END AS COMMENT_WRITE_DATE,
+		]]>
+
 		BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG,
 		PARENT_COMMENT_NO, COMMENT_DEL_FL
 		FROM "DEFAULT_COMMENT"
@@ -588,12 +589,12 @@
 		</choose>
 	</select>
 
-	<select id="searchAllPrevBoard">
 
 <!-- 지현 / 통합 검색 시 이전 글 조회 -->
+	<select id="searchAllPrevBoard">
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
+        ROW_NUMBER() OVER (ORDER BY
 					<choose>
                        <when test="sort == 1">
                            BOARD_NO DESC
@@ -765,7 +766,7 @@ WHERE RN = (SELECT RN + 1 FROM TARGET)
 <!-- 지현 / 통합 검색 시 다음 글 조회 -->
 WITH SEARCH_RESULT AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY RAW_DATE DESC,
+        ROW_NUMBER() OVER (ORDER BY
 						<choose>
                        <when test="sort == 1">
                            BOARD_NO DESC

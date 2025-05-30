@@ -39,6 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.foundId) {
         foundId.value = data.foundId;
         alert("아이디를 찾았습니다!");
+
+        document.querySelector("#initialButtons").classList.add("hide");
+        document.querySelector("#resultButtons").classList.remove("hide");
+
       } else {
         alert("입력한 정보와 일치하는 아이디가 없습니다. 다시 입력해주세요.");
         foundId.value = "";

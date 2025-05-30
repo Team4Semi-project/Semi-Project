@@ -1,43 +1,54 @@
-// 비밀번호 변경 form 태그
-const changePw = document.querySelector("#updatePwForm");
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("updatePwForm");
+  const userId = document.getElementById("#userId");
+  const confirmPw = document.getElementById("confirmPw");
 
-// 현재 페이지에서 changePw 요소가 존재할때
-if (changePw != null) {
-  // 제출 되었을 때
-  changePw.addEventListener("submit", (e) => {
-    const currentPw = document.querySelector("#currentPw");
-    const newPw = document.querySelector("#newPw");
-    const newPwConfirm = document.querySelector("#confirmPw");
+  form.addEventListener("submit", async (e) => {
+    const memberId = userId.value.trim();
+    const pw1 = newPw.value.trim();
+    const pw2 = confirmPw.value.trim();
 
-    // - 값을 모두 입력했는가
-
-    let str; // undefined 상태
-
-    if (newPw.value.trim().length == 0) str = "새 비밀번호를 입력해주세요";
-    else if (newPwConfirm.value.trim().length == 0)
-      str = "새 비밀번호 확인을 입력해주세요";
-
-    if (str != undefined) {
-      // str에 값이 대입됨 == if 중 하나 실행됨
-      alert(str);
+    // 1️⃣ 유효성 검사
+    const pwRegex =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+    if (!pw1) {
+      alert("새 비밀번호를 입력해주세요.");
+      newPw.focus();
+      e.preventDefault();
+      return;
+    }
+    if (!pwRegex.test(pw1)) {
+      alert("비밀번호는 영문, 숫자, 특수문자를 포함해 8~20자로 입력해주세요.");
+      newPw.focus();
+      e.preventDefault();
+      return;
+    }
+    if (pw1 !== pw2) {
+      alert("비밀번호가 일치하지 않습니다.");
+      confirmPw.focus();
       e.preventDefault();
       return;
     }
 
-    // 새 비밀번호 정규식
-    const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
+    //
+    try {
+      const response = await fetch("/updatepassword", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ memberId, memberPw: pw1 }),
+      });
 
-    if (!regExp.test(newPw.value)) {
-      alert("새 비밀번호가 유효하지 않습니다");
-      e.preventDefault();
-      return;
-    }
-
-    // 새 비밀번호 == 새 비밀번호 확인
-    if (newPw.value != newPwConfirm.value) {
-      alert("새 비밀번호가 일치하지 않습니다");
-      e.preventDefault();
-      return;
+      const result = await response.json();
+      if (result.success) {
+        alert("비밀번호가 변경되었습니다. 로그인 페이지로 이동합니다.");
+        window.location.href = "/login"; // 로그인 페이지 경로에 맞게 수정
+      } else {
+        alert(result.message || "비밀번호 변경에 실패했습니다.");
+      }
+    } catch (error) {
+      console.log(error)
+      alert(error)
+      alert("서버 오류가 발생했습니다.");
     }
   });
-}
+});

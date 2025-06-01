@@ -41,7 +41,7 @@
             <select class="sort-select" id="sortSelect">
               <option value="latest">최신순</option>
               <option value="oldest">오래된순</option>
-              <option value="popular">인기순</option>
+              <option th:if="${boardCode != 3}" value="popular">인기순</option>
               <option value="views">조회수순</option>
             </select>
             <i class="fas fa-caret-down"></i>
@@ -98,7 +98,7 @@
                   <!-- 좋아요/조회수 -->
                   <div class="recipe-stats non-href">
                     <!-- 좋아요 -->
-                    <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                    <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
                       th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
                       th:data-like-check="${board.likeCheck}"
                       th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
@@ -153,7 +153,7 @@
                   <!-- 좋아요/조회수 -->
                   <div class="recipe-stats non-href">
                     <!-- 좋아요 -->
-                    <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                    <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
                       th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
                       th:data-like-check="${board.likeCheck}"
                       th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
@@ -217,7 +217,7 @@
 
                   <!-- 좋아요 / 조회수 -->
                   <div class="recipe-stats non-href">
-                    <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                    <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
                       th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
                       th:data-like-check="${board.likeCheck}"
                       th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
@@ -265,7 +265,7 @@
 
                   <!-- 좋아요 / 조회수 -->
                   <div class="recipe-stats non-href">
-                    <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                    <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
                       th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
                       th:data-like-check="${board.likeCheck}"
                       th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">

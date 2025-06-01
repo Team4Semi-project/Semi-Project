@@ -261,7 +261,7 @@
       <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
       <th:block th:if="${session.loginMember != null}" class="user-menu">
         <span class="nickname" th:text="${session.loginMember.memberNickname}"
-          th:data-nickname="${board.memberNickname}">사용자명</span>
+          th:data-nickname="${session.loginMember.memberNickname}">사용자명</span>
 
         <!-- 로그인 하고 로그아웃 버튼을 누르면 알림으로 로그아웃 하시겠습니까? -->
         <!-- 알림 뜬 후 확인 버튼을 누르면 로그아웃 취소 버튼을 누르면 그대로 -->

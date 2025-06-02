@@ -34,106 +34,188 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyPageController {
 
-    @Autowired
-    private MyPageService service;
+	@Autowired
+	private MyPageService service;
 
-    // 프로필 수정 페이지 이동
-    @GetMapping("editProfile")
-    public String editProfilePage(HttpSession session, Model model) {
-        Member loginMember = (Member) session.getAttribute("loginMember");
-        if (loginMember != null) {
-            model.addAttribute("member", loginMember);
-            return "myPage/editProfile";
-        } else {
-            return "redirect:/login";
-        }
-    }
+	// 프로필 이미지 변경 화면 이동
+	@GetMapping("profile") // /myPage/profile GET 요청 매핑
+	public String profile() {
+		return "myPage/myPage-profile";
+	}
 
-    // 비밀번호 변경 화면 이동
-    @GetMapping("changePw")
-    public String changePw() {
-        return "myPage/mypage-changePw";
-    }
+	// 비밀번호 변경 화면 이동
+	@GetMapping("changePw") // /myPage/changePw GET 요청 매핑
+	public String changePw() {
+		return "myPage/myPage-changePw";
+	}
 
-    // 회원 탈퇴 화면 이동
-    @GetMapping("secession")
-    public String secession() {
-        return "myPage/mypage-secession";
-    }
+	// 회원 탈퇴 화면 이동
+	@GetMapping("secession") // /myPage/secession GET 요청 매핑
+	public String secession() {
+		return "myPage/myPage-secession";
+	}
 
-    // 사용자 정보 및 게시글 조회
-    @GetMapping("userProfile")
-    public String selectMemberInfo(@SessionAttribute("loginMember") Member loginMember,
-            @RequestParam(value = "type", required = false, defaultValue = "recipe") String type,
-            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-            Model model, RedirectAttributes ra) {
+	/** 사용자 정보 조회 및 해당 사용자가 쓴 레시피/게시글 조회
+	 * @param loginMember
+	 * @param cp
+	 * @param model
+	 * @param ra
+	 * @return
+	 * @author miae
+	 */
+	@GetMapping("userProfile")
+	public String selectMemberInfo(@RequestParam("memberNickname") String memberNickname,
+			@RequestParam(value = "type", required = false, defaultValue = "recipe") String type,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			Model model, RedirectAttributes ra) {
+		Map<String, Object> inputMap = new HashMap<>();
+		Map<String, Object> recipeMap = new HashMap<>();
+		Map<String, Object> defaultMap = new HashMap<>();
+		String path = null;
+		String message = null;
+		int memberNo = 0;
 
-        Map<String, Object> inputMap = new HashMap<>();
-        Map<String, Object> resultMap = new HashMap<>();
-        String path = null;
-        String message = null;
-        int memberNo = 0;
+		if (memberNickname == null) {
+			message = "닉네임 : null";
+			path = "redirect:/";
+		} else {
+			
+			memberNo = service.searchMemberNo(memberNickname);
+		}
 
-        if (loginMember == null) {
-            message = "로그인 멤버 없으면 나중에 처리할게용.";
-            path = "redirect:/";
-        } else {
-            memberNo = loginMember.getMemberNo();
-        }
+		inputMap.put("memberNo", memberNo);
+		inputMap.put("cp", cp);
 
-        inputMap.put("memberNo", memberNo);
-        inputMap.put("cp", cp);
+		// 사용자 정보, 사용자가 쓴 레시피 게시글
+		recipeMap = service.selectMemberInfo(inputMap);
 
-        if (type.equals("recipe")) {
-            resultMap = service.selectMemberInfo(inputMap);
-        } else {
-            resultMap = service.selectMemberBoardList(inputMap);
-        }
+		// 사용자 정보, 사용자가 쓴 게시글
+		defaultMap = service.selectMemberBoardList(inputMap);
 
-        if (resultMap == null) {
-            message = "사용자 조회 에러발생. 관리자에게 문의해주세요.";
-            path = "redirect:/";
-        } else {
-            Member member = (Member) resultMap.get("member");
-            log.info("조회가 되긴해~~~~~~~~~~~~~~~~~~");
-            model.addAttribute("member", member);
+		if (recipeMap == null || defaultMap == null) {
+			// 결과가 null 일 경우 메시지 보내기
+			message = "사용자 조회 에러발생. 관리자에게 문의해주세요.";
+			path = "redirect:/";
+		} else {
 
-            if (type.equals("recipe")) {
-                List<RecipeBoard> recipeBoardList = (List<RecipeBoard>) resultMap.get("recipeBoardList");
-                model.addAttribute("boardList", recipeBoardList);
-                model.addAttribute("pagination", resultMap.get("pagination"));
-            } else {
-                List<Board> boardList = (List<Board>) resultMap.get("boardList");
-                model.addAttribute("boardList", boardList);
-                model.addAttribute("pagination", resultMap.get("pagination"));
-            }
-        }
-        path = "mypage/myPage-userProfile";
-        ra.addFlashAttribute("message", message);
-        return path;
-    }
+			// map 에서 값 꺼내오기
+			Member member = (Member) recipeMap.get("member");
 
-    // 회원 정보 수정
-    @PostMapping("info")
-    public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
-            RedirectAttributes ra) {
+			log.info("조회가 되긴해~~~~~~~~~~~~~~~~~~");
+			model.addAttribute("member", member);
 
-        inputMember.setMemberNo(loginMember.getMemberNo());
-        int result = service.updateInfo(inputMember);
+			// 레시피 게시판 글 model에 담아서 보냄
+			List<RecipeBoard> recipeBoardList = (List<RecipeBoard>) recipeMap.get("recipeBoardList");
+			int recipeListCount = (int) recipeMap.get("listCount");
+			int recipeCommentCount = (int) recipeMap.get("recipeCommentCount");
+			model.addAttribute("recipeBoardList", recipeBoardList);
+			model.addAttribute("recipePagination", recipeMap.get("pagination"));
 
-        String message = null;
+			// 일반 게시판 글 model에 담아서 보냄
+			List<Board> boardList = (List<Board>) defaultMap.get("boardList");
+			int defaultListCount = (int) defaultMap.get("listCount");
+			int commentCount = (int) defaultMap.get("commentCount");
+			model.addAttribute("boardList", boardList);
+			model.addAttribute("defaultPagination", defaultMap.get("pagination"));
 
-        if (result > 0) {
-            loginMember.setMemberNickname(inputMember.getMemberNickname());
-            message = "회원 정보 수정 성공!!";
-        } else {
-            message = "회원 정보 수정 실패..";
-        }
+			model.addAttribute("writtenCount", recipeListCount+defaultListCount );
+			model.addAttribute("commentCount", recipeCommentCount+commentCount );
+		}
+		path = "mypage/myPage-userProfile";
+		ra.addFlashAttribute("message", message);
+		return path;
+	}
 
-        ra.addFlashAttribute("message", message);
-        return "redirect:info";
-    }
+	/**
+	 * 회원 정보 수정
+	 * 
+	 * @param inputMember   : 커맨드 객체(@ModelAttribute가 생략된 상태) 제출된 수정된 회원 닉네임, 전화번호,
+	 *                      주소
+	 * @param loginMember   : 로그인한 회원 정보 (회원 번호 사용할 예정)
+	 * @param memberAddress : 주소만 따로 받은 String[] 구분자 ^^^ 변경 예정
+	 * @param ra            :
+	 * @return
+	 */
+	@PostMapping("info")
+	public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra) {
 
+		// inputMember에 로그인한 회원 번호 추가
+		inputMember.setMemberNo(loginMember.getMemberNo());
+		// inputMember : 회원 번호, 회원 닉네임, 전화번호, 주소
+
+		// 회원 정보 수정 서비스 호출
+		int result = service.updateInfo(inputMember);
+
+		String message = null;
+
+		if (result > 0) { // 회원 정보 수정 성공
+
+			// loginMember 새로 세팅
+			// 우리가 방금 바꾼 값으로 세팅
+
+			// loginMember는 세션에 저장된 로그인한 회원 정보가
+			// 저장된 객체를 참조하고있다!
+
+			// -> loginMember를 수정하면
+			// 세션에 저장된 로그인한 회원 정보가 수정된다
+			// == 세션 데이터와 DB 데이터를 동기화
+
+			loginMember.setMemberNickname(inputMember.getMemberNickname());
+
+			message = "회원 정보 수정 성공!!";
+
+		} else {
+
+			message = "회원 정보 수정 실패..";
+		}
+
+		ra.addFlashAttribute("message", message);
+
+		return "redirect:info";
+	}
+
+	@PostMapping("profile")
+	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
+			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) throws Exception {
+
+		// 업로드된 파일 정보를 DB에 INSERT 후 결과 행의 갯수 반환 받을 예정
+		int result = service.profile(profileImg, loginMember);
+
+		String message = null;
+
+		if (result > 0)
+			message = "변경 성공!";
+		else
+			message = "변경 실패";
+
+		ra.addFlashAttribute("message", message);
+
+		return "redirect:profile";
+	}
+
+
+//    // 회원 정보 수정
+//    @PostMapping("info")
+//    public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
+//            RedirectAttributes ra) {
+//
+//        inputMember.setMemberNo(loginMember.getMemberNo());
+//        int result = service.updateInfo(inputMember);
+//
+//        String message = null;
+//
+//        if (result > 0) {
+//            loginMember.setMemberNickname(inputMember.getMemberNickname());
+//            message = "회원 정보 수정 성공!!";
+//        } else {
+//            message = "회원 정보 수정 실패..";
+//        }
+//
+//        ra.addFlashAttribute("message", message);
+//        return "redirect:info";
+//    }
+//
     // 프로필 이미지 및 회원 정보 업데이트
     @PostMapping("editProfile")
     public String updateProfile(
@@ -170,5 +252,12 @@ public class MyPageController {
         String message = result > 0 ? "프로필이 성공적으로 수정되었습니다." : "프로필 수정에 실패했습니다.";
         ra.addFlashAttribute("message", message);
         return "redirect:/mypage/editProfile";
+    }
+    
+    // editProfile 페이지 보여주기
+    @GetMapping("/editProfile")
+    public String showEditProfilePage(@SessionAttribute("loginMember") Member loginMember, Model model) {
+        model.addAttribute("member", loginMember);
+        return "mypage/editProfile";
     }
 }

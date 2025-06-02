@@ -38,6 +38,7 @@ public class RecipeBoard {
 	
 	// 썸네일 - <input type="radio" name="checkThumbnail">:checked
 	private String thumbnailCheck;
+	private String thumbnail;
 	private String thumbnailImgPath;
 	private String thumbnailImgRename;
 	

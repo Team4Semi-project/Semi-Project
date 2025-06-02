@@ -188,6 +188,11 @@
       fill: #555;
     }
 
+    .header-nickname {
+      font-family: var(--pre-p-2-font-family) !important;
+      font-size: var(--pre-p-2-font-size) !important;
+    }
+
     /* 반응형 스타일 */
     @media (max-width: 768px) {
       #boardSearch {
@@ -260,7 +265,8 @@
 
       <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
       <th:block th:if="${session.loginMember != null}" class="user-menu">
-        <a th:text="${session.loginMember.memberNickname}" th:href="@{'/mypage/userProfile'}">사용자명</a>
+        <span class="header-nickname" th:text="${session.loginMember.memberNickname}"
+          th:data-nickname="${session.loginMember.memberNickname}">사용자명</span>
 
         <!-- 로그인 하고 로그아웃 버튼을 누르면 알림으로 로그아웃 하시겠습니까? -->
         <!-- 알림 뜬 후 확인 버튼을 누르면 로그아웃 취소 버튼을 누르면 그대로 -->
@@ -336,5 +342,19 @@
     const message =  /*[[${message}]]*/ "전달 받은 message";
 
     if (message != null) alert(message);
+
+
+    /* 닉네임 클릭 시 유저 페이지로 이동 */
+    document.addEventListener("DOMContentLoaded", function () {
+      // 닉네임 클릭
+      document.querySelectorAll(".header-nickname").forEach((el) => {
+        el.addEventListener("click", function () {
+          const nickname = this.dataset.nickname;
+          if (nickname) {
+            window.location.href = `/mypage/userProfile?memberNickname=${encodeURIComponent(nickname)}`;
+          }
+        });
+      });
+    });
   </script>
 </th:block>

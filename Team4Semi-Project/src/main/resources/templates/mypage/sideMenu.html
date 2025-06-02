@@ -2,14 +2,21 @@
   -> 필요한 곳에서
    th:replace="~{조각경로}" / th:insert="~{조각경로}" 
 -->
-
-
+<!-- 
 <section class="left-side">
-  <div style="font-weight: bold; font-size: 30px; text-align: left; height: 60px; line-height: 60px;">
+  <div
+    style="
+      font-weight: bold;
+      font-size: 30px;
+      text-align: left;
+      height: 60px;
+      line-height: 60px;
+    "
+  >
     My Page
-  </div>
+  </div> -->
 
-  <!-- <ul class="list-group">
+<!-- <ul class="list-group">
     <li>
       <a href="/mypage/editProfile">회원정보 수정</a>
     </li>
@@ -20,7 +27,7 @@
       <a href="/mypage/secession">회원 탈퇴</a>
     </li>
   </ul> -->
-  <div class="side-menu" th:fragment="sideMenu">
+<!--<div class="side-menu" th:fragment="sideMenu">
     <h2>My Page</h2>
     <ul>
       <li><a href="/mypage/editProfile">회원정보 수정</a></li>
@@ -28,4 +35,25 @@
       <li><a href="/mypage/secession">회원탈퇴</a></li>
     </ul>
   </div>
+</section> -->
+
+<section class="left-side" th:fragment="sideMenu">
+  <div class="menu-header">My Page</div>
+  <ul class="list-group">
+    <li>
+      <a href="/mypage/editProfile" th:classappend="${page} == 'editProfile' ? 'active'">
+        회원정보 수정
+      </a>
+    </li>
+    <li>
+      <a href="/mypage/changePw" th:classappend="${page} == 'changePw' ? 'active'">
+        비밀번호 변경
+      </a>
+    </li>
+    <li>
+      <a href="/mypage/secession" th:classappend="${page} == 'secession' ? 'active'">
+        회원탈퇴
+      </a>
+    </li>
+  </ul>
 </section>

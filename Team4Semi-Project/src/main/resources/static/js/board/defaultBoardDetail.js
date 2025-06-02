@@ -50,6 +50,13 @@ if (deleteBtn != null) {
 
 // 목록으로 버튼 클릭 시 이동
 goToListBtn.addEventListener("click", () => {
+   const userProfile = naviBtn.dataset.userProfile;
+   console.log("userProfile : " , userProfile);
+  if(userProfile == 'Y'){
+    location.href = `/mypage/userProfile?cp=${cp}`;
+    return;
+  } 
+
   location.href = `/board/${boardCode}?cp=${cp}`;
   return;
 });

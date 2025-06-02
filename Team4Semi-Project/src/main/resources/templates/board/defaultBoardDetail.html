@@ -31,7 +31,7 @@
           <div class="board-update" th:text="${board.boardCreateDate}">작성일</div>
         </div>
         <div class="text-right">
-          <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+          <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
             th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
             th:data-like-check="${board.likeCheck}"
             th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
@@ -51,8 +51,10 @@
       <div class="container-inner">
         <div class="member">
           <!-- 프로필 이미지가 없으면 기본 이미지 출력 -->
-          <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}" alt="프로필 이미지">
-          <span th:text="${board.memberNickname}">작성자 닉네임</span>
+          <img class="profileImg" onerror="this.onerror=null; this.src='/images/user.png';"
+            th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+            th:data-nickname="${board.memberNickname}" alt="프로필 이미지">
+          <span class="nickname" th:text="${board.memberNickname}" th:data-nickname="${board.memberNickname}">작성자 닉네임</span>
         </div>
 
         <!-- 게시글 작성자라면 수정, 삭제 버튼 보임-->
@@ -74,7 +76,12 @@
     </div>
 
     <div class="container-page" id="naviBtn"
-      th:attr="data-prev-board-no=${prevBoardNo}, data-next-board-no=${nextBoardNo}, data-prev-board=${prevBoardCode}, data-next-board=${nextBoardCode}">
+      th:attr="
+    data-prev-board-no=${prevBoardNo},
+    data-next-board-no=${nextBoardNo},
+    data-prev-board=${prevBoardCode}, 
+    data-next-board=${nextBoardCode}, 
+    data-user-profile=${userProfile}">
       <a id="goToPrev">
         <span class="material-symbols-outlined align-middle">chevron_left</span>
         <span class="text">이전 글</span>

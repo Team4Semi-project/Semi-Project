@@ -763,8 +763,8 @@ FROM SEARCH_RESULT
 WHERE RN = (SELECT RN + 1 FROM TARGET)
 </select>
 
-<!-- 지현 / 통합 검색 시 다음 글 조회 -->
 <select id="searchAllNextBoard">
+<!-- 지현 / 통합 검색 시 다음 글 조회 -->
 WITH SEARCH_RESULT AS (
     SELECT
         ROW_NUMBER() OVER (ORDER BY

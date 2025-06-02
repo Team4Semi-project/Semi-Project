@@ -44,7 +44,7 @@
           <div th:unless="${#lists.isEmpty(popularBoardList)}" class="recipe-grid">
             <!-- 게시글 아이템 -->
             <div th:each="board : ${popularBoardList}" class="recipe-item"
-              th:data-url="@{/board/1/{categoryNo}/{boardNo}(categoryNo=${categoryNo}, boardNo=${board.boardNo})}+'?popular=1'">
+              th:data-url="@{/board/1/popular/{boardNo}(boardNo=${board.boardNo})}+'?sort=popular'">
 
               <!-- 레시피 게시판 썸네일 -->
               <div class="recipe-image">

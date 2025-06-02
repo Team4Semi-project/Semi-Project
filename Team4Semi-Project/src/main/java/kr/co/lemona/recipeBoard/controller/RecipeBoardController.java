@@ -83,7 +83,12 @@ public class RecipeBoardController {
 			map = service.selectRecipeBoardList(inputMap);
 
 		} else { // 검색인 경우 --> paramMap
-
+			
+			// !!!!!!!!!로그인 중인 회원의 memberNo도 paramMap에 추가!!!!!!!
+		    if (loginMember != null) {
+		        paramMap.put("memberNo", loginMember.getMemberNo());
+		    }
+		    
 			// 검색 서비스 호출
 			if (categoryNo.equals("popular")) {
 				map = service.searchPopularList(paramMap, cp, sort);

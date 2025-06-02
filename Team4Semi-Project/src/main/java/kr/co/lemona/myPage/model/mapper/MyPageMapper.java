@@ -112,6 +112,26 @@ public interface MyPageMapper {
 	 */
 	int selectCommentCount(int memberNo);
 
+	/** 프로필 업데이트
+	 * @param member
+	 * @return 명하
+	 */
+	int updateProfile(Member member);
+
+	/** 프로필 이미지 삭제
+	 * @param memberNo
+	 * @return 명하
+	 */
+	int removeProfileImage(int memberNo);
+//
+//	/** 닉네임 중복 검사
+//	 * @param memberNickname
+//	 * @return 명하
+//	 */
+//	int checkNickname(String memberNickname);
+
+
+
 
 
 }

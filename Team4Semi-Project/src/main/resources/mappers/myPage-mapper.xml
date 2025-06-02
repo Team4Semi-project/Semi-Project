@@ -237,5 +237,32 @@
 		DEFAULT_COMMENT
 		WHERE MEMBER_NO=#{memberNo}
 	</select>
+
+	
+	<!-- 프로필 업데이트 명하-->
+	<update id="updateProfile">
+ 	   UPDATE member
+    	<set>
+        	<if test="profileImg != null">
+            	profile_img = #{profileImg},
+        	</if>
+        	<if test="memberName != null">
+            	member_name = #{memberName},
+        	</if>
+        	<if test="memberNickname != null">
+            	member_nickname = #{memberNickname},
+        	</if>
+    	</set>
+    	WHERE member_no = #{memberNo}
+	</update>
+	
+	<!-- 이미지 삭제 -->
+	<update id="removeProfileImage">
+    	UPDATE member
+    	SET profile_img = '/images/user.png'
+    	WHERE member_no = #{memberNo}
+	</update>
+
+
 	
 </mapper>

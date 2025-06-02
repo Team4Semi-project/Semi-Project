@@ -183,11 +183,18 @@ form[name="myPageFrm"] {
   height: 150px;
   border: 3px solid #ccc;
   border-radius: 50%;
+
   position: relative;
+
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-content: center;
+}
+
+/* 삭제버튼 */
+form[name="myPageFrm"] {
+  position: relative;
 }
 
 #profileImage {

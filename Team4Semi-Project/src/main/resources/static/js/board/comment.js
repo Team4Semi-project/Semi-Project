@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const textarea = document.getElementById("commentContent");
 
   if (textarea) {
-    textarea.setAttribute("style", "height:auto;overflow-y:hidden;");
+    textarea.setAttribute("style", "height:auto; overflow-y:hidden;");
     textarea.addEventListener("input", function () {
       this.style.height = "auto"; // 초기화
       this.style.height = (this.scrollHeight) + "px"; // 실제 내용 높이로 설정
@@ -248,7 +248,7 @@ const showInsertComment = (parentCommentNo, btn) => {
   textarea.rows = "1"
 
   // 답글(자식 댓글) 입력창 높이 조절
-  textarea.setAttribute("style", "height:auto;overflow-y:hidden;");
+  textarea.setAttribute("style", "height:auto; overflow-y:hidden;");
   textarea.addEventListener("input", function () {
     this.style.height = "auto"; // 초기화
     this.style.height = (this.scrollHeight) + "px"; // 실제 내용 높이로 설정
@@ -401,9 +401,27 @@ const showUpdateComment = (commentNo, btn) => {
   const textarea = document.createElement("textarea");
   textarea.classList.add("update-textarea");
   textarea.value = beforeContent;
+  textarea.maxLength = "100";
+  textarea.style.height = "auto";
+  textarea.rows = "1"
 
   // 6. 댓글 행에 textarea 추가
   commentRow.append(textarea);
+
+  // 수정 입력창 높이 조절  
+  textarea.style.overflowY = "hidden";
+  textarea.style.resize = "none";
+
+  // DOM 추가 후 scrollHeight 반영
+  setTimeout(() => {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+  }, 0);
+
+  textarea.addEventListener("input", function () {
+    this.style.height = "auto"; // 초기화
+    this.style.height = (this.scrollHeight) + "px"; // 실제 내용 높이로 설정
+  });
 
   // 7. 버튼 영역 생성
   const commentBtnArea = document.createElement("div");
@@ -411,17 +429,22 @@ const showUpdateComment = (commentNo, btn) => {
 
   // 8. 수정 버튼 생성
   const updateBtn = document.createElement("button");
-  updateBtn.innerText = "수정";
+  updateBtn.innerText = "수정하기";
   updateBtn.setAttribute("onclick", `updateComment(${commentNo}, this)`);
 
   // 9. 취소 버튼 생성
   const cancelBtn = document.createElement("button");
-  cancelBtn.innerText = "취소";
+  cancelBtn.innerText = "취소하기";
   cancelBtn.setAttribute("onclick", "updateCancel(this)");
 
   // 10. 버튼 영역에 수정/취소 버튼 추가 후
   //     댓글 행에 버튼 영역 추가
-  commentBtnArea.append(updateBtn, cancelBtn);
+  const editDeleteWrapper = document.createElement("div");
+  editDeleteWrapper.classList.add("edit-delete-group");
+
+  editDeleteWrapper.append(cancelBtn, updateBtn);
+
+  commentBtnArea.append(editDeleteWrapper);
   commentRow.append(commentBtnArea);
 }
 
@@ -443,7 +466,7 @@ const updateCancel = (btn) => {
 const updateComment = (commentNo, btn) => {
 
   // 수정된 내용이 작성된 textarea 얻어오기
-  const textarea = btn.parentElement.previousElementSibling;
+  const textarea = btn.parentElement.parentElement.previousElementSibling;
 
   // 유효성 검사
   if (textarea.value.trim().length == 0) {

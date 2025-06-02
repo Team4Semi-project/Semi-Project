@@ -29,7 +29,8 @@
           <div class="profile-info">
             <div class="nickname-wrapper">
               <span class="profile-nickname" th:text="${member.memberNickname}">레몬짱</span>
-              <a href="/mypage/editProfile" class="edit-icon">
+              <a th:if="${session.loginMember?.memberNo == member.memberNo}" href="/mypage/editProfile"
+                class="edit-icon">
                 <span class="material-symbols-outlined">settings</span>
               </a>
             </div>
@@ -68,7 +69,8 @@
     </div>
 
   </div>
-
+  <div id="memberNickname" th:attr="
+data-nickname=${member.memberNickname}"></div>
   <!-- 푸터 프래그먼트 -->
   <footer th:replace="~{common/footer :: footer}"></footer>
 
@@ -81,6 +83,7 @@
       const postTab = document.getElementById('postTab');
       const recipeContent = document.getElementById('recipeContent');
       const postContent = document.getElementById('postContent');
+      const memberNickname = document.getElementById('memberInfo').dataset.nickname;
 
       recipeTab.addEventListener('click', function (e) {
         e.preventDefault(); // 페이지 이동 막기
@@ -88,7 +91,7 @@
         postTab.classList.remove('active');
         recipeContent.style.display = 'block';
         postContent.style.display = 'none';
-        //location.href = '/mypage/userProfile?type=recipe';
+        location.href = `/mypage/userProfile?type=recipe&memberNickname=${memberNickname}`;
       });
 
       postTab.addEventListener('click', function (e) {
@@ -97,7 +100,7 @@
         recipeTab.classList.remove('active');
         postContent.style.display = 'block';
         recipeContent.style.display = 'none';
-        //location.href = '/mypage/userProfile?type=post';
+        location.href = `/mypage/userProfile?type=post&memberNickname=${memberNickname}`;
       });
     });
   </script>

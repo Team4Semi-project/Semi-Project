@@ -132,7 +132,8 @@
 
         <!-- 보고있지 않은 페이지 -->
         <li th:unless="${i} == *{currentPage} or ${i} == 0">
-          <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})}" th:text="${i}">이동할 페이지</a>
+          <a th:href="@{/mypage/userProfile(cp=${i})} + '&sort=' +  ${sort} + '&memberNickname=' +  ${member.memberNickname}"
+            th:text="${i}">이동할 페이지</a>
         </li>
       </th:block>
 

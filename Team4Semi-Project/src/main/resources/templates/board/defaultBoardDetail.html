@@ -31,9 +31,9 @@
           <div class="board-update" th:text="${board.boardCreateDate}">작성일</div>
         </div>
         <div class="text-right">
-          <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
-            th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
-            th:data-like-check="${board.likeCheck}"
+          <button type="button" class="likes" th:if="${boardCode != 3}"
+            th:data-login-member-no="${session.loginMember?.memberNo}" th:data-board-code="${board.boardCode}"
+            th:data-board-no="${board.boardNo}" th:data-like-check="${board.likeCheck}"
             th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
             <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
             <span th:text="${board.likeCount}">28</span>
@@ -54,7 +54,8 @@
           <img class="profileImg" onerror="this.onerror=null; this.src='/images/user.png';"
             th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
             th:data-nickname="${board.memberNickname}" alt="프로필 이미지">
-          <span class="nickname" th:text="${board.memberNickname}" th:data-nickname="${board.memberNickname}">작성자 닉네임</span>
+          <span class="nickname" th:text="${board.memberNickname}" th:data-nickname="${board.memberNickname}">작성자
+            닉네임</span>
         </div>
 
         <!-- 게시글 작성자라면 수정, 삭제 버튼 보임-->
@@ -75,13 +76,13 @@
       </div>
     </div>
 
-    <div class="container-page" id="naviBtn"
-      th:attr="
+    <div class="container-page" id="naviBtn" th:attr="
     data-prev-board-no=${prevBoardNo},
     data-next-board-no=${nextBoardNo},
     data-prev-board=${prevBoardCode}, 
     data-next-board=${nextBoardCode}, 
-    data-user-profile=${userProfile}">
+    data-user-profile=${userProfile},
+    data-member-nickname=${board.memberNickname}">
       <a id="goToPrev">
         <span class="material-symbols-outlined align-middle">chevron_left</span>
         <span class="text">이전 글</span>
@@ -94,6 +95,21 @@
         <span class="material-symbols-outlined align-middle">chevron_right</span>
       </a>
     </div>
+    <script>
+      const userProfile = naviBtn.dataset.userProfile;
+
+      // 'userProfile' 포함 여부 체크
+      if (userProfile == 'Y') {
+        // 목록 버튼만 보이게, 나머지 버튼 숨기기
+        const goToListBtn = document.getElementById('goToListBtn');
+        goToListBtn.style.display = 'inline-block';
+        const goToPrev = document.getElementById('goToPrev');
+        const goToNext = document.getElementById('goToNext');
+
+        if (goToPrev) goToPrev.style.display = 'none';
+        if (goToNext) goToNext.style.display = 'none';
+      }
+    </script>
 
     <!-- 댓글 영역-->
     <th:block th:replace="~{board/comment}"></th:block>

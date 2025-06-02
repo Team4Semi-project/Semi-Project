@@ -19,7 +19,7 @@
 }
 
 .warning-message::before {
-    content: "⚠️";
+    content: "";
 }
 
 .warning-text {

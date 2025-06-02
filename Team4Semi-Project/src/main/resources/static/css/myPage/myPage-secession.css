@@ -32,7 +32,7 @@
     width: 100%;
     height: 200px;
     padding: 15px;
-    border: 1px solid #ddd;
+    border: 5px solid #FFF9E4;
     border-radius: 4px;
     background-color: #fafafa;
     font-family: inherit;
@@ -55,6 +55,7 @@
 .checkbox-container input[type="checkbox"] {
     width: 16px;
     height: 16px;
+    background-color: #fafafa;
 }
 
 .checkbox-container label {
@@ -79,6 +80,7 @@
 .myPage-row input[type="password"] {
     width: 100%;
     max-width: 400px;
+    background-color:  #FFF9E4;
 }
 
 /* 약관 제목 여백 조정 */

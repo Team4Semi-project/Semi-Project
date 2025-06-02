@@ -241,4 +241,11 @@ public class MyPageServiceImpl implements MyPageService {
 		return map;
 	}
 
+	// 업데이트 프로필
+	@Override
+	public int updateProfile(Member member) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

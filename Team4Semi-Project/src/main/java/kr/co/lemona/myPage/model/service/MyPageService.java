@@ -57,6 +57,12 @@ public interface MyPageService {
 	 * @return
 	 */
 	Map<String, Object> selectMemberBoardList(Map<String, Object> inputMap);
+
+	/** 프로필 업데이트 
+	 * @param member
+	 * @return
+	 */
+	int updateProfile(Member member);
 	
 //	/** 내가 쓴 글 수 조회 
 //     * @param memberId

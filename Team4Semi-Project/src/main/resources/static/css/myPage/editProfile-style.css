@@ -13,10 +13,7 @@ body {
     max-width: 1000px;
     margin: 30px auto;
     background-color: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     overflow: hidden;
-    border: none;
 }
 
 /* 사이드 메뉴 스타일 */
@@ -24,7 +21,6 @@ body {
     width: 220px;
     padding: 20px;
     background-color: #fff;
-    border-radius: 20px 0 0 20px;
 }
 
 .side-menu-title {
@@ -34,7 +30,6 @@ body {
     text-align: center;
     background-color: #ffd700;
     padding: 12px;
-    border-radius: 10px;
     margin-bottom: 15px;
 }
 
@@ -72,6 +67,7 @@ body {
     border-radius: 0 20px 20px 0;
 }
 
+/* ---------------- */
 /* 타이틀 & 설명 */
 .my-page-title {
     font-size: 28px;

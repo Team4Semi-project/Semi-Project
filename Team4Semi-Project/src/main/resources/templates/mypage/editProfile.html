@@ -7,6 +7,7 @@
   <title>My Page - Edit Profile</title>
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/myPage/editProfile-style.css">
+  <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
 </head>
 
 <body>
@@ -42,7 +43,7 @@
             <input type="text" id="memberId" name="memberId" th:value="${member.memberId}" readonly>
           </div>
           <div class="form-group">
-            <label for="memberEmail">이메일</label>
+            <label for="memberEmail">이메일</label> 
             <input type="email" id="memberEmail" name="memberEmail" th:value="${member.memberEmail}" readonly>
           </div>
           <div class="form-group">
@@ -58,8 +59,8 @@
       </section>
     </section>
 
-    <th:block th:replace="~{common/footer}"></th:block>
   </main>
+  <th:block th:replace="~{common/footer}"></th:block>
 
   <script src="/js/myPage/editProfile.js"></script>
 </body>

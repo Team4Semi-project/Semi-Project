@@ -1,8 +1,8 @@
 
 // 주소 검색 버튼 클릭 시(myPage-info.html 외에도 문제가 발생하지 않도록 작성)
 const searchAddress = document.querySelector("#searchAddress");
-if(searchAddress != null) { // 화면상에 id가 searchAddress인 요소가 존재하는 경우에만
- searchAddress.addEventListener("click", execDaumPostcode);
+if (searchAddress != null) { // 화면상에 id가 searchAddress인 요소가 존재하는 경우에만
+  searchAddress.addEventListener("click", execDaumPostcode);
 }
 
 
@@ -42,7 +42,7 @@ if (updateInfo != null) {
 
     // 기존 닉네임과 새로 입력된 닉네임이 다르면 중복검사 시도하기
     // -> 같으면 변경된 적 없다 -> 중복검사 진행 안함
-    if(currentNickname !== memberNickname.value) {
+    if (currentNickname !== memberNickname.value) {
 
       // 비동기 요청 (fetch() API 이용)
       // async / await 사용
@@ -53,7 +53,7 @@ if (updateInfo != null) {
       const resp = await fetch("/member/checkNickname?memberNickname=" + memberNickname.value);
       const count = await resp.text();
 
-      if(count == 1) {
+      if (count == 1) {
         alert("이미 사용중인 닉네임입니다!");
         //e.preventDefault();
         return;
@@ -161,47 +161,6 @@ if (changePw != null) {
   });
 };
 
-// -------------------------------------
-/* 탈퇴 유효성 검사 */
-
-// 탈퇴 form 태그
-const secession = document.querySelector("#secession");
-
-if (secession != null) {
-
-  secession.addEventListener("submit", e => {
-
-    const memberPw = document.querySelector("#memberPw");
-    const agree = document.querySelector("#agree");
-
-    // - 비밀번호 입력 되었는지 확인
-    if (memberPw.value.trim().length == 0) {
-      alert("비밀번호를 입력해주세요.");
-      e.preventDefault(); // 제출막기
-      return;
-    }
-
-    // 약관 동의 체크 확인
-    // checkbox 또는 radio checked 속성
-    // - checked -> 체크 시 true, 미체크시 false 반환
-
-    if (!agree.checked) { // 체크 안됐을 때
-      alert("약관에 동의해주세요");
-      e.preventDefault();
-      return;
-    }
-
-    // 정말 탈퇴? 물어보기
-    if (!confirm("정말 탈퇴 하시겠습니까?")) {
-      alert("취소 되었습니다.");
-      e.preventDefault();
-      return;
-    }
-  });
-}
-
-
-
 // -------------------------------------------------------
 // 이미지 업로드 구간
 
@@ -219,7 +178,7 @@ if (secession != null) {
 // 요소 참조
 const profileForm = document.getElementById("profile");  // 프로필 form
 
-if(profileForm != null) {
+if (profileForm != null) {
 
   const profileImg = document.getElementById("profileImg");  // 미리보기 이미지 img
   const imageInput = document.getElementById("imageInput");  // 이미지 파일 선택 input
@@ -231,31 +190,31 @@ if(profileForm != null) {
   // http://localhost/images/user.png
 
   let statusCheck = -1; // -1 : 초기상태, 0 : 이미지 삭제, 1 : 새 이미지 선택
-  
+
   // img 태그에 작성하는 값 src = 미리보기 이미지를 띄울 URL 주소
   let previousImage = profileImg.src;  // 이전 이미지 URL 기록 (초기 상태의 이미지 URL 저장)
-  
+
   // input (type=file) 태그가 작성할 값 = 서버에 실제로 제출되는 File 객체
   let previousFile = null; // 이전에 선택된 파일 객체를 저장
 
   // 이미지 선택 시 미리보기 및 파일 크기 검사
   imageInput.addEventListener("change", () => {
     // change 이벤트 : 기존에 있던 값과 달라지면 발생되는 이벤트
-    
+
     //console.log(imageInput.files); // FileList 
 
     const file = imageInput.files[0]; // 실제로 선택한 File 객체 가져오기
-    
+
     console.log(file); // File 객체 
 
-    if(file) { // 파일이 선택된 경우
+    if (file) { // 파일이 선택된 경우
 
-      if(file.size <= MAX_SIZE) { // 현재 선택한 파일의 크기가 허용범위 이내인 경우(정상인 경우)
+      if (file.size <= MAX_SIZE) { // 현재 선택한 파일의 크기가 허용범위 이내인 경우(정상인 경우)
         const newImageUrl = URL.createObjectURL(file); // 임시 URL 생성
         // URL.createObjectURL(파일) : 웹에서 접근 가능한 임시 URL 반환
         //console.log(newImageUrl);
         profileImg.src = newImageUrl; // 미리보기 이미지 설정
-                                    // (img 태그의 src에 선택한 파일 임시 경로 대입)
+        // (img 태그의 src에 선택한 파일 임시 경로 대입)
         previousImage = newImageUrl; // 현재 선택된 이미지를 이전 이미지로 저장(다음에 바뀔일에 대비)
         previousFile = file; // 현재 선택된 파일 객체를 이전 파일로 저장(다음에 바뀔일에 대비)
         statusCheck = 1; // 새 이미지 선택 상태 기록
@@ -266,7 +225,7 @@ if(profileForm != null) {
         profileImg.src = previousImage; // 2. 이전 미리보기 이미지로 복원
 
         // 3. 파일입력 복구 : 이전 파일이 존재하면 다시 할당
-        if(previousFile) {
+        if (previousFile) {
           const dataTransfer = new DataTransfer();
           dataTransfer.items.add(previousFile);
           imageInput.files = dataTransfer.files;
@@ -278,7 +237,7 @@ if(profileForm != null) {
       profileImg.src = previousImage;
 
       // 이전 선택한 파일로 복원 (input)
-      if(previousFile) { // 이전 파일이 존재한다면 
+      if (previousFile) { // 이전 파일이 존재한다면 
         const dataTransfer = new DataTransfer();
         //  -> DataTransfer : 자바스크립트로 파일을 조작할 때 사용되는 인터페이스.
         // DataTransfer.items.add() : 파일 추가
@@ -297,13 +256,13 @@ if(profileForm != null) {
   deleteImage.addEventListener("click", () => {
 
     // 기본 이미지 상태가 아니면 삭제 처리
-    if(profileImg.src !== defaultImageUrl) {
+    if (profileImg.src !== defaultImageUrl) {
       imageInput.value = ""; // input 태그 파일값 초기화
       profileImg.src = defaultImageUrl; // 현재 미리보기를 기본 이미지로 변경
       statusCheck = 0; // 삭제 상태 기록
       previousImage = defaultImageUrl; // 이전 이미지 기록하는 변수에 기본이미지로 변경
       previousFile = null; // 이전 파일 기록하는 변수에 null로 초기화
-    } else { 
+    } else {
       // 기본 이미지 상태에서 삭제 버튼 클릭 시 상태를 변경하지 않음
       statusCheck = -1; // 변경사항 없음 상태 유지
     }
@@ -312,7 +271,7 @@ if(profileForm != null) {
 
   // 폼 제출 시 유효성 검사
   profileForm.addEventListener("submit", e => {
-    if(statusCheck === -1) { // 변경 사항이 없는 경우 제출 막기
+    if (statusCheck === -1) { // 변경 사항이 없는 경우 제출 막기
       e.preventDefault();
       alert("이미지 변경 후 제출하세요!");
     }

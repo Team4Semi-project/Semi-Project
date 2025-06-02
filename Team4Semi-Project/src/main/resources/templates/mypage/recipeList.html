@@ -37,20 +37,22 @@
             </div>
 
             <!-- 상세페이지 이동 X -->
-            <div class="non-href">
-              <div class="recipe-meta">
+            <div class="rowBox">
+              <div class="recipe-meta non-href">
                 <!-- 사용자 정보 -->
                 <div class="author-info">
-                  <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                    alt="프로필 이미지" class="author-image" />
-                  <span class="author-name" th:utext="${board.memberNickname}">장미애 님</span>
+                  <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+                    th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                    th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                  <span class="author-name" th:utext="${board.memberNickname}"
+                    th:data-nickname="${board.memberNickname}">장미애 님</span>
                 </div>
                 <!-- 작성일 -->
                 <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
               </div>
 
               <!-- 좋아요/조회수 -->
-              <div class="recipe-stats">
+              <div class="recipe-stats non-href">
                 <!-- 좋아요 버튼 -->
                 <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
                   th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
@@ -80,45 +82,41 @@
       <p>등록된 게시글이 없습니다.</p>
     </div>
 
-    <!-- 게시글 목록 -->
-    <div th:unless="${#lists.isEmpty(recipeBoardList)}" class="recipe-list">
-      <div th:each="board : ${recipeBoardList}" class="recipe-item">
-        <div class="recipe-image">
-          <!--  <img th:src="${board.thumbnail}" alt="레시피 이미지"> -->
-          <!-- 레시피 게시판 썸네일 -->
-          <a th:if="${key != null}"
-            th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${recipePagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">
-            <!-- 레시피 게시판 썸네일 -->
-            <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
-              th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
-              alt="레시피 이미지" />
-          </a>
-          <a th:if="${key == null}"
-            th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${recipePagination.currentPage})} + '&sort=' +  ${sort} ">
-            <!-- 레시피 게시판 썸네일 -->
-            <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
-              th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
-              alt="레시피 이미지" />
-          </a>
+    <!-- 검색 아닐시 -->
+    <!-- 게시글 -->
+    <div th:if="${key == null}" th:each="board : ${boardList}" class="recipe-item"
+      th:data-url="@{/board/{boardCode}/userProfile/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${recipePagination.currentPage})} + '&sort=' +  ${sort}">
+
+      <!-- 레시피 게시판 썸네일 -->
+      <img class="recipe-image" onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+        th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
+        alt="레시피 이미지" />
+
+      <div class="recipe-details">
+        <!-- 글 제목 / 댓글 수 -->
+        <h3 class="recipe-title">
+          <div class="titleText" th:utext="${board.boardTitle}">레몬 팬케이크</div>
+          <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
+        </h3>
+
+        <!-- 레시피 게시판 해시태그 -->
+        <div class="recipe-tags">
+          <span class="tag" th:each="tag : ${board.hashTagList}" th:utext="'#' +${tag}">#레몬</span>
         </div>
 
-        <!-- 글 제목 클릭 시 이동-->
-        <div class="recipe-details">
-          <h3 class="recipe-title">
-            <a th:href="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${recipePagination.currentPage})} + '&sort=' +  ${sort}"
-              th:utext="${board.boardTitle}">레몬 팬케이크
-            </a>
-            <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
-          </h3>
-          <div class="recipe-meta">
+        <div class="recipe-info">
+          <!-- 작성자 정보 -->
+          <div class="recipe-meta non-href">
+            <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+              th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+              th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+            <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애
+              님</span>
             <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
-            <span class="recipe-author" th:utext="${board.memberNickname}">김아가 님</span>
           </div>
-          <!-- 레시피 게시판 해시태그 -->
-          <div class="recipe-tags">
-            <span class="tag" th:each="tag : ${board.hashTagList}" th:utext="'#' +${tag}">#레몬</span>
-          </div>
-          <div class="recipe-stats">
+
+          <!-- 좋아요 / 조회수-->
+          <div class="recipe-stats non-href">
             <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
               th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
               th:data-like-check="${board.likeCheck}"
@@ -134,6 +132,7 @@
         </div>
       </div>
     </div>
+
   </div>
   <!-- 페이지네이션 : 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
   <div class="pagination-area">

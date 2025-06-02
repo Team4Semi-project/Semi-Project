@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.HttpSession;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.myPage.model.service.MyPageService;
@@ -54,6 +54,40 @@ public class MyPageController {
 	public String secession() {
 		return "myPage/myPage-secession";
 	}
+	
+    /** 회원 탈퇴
+     * 
+     */
+    @PostMapping("secession")
+    public String secession(@SessionAttribute("loginMember") Member loginMember,
+    		@RequestParam("memberPw") String memberPw,
+    		RedirectAttributes ra,
+			SessionStatus status) {
+    	
+		// 로그인한 회원의 회원번호 꺼내기
+		int memberNo = loginMember.getMemberNo();
+		
+		// 서비스 호출 (입력받은 비밀번호, 로그인한 회원번호)
+		int result = service.secession(memberPw, memberNo);
+		
+		String message = null;
+		String path = null;
+		
+		if(result>0) {
+			message ="탈퇴 성공";
+			path ="/";
+			status.setComplete();
+			
+		} else {
+			message="비밀번호 불일치";
+			path="secession";
+		}
+		
+		ra.addFlashAttribute("message",message);
+		
+		return "redirect:"+path;
+    	
+    }
 
 	/** 사용자 정보 조회 및 해당 사용자가 쓴 레시피/게시글 조회
 	 * @param loginMember
@@ -67,24 +101,16 @@ public class MyPageController {
 	public String selectMemberInfo(@RequestParam("memberNickname") String memberNickname,
 			@RequestParam(value = "type", required = false, defaultValue = "recipe") String type,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			Model model, RedirectAttributes ra) {
+			Model model, RedirectAttributes ra, @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
 		Map<String, Object> inputMap = new HashMap<>();
 		Map<String, Object> recipeMap = new HashMap<>();
 		Map<String, Object> defaultMap = new HashMap<>();
 		String path = null;
 		String message = null;
-		int memberNo = 0;
 
-		if (memberNickname == null) {
-			message = "닉네임 : null";
-			path = "redirect:/";
-		} else {
-			
-			memberNo = service.searchMemberNo(memberNickname);
-		}
-
-		inputMap.put("memberNo", memberNo);
+		inputMap.put("memberNickname", memberNickname);
 		inputMap.put("cp", cp);
+		if(loginMember != null) inputMap.put("memberNo", loginMember.getMemberNo());
 
 		// 사용자 정보, 사용자가 쓴 레시피 게시글
 		recipeMap = service.selectMemberInfo(inputMap);
@@ -260,4 +286,5 @@ public class MyPageController {
         model.addAttribute("member", loginMember);
         return "mypage/editProfile";
     }
+    
 }

@@ -118,21 +118,21 @@ public class MyPageServiceImpl implements MyPageService {
 	 */
 	@Override
 	public Map<String, Object> selectMemberInfo(Map<String, Object> inputMap) {
-		int memberNo = (int) inputMap.get("memberNo");
+		String memberNickname = (String) inputMap.get("memberNickname");
 		int cp = (int) inputMap.get("cp");
 		int listCount = 0;
 
 		Map<String, Object> map = new HashMap<>();
 
 		// 사용자 조회
-		Member member = mapper.selectMember(memberNo);
+		Member member = mapper.selectMember(memberNickname);
 		log.info("member 들어오는지 확인하기 : selectMemberInfo : " + member.toString());
 
 		// 특정 사용자가 쓴 글 목록
 		List<RecipeBoard> recipeBoardList = null;
 
 		// 1. 특정 사용자가 작성한 레시피 중 삭제 되지 않은 게시글 수를 조회
-		listCount = mapper.getMemberRecipeListCount(memberNo);
+		listCount = mapper.getMemberRecipeListCount(memberNickname);
 
 		// 2. 1번의 결과 + cp 를 이용해서 Pagination 객체를 생성
 		Pagination pagination = new Pagination(cp, listCount);
@@ -144,7 +144,7 @@ public class MyPageServiceImpl implements MyPageService {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		// 조회 결과를 리스트에 저장
-		recipeBoardList = mapper.selectMemberRecipeList(memberNo, rowBounds);
+		recipeBoardList = mapper.selectMemberRecipeList(inputMap, rowBounds);
 
 		// 해시태그 받아오는 부분
 		for (RecipeBoard recipeBoard : recipeBoardList) {
@@ -156,7 +156,7 @@ public class MyPageServiceImpl implements MyPageService {
 		}
 		
 		// 레시피 게시판 댓글 수
-		int recipeCommentCount = mapper.selectRecipeCommentCount(memberNo);
+		int recipeCommentCount = mapper.selectRecipeCommentCount(memberNickname);
 		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		map.put("member", member);
@@ -175,21 +175,21 @@ public class MyPageServiceImpl implements MyPageService {
 	 */
 	@Override
 	public Map<String, Object> selectMemberBoardList(Map<String, Object> inputMap) {
-		int memberNo = (int) inputMap.get("memberNo");
+		String memberNickname = (String) inputMap.get("memberNickname");
 		int cp = (int) inputMap.get("cp");
 		int listCount = 0;
 
 		Map<String, Object> map = new HashMap<>();
 
 		// 사용자 조회
-		Member member = mapper.selectMember(memberNo);
+		Member member = mapper.selectMember(memberNickname);
 		log.info("member 들어오는지 확인하기 : " + member.toString());
 
 		// 특정 사용자가 쓴 글 목록
 		List<Board> boardList = null;
 
 		// 1. 특정 사용자가 작성한 글 중 삭제 되지 않은 게시글 수를 조회
-		listCount = mapper.getMemberDefaultListCount(memberNo);
+		listCount = mapper.getMemberDefaultListCount(memberNickname);
 
 		// 2. 1번의 결과 + cp 를 이용해서 Pagination 객체를 생성
 		Pagination pagination = new Pagination(cp, listCount);
@@ -200,7 +200,7 @@ public class MyPageServiceImpl implements MyPageService {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		// 조회 결과를 리스트에 저장
-		boardList = mapper.selectMemberBoardList(memberNo, rowBounds);
+		boardList = mapper.selectMemberBoardList(inputMap, rowBounds);
 
 		// 썸네일 추출 추가
 		for (Board board : boardList) {
@@ -229,7 +229,7 @@ public class MyPageServiceImpl implements MyPageService {
 		}
 
 		// 댓글 수 
-		int commentCount = mapper.selectCommentCount(memberNo);
+		int commentCount = mapper.selectCommentCount(memberNickname);
 		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map 으로 묶어서 반환
 		map.put("member", member);

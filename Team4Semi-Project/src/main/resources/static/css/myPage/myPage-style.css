@@ -18,7 +18,7 @@
 }
 
 .menu-header {
-  background-color: #FFD634;
+  background-color: #ffd634;
   color: black;
   font-weight: bold;
   font-size: 20px;
@@ -53,7 +53,7 @@
 }
 
 .list-group li a.active {
-  background-color: #FFEB3B;
+  background-color: #ffeb3b;
   font-weight: bold;
 }
 
@@ -114,7 +114,7 @@
 
 .myPage-row > input[type="password"] {
   width: 70%;
-  background-color: #FFF9E4;
+  background-color: #fff9e4;
 }
 
 .myPage-row:focus-within {
@@ -256,7 +256,7 @@ form[name="myPageFrm"] {
   max-width: 500px;
   height: 200px;
   padding: 15px;
-  border: 5px solid #FFF9E4;
+  border: 5px solid #fff9e4;
   border-radius: 4px;
   background-color: #fafafa;
   font-family: sans-serif;

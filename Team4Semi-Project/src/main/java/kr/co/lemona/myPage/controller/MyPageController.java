@@ -120,6 +120,8 @@ public class MyPageController {
 
 			model.addAttribute("writtenCount", recipeListCount+defaultListCount );
 			model.addAttribute("commentCount", recipeCommentCount+commentCount );
+			model.addAttribute("type", type);
+			
 		}
 		path = "mypage/myPage-userProfile";
 		ra.addFlashAttribute("message", message);

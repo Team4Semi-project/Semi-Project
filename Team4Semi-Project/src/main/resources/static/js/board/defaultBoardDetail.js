@@ -52,6 +52,7 @@ if (deleteBtn != null) {
 goToListBtn.addEventListener("click", () => {
    const userProfile = naviBtn.dataset.userProfile;
    console.log("userProfile : " , userProfile);
+   const memberNickname = naviBtn.dataset.memberNickname;
   if(userProfile == 'Y'){
     location.href = `/mypage/userProfile?cp=${cp}&memberNickname=${memberNickname}`;
     return;

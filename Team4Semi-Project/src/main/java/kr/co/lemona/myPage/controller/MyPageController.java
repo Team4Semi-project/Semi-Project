@@ -195,7 +195,7 @@ public class MyPageController {
 	}
 
 
-//    // 회원 정보 수정
+    // 회원 정보 수정
 //    @PostMapping("info")
 //    public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
 //            RedirectAttributes ra) {
@@ -215,49 +215,42 @@ public class MyPageController {
 //        ra.addFlashAttribute("message", message);
 //        return "redirect:info";
 //    }
-//
+
     // 프로필 이미지 및 회원 정보 업데이트
-    @PostMapping("editProfile")
-    public String updateProfile(
-            @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
-            @RequestParam(value = "deleteImage", required = false) String deleteImage,
-            @RequestParam("memberName") String memberName,
-            @RequestParam("memberNickname") String memberNickname,
-            @SessionAttribute("loginMember") Member loginMember,
-            RedirectAttributes ra) throws IOException {
-
-        Member member = loginMember;
-        String profileImagePath = member.getProfileImg();
-
-        if ("true".equals(deleteImage)) {
-            profileImagePath = "/images/default-profile.png"; // 기본 이미지로 변경
-        } else if (profileImage != null && !profileImage.isEmpty()) {
-            String uploadDir = "src/main/resources/static/images/profiles/";
-            String fileName = UUID.randomUUID().toString() + "_" + profileImage.getOriginalFilename();
-            Path filePath = Paths.get(uploadDir + fileName);
-            Files.createDirectories(filePath.getParent());
-            Files.write(filePath, profileImage.getBytes());
-            profileImagePath = "/images/profiles/" + fileName;
-        }
-
-        member.setMemberName(memberName);
-        member.setMemberNickname(memberNickname);
-        if (profileImagePath != null) {
-            member.setProfileImg(profileImagePath);
-        }
-
-        // DB 업데이트 (서비스 호출 필요)
-        int result = service.updateProfile(member); // service 메서드 추가 필요
-
-        String message = result > 0 ? "프로필이 성공적으로 수정되었습니다." : "프로필 수정에 실패했습니다.";
-        ra.addFlashAttribute("message", message);
-        return "redirect:/mypage/editProfile";
-    }
-    
-    // editProfile 페이지 보여주기
-    @GetMapping("/editProfile")
-    public String showEditProfilePage(@SessionAttribute("loginMember") Member loginMember, Model model) {
-        model.addAttribute("member", loginMember);
-        return "mypage/editProfile";
-    }
+//    @PostMapping("editProfile")
+//    public String updateProfile(
+//            @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+//            @RequestParam(value = "deleteImage", required = false) String deleteImage,
+//            @RequestParam("memberName") String memberName,
+//            @RequestParam("memberNickname") String memberNickname,
+//            @SessionAttribute("loginMember") Member loginMember,
+//            RedirectAttributes ra) throws IOException {
+//
+//        Member member = loginMember;
+//        String profileImagePath = member.getProfileImg();
+//
+//        if ("true".equals(deleteImage)) {
+//            profileImagePath = "/images/default-profile.png"; // 기본 이미지로 변경
+//        } else if (profileImage != null && !profileImage.isEmpty()) {
+//            String uploadDir = "src/main/resources/static/images/profiles/";
+//            String fileName = UUID.randomUUID().toString() + "_" + profileImage.getOriginalFilename();
+//            Path filePath = Paths.get(uploadDir + fileName);
+//            Files.createDirectories(filePath.getParent());
+//            Files.write(filePath, profileImage.getBytes());
+//            profileImagePath = "/images/profiles/" + fileName;
+//        }
+//
+//        member.setMemberName(memberName);
+//        member.setMemberNickname(memberNickname);
+//        if (profileImagePath != null) {
+//            member.setProfileImg(profileImagePath);
+//        }
+//
+//        // DB 업데이트 (서비스 호출 필요)
+//        int result = service.updateProfile(member); // service 메서드 추가 필요
+//
+//        String message = result > 0 ? "프로필이 성공적으로 수정되었습니다." : "프로필 수정에 실패했습니다.";
+//        ra.addFlashAttribute("message", message);
+//        return "redirect:/mypage/editProfile";
+//    }
 }

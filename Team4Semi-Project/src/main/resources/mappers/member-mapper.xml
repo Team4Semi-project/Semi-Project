@@ -90,5 +90,11 @@
 		member_pw = #{memberPw}
 		WHERE member_id = #{memberId}
 	</update>
+	
+	<!-- 탈퇴한 회원 정보 삭제 -->
+	<delete id="deleteMembers">
+		DELETE FROM "MEMBER"
+		WHERE MEMBER_DEL_FL = 'Y'
+	</delete>
 
 </mapper>

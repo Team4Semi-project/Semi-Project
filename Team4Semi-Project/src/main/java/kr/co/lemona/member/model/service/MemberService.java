@@ -62,4 +62,9 @@ public interface MemberService {
 		return null;
 	}
 
+	/** 탈퇴한 회원 삭제 서비스
+	 * @return
+	 */
+	int deleteMembers();
+
 }

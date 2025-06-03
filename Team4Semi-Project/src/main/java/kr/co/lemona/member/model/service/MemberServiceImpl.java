@@ -125,5 +125,11 @@ public class MemberServiceImpl implements MemberService {
 		map.put("memberPw", memberPw);
 		return mapper.updatePassword(map);
 	}
+	
+	// 회원 정보 삭제
+	@Override
+	public int deleteMembers() {
+		return mapper.deleteMembers();
+	}
 
 }

@@ -30,23 +30,32 @@
 
           <div class="recipe-tags"></div>
 
-          <div class="non-href">
-            <div class="recipe-meta">
+          <!-- 상세페이지 이동 X-->
+          <div class="rowBox">
+            <div class="recipe-meta non-href">
+              <!-- 사용자 정보 -->
               <div class="author-info">
-                <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                  alt="프로필 이미지" class="author-image" />
-                <span class="author-name" th:utext="${board.memberNickname}">장미애 님</span>
+                <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+                  th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                  th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                <span class="author-name" th:utext="${board.memberNickname}"
+                  th:data-nickname="${board.memberNickname}">장미애 님</span>
+                <!-- 작성일 -->
+                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
               </div>
-              <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
             </div>
-            <div class="recipe-stats">
-              <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
-                th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
-                th:data-like-check="${board.likeCheck}"
+
+            <!-- 좋아요/조회수 -->
+            <div class="recipe-stats non-href">
+              <!-- 좋아요 -->
+              <button type="button" class="likes" th:if="${boardCode != 3}"
+                th:data-login-member-no="${session.loginMember?.memberNo}" th:data-board-code="${board.boardCode}"
+                th:data-board-no="${board.boardNo}" th:data-like-check="${board.likeCheck}"
                 th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
                 <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
                 <span th:text="${board.likeCount}">28</span>
               </button>
+              <!-- 조회수 -->
               <div class="views">
                 <i class="material-symbols-outlined align-middle">visibility</i>
                 <span th:text="${board.readCount}">36</span>

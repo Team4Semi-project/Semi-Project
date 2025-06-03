@@ -33,7 +33,6 @@ public class MainServiceImpl implements MainService {
 		List<RecipeBoard> popularBoardList = mapper.selectPopularBoardList(dataMap.get("memberNo"));
 		
 		for(RecipeBoard board : popularBoardList) {
-			log.debug("ㅎㅎㅎㅎ {}",board.getLikeCheck());
 		}
 		
 		// 해시태그 받아오는 부분

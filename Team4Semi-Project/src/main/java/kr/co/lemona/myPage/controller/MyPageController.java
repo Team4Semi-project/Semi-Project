@@ -304,8 +304,6 @@ public class MyPageController {
 		return "mypage/editProfile";
 	}
 
-	
-
 	// 프로필 이미지 삭제
 	@PostMapping("removeProfileImage")
 	@ResponseBody

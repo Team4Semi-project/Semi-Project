@@ -82,7 +82,7 @@ goToPrev.addEventListener("click", () => {
   const categoryNo = segments[3];
 // 문자열 비교로 수정
   if (prevBoardCode == 1) {
-    location.href = `/board/${prevBoardCode}/${categoryNo}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
+    location.href = `/board/${prevBoardCode}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
   } else {
     location.href = `/board/${prevBoardCode}/${prevBoardNo}?cp=${cp}&key=${key}&queryb=${queryb}&querys=${querys}&sort=${sort}`;
   }

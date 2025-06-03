@@ -152,7 +152,7 @@ main {
   transition: transform 0.2s, box-shadow 0.2s;
   background-color: var(--white);
 
-  flex: 1 1 calc((100% - 20px) / 2);
+  flex: 0 0 calc((100% - 20px) / 2);
   max-width: 510px;
   min-width: calc((800px - 160px - 20px) / 2);
   box-sizing: border-box;

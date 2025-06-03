@@ -974,7 +974,7 @@
 	    		SELECT COUNT(*)
 	    		FROM "RECIPE_BOARD_LIKE" L
 		    	WHERE L.BOARD_NO = B.BOARD_NO
-	  		) >= 0
+	  		) >= 10
 	  	]]>
 	</update>
 	
@@ -993,7 +993,7 @@
 					SELECT COUNT(*)
 					FROM "RECIPE_BOARD_LIKE" L
 				WHERE L.BOARD_NO = B2.BOARD_NO
-				) >= 0
+				) >= 10
 			)
 	  	]]>
 	</update>

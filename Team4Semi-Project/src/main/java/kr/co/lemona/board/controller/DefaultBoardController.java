@@ -193,9 +193,7 @@ public class DefaultBoardController {
 		// 로그인 상태인 경우 memberNo 추가
 		if (loginMember != null) {
 			map.put("memberNo", loginMember.getMemberNo());
-		} else {
-			map.put("memberNo", 0);
-		}
+		} 
 
 		// 2) 서비스 호출
 		Map<String, Object> boardMap = service.selectOne(map, searchMap);
@@ -218,6 +216,7 @@ public class DefaultBoardController {
 			int nextBoardNo = (int) boardMap.get("nextBoardNo");
 			int prevBoardCode = (int) boardMap.get("prevBoardCode");
 			int nextBoardCode = (int) boardMap.get("nextBoardCode");
+			
 			/*--------------------- 쿠키를 이용한 조회수 증가 시작 ------------------------*/
 
 			// 비회원 또는 로그인한 회원의 글이 아닌 경우( == 글쓴이를 뺀 다른사람)

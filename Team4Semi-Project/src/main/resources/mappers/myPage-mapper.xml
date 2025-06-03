@@ -80,12 +80,22 @@
 	</select>
 
 	<!-- 사용자 조회 -->
+	<!-- 명하 -->
+	<select id="selectMemberNo">
+		SELECT * 
+		FROM "MEMBER"
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<!-- 게시글 작성자 조회 -->
 	<!-- 미애 -->
 	<select id="selectMember">
 		SELECT * 
 		FROM "MEMBER"
 		WHERE MEMBER_NICKNAME = #{memberNickname}
 	</select>
+	
+	
 
 	<!-- 특정 사용자의 레시피 수 조회 -->
 	<!-- 미애 -->

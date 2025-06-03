@@ -67,9 +67,9 @@ public interface MyPageMapper {
 	/** 사용자 조회
 	 * @param loginMember
 	 * @return
-	 * @author miae
+	 * @author 명하
 	 */
-	Member selectMember(String memberNickname);
+	Member selectMemberNo(int memberNo);
 
 	/** 특정 사용자가 쓴 글 목록
 	 * @param memberNo
@@ -136,6 +136,13 @@ public interface MyPageMapper {
 	 * @return 명하
 	 */
 	int selectMemberNickname(int memberNickname);
+
+	/** 게시글 작성자 조회
+	 * @param memberNickname
+	 * @return
+	 * @author 미애
+	 */
+	Member selectMember(String memberNickname);
 
 
 

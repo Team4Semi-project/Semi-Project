@@ -315,7 +315,7 @@ public class MyPageServiceImpl implements MyPageService {
 	 */
 	@Override
 	public Member selectMember(int memberNo) {
-		return mapper.selectMember(memberNo);
+		return mapper.selectMemberNo(memberNo);
 	}
 
 //	/** 닉네임 중복 검사

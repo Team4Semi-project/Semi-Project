@@ -104,7 +104,8 @@ if (updateBtn) {
     const categoryNo = segments[3];
 
     // 수정 페이지로
-    location.href = `/board/1/${categoryNo}/${boardNo}/update`;
+    //location.href = `/board/1/${categoryNo}/${boardNo}/update`;
+    location.href = `/board/1/0/${boardNo}/update`;
   })
 }
 

@@ -89,6 +89,8 @@ public interface MyPageService {
 //	 * @return 명하
 //	 */
 //	int checkNickname(String memberNickname);
+//
+//	int selectMemberNickname(int memberNickname);
 
 	
 	

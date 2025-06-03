@@ -48,21 +48,21 @@
     </div>
 
     <!-- 탭 섹션 -->
-    <nav class="tabs">
+    <nav class="tabs"  th:data-nickname="${member.memberNickname}">
       <!-- <a href="/mypage/userProfile" id="postsTab" class="tab active" th:text="|${member.memberNickname}님이 쓴 레시피|">내가 쓴
         레시피</a>
       <a href="/mypage/like" id="lemonaTab" class="tab" th:text="|${member.memberNickname}님이 쓴 게시글|">내가 쓴 게시글</a> -->
-      <a href="#" id="recipeTab" class="tab active">내가 쓴 레시피</a>
-      <a href="#" id="postTab" class="tab">내가 쓴 게시글</a>
+      <a id="recipeTab" class="tab" th:classappend="${type} == 'recipe' ? 'active'">내가 쓴 레시피</a>
+      <a id="postTab" class="tab" th:classappend="${type} == 'post' ? 'active'">내가 쓴 게시글</a>
     </nav>
 
     <!-- 내가 쓴 레시피 내용 -->
-    <div id="recipeContent">
+    <div id="recipeContent" th:if="${type} == 'recipe'" style="display:block;">
       <div th:replace="~{mypage/recipeList :: recipeList}"></div>
     </div>
 
     <!-- 내가 쓴 게시글 내용 -->
-    <div id="postContent" style="display: none;">
+    <div id="postContent" th:if="${type} == 'post'" style="display:block;">
       <div th:replace="~{mypage/defaultList :: defaultList}"></div>
     </div>
 
@@ -81,24 +81,26 @@ data-nickname=${member.memberNickname}"></div>
       const postTab = document.getElementById('postTab');
       const recipeContent = document.getElementById('recipeContent');
       const postContent = document.getElementById('postContent');
-      const memberNickname = document.getElementById('memberInfo').dataset.nickname;
+      const userInfo = document.querySelector('.tabs');
+      const nickname = userInfo.dataset.nickname;
+
 
       recipeTab.addEventListener('click', function (e) {
         e.preventDefault(); // 페이지 이동 막기
         recipeTab.classList.add('active');
         postTab.classList.remove('active');
-        recipeContent.style.display = 'block';
-        postContent.style.display = 'none';
-        location.href = `/mypage/userProfile?type=recipe&memberNickname=${memberNickname}`;
+        //recipeContent.style.display = 'block';
+       // postContent.style.display = 'none';
+        location.href = '/mypage/userProfile?type=recipe&memberNickname='+nickname;
       });
 
       postTab.addEventListener('click', function (e) {
         e.preventDefault(); // 페이지 이동 막기
         postTab.classList.add('active');
         recipeTab.classList.remove('active');
-        postContent.style.display = 'block';
-        recipeContent.style.display = 'none';
-        location.href = `/mypage/userProfile?type=post&memberNickname=${memberNickname}`;
+        //postContent.style.display = 'block';
+        //recipeContent.style.display = 'none';
+        location.href = '/mypage/userProfile?type=post&memberNickname='+nickname;
       });
     });
   </script>

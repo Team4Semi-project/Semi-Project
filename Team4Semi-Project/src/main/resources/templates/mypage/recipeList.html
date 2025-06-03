@@ -142,14 +142,14 @@
       <!-- 첫 페이지로 이동 -->
       <li>
         <a
-          th:href="@{/mypage/userProfile(cp=1)} + '&sort=' +  ${sort} + '&memberNickname=' +  ${member.memberNickname}">&lt;&lt;</a>
+          th:href="@{/mypage/userProfile(cp=1)} + '&memberNickname=' +  ${member.memberNickname}">&lt;&lt;</a>
       </li>
       <!-- << : /board/1?cp=1 -->
 
       <!-- 이전 목록 마지막 번호로 이동 -->
       <li>
         <a
-          th:href="@{/mypage/userProfile(cp=*{prevPage})} + '&sort=' +  ${sort} + '&memberNickname=' +  ${member.memberNickname}">&lt;</a>
+          th:href="@{/mypage/userProfile(cp=*{prevPage})} + '&memberNickname=' +  ${member.memberNickname}">&lt;</a>
       </li>
       <!-- < : /board/1?cp=10 -->
 
@@ -162,7 +162,7 @@
 
         <!-- 보고있지 않은 페이지 -->
         <li th:unless="${i} == *{currentPage} or ${i} == 0">
-          <a th:href="@{/mypage/userProfile(cp=${i})} + '&sort=' +  ${sort} + '&memberNickname=' +  ${member.memberNickname}"
+          <a th:href="@{/mypage/userProfile(cp=${i})} + '&memberNickname=' +  ${member.memberNickname}"
             th:text="${i}">이동할 페이지</a>
         </li>
       </th:block>
@@ -170,13 +170,13 @@
       <!-- 다음 목록 시작 번호로 이동 -->
       <li>
         <a
-          th:href="@{/mypage/userProfile(cp=*{nextPage})} + '&sort=' +  ${sort} + '&memberNickname=' +  ${member.memberNickname}">&gt;</a>
+          th:href="@{/mypage/userProfile(cp=*{nextPage})} + '&memberNickname=' +  ${member.memberNickname}">&gt;</a>
       </li>
 
       <!-- 끝 페이지로 이동 -->
       <li>
         <a
-          th:href="@{/mypage/userProfile(cp=*{maxPage})} + '&sort=' +  ${sort} + '&memberNickname=' +  ${member.memberNickname}">&gt;&gt;</a>
+          th:href="@{/mypage/userProfile(cp=*{maxPage})} + '&memberNickname=' +  ${member.memberNickname}">&gt;&gt;</a>
       </li>
     </ul>
   </div>

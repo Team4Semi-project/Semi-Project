@@ -171,6 +171,7 @@
 	FROM "BOARD"
 	WHERE BOARD_DEL_FL='N'
 	AND MEMBER_NO = ${memberNo}
+	AND BOARD_CODE = 2
 	</select>
 
 	<!-- 사용자가 작성한 일반 게시글 조회 -->

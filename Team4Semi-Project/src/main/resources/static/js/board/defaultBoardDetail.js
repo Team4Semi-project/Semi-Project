@@ -54,7 +54,7 @@ goToListBtn.addEventListener("click", () => {
    console.log("userProfile : " , userProfile);
    const memberNickname = naviBtn.dataset.memberNickname;
   if(userProfile == 'Y'){
-    location.href = `/mypage/userProfile?cp=${cp}&memberNickname=${memberNickname}`;
+    location.href = `/mypage/userProfile?cp=${cp}&type=post&memberNickname=${memberNickname}`;
     return;
   } 
 

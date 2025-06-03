@@ -6,9 +6,17 @@
   font-family: "Noto Sans KR", sans-serif;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: #ffffff;
   color: #333;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 밑줄 제거, hover 시 파란색 말고 노란색으로 */
@@ -25,6 +33,7 @@ a:hover {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  flex: 1;
 }
 
 /* 서머노트 출력 형식 */
@@ -252,6 +261,12 @@ background-color: #ffde59;
   font-size: 20px;
 }
 
+.footer {
+  position: static;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
 /* 반응형 스타일 */
 @media (max-width: 768px) {
   .container-title {

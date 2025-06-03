@@ -75,6 +75,13 @@
   color: var(--white);
 }
 
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
 /* 서머노트 : '내용을 입력해주세요'*/
 /*.note인 이유 : 서머노트 내부 클래스 네이밍 규칙임 
     전체 에디터 : summernote-

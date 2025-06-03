@@ -83,7 +83,12 @@ public class RecipeBoardController {
 			map = service.selectRecipeBoardList(inputMap);
 
 		} else { // 검색인 경우 --> paramMap
-
+			
+			// !!!!!!!!!로그인 중인 회원의 memberNo도 paramMap에 추가!!!!!!!
+		    if (loginMember != null) {
+		        paramMap.put("memberNo", loginMember.getMemberNo());
+		    }
+		    
 			// 검색 서비스 호출
 			if (categoryNo.equals("popular")) {
 				map = service.searchPopularList(paramMap, cp, sort);
@@ -102,7 +107,7 @@ public class RecipeBoardController {
 							String title = board.getBoardTitle();
 							if (title != null && title.contains(query)) {
 								board.setBoardTitle(title.replace(query,
-										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+										"<span style='background-color:#FFF176; font-weight:bold; color:#FF6F61;'>" + query
 												+ "</span>"));
 							}
 						}
@@ -112,7 +117,7 @@ public class RecipeBoardController {
 							String nickname = board.getMemberNickname();
 							if (nickname != null && nickname.contains(query)) {
 								board.setMemberNickname(nickname.replace(query,
-										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+										"<span style='background-color:#FFF176; font-weight:bold; color:#FF6F61;'>" + query
 												+ "</span>"));
 							}
 						}
@@ -137,7 +142,7 @@ public class RecipeBoardController {
 							String title = board.getBoardTitle();
 							if (title != null && title.contains(query)) {
 								board.setBoardTitle(title.replace(query,
-										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+										"<span style='background-color:#FFF176; font-weight:bold; color:#FF6F61;'>" + query
 												+ "</span>"));
 							}
 						}
@@ -147,7 +152,7 @@ public class RecipeBoardController {
 							String nickname = board.getMemberNickname();
 							if (nickname != null && nickname.contains(query)) {
 								board.setMemberNickname(nickname.replace(query,
-										"<span style='background-color:yellow; font-weight:bold; color:red;'>" + query
+										"<span style='background-color:#FFF176; font-weight:bold; color:#FF6F61;'>" + query
 												+ "</span>"));
 							}
 						}

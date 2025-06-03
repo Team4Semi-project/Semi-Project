@@ -174,6 +174,7 @@
 		JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
 		WHERE B.BOARD_DEL_FL = 'N'
 		AND M.MEMBER_NICKNAME = #{memberNickname}
+    AND BOARD_CODE = 2
 	</select>
 
 	<!-- 사용자가 작성한 일반 게시글 조회 -->

@@ -91,12 +91,12 @@
                 style="cursor: pointer;">#레몬</span>
         </div>
         <!-- Navigation buttons -->
-        <div class="navi" id="naviBtn"
-            th:attr="data-prev-board-no=${prevBoardNo}, 
+        <div class="navi" id="naviBtn" th:attr="data-prev-board-no=${prevBoardNo}, 
                      data-next-board-no=${nextBoardNo},
                      data-cp=${cp}, 
                      data-prev-board=${prevBoardCode}, 
-                     data-next-board=${nextBoardCode}">
+                     data-next-board=${nextBoardCode},
+                     data-member-nickname=${board.memberNickname}">
             <a class="nav-button" id="goToPrev">
                 <span class="material-symbols-outlined align-middle">chevron_left</span>
                 <span class="text">이전 글</span>
@@ -109,6 +109,23 @@
                 <span class="material-symbols-outlined align-middle">chevron_right</span>
             </a>
         </div>
+
+        <script>
+            // 현재 경로
+            const path = window.location.pathname; // "/board/1/userProfile/152"
+
+            // 'userProfile' 포함 여부 체크
+            if (path.includes('userProfile')) {
+                // 목록 버튼만 보이게, 나머지 버튼 숨기기
+                const goToListBtn = document.getElementById('goToListBtn');
+                goToListBtn.style.display = 'inline-block';
+                const goToPrev = document.getElementById('goToPrev');
+                const goToNext = document.getElementById('goToNext');
+
+                if (goToPrev) goToPrev.style.display = 'none';
+                if (goToNext) goToNext.style.display = 'none';
+            }
+        </script>
 
         <!-- 댓글 영역-->
         <th:block th:replace="~{board/comment}"></th:block>

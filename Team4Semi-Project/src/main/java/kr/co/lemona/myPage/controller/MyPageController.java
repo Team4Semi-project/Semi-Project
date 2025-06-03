@@ -146,6 +146,8 @@ public class MyPageController {
 
 			model.addAttribute("writtenCount", recipeListCount+defaultListCount );
 			model.addAttribute("commentCount", recipeCommentCount+commentCount );
+			model.addAttribute("type", type);
+			
 		}
 		path = "mypage/myPage-userProfile";
 		ra.addFlashAttribute("message", message);
@@ -287,4 +289,42 @@ public class MyPageController {
         return "mypage/editProfile";
     }
     
+    /** 비밀번호 변경
+	 * @param paramMap : 모든 파라미터(요청 데이터)를 맵으로 저장
+	 * @param loginMember : 세션에 등록된 현재 로그인한 회원 정보
+	 * @param ra
+	 * @return
+	 * @author jihyun
+	 */
+	@PostMapping("changePw") // /myPage/changePw POST 요청 매핑
+	public String changePw(@RequestParam Map<String, String> paramMap,
+							@SessionAttribute("loginMember") Member loginMember,
+							RedirectAttributes ra) {
+		// paramMap = {currentPw=asd123, newPw=pass02!, newPwConfirm=pass02!}
+		// debug.log("paramMap : " + paramMap);
+		
+		// 로그인한 회원 번호
+		int memberNo = loginMember.getMemberNo();
+		
+		// 현재 + 새 비번 + 회원번호를 서비스로 전달
+		int result = service.changePw(paramMap, memberNo);
+		
+		String path = null;
+		String message = null;
+		
+		if(result >0) {
+			// 변경 성공 시
+			message = "비밀번호가 변경되었습니다!";
+			path = "/";
+			
+		} else {
+			// 변경 실패 시
+			message = "현재 비밀번호가 일치하지 않습니다.";
+			path = "/myPage/changePw";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
 }

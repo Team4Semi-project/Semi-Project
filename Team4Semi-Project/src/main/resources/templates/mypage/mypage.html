@@ -7,13 +7,9 @@
   <title th:text="${member.memberNickname} + '님의 마이페이지'">
     LEMONA - 마이페이지
   </title>
+  <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" th:href="@{/css/myPage/mypage.css}" />
   <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
-  <!-- Material Symbols 아이콘 사용을 위한 링크 -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-</head>
-
 <body>
   <!-- 헤더 프래그먼트 -->
   <header th:replace="~{common/header :: header}"></header>
@@ -138,6 +134,7 @@
 
   <!-- 공통 스크립트 -->
   <script th:src="@{/js/board/boardList.js}"></script>
+  <th:block th:replace="~{common/header :: search-header-js}"></th:block>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {

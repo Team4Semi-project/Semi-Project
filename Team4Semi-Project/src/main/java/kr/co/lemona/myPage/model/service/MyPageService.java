@@ -58,11 +58,43 @@ public interface MyPageService {
 	 */
 	Map<String, Object> selectMemberBoardList(Map<String, Object> inputMap);
 
-	/** 프로필 업데이트 
+	/** DB 업데이트 (서비스 호출 필요)
 	 * @param member
-	 * @return
+	 * @return 명하
 	 */
 	int updateProfile(Member member);
+
+	/** 프로필 삭제
+	 * @param memberNo
+	 * @return 명하
+	 */
+	int removeProfileImage(int memberNo);
+
+	/** 멤버 조회
+	 * @param memberNo
+	 * @return 명하
+	 */
+	Member selectMember(int memberNo);
+
+//	/** 멤버 닉네임 중복 검사
+//	 * @param member
+//	 * @return
+//	 */
+//	int selectMemberNickname(int memberNickname);
+
+	
+
+//	/** 닉네임 중복 검사
+//	 * @param memberNickname
+//	 * @return 명하
+//	 */
+//	int checkNickname(String memberNickname);
+
+	
+	
+	
+	
+	
 	
 //	/** 내가 쓴 글 수 조회 
 //     * @param memberId

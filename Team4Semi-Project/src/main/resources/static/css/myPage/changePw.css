@@ -2,7 +2,6 @@
 
 /* 페이지 타이틀 아이콘 */
 .myPage-title::before {
-    content: "🔐";
     font-size: 18px;
 }
 

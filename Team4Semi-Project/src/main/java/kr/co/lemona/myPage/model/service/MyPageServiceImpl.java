@@ -1,5 +1,6 @@
 package kr.co.lemona.myPage.model.service;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.board.model.dto.Pagination;
+import kr.co.lemona.common.util.Utility;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.myPage.model.mapper.MyPageMapper;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
@@ -98,22 +100,66 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.updateInfo(inputMember);
 	}
 
+	/**
+	 * 프로필 이미지 변경 서비스
+	 * 
+	 * @author 명하
+	 */
 	@Override
 	public int profile(MultipartFile profileImg, Member loginMember) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		// 프로필 이미지 경로
+		String updatePath = null;
+
+		// 변경명 저장
+		String rename = null;
+
+		// 업로드한 이미지가 있을 경우
+		// - 있을 경우 : 경로 조합 (클라이언트 접근 경로 + 리네임파일명)
+		if (!profileImg.isEmpty()) {
+			// 1. 파일명 변경
+			rename = Utility.fileRename(profileImg.getOriginalFilename());
+
+			// 2. /myPage/profile/변경된파일명
+			updatePath = profileWebPath + rename;
+		}
+
+		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
+		Member member = Member.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath).build();
+
+		int result = mapper.profile(member);
+
+		if (result > 0) {
+
+			// 프로필 이미지를 없애는 update 를 한 경우를 제외
+			// -> 업로드한 이미지가 있을 경우
+			if (!profileImg.isEmpty()) {
+				// 파일을 서버에 저장
+				profileImg.transferTo(new File(profileFolderPath + rename));
+				// C:/uploadFiles/profile/변경한이름
+			}
+
+			// 세션에 저장된 loginMember의 프로필 이미지 경로를
+			// DB와 동기화
+			loginMember.setProfileImg(updatePath);
+
+		}
+
+		return result;
 	}
-  
-	/** 사용자 No 조회
+
+	/**
+	 * 사용자 No 조회
+	 * 
 	 * @author 민장
 	 */
 	@Override
 	public int searchMemberNo(String memberNickname) {
 		return mapper.searchMemberNo(memberNickname);
 	}
-	
-	/** 사용자 조회 / 특정 사용자가 쓴 글 목록
-	 *
+
+	/**
+	 * 사용자 조회 / 특정 사용자가 쓴 글 목록
+	 * 
 	 * @author miae
 	 */
 	@Override
@@ -154,7 +200,7 @@ public class MyPageServiceImpl implements MyPageService {
 				recipeBoard.setHashTagList(tagList);
 			}
 		}
-		
+
 		// 레시피 게시판 댓글 수
 		int recipeCommentCount = mapper.selectRecipeCommentCount(memberNickname);
 		
@@ -241,11 +287,52 @@ public class MyPageServiceImpl implements MyPageService {
 		return map;
 	}
 
-	// 업데이트 프로필
 	@Override
 	public int updateProfile(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		// 프로필 이미지 처리 (컨트롤러에서 이미 파일 저장 로직이 포함되어 있으므로 여기서는 DB 업데이트만 처리)
+		int result = mapper.updateProfile(member);
+
+		if (result > 0) {
+			// 세션 동기화
+			Member loginMember = member; // 세션에서 가져온 member 객체로 동기화
+			// 세션에 저장된 loginMember가 업데이트된 member로 반영되도록 설정
+			// (컨트롤러에서 이미 세션에 반영되므로 별도 로직 생략 가능)
+		}
+
+		return result;
 	}
 
+	/**
+	 * 프로필 이미지 삭제 명하
+	 */
+	@Override
+	public int removeProfileImage(int memberNo) {
+		return mapper.removeProfileImage(memberNo);
+	}
+
+	/**
+	 * 멤버 검색 명하
+	 */
+	@Override
+	public Member selectMember(int memberNo) {
+		return mapper.selectMember(memberNo);
+	}
+
+//	/** 닉네임 중복 검사
+//	 *
+//	 */
+//	@Override
+//	public int checkNickname(String memberNickname) {
+//		return mapper.checkNickname(memberNickname);
+//	
+//	}
+
+//	@Override
+//	public int selectMemberNickname(int memberNickname) {
+//	int checkNickname = mapper.selectMemberNickname(memberNickname);
+//	
+//	if (checkNickname == 1) {
+//		return 0;
+//		}
+//	}
 }

@@ -19,7 +19,7 @@ public class PopularBoardManageScheduling {
 		log.info("popular recipe scheduling");
 		
 		int result1 = service.updatePopularStateToY();
-		int result2 = service.updatePopularStateToY();
+		int result2 = service.updatePopularStateToN();
 		
 		log.info("{} popular board state updated",result1+result2);
 	}

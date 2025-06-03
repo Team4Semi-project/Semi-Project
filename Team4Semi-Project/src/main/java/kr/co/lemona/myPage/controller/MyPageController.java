@@ -209,7 +209,7 @@ public class MyPageController {
 		return "redirect:info";
 	}
 
-	@PostMapping("profile")
+	@PostMapping("uploadProfileImage")
 	public String profile(@RequestParam("profileImg") MultipartFile profileImg,
 			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) throws Exception {
 
@@ -228,55 +228,68 @@ public class MyPageController {
 		return "redirect:profile";
 	}
 
+
+	
 	@PostMapping("/editProfile")
 	@ResponseBody
 	public Map<String, Object> updateProfile(
-			@RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
-			@RequestParam(value = "deleteImage", required = false) String deleteImage, Member member,
-			@SessionAttribute("loginMember") Member loginMember) throws IOException {
+	        @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+	        @RequestParam(value = "deleteImage", required = false) String deleteImage,
+	        Member member,
+	        @SessionAttribute("loginMember") Member loginMember) throws IOException {
 
-		member.setMemberNo(loginMember.getMemberNo());
-		String profileImagePath = loginMember.getProfileImg();
+	    member.setMemberNo(loginMember.getMemberNo());
 
-		if ("true".equals(deleteImage)) {
-			profileImagePath = "/images/default-profile.png";
-		} else if (profileImage != null && !profileImage.isEmpty()) {
-			String uploadDir = "src/main/resources/static/images/profiles/";
-			String fileName = UUID.randomUUID().toString() + "_" + profileImage.getOriginalFilename();
-			Path filePath = Paths.get(uploadDir + fileName);
-			Files.createDirectories(filePath.getParent());
-			Files.write(filePath, profileImage.getBytes());
-			profileImagePath = "/images/profiles/" + fileName;
-		}
+	    // 기존 이미지 경로 유지
+	    String profileImagePath = loginMember.getProfileImg();
 
-		if (profileImagePath != null) {
-			member.setProfileImg(profileImagePath);
-		}
+	    if ("true".equals(deleteImage)) {
+	        // 기본 이미지로 변경
+	        profileImagePath = "/images/default-profile.png";
+	    } else if (profileImage != null && !profileImage.isEmpty()) {
+	        // 저장 경로와 웹 접근 경로
+	        String folderPath = "C:/lemonaFiles/profile/";
+	        String webPath = "/myPage/profile/";
 
-		
-		// 메시지 담아서 응답
-		Map<String, Object> response = new HashMap<>();
-				
-		if(member.getMemberNickname().length() > 10) {
-			response.put("message","10자 내로 설정해주세요!");
-			return response;
-		}
-		
-		int result = service.updateProfile(member);
+	        // 파일명 변경
+	        String fileName = fileRename(profileImage.getOriginalFilename());
 
-		if (result > 0) {
-			loginMember.setMemberName(member.getMemberName());
-			loginMember.setMemberNickname(member.getMemberNickname());
-			loginMember.setProfileImg(profileImagePath);
-		}
+	        // 저장 경로에 파일 저장
+	        Path filePath = Paths.get(folderPath, fileName);
+	        Files.createDirectories(filePath.getParent());
+	        Files.write(filePath, profileImage.getBytes());
 
-		
-		
-		response.put("success", result > 0);
-		response.put("message", result > 0 ? "변경 성공!" : "중복된 닉네임입니다!");
-		// response.put("length", member.getMemberNickname().length() > 10 ? "10자 내로 설정해주세요!" : "변경 성공!");
+	        // DB에 저장할 웹 접근 경로 설정
+	        profileImagePath = webPath + fileName;
+	    }
 
-		return response;
+	    if (profileImagePath != null) {
+	        member.setProfileImg(profileImagePath);
+	    }
+
+	    // DB 업데이트
+	    int result = service.updateProfile(member);
+
+	    // 세션 동기화
+	    if (result > 0) {
+	        loginMember.setMemberName(member.getMemberName());
+	        loginMember.setMemberNickname(member.getMemberNickname());
+	        loginMember.setProfileImg(profileImagePath);
+	    }
+
+	    // 응답 구성
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("success", result > 0);
+	    response.put("message", result > 0 ? "변경 성공!" : "중복된 닉네임입니다!");
+	    response.put("length", member.getMemberNickname().length() > 10 ? "10자 내로 설정해주세요!" : "변경 성공!");
+
+	    return response;
+	}
+
+
+	private String fileRename(String originalFilename) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// editProfile 페이지 보여주기
@@ -291,42 +304,7 @@ public class MyPageController {
 		return "mypage/editProfile";
 	}
 
-	// 프로필 이미지 업로드
-	@PostMapping("uploadProfileImage")
-	@ResponseBody
-	public String uploadProfileImage(@RequestParam("profileImg") MultipartFile profileImg,
-			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) throws IOException {
-
-		log.info("uploadProfileImage called with profileImg: {}",
-				profileImg != null ? profileImg.getOriginalFilename() : "null");
-
-		if (profileImg != null && !profileImg.isEmpty()) {
-			String uploadDir = "src/main/resources/static/images/profiles/";
-			String fileName = UUID.randomUUID().toString() + "_" + profileImg.getOriginalFilename();
-			Path filePath = Paths.get(uploadDir + fileName);
-			Files.createDirectories(filePath.getParent());
-			Files.write(filePath, profileImg.getBytes());
-
-			// 프로필 이미지 경로 업데이트
-			Member member = new Member();
-			member.setMemberNo(loginMember.getMemberNo());
-			member.setProfileImg("/images/profiles/" + fileName);
-
-			int result = service.updateProfile(member);
-
-			if (result > 0) {
-				loginMember.setProfileImg("/images/profiles/" + fileName); // 세션 동기화
-				ra.addFlashAttribute("message", "이미지 업로드 성공!");
-				return "이미지 업로드 성공!";
-			} else {
-				ra.addFlashAttribute("message", "이미지 업로드 실패");
-				return "이미지 업로드 실패";
-			}
-		} else {
-			ra.addFlashAttribute("message", "이미지를 선택해주세요.");
-			return "이미지를 선택해주세요.";
-		}
-	}
+	
 
 	// 프로필 이미지 삭제
 	@PostMapping("removeProfileImage")

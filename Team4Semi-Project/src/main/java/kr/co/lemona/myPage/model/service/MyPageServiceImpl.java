@@ -290,35 +290,33 @@ public class MyPageServiceImpl implements MyPageService {
 	@Override
 	public int updateProfile(Member member) {
 		// 프로필 이미지 처리 (컨트롤러에서 이미 파일 저장 로직이 포함되어 있으므로 여기서는 DB 업데이트만 처리)
-        int result = mapper.updateProfile(member);
+		int result = mapper.updateProfile(member);
 
-        if (result > 0) {
-            // 세션 동기화
-            Member loginMember = member; // 세션에서 가져온 member 객체로 동기화
-            // 세션에 저장된 loginMember가 업데이트된 member로 반영되도록 설정
-            // (컨트롤러에서 이미 세션에 반영되므로 별도 로직 생략 가능)
-        }
+		if (result > 0) {
+			// 세션 동기화
+			Member loginMember = member; // 세션에서 가져온 member 객체로 동기화
+			// 세션에 저장된 loginMember가 업데이트된 member로 반영되도록 설정
+			// (컨트롤러에서 이미 세션에 반영되므로 별도 로직 생략 가능)
+		}
 
-        return result;
-    }
-	
-	/** 프로필 이미지 삭제
-	 * 명하
+		return result;
+	}
+
+	/**
+	 * 프로필 이미지 삭제 명하
 	 */
 	@Override
 	public int removeProfileImage(int memberNo) {
 		return mapper.removeProfileImage(memberNo);
 	}
-	
-	/** 멤버 검색
-	 * 명하
+
+	/**
+	 * 멤버 검색 명하
 	 */
 	@Override
 	public Member selectMember(int memberNo) {
 		return mapper.selectMember(memberNo);
 	}
-	
-
 
 //	/** 닉네임 중복 검사
 //	 *
@@ -328,6 +326,13 @@ public class MyPageServiceImpl implements MyPageService {
 //		return mapper.checkNickname(memberNickname);
 //	
 //	}
-	
-}
 
+//	@Override
+//	public int selectMemberNickname(int memberNickname) {
+//	int checkNickname = mapper.selectMemberNickname(memberNickname);
+//	
+//	if (checkNickname == 1) {
+//		return 0;
+//		}
+//	}
+}

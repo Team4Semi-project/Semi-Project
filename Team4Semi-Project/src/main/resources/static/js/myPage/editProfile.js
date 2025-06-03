@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const memberNickname = document.getElementById("memberNickname");
   const submitBtn = document.querySelector(".submit-btn");
 
-  const DEFAULT_PROFILE_IMAGE = "/images/user.png";  
+  const DEFAULT_PROFILE_IMAGE = "/images/user.png";
 
   // 이미지 선택 시 미리보기
   profileImageInput.addEventListener("change", (e) => {
@@ -71,7 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ memberId: document.getElementById("memberId").value }),
+      body: JSON.stringify({
+        memberId: document.getElementById("memberId").value,
+      }),
     })
       .then((response) => response.text())
       .then((message) => {
@@ -84,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("이미지 제거 중 오류가 발생했습니다.");
       });
   }
-  removeImageBtn.addEventListener("click", removeProfileImage); 
+  removeImageBtn.addEventListener("click", removeProfileImage);
 
   // 폼 제출 이벤트
   form.addEventListener("submit", (e) => {

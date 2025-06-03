@@ -270,6 +270,8 @@ public class MyPageController {
 			Member member = new Member();
 			member.setMemberNo(loginMember.getMemberNo());
 			member.setProfileImg("/images/profiles/" + fileName);
+			
+			
 			int result = service.updateProfile(member);
 
 			if (result > 0) {

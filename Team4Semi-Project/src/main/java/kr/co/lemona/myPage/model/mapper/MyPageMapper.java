@@ -131,6 +131,13 @@ public interface MyPageMapper {
 //	int checkNickname(String memberNickname);
 
 
+	/** 닉네임 중복 검사
+	 * @param memberNickname
+	 * @return 명하
+	 */
+	int selectMemberNickname(int memberNickname);
+
+
 
 
 

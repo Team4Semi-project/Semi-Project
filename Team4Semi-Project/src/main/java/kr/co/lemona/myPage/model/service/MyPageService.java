@@ -76,6 +76,12 @@ public interface MyPageService {
 	 */
 	Member selectMember(int memberNo);
 
+//	/** 멤버 닉네임 중복 검사
+//	 * @param member
+//	 * @return
+//	 */
+//	int selectMemberNickname(int memberNickname);
+
 	
 
 //	/** 닉네임 중복 검사

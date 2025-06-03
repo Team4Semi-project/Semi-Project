@@ -56,40 +56,39 @@ public class MyPageController {
 	public String secession() {
 		return "myPage/myPage-secession";
 	}
-	
-    /** 회원 탈퇴
-     * 
-     */
-    @PostMapping("secession")
-    public String secession(@SessionAttribute("loginMember") Member loginMember,
-    		@RequestParam("memberPw") String memberPw,
-    		RedirectAttributes ra,
-			SessionStatus status) {
-    	
+
+	/**
+	 * 회원 탈퇴
+	 * 
+	 */
+	@PostMapping("secession")
+	public String secession(@SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("memberPw") String memberPw, RedirectAttributes ra, SessionStatus status) {
+
 		// 로그인한 회원의 회원번호 꺼내기
 		int memberNo = loginMember.getMemberNo();
-		
+
 		// 서비스 호출 (입력받은 비밀번호, 로그인한 회원번호)
 		int result = service.secession(memberPw, memberNo);
-		
+
 		String message = null;
 		String path = null;
-		
-		if(result>0) {
-			message ="탈퇴 성공";
-			path ="/";
+
+		if (result > 0) {
+			message = "탈퇴 성공";
+			path = "/";
 			status.setComplete();
-			
+
 		} else {
-			message="비밀번호 불일치";
-			path="secession";
+			message = "비밀번호 불일치";
+			path = "secession";
 		}
-		
-		ra.addFlashAttribute("message",message);
-		
-		return "redirect:"+path;
-    	
-    }
+
+		ra.addFlashAttribute("message", message);
+
+		return "redirect:" + path;
+
+	}
 
 	/**
 	 * 사용자 정보 조회 및 해당 사용자가 쓴 레시피/게시글 조회
@@ -104,8 +103,8 @@ public class MyPageController {
 	@GetMapping("userProfile")
 	public String selectMemberInfo(@RequestParam("memberNickname") String memberNickname,
 			@RequestParam(value = "type", required = false, defaultValue = "recipe") String type,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			Model model, RedirectAttributes ra, @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
+			RedirectAttributes ra, @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
 
 		Map<String, Object> inputMap = new HashMap<>();
 		Map<String, Object> recipeMap = new HashMap<>();
@@ -116,7 +115,8 @@ public class MyPageController {
 		inputMap.put("memberNickname", memberNickname);
 
 		inputMap.put("cp", cp);
-		if(loginMember != null) inputMap.put("memberNo", loginMember.getMemberNo());
+		if (loginMember != null)
+			inputMap.put("memberNo", loginMember.getMemberNo());
 
 		// 사용자 정보, 사용자가 쓴 레시피 게시글
 		recipeMap = service.selectMemberInfo(inputMap);
@@ -150,10 +150,10 @@ public class MyPageController {
 			model.addAttribute("boardList", boardList);
 			model.addAttribute("defaultPagination", defaultMap.get("pagination"));
 
-			model.addAttribute("writtenCount", recipeListCount+defaultListCount );
-			model.addAttribute("commentCount", recipeCommentCount+commentCount );
+			model.addAttribute("writtenCount", recipeListCount + defaultListCount);
+			model.addAttribute("commentCount", recipeCommentCount + commentCount);
 			model.addAttribute("type", type);
-			
+
 		}
 		path = "mypage/myPage-userProfile";
 		ra.addFlashAttribute("message", message);
@@ -229,15 +229,17 @@ public class MyPageController {
 	}
 
 	@PostMapping("/editProfile")
-	public String updateProfile(@RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+	@ResponseBody
+	public Map<String, Object> updateProfile(
+			@RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
 			@RequestParam(value = "deleteImage", required = false) String deleteImage, Member member,
-			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) throws IOException {
+			@SessionAttribute("loginMember") Member loginMember) throws IOException {
 
-		member.setMemberNo(loginMember.getMemberNo()); // 로그인한 회원 번호 설정
-		String profileImagePath = loginMember.getProfileImg(); // 기존 이미지 경로
+		member.setMemberNo(loginMember.getMemberNo());
+		String profileImagePath = loginMember.getProfileImg();
 
 		if ("true".equals(deleteImage)) {
-			profileImagePath = "/images/default-profile.png"; // 기본 이미지로 변경
+			profileImagePath = "/images/default-profile.png";
 		} else if (profileImage != null && !profileImage.isEmpty()) {
 			String uploadDir = "src/main/resources/static/images/profiles/";
 			String fileName = UUID.randomUUID().toString() + "_" + profileImage.getOriginalFilename();
@@ -251,22 +253,30 @@ public class MyPageController {
 			member.setProfileImg(profileImagePath);
 		}
 
-		// DB 업데이트
+		
+		// 메시지 담아서 응답
+		Map<String, Object> response = new HashMap<>();
+				
+		if(member.getMemberNickname().length() > 10) {
+			response.put("message","10자 내로 설정해주세요!");
+			return response;
+		}
+		
 		int result = service.updateProfile(member);
 
-		String message = result > 0 ? "프로필이 성공적으로 수정되었습니다." : "프로필 수정에 실패했습니다.";
-		ra.addFlashAttribute("message", message);
-
-		// 세션 동기화
 		if (result > 0) {
 			loginMember.setMemberName(member.getMemberName());
 			loginMember.setMemberNickname(member.getMemberNickname());
-			if (profileImagePath != null) {
-				loginMember.setProfileImg(profileImagePath);
-			}
+			loginMember.setProfileImg(profileImagePath);
 		}
 
-		return "redirect:/mypage/editProfile";
+		
+		
+		response.put("success", result > 0);
+		response.put("message", result > 0 ? "변경 성공!" : "중복된 닉네임입니다!");
+		// response.put("length", member.getMemberNickname().length() > 10 ? "10자 내로 설정해주세요!" : "변경 성공!");
+
+		return response;
 	}
 
 	// editProfile 페이지 보여주기
@@ -301,8 +311,7 @@ public class MyPageController {
 			Member member = new Member();
 			member.setMemberNo(loginMember.getMemberNo());
 			member.setProfileImg("/images/profiles/" + fileName);
-			
-			
+
 			int result = service.updateProfile(member);
 
 			if (result > 0) {
@@ -339,10 +348,11 @@ public class MyPageController {
 		}
 
 	}
-   
-    
-    /** 비밀번호 변경
-	 * @param paramMap : 모든 파라미터(요청 데이터)를 맵으로 저장
+
+	/**
+	 * 비밀번호 변경
+	 * 
+	 * @param paramMap    : 모든 파라미터(요청 데이터)를 맵으로 저장
 	 * @param loginMember : 세션에 등록된 현재 로그인한 회원 정보
 	 * @param ra
 	 * @return
@@ -350,33 +360,32 @@ public class MyPageController {
 	 */
 	@PostMapping("changePw") // /myPage/changePw POST 요청 매핑
 	public String changePw(@RequestParam Map<String, String> paramMap,
-							@SessionAttribute("loginMember") Member loginMember,
-							RedirectAttributes ra) {
+			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
 		// paramMap = {currentPw=asd123, newPw=pass02!, newPwConfirm=pass02!}
 		// debug.log("paramMap : " + paramMap);
-		
+
 		// 로그인한 회원 번호
 		int memberNo = loginMember.getMemberNo();
-		
+
 		// 현재 + 새 비번 + 회원번호를 서비스로 전달
 		int result = service.changePw(paramMap, memberNo);
-		
+
 		String path = null;
 		String message = null;
-		
-		if(result >0) {
+
+		if (result > 0) {
 			// 변경 성공 시
 			message = "비밀번호가 변경되었습니다!";
 			path = "/";
-			
+
 		} else {
 			// 변경 실패 시
 			message = "현재 비밀번호가 일치하지 않습니다.";
 			path = "/myPage/changePw";
 		}
-		
+
 		ra.addFlashAttribute("message", message);
-		
+
 		return "redirect:" + path;
 	}
 }

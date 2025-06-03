@@ -2,12 +2,7 @@
   margin-top: 0;
   overflow: visible !important;
 }
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
+
 .lemona-brand {
   background-color: #eeb604;
   padding: 10px 0;
@@ -78,6 +73,13 @@
 .submit-btn:hover {
   background-color: var(--yellow);
   color: var(--white);
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 /* 서머노트 : '내용을 입력해주세요'*/

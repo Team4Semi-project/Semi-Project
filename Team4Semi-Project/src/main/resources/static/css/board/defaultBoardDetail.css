@@ -252,6 +252,13 @@ background-color: #ffde59;
   font-size: 20px;
 }
 
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
 /* 반응형 스타일 */
 @media (max-width: 768px) {
   .container-title {

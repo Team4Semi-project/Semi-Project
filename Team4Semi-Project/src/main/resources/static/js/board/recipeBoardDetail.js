@@ -10,14 +10,16 @@ const querys = urlParams.get("querys") || "";
 
 //const popular = urlParams.get('popular');
 
+
+
 // 목록으로 버튼 클릭 시 이동
 goToListBtn.addEventListener("click", () => {
   const pathname = window.location.pathname;
   const segments = pathname.split("/"); // ['', 'board', '1', '0', '3']
   const categoryNo = segments[3]; // 인덱스 3에 있는 게 바로 '0'
-
+  const memberNickname = naviBtn.dataset.memberNickname;
   if(categoryNo == 'userProfile'){
-    location.href = `/mypage/${categoryNo}?cp=${cp}`;
+    location.href = `/mypage/${categoryNo}?cp=${cp}&memberNickname=${memberNickname}`;
     return;
   } 
   location.href = `/board/1/${categoryNo}?cp=${cp}&sort=${sort}`;

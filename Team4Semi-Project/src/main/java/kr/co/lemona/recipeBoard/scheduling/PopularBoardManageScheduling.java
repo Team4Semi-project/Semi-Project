@@ -16,7 +16,7 @@ public class PopularBoardManageScheduling {
 
 	@Scheduled(cron = "30 * * * * *")
 	public void scheduling() {
-		log.info("now scheduling");
+		log.info("popular recipe scheduling");
 		
 		int result1 = service.updatePopularStateToY();
 		int result2 = service.updatePopularStateToY();

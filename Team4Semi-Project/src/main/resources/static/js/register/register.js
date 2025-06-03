@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         emailMessage.classList.remove("error");
         checkObj.memberEmail = true;
       })
-      // .catch((err) => console.log(err));
+    // .catch((err) => console.log(err));
   });
 
   // 인증번호 받기 버튼 클릭 시
@@ -156,7 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((result) => {
         if (result == 1) {
           console.log("인증 번호 발송 성공");
-          alert("인증번호가 발송되었습니다.");
         } else {
           console.log("인증 번호 발송 실패!!!...");
         }
@@ -164,6 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // ****************************************
     // 메일은 비동기로 서버에서 보내라고 놔두고
     // 화면에서는 타이머 시작하기
+    authKeyMessage.innerText = initTime; // 05:00 세팅
+    authKeyMessage.classList.remove("confirm", "error");
+
+    alert("인증번호가 발송되었습니다");
+
     authTimer = setInterval(() => {
       authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
 
@@ -233,24 +237,27 @@ document.addEventListener("DOMContentLoaded", () => {
   memberPw.addEventListener("input", (e) => {
     const inputPw = e.target.value.trim();
 
+    // 입력되지 않은 경우
     if (inputPw.length === 0) {
       // pwMessage.innerText = "영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.";
-      pwMessage.classList.remove("message", "confirm", "error");
+      pwMessage.innerText = "";
+      pwMessage.classList.remove("confirm", "error");
       checkObj.memberPw = false;
-      // memberPw.value = "";
+      memberPw.value = "";
       return;
     }
 
+    // 비밀번호 정규식 검사
     const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
     if (!regExp.test(inputPw)) {
-      // pwMessage.innerText = "비밀번호가 유효하지 않습니다.";
+      pwMessage.innerText = "비밀번호가 유효하지 않습니다.";
       pwMessage.classList.add("message", "error");
       pwMessage.classList.remove("confirm");
       checkObj.memberPw = false;
       return;
     }
 
-    // pwMessage.innerText = "유효한 비밀번호 형식입니다.";
+    pwMessage.innerText = "유효한 비밀번호 형식입니다.";
     pwMessage.classList.add("message", "confirm");
     pwMessage.classList.remove("error");
     checkObj.memberPw = true;
@@ -263,15 +270,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // 비밀번호 확인 유효성 검사
   const checkPw = () => {
     if (memberPw.value === memberPwConfirm.value) {
-      // pwMessage.innerText = "비밀번호가 일치합니다.";
+      pwMessage.innerText = "비밀번호가 일치합니다.";
       pwMessage.classList.add("message", "confirm");
-      // pwMessage.classList.remove("error");
+      pwMessage.classList.remove("error");
       checkObj.memberPwConfirm = true;
       return;
     }
-    // pwMessage.innerText = "비밀번호가 일치하지 않습니다."; 
+    pwMessage.innerText = "비밀번호가 일치하지 않습니다.";
     pwMessage.classList.add("message", "error");
-    // pwMessage.classList.remove("confirm");
+    pwMessage.classList.remove("confirm");
     checkObj.memberPwConfirm = false;
   };
 

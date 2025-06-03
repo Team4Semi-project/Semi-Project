@@ -78,7 +78,12 @@ public class DefaultBoardController {
 			// boardCode를 paramMap에 추가
 			paramMap.put("boardCode", boardCode);
 			paramMap.put("sort", sort); // 정렬
-
+			
+			// 로그인 중인 회원의 memberNo도 paramMap에 추가
+		    if (loginMember != null) {
+		        paramMap.put("memberNo", loginMember.getMemberNo());
+		    }
+		    
 			// 검색 서비스 호출
 			map = service.serchList(paramMap, cp);
 

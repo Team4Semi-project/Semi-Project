@@ -30,23 +30,32 @@
 
           <div class="recipe-tags"></div>
 
-          <div class="non-href">
-            <div class="recipe-meta">
+          <!-- 상세페이지 이동 X-->
+          <div class="rowBox">
+            <div class="recipe-meta non-href">
+              <!-- 사용자 정보 -->
               <div class="author-info">
-                <img th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
-                  alt="프로필 이미지" class="author-image" />
-                <span class="author-name" th:utext="${board.memberNickname}">장미애 님</span>
+                <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+                  th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                  th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                <span class="author-name" th:utext="${board.memberNickname}"
+                  th:data-nickname="${board.memberNickname}">장미애 님</span>
+                <!-- 작성일 -->
+                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
               </div>
-              <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
             </div>
-            <div class="recipe-stats">
-              <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
-                th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
-                th:data-like-check="${board.likeCheck}"
+
+            <!-- 좋아요/조회수 -->
+            <div class="recipe-stats non-href">
+              <!-- 좋아요 -->
+              <button type="button" class="likes" th:if="${boardCode != 3}"
+                th:data-login-member-no="${session.loginMember?.memberNo}" th:data-board-code="${board.boardCode}"
+                th:data-board-no="${board.boardNo}" th:data-like-check="${board.likeCheck}"
                 th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
                 <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
                 <span th:text="${board.likeCount}">28</span>
               </button>
+              <!-- 조회수 -->
               <div class="views">
                 <i class="material-symbols-outlined align-middle">visibility</i>
                 <span th:text="${board.readCount}">36</span>
@@ -112,18 +121,19 @@
     <ul class="pagination" th:unless="${param.key}" th:object="${defaultPagination}">
       <!-- 첫 페이지로 이동 -->
       <li>
-        <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1)}">&lt;&lt;</a>
+        <a
+          th:href="@{/mypage/userProfile(cp=1)} + '&type=post' + '&memberNickname=' +  ${member.memberNickname}">&lt;&lt;</a>
       </li>
       <!-- << : /board/1?cp=1 -->
 
       <!-- 이전 목록 마지막 번호로 이동 -->
       <li>
-        <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage})}">&lt;</a>
+        <a
+          th:href="@{/mypage/userProfile(cp=*{prevPage})} + '&type=post'+ '&memberNickname=' +  ${member.memberNickname}">&lt;</a>
       </li>
       <!-- < : /board/1?cp=10 -->
 
       <!-- 특정 페이지로 이동 -->
-
       <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
         <!-- 현재 보고있는 페이지 -->
         <li th:if="${i} == *{currentPage}">
@@ -132,18 +142,21 @@
 
         <!-- 보고있지 않은 페이지 -->
         <li th:unless="${i} == *{currentPage} or ${i} == 0">
-          <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})}" th:text="${i}">이동할 페이지</a>
+          <a th:href="@{/mypage/userProfile(cp=${i})} + '&type=post'+ '&memberNickname=' +  ${member.memberNickname}"
+            th:text="${i}">이동할 페이지</a>
         </li>
       </th:block>
 
       <!-- 다음 목록 시작 번호로 이동 -->
       <li>
-        <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{nextPage})}">&gt;</a>
+        <a
+          th:href="@{/mypage/userProfile(cp=*{nextPage})} + '&type=post'+ '&memberNickname=' +  ${member.memberNickname}">&gt;</a>
       </li>
 
       <!-- 끝 페이지로 이동 -->
       <li>
-        <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{maxPage})}">&gt;&gt;</a>
+        <a
+          th:href="@{/mypage/userProfile(cp=*{maxPage})} + '&type=post' + '&memberNickname=' +  ${member.memberNickname}">&gt;&gt;</a>
       </li>
     </ul>
 

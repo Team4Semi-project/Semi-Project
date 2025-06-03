@@ -61,5 +61,10 @@ public interface MemberMapper {
 	 */
 	int updatePassword(Map<String, Object> params);
 
+	/** 회원정보 삭제 메서드
+	 * @return
+	 */
+	int deleteMembers();
+
 
 }

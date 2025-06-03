@@ -265,8 +265,11 @@
 
       <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
       <th:block th:if="${session.loginMember != null}" class="user-menu">
-        <span class="header-nickname" th:text="${session.loginMember.memberNickname}"
-          th:data-nickname="${session.loginMember.memberNickname}">사용자명</span>
+        <!-- <span class="header-nickname" th:text="${session.loginMember.memberNickname}"
+          th:data-nickname="${session.loginMember.memberNickname}">사용자명</span> -->
+        <a th:href="@{/mypage/userProfile(memberNickname=${session.loginMember.memberNickname})}">
+          <span class="header-nickname" th:text="${session.loginMember.memberNickname}">사용자명</span>
+        </a>
 
         <!-- 로그인 하고 로그아웃 버튼을 누르면 알림으로 로그아웃 하시겠습니까? -->
         <!-- 알림 뜬 후 확인 버튼을 누르면 로그아웃 취소 버튼을 누르면 그대로 -->
@@ -351,7 +354,8 @@
         el.addEventListener("click", function () {
           const nickname = this.dataset.nickname;
           if (nickname) {
-            window.location.href = `/mypage/userProfile?memberNickname=${encodeURIComponent(nickname)}`;
+            //window.location.href = `/mypage/userProfile?memberNickname=${encodeURIComponent(nickname)}`;
+            window.location.href = `/mypage/userProfile?memberNickname=${nickname}`;
           }
         });
       });

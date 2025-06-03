@@ -62,14 +62,14 @@ public interface MyPageMapper {
 	 * @return
 	 * @author 민장
 	 */
-	int searchMemberNo(String nickname);
+	int searchMemberNo(String memberNickname);
 	
 	/** 사용자 조회
 	 * @param loginMember
 	 * @return
 	 * @author miae
 	 */
-	Member selectMember(int memberNo);
+	Member selectMember(String memberNickname);
 
 	/** 특정 사용자가 쓴 글 목록
 	 * @param memberNo
@@ -77,26 +77,26 @@ public interface MyPageMapper {
 	 * @author miae
 	 * @param rowBounds 
 	 */
-	List<RecipeBoard> selectMemberRecipeList(int memberNo, RowBounds rowBounds);
+	List<RecipeBoard> selectMemberRecipeList(Map<String, Object> inputMap, RowBounds rowBounds);
 
 	/** 특정 사용자가 쓴 글의 갯수 조회
 	 * @param memberNo
 	 * @return
 	 */
-	int getMemberRecipeListCount(int memberNo);
+	int getMemberRecipeListCount(String memberNickname);
 	
 	/** 특정 사용자가 쓴 일반 게시글의 갯수 조회
 	 * @param memberNo
 	 * @return
 	 */
-	int getMemberDefaultListCount(int memberNo);
+	int getMemberDefaultListCount(String memberNickname);
 
 	/** 특정 사용자가 쓴 일반 게시글 목록
 	 * @param memberNo
 	 * @param rowBounds
 	 * @return
 	 */
-	List<Board> selectMemberBoardList(int memberNo, RowBounds rowBounds);
+	List<Board> selectMemberBoardList(Map<String, Object> inputMap, RowBounds rowBounds);
 	
 	
 	
@@ -104,13 +104,13 @@ public interface MyPageMapper {
 	 * @param memberNo
 	 * @return
 	 */
-	int selectRecipeCommentCount(int memberNo);
+	int selectRecipeCommentCount(String memberNickname);
 	
 	/** 특정 사용자가 쓴 일반 게시판 댓글 목록
 	 * @param memberNo
 	 * @return
 	 */
-	int selectCommentCount(int memberNo);
+	int selectCommentCount(String memberNickname);
 
 	/** 프로필 업데이트
 	 * @param member

@@ -18,7 +18,7 @@
 }
 
 .menu-header {
-  background-color: #FFD634;
+  background-color: #ffd634;
   color: black;
   font-weight: bold;
   font-size: 20px;
@@ -53,7 +53,7 @@
 }
 
 .list-group li a.active {
-  background-color: #FFEB3B;
+  background-color: #ffeb3b;
   font-weight: bold;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .myPage-title::before {
-  content: "🔒";
+  content: "";
   font-size: 18px;
 }
 
@@ -80,7 +80,7 @@
   letter-spacing: -1px;
 }
 
-.myPage-row {
+/* .myPage-row {
   width: 500px;
   height: 50px;
   margin-top: 20px;
@@ -114,12 +114,12 @@
 
 .myPage-row > input[type="password"] {
   width: 70%;
-  background-color: #FFF9E4;
+  background-color: #fff9e4;
 }
 
 .myPage-row:focus-within {
   border-bottom-color: #455ba8;
-}
+} */
 
 form[name="myPageFrm"] {
   display: flex;
@@ -128,7 +128,7 @@ form[name="myPageFrm"] {
   flex-direction: column;
   position: relative;
 }
-
+/* 
 .myPage-submit {
   width: 100%;
   padding: 10px;
@@ -154,7 +154,7 @@ form[name="myPageFrm"] {
 .myPage-submit:focus {
   outline: 2px solid #fdd835;
   outline-offset: 2px;
-}
+} */
 
 /* 비밀번호 변경 화면 전용 */
 .info-title {
@@ -250,7 +250,7 @@ form[name="myPageFrm"] {
 }
 
 .warning-message::before {
-  content: "⚠️";
+  content: "";
 }
 
 .warning-text {
@@ -263,7 +263,7 @@ form[name="myPageFrm"] {
   max-width: 500px;
   height: 200px;
   padding: 15px;
-  border: 5px solid #FFF9E4;
+  border: 5px solid #fff9e4;
   border-radius: 4px;
   background-color: #fafafa;
   font-family: sans-serif;

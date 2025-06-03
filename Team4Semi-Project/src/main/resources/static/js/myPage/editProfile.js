@@ -111,36 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append("profileImage", profileImageInput.files[0]);
     }
 
-    // fetch("/mypage/editProfile", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("응답:", data);
-
-    //     // 닉네임 길이 체크
-    //     if (data.length && data.length !== "변경 성공!") {
-    //       alert(data.length); // "10자 내로 설정해주세요!" 출력
-    //       return;
-    //     }
-
-    //     if (data.success) {
-    //       alert(data.message); // "변경 성공!"
-    //       window.location.href = "/mypage/editProfile";
-    //     } else {
-    //       alert(data.message); // "중복된 닉네임입니다!"
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //     alert("프로필 수정 중 오류가 발생했습니다.");
-    //   })
-    //   .finally(() => {
-    //     submitBtn.classList.remove("loading");
-    //     submitBtn.disabled = false;
-    //   });
-
     fetch("/mypage/editProfile", {
       method: "POST",
       body: formData,

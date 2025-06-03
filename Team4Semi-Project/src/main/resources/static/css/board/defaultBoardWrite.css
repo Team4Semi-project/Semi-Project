@@ -2,7 +2,12 @@
   margin-top: 0;
   overflow: visible !important;
 }
-
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
 .lemona-brand {
   background-color: #eeb604;
   padding: 10px 0;

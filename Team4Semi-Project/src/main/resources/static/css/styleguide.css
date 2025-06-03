@@ -100,7 +100,7 @@
 }
 
 @font-face {
-  font-family: "Pretendard-Regular";
+  font-family: "Pretendard";
   src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
     format("woff");
   font-weight: 400;
@@ -108,7 +108,7 @@
 }
 
 @font-face {
-  font-family: "Ownglyph_ryuttung-Rg";
+  font-family: "Ownglyph ryuttung";
   src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2405-2@1.0/Ownglyph_ryuttung-Rg.woff2")
     format("woff2");
   font-weight: normal;

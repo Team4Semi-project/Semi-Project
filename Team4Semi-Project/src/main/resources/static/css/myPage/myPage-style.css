@@ -1,11 +1,34 @@
 /* ====================== 공통 스타일 ====================== */
 
+/* HTML 요소의 기본 크기와 마진, 패딩 제거 */
+html {
+  height: 100%; /* 전체 화면 높이 채우기 */
+  margin: 0; /* 기본 마진 제거 */
+  padding: 0; /* 기본 패딩 제거 */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  height: 100%;
+}
+
+footer.footer {
+  margin-top: 0;
+}
+
 /* 회원 페이지 전체를 감싸고 있는 요소 */
 .myPage-content {
   display: flex;
   width: 1000px;
-  min-height: 700px;
-  margin: 50px auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  gap: 40px;
+  flex: 1;
 }
 
 /* 사이드 메뉴 */
@@ -59,13 +82,20 @@
 
 /* 메인 컨텐츠 */
 .myPage-main {
-  width: 75%;
-  padding: 0 50px;
+  flex: 1;
+  background: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .myPage-title {
-  margin-bottom: 10px;
-  font-size: 30px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 15px;
 }
 
 .myPage-title::before {
@@ -80,47 +110,6 @@
   letter-spacing: -1px;
 }
 
-/* .myPage-row {
-  width: 500px;
-  height: 50px;
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  border-bottom: 2px solid #ddd;
-}
-
-.myPage-row > * {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.myPage-row > label {
-  width: 30%;
-  color: #455ba8;
-}
-
-.myPage-row > span {
-  width: 70%;
-  color: #455ba8;
-}
-
-.myPage-row > input {
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  font-weight: normal;
-}
-
-.myPage-row > input[type="password"] {
-  width: 70%;
-  background-color: #fff9e4;
-}
-
-.myPage-row:focus-within {
-  border-bottom-color: #455ba8;
-} */
-
 form[name="myPageFrm"] {
   display: flex;
   justify-content: center;
@@ -128,33 +117,6 @@ form[name="myPageFrm"] {
   flex-direction: column;
   position: relative;
 }
-/* 
-.myPage-submit {
-  width: 100%;
-  padding: 10px;
-  margin: 50px 0;
-  border: none;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #455ba8;
-  color: white;
-  cursor: pointer;
-}
-
-.myPage-submit:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-}
-
-.myPage-submit:disabled:hover {
-  background-color: #ccc;
-}
-
-.myPage-submit:focus {
-  outline: 2px solid #fdd835;
-  outline-offset: 2px;
-} */
 
 /* 비밀번호 변경 화면 전용 */
 .info-title {

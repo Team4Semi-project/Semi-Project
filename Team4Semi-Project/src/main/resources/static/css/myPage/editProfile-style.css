@@ -1,307 +1,294 @@
 /* editProfile-style.css - 프로필 수정 페이지 전용 스타일 */
 
 .logo {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .search-bar {
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .icon {
-    font-size: 20px;
-    color: #333;
-}
-
-.my-page-container {
-    display: flex;
-    max-width: 1000px;
-    margin: 30px auto;
-    background-color: #ffffff;
-    border-radius: 20px;
-    overflow: hidden;
-    border: none;
+  font-size: 20px;
+  color: #333;
 }
 
 .side-menu {
-    width: 220px;
-    padding: 20px 0;
-    background-color: #fff;
-    border-radius: 20px 0 0 20px;
-    text-align: left;
+  width: 220px;
+  padding: 20px 0;
+  background-color: #fff;
+  border-radius: 20px 0 0 20px;
+  text-align: left;
 }
 
 .side-menu-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #fff;
-    text-align: center;
-    background-color: #ffd700;
-    padding: 12px;
-    border-radius: 10px;
-    margin: 0 20px 15px 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  background-color: #ffd700;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 0 20px 15px 20px;
 }
 
 .side-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 0 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0 20px;
 }
 
 .side-menu-item {
-    display: block;
-    text-decoration: none;
-    color: #333;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 10px 15px;
-    background-color: #fffaf0;
-    border-radius: 10px;
-    margin-bottom: 8px;
-    transition: background-color 0.3s;
+  display: block;
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 15px;
+  background-color: #fffaf0;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: background-color 0.3s;
 }
 
 .side-menu-item.active {
-    background-color: #ffd700;
-    color: #fff;
+  background-color: #ffd700;
+  color: #fff;
 }
 
 .side-menu-item:hover {
-    background-color: #ffd700;
-    color: #fff;
-}
-
-.my-page-content {
-    flex-grow: 1;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 0 20px 20px 0;
+  background-color: #ffd700;
+  color: #fff;
 }
 
 .my-page-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-    text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .my-page-subject {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 30px;
-    text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .profile-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .profile-image {
-    text-align: center;
-    position: relative;
+  text-align: center;
+  position: relative;
 }
 
 .profile-img {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ddd;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
 }
 
 .remove-image-btn {
-    position: absolute;
-    top: 0;
-    right: 80px;
-    width: 20px;
-    height: 20px;
-    background-color: #ff4444;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    font-size: 12px;
-    cursor: pointer;
-    line-height: 20px;
-    text-align: center;
+  position: absolute;
+  top: 0;
+  right: 210px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--lemon);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 20px;
+  text-align: center;
 }
 
 .image-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
 
 .image-btn {
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    background: #fffaf0;
-    color: #666;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: #fffaf0;
+  color: #666;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .image-btn:hover {
-    background: #f8f1e0;
-    border-color: #ccc;
+  background: #f8f1e0;
+  border-color: #ccc;
 }
 
 .image-btn.primary {
-    background: #ffd700;
-    border-color: #ffd700;
-    color: #333;
+  background: #ffd700;
+  border-color: #ffd700;
+  color: #333;
 }
 
 .image-btn.primary:hover {
-    background: #e6c200;
+  background: #e6c200;
 }
 
 #editProfileForm {
-    max-width: 450px;
-    margin: 0 auto;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 500;
-    color: #333;
-    font-size: 15px;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+  font-size: 15px;
 }
 
 .form-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-    background: #fffaf0;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fffaf0;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
 }
 
 .form-group input[readonly] {
-    background: #f5f5f5;
-    color: #666;
-    cursor: not-allowed;
+  background: #f5f5f5;
+  color: #666;
+  cursor: not-allowed;
 }
 
 .form-group input[readonly]:focus {
-    outline: none;
-    border-color: #ddd;
-    box-shadow: none;
+  outline: none;
+  border-color: #ddd;
+  box-shadow: none;
 }
 
 .form-group input:focus {
-    outline: none;
-    border-color: #ffd700;
-    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+  outline: none;
+  border-color: #ffd700;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
 }
 
 .button-group {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .submit-btn {
-    padding: 8px 16px;
-    background: #ffd700;
-    color: #333;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
+  padding: 8px 16px;
+  background: #ffd700;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .submit-btn:hover {
-    background: #e6c200;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: #e6c200;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .cancel-btn {
-    padding: 8px 16px;
-    background: #fffaf0;
-    color: #666;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
+  padding: 8px 16px;
+  background: #fffaf0;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .cancel-btn:hover {
-    background: #f8f1e0;
-    border-color: #ccc;
+  background: #f8f1e0;
+  border-color: #ccc;
 }
 
 @media (max-width: 768px) {
-    .my-page-container {
-        flex-direction: column;
-        padding: 10px;
-    }
+  .my-page-container {
+    flex-direction: column;
+    padding: 10px;
+  }
 
-    .side-menu {
-        width: 100%;
-        margin-bottom: 20px;
-        border-radius: 20px;
-    }
+  .side-menu {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 20px;
+  }
 
-    .my-page-content {
-        padding: 20px;
-        border-radius: 20px;
-    }
+  .my-page-content {
+    padding: 20px;
+    border-radius: 20px;
+  }
 
-    #editProfileForm {
-        max-width: 100%;
-    }
+  #editProfileForm {
+    max-width: 100%;
+  }
 
-    .image-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
+  .image-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .image-btn {
-        width: 140px;
-    }
+  .image-btn {
+    width: 140px;
+  }
 
-    .button-group {
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 10px;
-    }
+  .button-group {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
 
-    .submit-btn, .cancel-btn {
-        width: 100%;
-    }
+  .submit-btn,
+  .cancel-btn {
+    width: 100%;
+  }
 }
 
-.image-btn:focus, .submit-btn:focus, .remove-image-btn:focus, .cancel-btn:focus {
-    outline: 2px solid #ffd700;
-    outline-offset: 2px;
+.image-btn:focus,
+.submit-btn:focus,
+.remove-image-btn:focus,
+.cancel-btn:focus {
+  outline: 2px solid #ffd700;
+  outline-offset: 2px;
 }

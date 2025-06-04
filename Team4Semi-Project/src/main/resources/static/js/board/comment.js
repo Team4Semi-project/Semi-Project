@@ -244,7 +244,7 @@ const showInsertComment = (parentCommentNo, btn) => {
   const textarea = document.createElement("textarea");
   textarea.classList.add("commentInsertContent");
   textarea.placeholder = "답글을 입력하세요";
-  textarea.maxLength = "100";
+  textarea.maxLength = "300";
   textarea.rows = "1"
 
   // 답글(자식 댓글) 입력창 높이 조절

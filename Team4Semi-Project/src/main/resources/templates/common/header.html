@@ -9,7 +9,7 @@
     }
 
     .header-container {
-      width: 100%;
+      width: 90%;
       height: 100px;
       background-color: var(--white);
       /* padding: 100px; */
@@ -188,9 +188,38 @@
       fill: #555;
     }
 
+    /* 사용자 아이디, 프로필 이미지 */
+    .profile-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
     .header-nickname {
       font-family: var(--pre-p-2-font-family) !important;
       font-size: var(--pre-p-2-font-size) !important;
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    .author-image {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .login-user-menu {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logout-icon {
+      margin-left: auto;
+      /* 여기서 오른쪽 끝으로 밀림 */
+      cursor: pointer;
     }
 
     /* 반응형 스타일 */
@@ -264,17 +293,20 @@
       </th:block>
 
       <!-- 로그인 되어있는 계정이 있을때, {회원 닉네임,로그아웃} -->
-      <th:block th:if="${session.loginMember != null}" class="user-menu">
+      <th:block th:if="${session.loginMember != null}" class="login-user-menu">
         <!-- <span class="header-nickname" th:text="${session.loginMember.memberNickname}"
           th:data-nickname="${session.loginMember.memberNickname}">사용자명</span> -->
-        <a th:href="@{/mypage/userProfile(memberNickname=${session.loginMember.memberNickname})}">
+        <a class="profile-link" th:href="@{/mypage/userProfile(memberNickname=${session.loginMember.memberNickname})}">
+          <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+            th:src="${#strings.isEmpty(session.loginMember.profileImg) ? '/images/user.png' : session.loginMember.profileImg}"
+            th:data-nickname="${session.loginMember.memberNickname}" alt="프로필 이미지" />
           <span class="header-nickname" th:text="${session.loginMember.memberNickname}">사용자명</span>
         </a>
 
         <!-- 로그인 하고 로그아웃 버튼을 누르면 알림으로 로그아웃 하시겠습니까? -->
         <!-- 알림 뜬 후 확인 버튼을 누르면 로그아웃 취소 버튼을 누르면 그대로 -->
         <!-- 신명하-->
-        <a href="#" onclick="confirmLogout()">
+        <a class="logout-icon" onclick="confirmLogout()">
           <span class="material-symbols-outlined">logout</span>
         </a>
 
@@ -291,6 +323,7 @@
 </header>
 
 <!-- CSS와 JavaScript 포함 -->
+<!-- <th:block th:replace="common/header-search :: search-header-js"></th:block> -->
 <th:block th:fragment="search-header-js">
   <script>
     document.addEventListener("DOMContentLoaded", function () {

@@ -966,15 +966,23 @@
 	<!-- 재호 -->
 	<update id="updatePopularStateToY">
 		<![CDATA[
-			UPDATE "RECIPE_BOARD" B
-			SET POPULAR_CHECK = 'Y'
-			WHERE B.READ_COUNT >= 20
-	  		AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
-	  		AND (
-	    		SELECT COUNT(*)
-	    		FROM "RECIPE_BOARD_LIKE" L
-		    	WHERE L.BOARD_NO = B.BOARD_NO
-	  		) >= 0
+			UPDATE RECIPE_BOARD
+    SET POPULAR_CHECK = 'Y'
+    WHERE BOARD_NO IN (
+      SELECT BOARD_NO
+      FROM (
+        SELECT B.BOARD_NO
+        FROM RECIPE_BOARD B
+        WHERE B.READ_COUNT >= 20
+          AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
+          AND (
+            SELECT COUNT(*)
+            FROM RECIPE_BOARD_LIKE L
+            WHERE L.BOARD_NO = B.BOARD_NO
+          ) >= 10
+      )
+    )
+
 	  	]]>
 	</update>
 	
@@ -982,19 +990,22 @@
 	<!-- 재호 -->
 	<update id="updatePopularStateToN">
 		<![CDATA[
-			UPDATE "RECIPE_BOARD" B
-			SET POPULAR_CHECK = 'N'
-			WHERE B.BOARD_NO NOT IN (
-  				SELECT BOARD_NO
-  				FROM "RECIPE_BOARD" B2
-  				WHERE B2.READ_COUNT >= 20
-    			AND MONTHS_BETWEEN(SYSDATE, B2.BOARD_CREATE_DATE) <= 1
-    			AND (
-					SELECT COUNT(*)
-					FROM "RECIPE_BOARD_LIKE" L
-				WHERE L.BOARD_NO = B2.BOARD_NO
-				) >= 0
-			)
+			 UPDATE RECIPE_BOARD
+    SET POPULAR_CHECK = 'N'
+    WHERE BOARD_NO NOT IN (
+      SELECT BOARD_NO
+      FROM (
+        SELECT B.BOARD_NO
+        FROM RECIPE_BOARD B
+        WHERE B.READ_COUNT >= 20
+          AND MONTHS_BETWEEN(SYSDATE, B.BOARD_CREATE_DATE) <= 1
+          AND (
+            SELECT COUNT(*)
+            FROM RECIPE_BOARD_LIKE L
+            WHERE L.BOARD_NO = B.BOARD_NO
+          ) >= 10
+      )
+    )
 	  	]]>
 	</update>
 

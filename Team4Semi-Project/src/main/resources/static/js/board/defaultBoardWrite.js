@@ -68,19 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 제출 시점에 내용 검사
   form.addEventListener("submit", function (e) {
-    const editor = $("#summernote").next(".note-editor");
-    const editable = editor.find(".note-editable");
-
-    // 모든 이미지 태그에 onerror 속성 넣기
-    editable.find("img").each(function () {
-      $(this).attr("onerror", "this.onerror=null; this.src='/images/lemona-logo.png';");
-    });
-
-    // 수정된 HTML을 다시 summernote에 반영
-    const updatedHtml = editable.html();
-    $("#summernote").summernote("code", updatedHtml);
-
-
     // 바이트 길이 검사
     const content = $("#summernote").summernote("code").trim();
     // html 태그 제거 후 내용만 가져오기

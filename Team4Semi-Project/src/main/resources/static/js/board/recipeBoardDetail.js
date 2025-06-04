@@ -74,21 +74,30 @@ const deleteBtn = document.querySelector("#deleteBtn");
 // 삭제 버튼 존재 시
 if (deleteBtn != null) {
 
-  deleteBtn.addEventListener("click", () => {
-    if (!confirm("삭제하시겠습니까?")) {
-      return;
-    }
+	deleteBtn.addEventListener("click", () => {
+	    if (!confirm("삭제하시겠습니까?")) {
+	      return;
+	    }
 
-    // 현재 : /board/1/2004?cp=1
-    // 목표 : /board/1/2004/delete?cp=1
-    const url = location.pathname + "/delete";
-    console.log(url);
-    const queryString = location.search;
+		const pathname = window.location.pathname;
+		const segments = pathname.split("/");
+		const categoryNo = segments[3];
+		const memberNo = segments[4];
 
-    location.href = url + queryString;
-
-  });
-}
+		  
+	    // 현재 : /board/1/2004?cp=1
+	    // 목표 : /board/1/2004/delete?cp=1
+	    const url = pathname + "/delete";
+	    console.log(url);
+	    const queryString = location.search;
+	   
+		if(categoryNo == 'userProfile'){
+		    location.href = `/board/1/0/${memberNo}/delete?cp=${cp}`;
+		    return;
+		  } 
+		  location.href = url + queryString;
+	  });
+	}
 
 // 수정하기
 const updateBtn = document.querySelector("#updateBtn");
@@ -104,7 +113,8 @@ if (updateBtn) {
     const categoryNo = segments[3];
 
     // 수정 페이지로
-    location.href = `/board/1/${categoryNo}/${boardNo}/update`;
+    //location.href = `/board/1/${categoryNo}/${boardNo}/update`;
+    location.href = `/board/1/0/${boardNo}/update`;
   })
 }
 

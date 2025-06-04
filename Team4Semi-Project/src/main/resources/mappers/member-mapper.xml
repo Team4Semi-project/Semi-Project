@@ -4,7 +4,7 @@
 
 	<!-- 로그인(조회) -->
 	<select id="login" resultType="Member">
-		SELECT MEMBER_NO, MEMBER_EMAIL,
+		SELECT MEMBER_NO, MEMBER_EMAIL, PROFILE_IMG,
 		MEMBER_NICKNAME, MEMBER_PW
 		FROM "MEMBER"
 		WHERE MEMBER_ID = #{memberID}

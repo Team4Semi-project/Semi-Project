@@ -103,6 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const nickname = memberNickname.value.trim();
+    if (nickname.length < 2 || nickname.length > 10) {
+      alert("닉네임은 2~10글자 사이로 입력해주세요.");
+      memberNickname.focus();
+      return;
+    }
+
     submitBtn.classList.add("loading");
     submitBtn.disabled = true;
 

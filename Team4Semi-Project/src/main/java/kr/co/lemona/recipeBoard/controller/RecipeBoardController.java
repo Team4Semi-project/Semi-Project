@@ -168,6 +168,14 @@ public class RecipeBoardController {
 		model.addAttribute("categoryNo", categoryNo);
 		model.addAttribute("key", key);
 		model.addAttribute("sort", sort);
+		
+		if(categoryNo.equals("0")) {
+			model.addAttribute("currentMenu", "recipe");
+		}
+		
+		if(categoryNo.equals("popular")) {
+			model.addAttribute("currentMenu", "popular");
+		}
 
 		return "board/recipeBoardList";
 	}

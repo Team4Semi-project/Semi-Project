@@ -126,6 +126,14 @@ public class DefaultBoardController {
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("key", key);
 		model.addAttribute("sort", sort);
+		
+		if(boardCode == 2) {
+			model.addAttribute("currentMenu", "free");
+		}
+		
+		if(boardCode == 3) {
+			model.addAttribute("currentMenu", "notice");
+		}
 
 		return "board/boardList";
 	}

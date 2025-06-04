@@ -1,6 +1,15 @@
 <!-- 네비게이션 프래그먼트 -->
 <nav th:fragment="navigation" class="navigation">
 
+  <style>
+
+.menu-item.active > a {
+  color: var(--yellow);  /* active 메뉴는 빨간색 */
+  font-weight: bold; /* 글자 굵게 */
+}
+
+  </style>
+
   <div class="nav-container">
     <ul class="menu-list">
       <li class="menu-item recipe-menu" th:classappend="${currentMenu == 'recipe'} ? 'active' : ''">

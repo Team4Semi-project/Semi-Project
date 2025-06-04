@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,7 +103,8 @@
             margin-right: 20px;
         }
 
-        .edit-profile, .message {
+        .edit-profile,
+        .message {
             background: transparent;
             border: 1px solid #dbdbdb;
             border-radius: 4px;
@@ -354,6 +356,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- 헤더 -->
     <header>
@@ -366,7 +369,6 @@
             <i class="far fa-paper-plane" style="font-size: 22px;"></i>
             <i class="far fa-compass" style="font-size: 22px;"></i>
             <i class="far fa-heart" style="font-size: 22px;"></i>
-            <img src="/api/placeholder/32/32" alt="프로필" style="width: 25px; height: 25px; border-radius: 50%;">
         </div>
     </header>
 
@@ -375,7 +377,7 @@
         <!-- 프로필 헤더 -->
         <div class="profile-header">
             <img src="/images/lemona-logo.png" alt="프로필 사진" class="profile-pic">
-            
+
             <div class="profile-info">
                 <div class="profile-top">
                     <h1 class="username">lemona_0_</h1>
@@ -383,18 +385,19 @@
                     <button class="message">메시지</button>
                     <button class="settings"><i class="fas fa-cog" style="font-size: 22px;"></i></button>
                 </div>
-                
+
                 <div class="profile-stats">
                     <div>게시물 <span>123</span></div>
                     <div>팔로워 <span>1,234</span></div>
                     <div>팔로우 <span>567</span></div>
                 </div>
-                
+
                 <div class="profile-bio">
                     <div class="profile-name">레시피를 모르는 나! 레모나 :)</div>
                     <div>안녕하세요! 레모나입니다.</div>
                     <div>📍 서울, 대한민국</div>
-                    <div>🌐 <a href="http://localhost/" style="color: #00376b; text-decoration: none;">www.lemona.co.kr</a></div>
+                    <div>🌐 <a href="http://localhost/"
+                            style="color: #00376b; text-decoration: none;">www.lemona.co.kr</a></div>
                 </div>
             </div>
         </div>
@@ -607,7 +610,7 @@
     <script>
         // 탭 전환 기능
         document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
+            tab.addEventListener('click', function () {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 // 실제 서비스에서는 여기에 탭 전환 관련 추가 로직이 들어갈 수 있음
@@ -628,4 +631,5 @@
         window.addEventListener('resize', handleResponsive);
     </script>
 </body>
+
 </html>

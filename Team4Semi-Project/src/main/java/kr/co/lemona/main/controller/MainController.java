@@ -1,7 +1,5 @@
 package kr.co.lemona.main.controller;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,20 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import kr.co.lemona.board.model.dto.Board;
 import kr.co.lemona.main.model.service.MainService;
 import kr.co.lemona.member.model.dto.Member;
-import kr.co.lemona.recipeBoard.model.dto.BoardStep;
-import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -48,7 +41,8 @@ public class MainController {
 	public String mainPage(@RequestParam(value = "categoryNo", defaultValue = "0") int categoryNo,
 			@SessionAttribute(value = "loginMember", required = false) Member loginMember,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
-			@RequestParam Map<String, Object> paramMap) {
+			@RequestParam Map<String, Object> paramMap,
+			HttpSession session) {
 
 		// 조회 서비스 호출 후 결과 반환 받기
 		Map<String, Object> popularMap = null;
@@ -71,6 +65,13 @@ public class MainController {
 			map = service.selectRecipeBoardList(dataMap);
 
 		}
+		
+	    String alertMsg = (String) session.getAttribute("alertMsg");
+
+	    if (alertMsg != null) {
+	        model.addAttribute("message", alertMsg);
+	        session.removeAttribute("alertMsg"); // Flash처럼 1회용
+	    }
 
 		// model에 반환 받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));

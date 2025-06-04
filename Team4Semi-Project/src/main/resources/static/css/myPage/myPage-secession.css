@@ -1,29 +1,5 @@
 /* myPage-secession.css - 회원탈퇴 페이지 전용 스타일 */
 
-/* HTML 요소의 기본 크기와 마진, 패딩 제거 */
-html {
-  height: 100%; /* 전체 화면 높이 채우기 */
-  margin: 0; /* 기본 마진 제거 */
-  padding: 0; /* 기본 패딩 제거 */
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
-
-/* 페이지 전체를 감싸고 있는 요소 */
-.content {
-  display: flex;
-  width: 1000px;
-  margin: 0 auto;
-  margin-top: 50px;
-  flex: 1;
-}
-
 /* 페이지 타이틀 아이콘 */
 .myPage-title::before {
   content: "🔒";
@@ -34,7 +10,7 @@ body {
 .warning-message {
   background-color: #fff3cd;
   border: 1px solid #ffeaa7;
-  padding: 15px;
+  padding: 12px 16px;
   border-radius: 4px;
   margin-bottom: 20px;
   display: flex;
@@ -95,6 +71,9 @@ body {
   color: var(--darkgray);
   cursor: pointer;
   margin: 0;
+  height: 48px;
+  width: 100%;
+  border-radius: 8px;
 }
 
 .myPage-submit:hover {
@@ -117,7 +96,7 @@ body {
   width: 100%;
   max-width: 500px;
   padding: 12px 14px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;

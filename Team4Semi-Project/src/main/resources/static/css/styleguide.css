@@ -334,11 +334,6 @@ select {
   font-weight: var(--pre-p-2-font-weight);
 }
 
-.menu-item.active a {
-  color: var(--yellow);
-  font-weight: var(--pre-h-1-font-weight);
-}
-
 .menu-item:hover > a {
   color: var(--yellow);
 }

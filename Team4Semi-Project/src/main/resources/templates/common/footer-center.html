@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/globals.css" />
   <link rel="stylesheet" href="/css/styleguide.css" />
   <link rel="stylesheet" href="/css/main.css" />
 
 
-
-  <title>고객센터 소개</title>
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title>레모나:고객센터 소개</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-50 text-gray-800 font-sans">
   <!-- 헤더 프래그먼트 -->
   <header th:replace="~{common/header :: header}"></header>
@@ -24,43 +26,44 @@
   </header> -->
 
   <!-- 본문 영역 -->
-<main class="max-w-6xl mx-auto mt-10">
-  <!-- 고객센터 소개 타이틀 (배경 라이트그레이) -->
-<section class="bg-yellow-200 text-gray-800 rounded-t-2xl px-6 py-5">
-  <h1 class="text-2xl font-bold flex items-center">
-    <span class="ml-2">고객센터 소개</span>
-  </h1>
-</section>
+  <main class="max-w-6xl mx-auto mt-10">
+    <!-- 고객센터 소개 타이틀 (배경 라이트그레이) -->
+    <section class="bg-yellow-200 text-gray-800 rounded-t-2xl px-6 py-5">
+      <h1 class="text-2xl font-bold flex items-center">
+        <span class="ml-2">고객센터 소개</span>
+      </h1>
+    </section>
 
-  <!-- 카드 스타일 본문 -->
-  <section class="bg-white p-8 rounded-b-2xl shadow-md">
-    <h2 class="text-xl font-semibold mb-4 text-yellow-600">무엇을 도와드릴까요?</h2>
-    <p class="text-gray-700 leading-relaxed mb-6">
-      저희 고객센터는 사용자 여러분의 문의에 신속하고 친절하게 응대해 드리기 위해 항상 노력하고 있습니다.
-      서비스 이용 중 불편한 점이나 궁금한 사항이 있으시면 언제든지 문의해 주세요.
-    </p>
+    <!-- 카드 스타일 본문 -->
+    <section class="bg-white p-8 rounded-b-2xl shadow-md">
+      <h2 class="text-xl font-semibold mb-4 text-yellow-600">무엇을 도와드릴까요?</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        저희 고객센터는 사용자 여러분의 문의에 신속하고 친절하게 응대해 드리기 위해 항상 노력하고 있습니다.
+        서비스 이용 중 불편한 점이나 궁금한 사항이 있으시면 언제든지 문의해 주세요.
+      </p>
 
-    <!-- 문의 방법 -->
-    <div class="mb-6">
-      <h3 class="text-lg font-semibold mb-2 text-yellow-600">문의 방법</h3>
-      <ul class="space-y-2 text-gray-700">
-        <li><span class="font-bold">전화 상담:</span> 1588-0000 (평일 09:00 ~ 18:00)</li>
-        <li><span class="font-bold">이메일 문의:</span> lemona@gmail.com</li>
-      </ul>
-    </div>
+      <!-- 문의 방법 -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2 text-yellow-600">문의 방법</h3>
+        <ul class="space-y-2 text-gray-700">
+          <li><span class="font-bold">전화 상담:</span> 1588-0000 (평일 09:00 ~ 18:00)</li>
+          <li><span class="font-bold">이메일 문의:</span> lemona@gmail.com</li>
+        </ul>
+      </div>
 
-    <!-- 자주 묻는 질문 -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2 text-yellow-600">자주 묻는 질문</h3>
-      <ul class="space-y-2 text-gray-700 list-disc list-inside">
-        <li>내 게시글은 인기게시글이 왜 안될까요?</li>
-        <li>회원 탈퇴는 어떻게 하나요?</li>
-        <li>비밀번호를 잊어버렸어요.</li>
-      </ul>
-      <a href="/board/3" class="inline-block mt-3 text-yellow-500 hover:underline text-sm font-medium">-> 공지사항 보러가기</a>
-    </div>
-  </section>
-</main>
+      <!-- 자주 묻는 질문 -->
+      <div>
+        <h3 class="text-lg font-semibold mb-2 text-yellow-600">자주 묻는 질문</h3>
+        <ul class="space-y-2 text-gray-700 list-disc list-inside">
+          <li>내 게시글은 인기게시글이 왜 안될까요?</li>
+          <li>회원 탈퇴는 어떻게 하나요?</li>
+          <li>비밀번호를 잊어버렸어요.</li>
+        </ul>
+        <a href="/board/3" class="inline-block mt-3 text-yellow-500 hover:underline text-sm font-medium">-> 공지사항
+          보러가기</a>
+      </div>
+    </section>
+  </main>
 
 
   <!-- 푸터 프래그먼트 -->
@@ -68,4 +71,5 @@
   <th:block th:replace="~{common/header :: search-header-js}"></th:block>
 
 </body>
+
 </html>

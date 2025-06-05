@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEMONA - 게시글 보기</title>
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title>레모나:레시피를 모르는 나</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -61,8 +62,8 @@
         <!-- 게시글 작성자라면 수정, 삭제 버튼 보임-->
         <div class="button-container">
           <th:block th:if="${board.memberNo == session.loginMember?.memberNo}">
-            <button class="updateBtn">수정 버튼</button>
-            <button class="deleteBtn">삭제 버튼</button>
+            <button class="updateBtn">수정하기</button>
+            <button class="deleteBtn">삭제하기</button>
           </th:block>
         </div>
       </div>

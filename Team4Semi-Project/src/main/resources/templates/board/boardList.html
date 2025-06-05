@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">레모나</title>
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title>레모나:레시피를 모르는 나</title>
   <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
   <th:block th:replace="~{common/common}"></th:block>
 
@@ -89,7 +90,8 @@
                       <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                         th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                         th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
-                      <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
+                      <span class="author-name" th:utext="${board.memberNickname}"
+                        th:data-nickname="${board.memberNickname}">장미애 님</span>
                       <!-- 작성일 -->
                       <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                     </div>
@@ -98,9 +100,9 @@
                   <!-- 좋아요/조회수 -->
                   <div class="recipe-stats non-href">
                     <!-- 좋아요 -->
-                    <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
-                      th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
-                      th:data-like-check="${board.likeCheck}"
+                    <button type="button" class="likes" th:if="${boardCode != 3}"
+                      th:data-login-member-no="${session.loginMember?.memberNo}" th:data-board-code="${board.boardCode}"
+                      th:data-board-no="${board.boardNo}" th:data-like-check="${board.likeCheck}"
                       th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
                       <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
                       <span th:text="${board.likeCount}">28</span>
@@ -144,7 +146,8 @@
                       <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                         th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                         th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
-                      <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
+                      <span class="author-name" th:utext="${board.memberNickname}"
+                        th:data-nickname="${board.memberNickname}">장미애 님</span>
                       <!-- 작성일 -->
                       <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                     </div>
@@ -153,9 +156,9 @@
                   <!-- 좋아요/조회수 -->
                   <div class="recipe-stats non-href">
                     <!-- 좋아요 -->
-                    <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
-                      th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
-                      th:data-like-check="${board.likeCheck}"
+                    <button type="button" class="likes" th:if="${boardCode != 3}"
+                      th:data-login-member-no="${session.loginMember?.memberNo}" th:data-board-code="${board.boardCode}"
+                      th:data-board-no="${board.boardNo}" th:data-like-check="${board.likeCheck}"
                       th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
                       <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
                       <span th:text="${board.likeCount}">28</span>
@@ -211,15 +214,16 @@
                     <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                       th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                       th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
-                    <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
+                    <span class="author-name" th:utext="${board.memberNickname}"
+                      th:data-nickname="${board.memberNickname}">장미애 님</span>
                     <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                   </div>
 
                   <!-- 좋아요 / 조회수 -->
                   <div class="recipe-stats non-href">
-                    <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
-                      th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
-                      th:data-like-check="${board.likeCheck}"
+                    <button type="button" class="likes" th:if="${boardCode != 3}"
+                      th:data-login-member-no="${session.loginMember?.memberNo}" th:data-board-code="${board.boardCode}"
+                      th:data-board-no="${board.boardNo}" th:data-like-check="${board.likeCheck}"
                       th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
                       <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
                       <span th:text="${board.likeCount}">28</span>
@@ -259,15 +263,16 @@
                     <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                       th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                       th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
-                    <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
+                    <span class="author-name" th:utext="${board.memberNickname}"
+                      th:data-nickname="${board.memberNickname}">장미애 님</span>
                     <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                   </div>
 
                   <!-- 좋아요 / 조회수 -->
                   <div class="recipe-stats non-href">
-                    <button type="button" class="likes" th:if="${boardCode != 3}" th:data-login-member-no="${session.loginMember?.memberNo}"
-                      th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
-                      th:data-like-check="${board.likeCheck}"
+                    <button type="button" class="likes" th:if="${boardCode != 3}"
+                      th:data-login-member-no="${session.loginMember?.memberNo}" th:data-board-code="${board.boardCode}"
+                      th:data-board-no="${board.boardNo}" th:data-like-check="${board.likeCheck}"
                       th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
                       <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
                       <span th:text="${board.likeCount}">28</span>
@@ -313,7 +318,8 @@
 
             <!-- 보고있지 않은 페이지 -->
             <li th:unless="${i} == *{currentPage} or ${i} == 0">
-              <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})} + '&sort=' +  ${sort}" th:text="${i}">이동할 페이지</a>
+              <a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=${i})} + '&sort=' +  ${sort}"
+                th:text="${i}">이동할 페이지</a>
             </li>
           </th:block>
 

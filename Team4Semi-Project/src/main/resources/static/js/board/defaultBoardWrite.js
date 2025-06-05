@@ -35,6 +35,15 @@ document.addEventListener("DOMContentLoaded", () => {
           defaultUploadImage(files[i]);
         }
       },
+      // 텍스트만 붙여넣기
+      onPaste: function (e) {
+        e.preventDefault();
+
+        const clipboardData = (e.originalEvent || e).clipboardData;
+        const text = clipboardData.getData("text/plain");
+
+        document.execCommand("insertText", false, text);
+      }
     },
   });
 

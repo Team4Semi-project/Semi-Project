@@ -392,5 +392,11 @@
         });
       });
     });
+
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        location.reload(); // → 서버에서 Thymeleaf로 다시 렌더링된 HTML 받음
+      }
+    });
   </script>
 </th:block>

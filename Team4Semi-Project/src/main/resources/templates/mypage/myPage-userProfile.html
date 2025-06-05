@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title th:text="${member.memberNickname} + '님의 마이페이지'">
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title th:text="'레모나:' + ${member.memberNickname} + '님의 마이페이지'">
     LEMONA - 마이페이지
   </title>
   <th:block th:replace="~{common/common}"></th:block>
@@ -48,7 +49,7 @@
     </div>
 
     <!-- 탭 섹션 -->
-    <nav class="tabs"  th:data-nickname="${member.memberNickname}">
+    <nav class="tabs" th:data-nickname="${member.memberNickname}">
       <!-- <a href="/mypage/userProfile" id="postsTab" class="tab active" th:text="|${member.memberNickname}님이 쓴 레시피|">내가 쓴
         레시피</a>
       <a href="/mypage/like" id="lemonaTab" class="tab" th:text="|${member.memberNickname}님이 쓴 게시글|">내가 쓴 게시글</a> -->
@@ -90,8 +91,8 @@ data-nickname=${member.memberNickname}"></div>
         recipeTab.classList.add('active');
         postTab.classList.remove('active');
         //recipeContent.style.display = 'block';
-       // postContent.style.display = 'none';
-        location.href = '/mypage/userProfile?type=recipe&memberNickname='+nickname;
+        // postContent.style.display = 'none';
+        location.href = '/mypage/userProfile?type=recipe&memberNickname=' + nickname;
       });
 
       postTab.addEventListener('click', function (e) {
@@ -100,7 +101,7 @@ data-nickname=${member.memberNickname}"></div>
         recipeTab.classList.remove('active');
         //postContent.style.display = 'block';
         //recipeContent.style.display = 'none';
-        location.href = '/mypage/userProfile?type=post&memberNickname='+nickname;
+        location.href = '/mypage/userProfile?type=post&memberNickname=' + nickname;
       });
     });
   </script>

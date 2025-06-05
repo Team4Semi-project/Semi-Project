@@ -7,6 +7,8 @@
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
   <link rel="stylesheet" href="/css/main.css" />
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title>레모나:레시피를 모르는 나</title>
 </head>
 
 <body>
@@ -73,7 +75,8 @@
                       <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                         th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                         th:data-nickname="${board.memberNickname}" alt="레시피 이미지" />
-                      <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">김아가 님</span>
+                      <span class="author-name" th:utext="${board.memberNickname}"
+                        th:data-nickname="${board.memberNickname}">김아가 님</span>
                     </div>
                     <!-- 작성일 -->
                     <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
@@ -154,7 +157,8 @@
                     <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
                       th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
                       th:data-nickname="${board.memberNickname}" alt="레시피 이미지" />
-                    <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">김아가 님</span>
+                    <span class="author-name" th:utext="${board.memberNickname}"
+                      th:data-nickname="${board.memberNickname}">김아가 님</span>
                     <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
                   </div>
 

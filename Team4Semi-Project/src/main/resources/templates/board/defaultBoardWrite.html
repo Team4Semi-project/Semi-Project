@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEMONA - 글 작성하기</title>
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title>레모나:글 작성</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,8 +36,8 @@
     <form id="postForm" method="post"
       th:action=" @{${board != null ? '/editBoard/' + board.boardCode + '/' + board.boardNo + '/update' : '/editBoard/2/insert'}} ">
       <!-- 제목 -->
-      <input type="text" maxlength="40" name="boardTitle" th:value="${board?.boardTitle}" class="title-input" placeholder="글 제목을 입력해주세요"
-        required>
+      <input type="text" maxlength="40" name="boardTitle" th:value="${board?.boardTitle}" class="title-input"
+        placeholder="글 제목을 입력해주세요" required>
 
       <!-- 서머노트(내용) -->
       <textarea id="summernote" name="boardContent" th:text="${board?.boardContent}"></textarea>

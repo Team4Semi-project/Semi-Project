@@ -133,7 +133,6 @@ public class MyPageController {
 			// map 에서 값 꺼내오기
 			Member member = (Member) recipeMap.get("member");
 
-			log.info("조회가 되긴해~~~~~~~~~~~~~~~~~~");
 			model.addAttribute("member", member);
 
 			// 레시피 게시판 글 model에 담아서 보냄
@@ -357,7 +356,7 @@ public class MyPageController {
 		} else {
 			// 변경 실패 시
 			message = "현재 비밀번호가 일치하지 않습니다.";
-			path = "/myPage/changePw";
+			path = "/mypage/changePw";
 		}
 
 		ra.addFlashAttribute("message", message);

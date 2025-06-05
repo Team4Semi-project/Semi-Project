@@ -74,11 +74,11 @@
       <p>등록된 게시글이 없습니다.</p>
     </div>
     <!-- 게시글 목록 -->
-    <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list">
+    <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list" style="margin: 0;">
       <div th:each="board : ${boardList}" class="recipe-item"
         th:data-url="@{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${defaultPagination.currentPage})}">
-        <div class="recipe-image">
 
+        <div class="recipe-image">
           <!-- 자유 또는 공지 게시판 썸네일 -->
           <img th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
             alt="게시판 이미지">

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
@@ -116,6 +118,21 @@ public class MainServiceImpl implements MainService {
 	                         .map(String::trim)
 	                         .collect(Collectors.toList());
 					 recipeBoard.setHashTagList(tagList);
+				}
+			}
+			// 썸네일 추출 추가
+			for (Board board : searchAllBoardList) {
+				// 글 내용만 가져옴
+				String content = board.getBoardContent();
+				if (content != null) {
+					// 글 내용에서 img 태그의 src 속성 값을 추출하는 정규식을 Patter에 정의
+					// 그 정규식으로 matcher 객체 생성
+					Matcher matcher = Pattern.compile("<img[^>]+src=[\"']([^\"']+)[\"']").matcher(content);
+					// matcher에서 패턴에 정의 된 정규식에 맞는 첫번째 문자열을 찾음
+					if (matcher.find()) {
+						// 문자열을 board의 thumbnail에 세팅 // 0 : img src 태그 전체
+						board.setThumbnail(matcher.group(1)); // 1 : "또는'이 나오기 전까지의 모든 문자(첫번째 ()의 내용인 [^\"']+)
+					}
 				}
 			}
 

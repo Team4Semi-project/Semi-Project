@@ -1,0 +1,454 @@
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #333;
+}
+
+/* Main content container */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* 썸네일 */
+.recipe-thumbnail {
+  width: 100%; /* 부모의 width 설정 */
+  height: 300px; /* 필요한 높이 설정!! */
+  overflow: hidden; /* 넘치는 이미지 잘라내기!!!!! */
+  position: relative;
+}
+
+.recipe-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 비율 맞추고 넘치는 부분 잘라냄!!!! */
+  display: block;
+}
+
+/* Recipe header section */
+.recipe-header {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.write-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.write-info > * {
+  display: flex;
+  align-items: center;
+  padding: 8px 20px;
+}
+
+.recipe-info {
+  height: 100%;
+  border-left: 1px solid var(--lightgray);
+  padding: 8px 20px;
+}
+
+.recipe-title {
+  font-family: var(--pre-h-2-font-family);
+  font-size: var(--pre-h-2-font-size);
+  font-weight: var(--pre-h-2-font-weight);
+}
+
+.recipe-date {
+  color: #888;
+
+  font-family: var(--pre-p-1-font-family);
+  font-size: var(--pre-p-1-font-size);
+  font-weight: var(--pre-p-1-font-weight);
+}
+
+.recipe-stats {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* 좋아요/조회수 기능 */
+.likes,
+.views {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  font-size: var(--pre-p-1-font-size);
+  color: var(--darkgray);
+
+  width: 86px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+.likes i {
+  font-size: 20px;
+  color: var(--yellow);
+}
+
+.likes {
+  border: 1px solid var(--yellow);
+}
+
+.likes span {
+  color: var(--darkgray);
+}
+
+.likes span,
+.views span {
+  font-size: var(--pre-p-2-font-size);
+  font-family: var(--pre-p-2-font-family);
+  font-weight: var(--pre-p-2-font-size);
+
+  width: 24px;
+  text-align: center;
+}
+
+.views i {
+  color: var(--deepgray);
+  font-size: 20px;
+}
+
+/* Author section */
+.author-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 12px;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.author-name {
+  font-weight: 500;
+}
+
+.author-name:hover,
+.author-image:hover {
+  cursor: pointer;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #ffd21e;
+}
+
+/* 버튼 스타일 */
+#updateBtn,
+#deleteBtn {
+  background-color: var(--lemon);
+  color: var(--darkgray);
+  border: none;
+  border-radius: 30px;
+  padding: 8px 24px;
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-2-weight);
+  font-family: var(--ryu-p-2-font-family);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: var(--SHADOW);
+}
+
+#updateBtn:hover,
+#deleteBtn:hover {
+  background-color: var(--yellow);
+}
+
+/* Recipe steps */
+.recipe-steps {
+  margin-bottom: 30px;
+}
+
+.recipe-step {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.step-number {
+  margin-right: 20px;
+}
+
+.step-number > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  color: #333;
+  font-weight: bold;
+}
+
+.step-number > img {
+  position: absolute;
+  z-index: -1;
+
+  top: 23px;
+  left: 25px;
+  width: 52px;
+  height: 52px;
+}
+
+.step-content {
+  flex: 1;
+  padding: 30px;
+
+  display: inline-flex;
+  position: relative;
+
+  font-family: var(--ryu-p-2-font-family);
+  font-size: var(--ryu-p-2-font-size);
+  font-weight: var(--ryu-p-2-font-weight);
+}
+
+.step-content p {
+  font-family: var(--ryu-p-2-font-family);
+  font-size: 24px;
+  font-weight: var(--ryu-p-2-font-weight);
+}
+
+.step-image {
+  flex: 0 0 240px;
+  height: 240px;
+  overflow: hidden;
+}
+
+.step-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Navigation section */
+.navi {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.nav-button {
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  flex: 0 0 32.5%;
+  /* flex: 1; */
+  text-align: center;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-button .text {
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-3-font-weight);
+  font-family: var(--ryu-p-3-font-family);
+}
+
+.nav-button:hover {
+  background-color: #ffd21e;
+}
+
+/* Comments section */
+.comments-section {
+  margin-bottom: 50px;
+}
+
+.comments-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.comments-count {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.comment-form {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.comment-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  resize: none;
+}
+
+.comment-submit {
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  float: right;
+}
+
+.comment-submit:hover {
+  background-color: #ffd21e;
+}
+
+/* Individual comment */
+.comment {
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+  margin-bottom: 15px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.comment-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.comment-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.comment-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comment-date {
+  color: #888;
+  font-size: 12px;
+}
+
+.comment-body {
+  margin-bottom: 10px;
+}
+
+.comment-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-like {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.comment-reply {
+  color: #ffde59;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* 해시태그 */
+.recipe-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.tag {
+  font-size: var(--pre-p-1-font-size);
+  color: var(--brown);
+  background-color: var(--lightyellow);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .recipe-step {
+    flex-direction: column;
+  }
+
+  .step-image {
+    flex: 0 0 100%;
+    height: 200px;
+  }
+
+  .navigation {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-button {
+    margin: 5px 0;
+  }
+}

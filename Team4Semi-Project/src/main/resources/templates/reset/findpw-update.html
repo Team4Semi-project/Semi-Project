@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LEMONA - 비밀번호 재설정</title>
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/find-pw.css" />
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="header">
+      <div class="logo-container">
+        <a href="/" class="logo-link">
+          <img src="/images/lemona-logo.png" alt="LEMONA 로고" class="logo" />
+          <h1 class="brand-name"></h1>
+        </a>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <a href="/findid" id="findIdTab" class="tab">아이디 찾기</a>
+      <a href="/findpw" id="findPwTab" class="tab active">비밀번호 찾기</a>
+    </nav>
+
+    <main>
+      <div class="find-box">
+        <h2>비밀번호 재설정</h2>
+        <form action="updatepassword" id="updatePwForm" method="post">
+          <input type="hidden" id="userId" name="userId" th:value="${memberId}" />
+
+          <div class="form-group">
+            <input type="password" id="newPw" name="newPw" placeholder="새 비밀번호 입력" required />
+          </div>
+          <div class="form-group">
+            <input type="password" id="confirmPw" name="confirmPw" placeholder="새 비밀번호 확인" required />
+          </div>
+          <div class="bottom-buttons">
+            <button type="submit" class="find-pw-btn">비밀번호 변경</button>
+          </div>
+        </form>
+
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+        <div th:if="${success}" class="success-message" th:text="${success}"></div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+
+  <script src="/js/reset/reset-pw.js"></script>
+
+  <script th:inline="javascript">
+    const message =  /*[[${message}]]*/ "전달 받은 message";
+
+    if (message != null) alert(message);
+  </script>
+</body>
+
+</html>

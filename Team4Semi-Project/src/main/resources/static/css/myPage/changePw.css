@@ -1,0 +1,252 @@
+/* myPage-changePw.css - 비밀번호 변경 페이지 전용 스타일 */
+
+/* 페이지 타이틀 아이콘 */
+.myPage-title::before {
+  font-size: 18px;
+}
+
+/* 폼 행 스타일 */
+.myPage-row {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.myPage-row label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.myPage-row input[type="password"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fafafa;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.myPage-row input[type="password"]:focus {
+  outline: none;
+  border-color: #ffeb3b;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 235, 59, 0.2);
+}
+
+/* 에러 메시지 스타일 */
+.error-message {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #d32f2f;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.error-message.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* 입력 필드 에러 상태 */
+.myPage-row input.error {
+  border-color: #d32f2f;
+  background-color: #ffeaea;
+}
+
+.myPage-row input.error:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2);
+}
+
+/* 입력 필드 성공 상태 */
+.myPage-row input.success {
+  border-color: #4caf50;
+  background-color: #f1f8e9;
+}
+
+.myPage-row input.success:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+  display: flex;
+  gap: 15px;
+  margin-top: 40px;
+  justify-content: flex-end;
+}
+
+/* 취소 버튼 */
+.cancel-btn {
+  background-color: #f5f5f5;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 12px 25px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+/* 변경하기 버튼 (기본 myPage-submit 스타일 재정의) */
+.myPage-submit {
+  background-color: #ffeb3b;
+  color: #333;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  min-width: 100px;
+}
+
+.myPage-submit:hover {
+  background-color: #fdd835;
+}
+
+.myPage-submit:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* 비밀번호 강도 표시 */
+.password-strength {
+  margin-top: 5px;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.password-strength.show {
+  opacity: 1;
+}
+
+.password-strength-bar {
+  height: 100%;
+  width: 0%;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.password-strength-bar.weak {
+  width: 33%;
+  background-color: #f44336;
+}
+
+.password-strength-bar.medium {
+  width: 66%;
+  background-color: #ff9800;
+}
+
+.password-strength-bar.strong {
+  width: 100%;
+  background-color: #4caf50;
+}
+
+/* 비밀번호 규칙 안내 */
+.password-rules {
+  margin-top: 10px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border-left: 4px solid #ffeb3b;
+  font-size: 13px;
+  color: #666;
+  display: none;
+}
+
+.password-rules.show {
+  display: block;
+}
+
+.password-rules h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.password-rules ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.password-rules li {
+  margin-bottom: 3px;
+  line-height: 1.4;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .myPage-row input[type="password"] {
+    max-width: 100%;
+  }
+
+  .button-container {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .cancel-btn,
+  .myPage-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 접근성 개선 */
+.myPage-row input[type="password"]:focus {
+  outline: 2px solid transparent;
+}
+
+.cancel-btn:focus,
+.myPage-submit:focus {
+  outline: 2px solid #ffeb3b;
+  outline-offset: 2px;
+}
+
+/* 로딩 상태 */
+.myPage-submit.loading {
+  position: relative;
+  color: transparent;
+}
+
+.myPage-submit.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid #333;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

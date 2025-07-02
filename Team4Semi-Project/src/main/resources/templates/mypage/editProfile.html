@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title>레모나:프로필 수정</title>
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/myPage/editProfile-style.css">
+  <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
+</head>
+
+<body>
+  <!-- 헤더 프래그먼트 -->
+  <th:block th:replace="~{common/header}"></th:block>
+
+  <section class="myPage-content">
+    <!-- 사이드 메뉴 프래그먼트 -->
+    <th:block th:replace="~{myPage/sideMenu}"></th:block>
+
+    <section class="myPage-main">
+      <div class="profile-header">
+        <h1 class="my-page-title">프로필 수정</h1>
+        <div class="profile-image">
+          <img id="profileImagePreview" th:src="${member.profileImg != null ? member.profileImg : '/images/user.PNG'}"
+            alt="Profile Image" class="profile-img" />
+          <button type="button" class="remove-image-btn" onclick="() => removeProfileImage()">
+            <span class="material-symbols-outlined">
+              close
+            </span>
+          </button>
+          <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+          <div class="image-buttons">
+            <button type="button" class="image-btn" onclick="document.getElementById('profileImageInput').click()">이미지
+              선택</button>
+            <button type="button" class="image-btn primary" id="uploadImageBtn">수정하기</button>
+          </div>
+        </div>
+      </div>
+
+      <form action="/mypage/editProfile" method="POST" id="editProfileForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="memberId">아이디</label>
+          <input type="text" id="memberId" name="memberId" th:value="${member.memberId}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="memberEmail">이메일</label>
+          <input type="email" id="memberEmail" name="memberEmail" th:value="${member.memberEmail}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="memberName">이름</label>
+          <input type="text" id="memberName" name="memberName" th:value="${member.memberName}" required>
+        </div>
+        <div class="form-group">
+          <label for="memberNickname">닉네임</label>
+          <input type="text" id="memberNickname" name="memberNickname" th:value="${member.memberNickname}" required>
+        </div>
+        <div class="button-group">
+          <button type="button" class="cancel-btn" onclick="window.location.href='/mypage/editProfile'">취소하기</button>
+          <button type="submit" class="submit-btn">변경하기</button>
+        </div>
+      </form>
+    </section>
+  </section>
+
+  <th:block th:replace="~{common/footer}"></th:block>
+
+  <script src="/js/myPage/editProfile.js"></script>
+</body>
+
+</html>

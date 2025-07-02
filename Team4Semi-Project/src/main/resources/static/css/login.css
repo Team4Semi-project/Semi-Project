@@ -1,0 +1,162 @@
+/* HTML 요소의 기본 크기와 마진, 패딩 제거 */
+html {
+  height: 100%; /* 전체 화면 높이 채우기 */
+  margin: 0; /* 기본 마진 제거 */
+  padding: 0; /* 기본 패딩 제거 */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ===== 레이아웃 구성 ===== */
+
+/* 전체를 감싸는 컨테이너 */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1; /* 화면 전체 높이를 최소로 설정 */
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* 로고 링크 */
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 로고 컨테이너 */
+.logo-container {
+  text-align: center;
+  margin-top: 40px;
+  transition: transform 0.2s ease;
+}
+
+.logo-container:hover {
+  transform: scale(1.05);
+}
+
+/* 로고 이미지 */
+.logo-img {
+  width: 180px;
+  height: auto;
+  cursor: pointer;
+  display: block;
+}
+
+/* 브랜드 이름 */
+.brand-name {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-top: 10px;
+}
+
+/* 로그인 박스 */
+.login-box {
+  padding: 40px 30px;
+  border: 5px solid #fff9e4;
+  border-radius: 15px;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 650px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* 로그인 제목 */
+.login-header {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 입력 필드 */
+.input-field {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff9e4;
+  box-sizing: border-box;
+}
+
+/* 에러 메시지 */
+.error-message {
+  color: red;
+  font-size: 13px;
+  margin-bottom: 12px;
+  display: none;
+}
+
+/* 버튼 그룹 */
+.button-group {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* 왼쪽 버튼 - 회원가입 */
+.btn-sub {
+  background-color: white;
+  border: 1px solid #ffd634;
+  border-right: none; /* 오른쪽 테두리 제거 */
+  color: #313131;
+  padding: 10px 16px;
+  border-radius: 8px 0 0 8px;
+  cursor: pointer;
+  flex: 1;
+  font-weight: bold;
+}
+
+/* 오른쪽 버튼 - 로그인 */
+.btn-main {
+  background-color: #ffd634;
+  border: 1px solid #ffcc00;
+  color: #313131;
+  padding: 10px 16px;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  flex: 1;
+  font-weight: bold;
+}
+
+/* 아이디/비번 찾기 링크 */
+.find-links {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.find-links a {
+  margin: 0 100px;
+  font-size: 13px;
+  color: #eeb604;
+  text-decoration: none;
+}
+
+/* 푸터 */
+.footer {
+  margin-top: auto;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.footer-links span {
+  margin: 0 10px;
+}

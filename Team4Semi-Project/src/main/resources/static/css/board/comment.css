@@ -1,0 +1,210 @@
+/* 댓글 영역을 게시판 본문처럼 중앙 정렬, 폭 60% */
+#commentArea {
+  width: 100%;
+  padding: 0 80px;
+  margin: 0 auto;
+}
+
+/* 댓글 수 영역 */
+.comment-count-area {
+  font-family: var(--pre-h-2-font-family);
+  font-weight: var(--pre-h-2-font-weight);
+  font-size: var(--pre-h-2-font-size);
+}
+
+/* 댓글 입력 영역 */
+.comment-write-area {
+  display: flex;
+  flex: 1 1 1;
+  justify-content: center;
+  align-items: stretch;
+  margin: 30px 0;
+  gap: 12px;
+}
+
+.comment-write-area > textarea {
+  flex: 1 1 0;
+  resize: none;
+  padding: 12px 20px 16px 20px;
+  border: none;
+  border-bottom: 2px solid #e5e5e5;
+  /* border-radius: 8px; */
+}
+
+#addComment {
+  flex: 1 0 1;
+  border: none;
+  border-radius: 830px;
+  padding: 8px 24px;
+  height: 40px;
+
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: var(--SHADOW);
+  background-color: var(--lemon);
+
+  color: var(--darkgray);
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-2-weight);
+  font-family: var(--ryu-p-2-font-family);
+}
+
+.comment-write-area > button:hover {
+  background-color: var(--yellow);
+}
+
+/* 댓글 목록 영역 */
+.comment-list-area {
+  width: 100%;
+}
+
+/* 댓글 한 줄(카드형) */
+.comment-row {
+  display: block;
+  background: #fff;
+  border-radius: 25px 0 25px 0;
+  box-shadow: inset 0 0 0 0.2px var(--lightgray),
+    /* 0.5px로 얇은 회색 테두리 효과 */ inset 0 0 0 2px var(--milk),
+    /* 안쪽 milk 테두리 */ var(--SHADOW); /* 바깥쪽 연한 그림자 */
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+/* 대댓글 */
+.child-comment {
+  margin-left: 50px;
+  background: var(--white);
+}
+
+/* 댓글 상단(프로필, 작성자, 날짜, 좋아요) */
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 작성자 정보 */
+.comment-writer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.comment-writer > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e5e5e5;
+}
+
+.profileImg:hover, .nickname:hover {
+  cursor: pointer;
+}
+
+.comment-writer > span {
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.comment-date {
+  font-size: 0.8em;
+  color: var(--gray);
+  margin-left: 10px;
+}
+
+/* 댓글 내용 */
+.comment-content {
+  margin: 10px 50px 50px 50px;
+  white-space: pre-wrap;
+}
+
+/* 좋아요/조회수 기능 롤백 */
+.commentLikes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  font-size: var(--pre-p-1-font-size);
+  color: var(--darkgray);
+
+  width: 86px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+.commentLikes i {
+  font-size: 20px;
+  color: var(--yellow);
+}
+
+.commentLikes {
+  border: 1px solid var(--yellow);
+}
+
+.commentLikes span {
+  color: var(--darkgray);
+}
+
+.commentLikes span,
+.views span {
+  font-size: var(--pre-p-2-font-size);
+  font-family: var(--pre-p-2-font-family);
+  font-weight: var(--pre-p-2-font-size);
+
+  width: 24px;
+  text-align: center;
+}
+
+/* 버튼 영역 (답글, 수정, 삭제) */
+.comment-btn-area {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.comment-btn-area button {
+  border: none;
+  border-radius: 20px;
+  background-color: var(--lemon);
+  color: var(--darkgray);
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: var(--ryu-p-1-font-size);
+  font-family: var(--ryu-p-1-font-family);
+  transition: background-color 0.2s;
+  box-shadow: var(--SHADOW);
+}
+
+.comment-btn-area button:hover {
+  background-color: var(--yellow);
+}
+
+/* 답글, 수정 textarea */
+.update-textarea,
+.commentInsertContent {
+  width: 100%;
+  /* height: 90px; */
+  resize: none;
+  margin-top: 10px;
+  padding: 10px;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+  /* border-radius: 20px; */
+  background: var(--white);
+}
+
+.comment-write-area > textarea:focus,
+.update-textarea:focus,
+.commentInsertContent:focus {
+  outline: none; /* 검은색 테두리 제거 */
+}
+
+.edit-delete-group {
+  width: 174px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

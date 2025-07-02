@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LEMONA - 회원가입</title>
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/register.css}" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <a href="/" class="logo-link">
+                <img th:src="@{/images/lemona-logo.png}" alt="LEMONA Logo" class="logo-img" />
+            </a>
+        </div>
+
+        <div class="register-box">
+            <div class="register-header">회원가입</div>
+            <form id="registerForm" method="post">
+                <!-- 아이디 -->
+                <div class="input-row">
+                    <input type="text" name="memberId" id="memberId" placeholder="아이디를 입력하세요" class="input-field" />
+                    <button type="button" class="btn-sub" id="idCheckBtn">아이디 중복 체크</button>
+                </div>
+                <span id="idCheckMessage" class="message"></span>
+
+                <!-- 이메일 -->
+                <div class="input-row">
+                    <input type="email" name="memberEmail" id="emailId" placeholder="이메일을 입력하세요" class="input-field" />
+                    <button type="button" class="btn-sub" id="sendCodeBtn">인증번호 받기</button>
+                </div>
+                <span id="emailMessage" class="message"></span>
+
+                <!-- 인증번호 -->
+                <div class="input-row">
+                    <input type="text" name="emailCode" id="emailCodeInput" placeholder="인증번호 입력" class="input-field" />
+                    <button type="button" class="btn-sub" id="verifyCodeBtn">인증하기</button>
+                </div>
+                <span id="authCodeMessage" class="message"></span>
+
+                <!-- 비밀번호 입력 -->
+                <!-- <span>영문, 숫자, 특수문자 포함 6~20자</span> -->
+                <input type="password" name="memberPw" placeholder="비밀번호 입력 (영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요)"
+                    class="input-field" id="passwordInput" />
+
+                <!-- 비밀번호 확인 -->
+                <input type="password" name="confirmPassword"
+                    placeholder="비밀번호 확인 (영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요)" class="input-field"
+                    id="confirmPasswordInput" />
+                <span class="message" id="confirmPasswordMessage"></span>
+
+                <!-- 사용자 이름 -->
+                <input type="text" name="memberName" id="memberName" placeholder="사용자 이름" class="input-field" />
+
+                <!-- 닉네임 -->
+                <div class="input-row">
+                    <input type="text" name="memberNickname" id="nicknameInput" placeholder="닉네임" class="input-field" />
+                    <button type="button" class="btn-sub" id="nicknameCheckBtn">닉네임 중복 체크</button>
+                </div>
+                <span id="nicknameMessage" class="message"></span>
+
+                <button type="submit" class="btn-main">회원가입하기</button>
+            </form>
+        </div>
+
+        <!-- 푸터 프래그먼트 -->
+        <footer th:replace="~{common/footer :: footer}"></footer>
+    </div>
+
+    <!-- JS 연결 -->
+    <script th:src="@{/js/register/register.js}" defer onload="console.log('register.js loaded successfully');"
+        onerror="console.error('Failed to load register.js');"></script>
+
+</body>
+
+</html>

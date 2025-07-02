@@ -1,0 +1,22 @@
+<!-- 왼쪽 사이드 메뉴 조각(fragment) -->
+
+<section class="left-side" th:fragment="sideMenu">
+  <div class="menu-header">My Page</div>
+  <ul class="list-group">
+    <li>
+      <a href="/mypage/editProfile" th:classappend="${page} == 'editProfile' ? 'active'">
+        회원정보 수정
+      </a>
+    </li>
+    <li>
+      <a href="/mypage/changePw" th:classappend="${page} == 'changePw' ? 'active'">
+        비밀번호 변경
+      </a>
+    </li>
+    <li>
+      <a href="/mypage/secession" th:classappend="${page} == 'secession' ? 'active'">
+        회원탈퇴
+      </a>
+    </li>
+  </ul>
+</section>

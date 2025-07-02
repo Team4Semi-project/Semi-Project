@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>LEMONA - 아이디 찾기</title>
+
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/find-id.css" />
+  <script src="/js/find-id.js" defer></script>
+  <!-- JS 연결 추가 -->
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="header">
+      <div class="logo-container">
+        <a href="/" class="logo-link">
+          <img src="/images/lemona-logo.png" alt="LEMONA 로고" class="logo" />
+          <h1 class="brand-name"></h1>
+        </a>
+      </div>
+    </header>
+
+    <!-- 상단 아이디찾기 비밀번호 찾기 탭 -->
+    <nav class="tabs">
+      <a href="findid" id="findIdTab" class="tab active">아이디 찾기</a>
+      <a href="findpw" id="findPwTab" class="tab">비밀번호 찾기</a>
+    </nav>
+
+    <main>
+      <div class="find-box">
+        <h2>아이디 찾기</h2>
+        <form id="findIdForm">
+          <input type="text" id="nameInput" placeholder="이름을 입력하세요" required />
+          <input type="email" id="emailInput" placeholder="이메일을 입력하세요" required />
+          <input type="text" id="foundId" placeholder="아이디" readonly />
+
+          <!-- 초기 상태 버튼 -->
+          <div class="bottom-buttons" id="initialButtons">
+            <a href="register" class="join-link whiteBtn" id="registerLink">회원가입</a>
+            <button type="submit" id="findIdButton" class="button">아이디 찾기</button>
+          </div>
+
+          <!-- 결과 버튼 (아이디 찾기 이전에는 숨김) -->
+          <div class="bottom-buttons hide" id="resultButtons">
+            <a href="findpw" class="join-link button" id="findPwLink">비밀번호 찾기</a>
+            <a href="login" class="join-link button" id="loginButton">로그인 하기</a>
+          </div>
+        </form>
+        <p id="idResult" style="display: none; font-weight: bold; margin-top: 10px"></p>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+
+  <!-- JavaScript 연결 -->
+  <script src="/js/findid/find-id.js"></script>
+</body>
+
+</html>

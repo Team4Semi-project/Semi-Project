@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LEMONA - 로그인</title>
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+<!-- login 안에 login -->
+
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <a href="/" class="logo-link">
+        <img src="/images/lemona-logo.png" alt="LEMONA Logo" class="logo-img" />
+        <div class="brand-name"></div>
+      </a>
+    </div>
+
+    <div class="login-box">
+      <div class="login-header">로그인</div>
+      <form id="loginForm" action="/member/login" method="post">
+        <input type="text" class="input-field" id="username" name="memberId" placeholder="아이디를 입력하세요" />
+        <input type="password" class="input-field" id="password" name="memberPw" placeholder="비밀번호를 입력하세요" />
+        <div class="error-message" id="loginError">
+          아이디 또는 비밀번호가 일치하지 않습니다.
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="btn-sub" id="registerBtn">
+            회원가입
+          </button>
+          <button type="submit" class="btn-main">로그인</button>
+        </div>
+      </form>
+
+      <div class="find-links">
+        <a href="/findid" id="findIdBtn">아이디 찾기</a>
+        <a href="/findpw" id="findPwBtn">비밀번호 찾기</a>
+      </div>
+    </div>
+
+    <!-- 푸터 프래그먼트 -->
+    <footer th:replace="~{common/footer :: footer}"></footer>
+    <!-- 로그인 입력 안 하면 X-->
+    <script src="/js/main.js"></script>
+    <script src="/js/login/login.js"></script>
+    <script th:inline="javascript">
+      const message =  /*[[${message}]]*/ "전달 받은 message";
+
+      if (message != null) alert(message);
+    </script>
+</body>
+
+</html>

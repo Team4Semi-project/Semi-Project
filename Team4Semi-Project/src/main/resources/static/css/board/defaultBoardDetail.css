@@ -1,0 +1,311 @@
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #ffffff;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 밑줄 제거, hover 시 파란색 말고 노란색으로 */
+a:hover {
+  text-decoration: none;
+  color: var(--lemon);
+}
+
+/* 전체 섹션 스타일 */
+.board-detail {
+  max-width: 1200px;
+  padding: 0;
+  display: block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  flex: 1;
+}
+
+/* 서머노트 출력 형식 */
+.board-detail .mt-4 img {
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: top;
+}
+
+/* 내용 컨테이너 공통 스타일 */
+.container-inner {
+  max-width: 100%;
+  margin: 0;
+  padding: 0 20px;
+}
+
+/* 제목, 작성일, 조회수 컨테이너 */
+.container-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e5e5e5;
+  width: 100%;
+}
+
+.board-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.board-update {
+  width: 180px;
+  color: #888;
+  font-size: 0.9rem;
+  position: relative;
+  margin: 0 15px;
+  margin-top: 15px;
+}
+
+.board-update::before,
+.board-update::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: 12px;
+  background-color: #ccc;
+  transform: translateY(-50%);
+}
+
+.board-update::before {
+  left: -15px;
+}
+
+.board-update::after {
+  right: -15px;
+}
+
+/* 좋아요 조회수 컨테이너 */
+.text-right {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 좋아요/조회수 기능 */
+.likes,
+.views {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  font-size: var(--pre-p-1-font-size);
+  color: var(--darkgray);
+
+  width: 86px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+.likes i {
+  font-size: 20px;
+  color: var(--yellow);
+}
+
+.likes {
+  border: 1px solid var(--yellow);
+}
+
+.likes span {
+  color: var(--darkgray);
+}
+
+.likes span,
+.views span {
+  font-size: var(--pre-p-2-font-size);
+  font-family: var(--pre-p-2-font-family);
+  font-weight: var(--pre-p-2-font-size);
+
+  width: 24px;
+  text-align: center;
+}
+
+/* 컨테이너 내부 정렬 */
+.container-title .container-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.container-member .container-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.text-right .material-symbols-outlined {
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+/* 작성자 정보 컨테이너 */
+.container-member {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e5e5e5;
+  width: 100%;
+}
+
+.member {
+  display: flex;
+  align-items: center;
+}
+
+.member img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+  border: 1px solid #e5e5e5;
+}
+
+.member span {
+  font-weight: 500;
+}
+
+/* 버튼 스타일 */
+.updateBtn,
+.deleteBtn {
+  background-color: var(--lemon);
+  color: var(--darkgray);
+  border: none;
+  border-radius: 30px;
+  padding: 8px 24px;
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-2-weight);
+  font-family: var(--ryu-p-2-font-family);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: var(--SHADOW);
+}
+
+.updateBtn:hover,
+.deleteBtn:hover {
+  background-color: var(--yellow);
+}
+
+/* 내용 컨테이너 */
+.container-content {
+  min-height: 300px;
+  padding: 30px 0;
+  border-bottom: 1px solid #e5e5e5;
+  line-height: 1.6;
+  width: 100%;
+}
+
+/* 페이지 네비게이션 */
+.container-page {
+  display: flex;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.container-page a {
+background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  flex : 0 0 32.5%;
+  /* flex: 1; */
+  text-align: center;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-page a:hover {
+  background-color: #ffd21e;
+  cursor: pointer;
+}
+
+.container-page a .text {
+  font-size: var(--ryu-p-3-font-size);
+  font-weight: var(--ryu-p-3-font-weight);
+  font-family: var(--ryu-p-3-font-family);
+}
+
+.container-page .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.footer {
+  position: static;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .container-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .text-right {
+    margin-top: 10px;
+  }
+
+  .container-member {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .member {
+    margin-bottom: 10px;
+  }
+
+  .container-page {
+    flex-wrap: wrap;
+  }
+
+  .container-page a {
+    margin: 5px 0;
+  }
+}
+
+/* 글이 영역 뚫고 나가는거 방지 */
+.board-title {
+  word-break: break-all;
+}
+.container-content .mt-4 {
+  word-break: break-all;
+}
+
+/* jpg에도 width 100% 강제 적용 */
+.container-content img {
+  max-width: 100% !important;
+  height: auto !important;
+}

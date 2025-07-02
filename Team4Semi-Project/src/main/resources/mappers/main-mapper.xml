@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.lemona.main.model.mapper.MainMapper">
+
+
+	<!-- 최근 인기 게시글 4개 조회 -->
+	<select id="selectPopularBoardList">
+	<![CDATA[
+	SELECT * FROM (
+	    SELECT 
+	        B.BOARD_NO, 
+	        B.BOARD_TITLE, 
+	        B.READ_COUNT,
+	        M.MEMBER_NICKNAME, 
+	        M.PROFILE_IMG,
+	        
+	        S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+			S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+			
+		    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		    FROM BOARD_HASHTAG BH
+		    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
+		
+	        (SELECT COUNT(*) 
+	         FROM "RECIPE_COMMENT" C 
+	         WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+	    
+	        (SELECT COUNT(*) 
+	         FROM "RECIPE_BOARD_LIKE" L 
+	         WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+	         
+	        CASE 
+		        WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+		        ELSE 0
+		    END AS LIKE_CHECK,
+	    
+	        CASE
+	            WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60
+	            THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+	            
+	            WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24
+	            THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+	            
+	            WHEN SYSDATE - B.BOARD_CREATE_DATE < 1
+	            THEN FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+	            
+	            ELSE TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+	        END AS BOARD_CREATE_DATE
+	    
+	    FROM "RECIPE_BOARD" B
+	    JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
+	    
+	    LEFT JOIN (
+		SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+		FROM BOARD_STEP
+		WHERE THUMBNAIL_CHECK = 'Y'
+		) S ON B.BOARD_NO = S.BOARD_NO
+		
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM RECIPE_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
+	    
+	    WHERE B.BOARD_DEL_FL = 'N'
+		AND B.POPULAR_CHECK = 'Y'
+	    
+		ORDER BY
+		(SELECT COUNT(*)
+		FROM "RECIPE_BOARD_LIKE" L
+		WHERE L.BOARD_NO = B.BOARD_NO) DESC,
+		B.READ_COUNT DESC,
+		B.BOARD_NO DESC
+	)
+	WHERE ROWNUM <= 4
+	]]>
+	</select>
+
+	<!-- 최근 레시피 게시글 4개 조회 -->
+	<select id="selectRecipeBoardList">
+		SELECT *
+		FROM (
+		SELECT
+		B.BOARD_NO,
+		B.BOARD_TITLE,
+		B.READ_COUNT,
+		M.MEMBER_NICKNAME,
+		B.BOARD_CODE,
+		M.PROFILE_IMG,
+
+		(SELECT COUNT(*)
+		FROM
+		RECIPE_COMMENT C
+		WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+
+		(SELECT COUNT(*)
+		FROM RECIPE_BOARD_LIKE L
+		WHERE L.BOARD_NO = B.BOARD_NO)
+		AS LIKE_COUNT,
+		
+		CASE 
+	        WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+	        ELSE 0
+	    END AS LIKE_CHECK,
+
+		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		
+		(SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+		 FROM BOARD_HASHTAG BH
+		 JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+		 WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
+		
+
+		CASE
+		WHEN SYSDATE - B.BOARD_CREATE_DATE &lt; 1 /
+		24 / 60 THEN
+		FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) ||
+		'초 전'
+		WHEN SYSDATE - B.BOARD_CREATE_DATE &lt; 1 / 24 THEN
+		FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+		WHEN SYSDATE
+		- B.BOARD_CREATE_DATE &lt; 1 THEN
+		FLOOR((SYSDATE - B.BOARD_CREATE_DATE)
+		* 24) || '시간 전'
+		ELSE
+		TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+		END AS
+		BOARD_CREATE_DATE
+
+		FROM RECIPE_BOARD B
+		JOIN MEMBER M ON B.MEMBER_NO =
+		M.MEMBER_NO
+
+		LEFT JOIN (
+		SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+		FROM
+		BOARD_STEP
+		WHERE THUMBNAIL_CHECK = 'Y'
+		) S ON B.BOARD_NO = S.BOARD_NO
+		
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM RECIPE_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
+
+		WHERE B.BOARD_DEL_FL = 'N'
+
+		<if test="categoryNo != 0">
+			AND CATEGORY_NO = #{categoryNo}
+		</if>
+
+		ORDER BY B.BOARD_NO DESC
+		)
+		WHERE ROWNUM &lt;= 4
+	</select>
+
+	<!-- 검색 조건이 맞는 게시글 수 (BOARD + RECIPE_BOARD 합산) -->
+	<select id="getSearchCount">
+		SELECT
+		(
+		SELECT COUNT(*)
+		FROM "BOARD"
+		<if test='key == "w"'>
+			JOIN "MEMBER" USING(MEMBER_NO)
+		</if>
+		WHERE BOARD_DEL_FL = 'N'
+		<choose>
+			<when test='key == "t"'>
+				AND BOARD_TITLE LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND BOARD_CONTENT LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				BOARD_TITLE LIKE '%' || #{querys} || '%'
+				OR
+				BOARD_CONTENT LIKE '%' || #{querys} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "h"'>
+			AND 1 = 0
+			</when>
+		</choose>
+		)
+		+
+		(
+		SELECT COUNT(*)
+		FROM "RECIPE_BOARD" B
+
+		<if test='key == "w"'>
+			JOIN "MEMBER" M ON B.MEMBER_NO = M.MEMBER_NO
+		</if>
+
+		<if test='key == "c" or key == "tc"'>
+			LEFT JOIN (
+			SELECT BOARD_NO, LISTAGG(STEP_CONTENT, ' ') WITHIN GROUP (ORDER BY STEP_NO)
+			AS STEP_CONTENTS
+			FROM BOARD_STEP
+			GROUP BY BOARD_NO
+			) STEP ON B.BOARD_NO = STEP.BOARD_NO
+		</if>
+
+		WHERE B.BOARD_DEL_FL = 'N'
+
+		<choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+				OR STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND EXISTS (
+				SELECT 1
+				FROM BOARD_HASHTAG BH
+				JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+				WHERE BH.BOARD_NO = B.BOARD_NO
+				AND HT.TAG_NAME = <![CDATA[ REPLACE(#{querys}, '#', '') ]]>
+				)
+			</when>
+		</choose>
+
+		) AS totalCount
+		FROM DUAL
+	</select>
+
+	<!-- 통합 게시판 검색 결과 조회 (일반 + 레시피) -->
+	<select id="searchAllBoardList">
+		SELECT * FROM (
+
+		<!-- 일반 게시판 -->
+		<!-- SELECT -->
+		SELECT
+		B.BOARD_NO,
+		B.BOARD_TITLE,
+		B.READ_COUNT,
+		M.MEMBER_NICKNAME,
+		B.BOARD_CODE,
+		B.BOARD_CONTENT,
+		M.PROFILE_IMG,
+
+		<!-- 댓글수 -->
+		(SELECT COUNT(*)
+		FROM DEFAULT_COMMENT C
+		WHERE C.BOARD_NO = B.BOARD_NO) AS COMMENT_COUNT,
+
+		<!-- 좋아요수 -->
+		(SELECT COUNT(*)
+		FROM
+		DEFAULT_BOARD_LIKE L
+		WHERE L.BOARD_NO = B.BOARD_NO) AS LIKE_COUNT,
+		
+		<!-- 좋아요 체크 여부 -->
+		CASE 
+		    WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+		    ELSE 0
+		END AS LIKE_CHECK,
+
+		<!-- 썸내일 -->
+		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		
+		NULL AS TAGS,
+
+		B.BOARD_CREATE_DATE AS RAW_DATE,
+
+		<!-- 작성일 -->
+        <![CDATA[
+        CASE
+            WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN 
+                FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+            WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN 
+                FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+            WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN 
+                FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+            ELSE 
+                TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+        END
+        ]]>
+		AS BOARD_CREATE_DATE,
+
+		'DEFAULT' AS BOARD_TYPE
+
+		<!-- FROM -->
+		FROM BOARD B
+		
+		JOIN MEMBER M
+		ON B.MEMBER_NO = M.MEMBER_NO
+
+		<!-- 썸내일 조인-->		
+		LEFT JOIN (
+			SELECT BOARD_NO, IMG_PATH,
+			IMG_RENAME
+			FROM BOARD_STEP
+			WHERE THUMBNAIL_CHECK = 'Y'
+		) S
+		ON ( B.BOARD_NO	= S.BOARD_NO)
+		
+		<!-- 좋아요 조인 -->
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM DEFAULT_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
+		
+		<!-- WHERE -->
+		WHERE B.BOARD_DEL_FL = 'N'
+
+		<choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+				OR
+				B.BOARD_CONTENT LIKE '%' || #{querys} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND 1 = 0
+			</when>
+		</choose>
+
+		UNION ALL
+
+		<!-- 레시피 게시판 -->
+		SELECT
+		B.BOARD_NO,
+		B.BOARD_TITLE,
+		B.READ_COUNT,
+		M.MEMBER_NICKNAME,
+		B.BOARD_CODE,
+		NULL AS BOARD_CONTENT,
+		M.PROFILE_IMG,
+
+		<!-- 댓글수 -->
+		(SELECT COUNT(*)
+		FROM RECIPE_COMMENT C
+		WHERE C.BOARD_NO = B.BOARD_NO)
+		AS COMMENT_COUNT,
+		
+		<!-- 좋아요수 -->
+		(SELECT COUNT(*)
+		FROM RECIPE_BOARD_LIKE L
+		WHERE L.BOARD_NO = B.BOARD_NO)
+		AS LIKE_COUNT,
+		
+		<!-- 좋아요 체크 여부 -->
+		CASE 
+		    WHEN LB.MEMBER_NO IS NOT NULL THEN 1
+		    ELSE 0
+		END AS LIKE_CHECK,
+
+		<!-- 썸내일 -->
+		S.IMG_PATH AS THUMBNAIL_IMG_PATH,
+		S.IMG_RENAME AS THUMBNAIL_IMG_RENAME,
+		
+		<!-- 해시태그 -->
+	    (SELECT LISTAGG(H.TAG_NAME, ', ') WITHIN GROUP (ORDER BY H.TAG_NAME)
+	    FROM BOARD_HASHTAG BH
+	    JOIN HASHTAG H ON BH.TAG_NO = H.TAG_NO
+	    WHERE BH.BOARD_NO = B.BOARD_NO) AS TAGS,
+
+		B.BOARD_CREATE_DATE AS RAW_DATE,
+
+		<!-- 작성일 -->
+	    <![CDATA[
+	    CASE
+	        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 / 60 THEN 
+	            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60 * 60) || '초 전'
+	        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 / 24 THEN 
+	            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24 * 60) || '분 전'
+	        WHEN SYSDATE - B.BOARD_CREATE_DATE < 1 THEN 
+	            FLOOR((SYSDATE - B.BOARD_CREATE_DATE) * 24) || '시간 전'
+	        ELSE 
+	            TO_CHAR(B.BOARD_CREATE_DATE, 'YYYY-MM-DD')
+	    END
+	    ]]>
+		AS BOARD_CREATE_DATE,
+
+		'RECIPE' AS BOARD_TYPE
+
+		<!-- FROM -->
+		FROM RECIPE_BOARD B
+
+		JOIN MEMBER M
+		ON (B.MEMBER_NO = M.MEMBER_NO)
+
+		<!-- 썸내일 조인 -->
+		LEFT JOIN (
+			SELECT BOARD_NO, IMG_PATH, IMG_RENAME
+			FROM BOARD_STEP
+			WHERE THUMBNAIL_CHECK = 'Y'
+		) S
+		ON (B.BOARD_NO = S.BOARD_NO)
+
+		<!-- 스텝 조인 -->
+		LEFT JOIN (
+			SELECT BOARD_NO,
+			LISTAGG(STEP_CONTENT, ' ')
+			WITHIN GROUP (ORDER BY STEP_NO)
+			AS STEP_CONTENTS
+			
+			FROM BOARD_STEP
+			GROUP BY BOARD_NO
+		) STEP
+		ON (B.BOARD_NO = STEP.BOARD_NO)
+
+		<!-- 좋아요 조인 -->
+		LEFT JOIN (
+		    SELECT BOARD_NO, MEMBER_NO
+		    FROM RECIPE_BOARD_LIKE
+		    WHERE MEMBER_NO = #{memberNo}
+		) LB ON B.BOARD_NO = LB.BOARD_NO
+
+		<!-- WHERE -->
+		WHERE B.BOARD_DEL_FL = 'N'
+
+		<choose>
+			<when test='key == "t"'>
+				AND B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "c"'>
+				AND STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "tc"'>
+				AND (
+				B.BOARD_TITLE LIKE '%' || #{querys} || '%'
+				OR STEP.STEP_CONTENTS LIKE '%' || #{querys} || '%'
+				)
+			</when>
+			<when test='key == "w"'>
+				AND M.MEMBER_NICKNAME LIKE '%' || #{querys} || '%'
+			</when>
+			<when test='key == "h"'>
+				AND EXISTS (
+				SELECT 1
+				FROM BOARD_HASHTAG BH
+				JOIN HASHTAG HT ON BH.TAG_NO = HT.TAG_NO
+				WHERE BH.BOARD_NO = B.BOARD_NO
+				AND HT.TAG_NAME = <![CDATA[ REPLACE(#{querys}, '#', '') ]]>
+				)
+			</when>
+		</choose>
+		) B
+		<!-- 정렬 -->
+		ORDER BY
+		<choose>
+		    <when test="sort == null or sort == '' or sort == 'latest'">
+		        B.BOARD_CREATE_DATE DESC,
+                B.BOARD_NO DESC
+		    </when>
+		    <when test="sort == 'oldest'">
+		        B.BOARD_CREATE_DATE ASC
+		    </when>
+		    <when test="sort == 'popular'">
+		        B.LIKE_COUNT DESC, B.READ_COUNT DESC, B.BOARD_CREATE_DATE DESC
+		    </when>
+		    <when test="sort == 'views'">
+		        B.READ_COUNT DESC, B.LIKE_COUNT DESC, B.BOARD_CREATE_DATE DESC
+		    </when>
+		</choose>
+
+
+	</select>
+
+
+</mapper>

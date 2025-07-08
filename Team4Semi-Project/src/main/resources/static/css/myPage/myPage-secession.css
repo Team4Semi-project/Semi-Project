@@ -1,0 +1,138 @@
+/* myPage-secession.css - 회원탈퇴 페이지 전용 스타일 */
+
+/* 페이지 타이틀 아이콘 */
+.myPage-title::before {
+  content: "🔒";
+  font-size: 18px;
+}
+
+/* 경고 메시지 */
+.warning-message {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.warning-message::before {
+  content: "⚠️";
+}
+
+.warning-text {
+  font-size: 14px;
+  color: #856404;
+}
+
+/* 약관 영역 */
+.secession-terms {
+  width: 100%;
+  height: 240px;
+  padding: 15px;
+  border: 5px solid #fff9e4;
+  border-radius: 4px;
+  background-color: #fafafa;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  white-space: pre-wrap;
+  resize: none;
+}
+
+/* 체크박스 영역 */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  background-color: #fafafa;
+}
+
+.checkbox-container label {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* 탈퇴 버튼 스타일 재정의 */
+.myPage-submit {
+  background-color: var(--lemon);
+  color: var(--darkgray);
+  cursor: pointer;
+  margin: 0;
+  height: 48px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.myPage-submit:hover {
+  background-color: var(--yellow);
+}
+
+.myPage-submit:disabled {
+  background-color: var(--lightgray);
+  color: var(--darkgray);
+  cursor: not-allowed;
+  margin: 0;
+}
+
+.myPage-submit:disabled:hover {
+  background-color: var(--lightgray);
+}
+
+/* 입력 필드 */
+.input-field {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 14px;
+  margin-bottom: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff9e4;
+  box-sizing: border-box;
+}
+
+/* 약관 제목 여백 조정 */
+.info-title {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .secession-terms {
+    height: 150px;
+    font-size: 12px;
+  }
+
+  .warning-message {
+    padding: 12px;
+  }
+
+  .checkbox-container {
+    margin: 20px 0;
+  }
+}
+
+/* 접근성 개선 */
+.checkbox-container input[type="checkbox"]:focus {
+  outline: 2px solid #ffeb3b;
+  outline-offset: 2px;
+}
+
+.myPage-submit:focus {
+  outline: 2px solid #fdd835;
+  outline-offset: 2px;
+}

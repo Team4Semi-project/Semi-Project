@@ -1,0 +1,111 @@
+<div th:fragment="agendaList" class="agendaList">
+  <!-- 게시글 없을 때 -->
+  <div th:if="${#lists.isEmpty(boardList)}" class="no-recipes">
+    <p>등록된 게시글이 없습니다.</p>
+  </div>
+
+  <!-- 게시글 목록 -->
+  <div th:unless="${#lists.isEmpty(boardList)}" class="recipe-list">
+
+    <!-- 검색 시 -->
+    <!-- 게시글 -->
+    <div th:if="${key != null}" th:each="board : ${boardList}" class="recipe-item"
+      th:data-url="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort}">
+
+      <!-- 레시피 게시판 썸네일 -->
+      <img class="recipe-image" onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+        th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
+        alt="레시피 이미지" />
+
+      <div class="recipe-details">
+        <!-- 글 제목 / 댓글 수 -->
+        <h3 class="recipe-title">
+          <div class="titleText" th:utext="${board.boardTitle}">레몬 팬케이크</div>
+          <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
+        </h3>
+
+        <!-- 레시피 게시판 해시태그 -->
+        <div class="recipe-tags">
+          <span class="tag" th:each="tag : ${board.hashTagList}" th:utext="'#' +${tag}">#레몬</span>
+        </div>
+
+        <div class="recipe-info">
+          <!-- 작성자 정보 -->
+          <div class="recipe-meta">
+            <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+              th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+              th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+            <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
+            <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
+          </div>
+
+          <!-- 좋아요 / 조회수-->
+          <div class="recipe-stats">
+            <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+              th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+              th:data-like-check="${board.likeCheck}"
+              th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+              <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+              <span th:text="${board.likeCount}">28</span>
+            </button>
+            <div class="views">
+              <i class="material-symbols-outlined align-middle">visibility</i>
+              <span th:text="${board.readCount}">36</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 검색 아닐시 -->
+    <!-- 게시글 -->
+    <div th:if="${key == null}" th:each="board : ${boardList}" class="recipe-item"
+      th:data-url="@{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage})} + '&sort=' +  ${sort}">
+
+      <!-- 레시피 게시판 썸네일 -->
+      <img class="recipe-image" onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+        th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
+        alt="레시피 이미지" />
+
+      <div class="recipe-details">
+        <!-- 글 제목 / 댓글 수 -->
+        <h3 class="recipe-title">
+          <div class="titleText" th:utext="${board.boardTitle}">레몬 팬케이크</div>
+          <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
+        </h3>
+
+        <!-- 레시피 게시판 해시태그 -->
+        <div class="recipe-tags">
+          <span class="tag" th:each="tag : ${board.hashTagList}" th:utext="'#' +${tag}">#레몬</span>
+        </div>
+
+        <div class="recipe-info">
+          <!-- 작성자 정보 -->
+          <div class="recipe-meta non-href">
+            <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+              th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+              th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+            <span class="author-name" th:utext="${board.memberNickname}" th:data-nickname="${board.memberNickname}">장미애 님</span>
+            <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
+          </div>
+
+          <!-- 좋아요 / 조회수-->
+          <div class="recipe-stats non-href">
+            <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+              th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+              th:data-like-check="${board.likeCheck}"
+              th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+              <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+              <span th:text="${board.likeCount}">28</span>
+            </button>
+            <div class="views">
+              <i class="material-symbols-outlined align-middle">visibility</i>
+              <span th:text="${board.readCount}">36</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

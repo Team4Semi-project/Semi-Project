@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/user.png" type="image/x-icon" />
+    <title>레모나:레시피를 모르는 나</title>
+
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/board/recipeBoardDetail.css">
+    <link rel="stylesheet" href="/css/board/comment.css">
+</head>
+
+<body>
+    <!-- 헤더 프래그먼트 -->
+    <header th:replace="~{common/header :: header}"></header>
+
+    <!-- 네비게이션 프래그먼트 -->
+    <nav th:replace="~{common/navigation :: navigation}"></nav>
+
+    <!-- Content starts from the big thumbnail image below write button -->
+    <div class="content-container">
+        <!-- 썸네일 이미지 띄워주기 -->
+        <div class="recipe-thumbnail" th:each="step : ${boardStepList}" th:if="${step.thumbnailCheck} == 'Y'">
+            <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                th:src="@{${step.imgPath + step.imgRename}}" alt="썸네일 이미지" />
+        </div>
+        <!-- Recipe header -->
+        <div class="recipe-header">
+            <div class="write-info">
+                <div class="recipe-title" th:text="${board.boardTitle}">레몬 팁/후기</div>
+                <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-13</span>
+            </div>
+            <div class="recipe-info">
+                <div class="recipe-stats">
+                    <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                        th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                        th:data-like-check="${board.likeCheck}"
+                        th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+                        <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+                        <span th:text="${board.likeCount}">28</span>
+                    </button>
+                    <div class="views">
+                        <i class="material-symbols-outlined align-middle">visibility</i>
+                        <span th:text="${board.readCount}">20</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Author information -->
+        <div class="author-section">
+            <div class="author-info">
+                <div class="author-avatar">
+                    <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+                        th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                        th:data-nickname="${board.memberNickname}" alt="Author profile">
+                </div>
+                <span class="author-name" th:text="${board.memberNickname}"
+                    th:data-nickname="${board.memberNickname}">장미애 님</span>
+            </div>
+
+            <div class="action-buttons" th:if="${loginMember != null and loginMember.memberNo == board.memberNo}">
+                <button class="action-button" id="updateBtn" th:data-board-no=${board.boardNo}>수정하기</button>
+                <button class="action-button" id="deleteBtn">삭제하기</button>
+            </div>
+        </div>
+
+        <!-- Main content - Recipe steps -->
+        <div class="recipe-steps">
+            <!-- Loop through recipe steps with Thymeleaf -->
+            <div class="recipe-step" th:each="step, stepStat : ${boardStepList}">
+                <div class="step-content">
+                    <div class="step-number">
+                        <span th:text="${stepStat.count}">1</span>
+                        <img src="/images/lemonOrder.png">
+                    </div>
+                    <br>
+                    <p th:text="${step.stepContent}">레몬을 준비합니다</p>
+                </div>
+                <div class="step-image">
+                    <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                        th:src="|${step.imgPath}${step.imgRename}|" alt="Recipe step image" />
+                    <!-- <img th:src="${step.imgPath}" src="/images/lemon-chef.jpg" alt="Recipe step image"> -->
+                </div>
+            </div>
+        </div>
+        <!-- 레시피 게시판 해시태그 -->
+        <div class="recipe-tags">
+            <span class="tag" th:each="tag : ${board.hashTagList}" th:text="'#' +${tag}"
+                style="cursor: pointer;">#레몬</span>
+        </div>
+        <!-- Navigation buttons -->
+        <div class="navi" id="naviBtn" th:attr="data-prev-board-no=${prevBoardNo}, 
+                     data-next-board-no=${nextBoardNo},
+                     data-cp=${cp}, 
+                     data-prev-board=${prevBoardCode}, 
+                     data-next-board=${nextBoardCode},
+                     data-member-nickname=${board.memberNickname}">
+            <a class="nav-button" id="goToPrev">
+                <span class="material-symbols-outlined align-middle">chevron_left</span>
+                <span class="text">이전 글</span>
+            </a>
+            <a class="nav-button" id="goToListBtn">
+                <span class="text">목록으로</span>
+            </a>
+            <a class="nav-button" id="goToNext">
+                <sapn class="text">다음 글</sapn>
+                <span class="material-symbols-outlined align-middle">chevron_right</span>
+            </a>
+        </div>
+
+        <script>
+            // 현재 경로
+            const path = window.location.pathname; // "/board/1/userProfile/152"
+
+            // 'userProfile' 포함 여부 체크
+            if (path.includes('userProfile')) {
+                // 목록 버튼만 보이게, 나머지 버튼 숨기기
+                const goToListBtn = document.getElementById('goToListBtn');
+                goToListBtn.style.display = 'inline-block';
+                const goToPrev = document.getElementById('goToPrev');
+                const goToNext = document.getElementById('goToNext');
+
+                if (goToPrev) goToPrev.style.display = 'none';
+                if (goToNext) goToNext.style.display = 'none';
+            }
+        </script>
+
+        <!-- 댓글 영역-->
+        <th:block th:replace="~{board/comment}"></th:block>
+    </div>
+
+    <!-- 푸터 프래그먼트 -->
+    <footer th:replace="~{common/footer :: footer}"></footer>
+
+    <script th:inline="javascript">
+        // 게시판 코드
+        const boardCode = /*[[${board.boardCode}]]*/ 0;
+
+        // - loginMember가 null 인 경우 null 반환
+        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+        // 현재 게시글 번호를 전역 변수로 저장
+        const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
+
+        const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+    </script>
+
+    <th:block th:replace="~{common/header :: search-header-js}"></th:block>
+    <script th:src="@{/js/board/recipeBoardDetail.js}"></script>
+    <script>
+        document.querySelectorAll(".tag").forEach((tag) => {
+            tag.addEventListener("click", () => {
+                const keyword = tag.textContent.replace("#", ""); // # 제거
+                window.location.href = `/search?key=h&querys=${encodeURIComponent(
+                    keyword
+                )}`;
+            });
+        });
+    </script>
+    <script src="/js/board/comment.js"></script>
+</body>
+
+</html>

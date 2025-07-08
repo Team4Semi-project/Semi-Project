@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title>레모나:레시피를 모르는 나</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/board/defaultBoardDetail.css">
+  <link rel="stylesheet" href="/css/board/comment.css">
+</head>
+
+<body>
+  <!-- 헤더 프래그먼트 -->
+  <header th:replace="~{common/header :: header}"></header>
+
+  <!-- 네비게이션 프래그먼트 -->
+  <nav th:replace="~{common/navigation :: navigation}"></nav>
+
+  <!-- 컨텐츠 -->
+  <section class=" board-detail">
+    <!-- 제목, 작성일, 조회수-->
+    <div class="container-title">
+      <div class="container-inner">
+        <div class="text-left">
+          <div th:text="${board.boardTitle}" class="board-title">게시글 제목</div>
+          <div class="board-update" th:text="${board.boardCreateDate}">작성일</div>
+        </div>
+        <div class="text-right">
+          <button type="button" class="likes" th:if="${boardCode != 3}"
+            th:data-login-member-no="${session.loginMember?.memberNo}" th:data-board-code="${board.boardCode}"
+            th:data-board-no="${board.boardNo}" th:data-like-check="${board.likeCheck}"
+            th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+            <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+            <span th:text="${board.likeCount}">28</span>
+          </button>
+          <div class="views">
+            <i class="material-symbols-outlined align-middle">visibility</i>
+            <span th:text="${board.readCount}" class="align-middle">조회수</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 작성자 -->
+    <div class="container-member">
+      <div class="container-inner">
+        <div class="member">
+          <!-- 프로필 이미지가 없으면 기본 이미지 출력 -->
+          <img class="profileImg" onerror="this.onerror=null; this.src='/images/user.png';"
+            th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+            th:data-nickname="${board.memberNickname}" alt="프로필 이미지">
+          <span class="nickname" th:text="${board.memberNickname}" th:data-nickname="${board.memberNickname}">작성자
+            닉네임</span>
+        </div>
+
+        <!-- 게시글 작성자라면 수정, 삭제 버튼 보임-->
+        <div class="button-container">
+          <th:block th:if="${board.memberNo == session.loginMember?.memberNo}">
+            <button class="updateBtn">수정하기</button>
+            <button class="deleteBtn">삭제하기</button>
+          </th:block>
+        </div>
+      </div>
+    </div>
+
+    <!-- 내용 -->
+    <div class="container-content">
+      <div class="container-inner">
+        <!-- 서머노트로 저장된 HTML 내용이 들어감 -->
+        <div class="mt-4" th:utext="${board.boardContent}">게시글 내용</div>
+      </div>
+    </div>
+
+    <div class="container-page" id="naviBtn" th:attr="
+    data-prev-board-no=${prevBoardNo},
+    data-next-board-no=${nextBoardNo},
+    data-prev-board=${prevBoardCode}, 
+    data-next-board=${nextBoardCode}, 
+    data-user-profile=${userProfile},
+    data-member-nickname=${board.memberNickname}">
+      <a id="goToPrev">
+        <span class="material-symbols-outlined align-middle">chevron_left</span>
+        <span class="text">이전 글</span>
+      </a>
+      <a class="container-page" id="goToListBtn">
+        <span class="text">목록으로</span>
+      </a>
+      <a id="goToNext">
+        <sapn class="text">다음 글</sapn>
+        <span class="material-symbols-outlined align-middle">chevron_right</span>
+      </a>
+    </div>
+    <script>
+      const userProfile = naviBtn.dataset.userProfile;
+
+      // 'userProfile' 포함 여부 체크
+      if (userProfile == 'Y') {
+        // 목록 버튼만 보이게, 나머지 버튼 숨기기
+        const goToListBtn = document.getElementById('goToListBtn');
+        goToListBtn.style.display = 'inline-block';
+        const goToPrev = document.getElementById('goToPrev');
+        const goToNext = document.getElementById('goToNext');
+
+        if (goToPrev) goToPrev.style.display = 'none';
+        if (goToNext) goToNext.style.display = 'none';
+      }
+    </script>
+
+    <!-- 댓글 영역-->
+    <th:block th:replace="~{board/comment}"></th:block>
+  </section>
+
+  <!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+  <th:block th:replace="~{common/header :: search-header-js}"></th:block>
+
+
+  <script th:inline="javascript">
+
+    // 페이지 네이션 cp
+    const urlParams = new URLSearchParams(location.search);
+    const cp = urlParams.get("cp") || 1;
+
+    const boardCode = /*[[${board.boardCode}]]*/ 0;
+
+    // - loginMember가 null 인 경우 null 반환
+    const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+    // 현재 게시글 번호를 전역 변수로 저장
+    const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
+
+    const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+
+  </script>
+
+  <script src="/js/board/defaultBoardDetail.js"></script>
+  <script src="/js/board/comment.js"></script>
+  <th:block th:replace="~{common/header :: search-header-js}"></th:block>
+</body>
+
+</html>

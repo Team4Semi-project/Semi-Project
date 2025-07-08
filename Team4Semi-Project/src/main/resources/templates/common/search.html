@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/images/user.png" type="image/x-icon" />
+  <title>레모나:레시피를 모르는 나</title>
+  <link rel="stylesheet" th:href="@{/css/board/boardList.css}" />
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+
+<body>
+  <!-- 헤더 프래그먼트 -->
+  <header th:replace="~{common/header :: header}"></header>
+
+  <!-- 네비게이션 프래그먼트 -->
+  <nav th:replace="~{common/navigation :: navigation}"></nav>
+
+  <!-- 메인 콘텐츠 영역 -->
+  <main class="main-list">
+    <section class="recipe-section">
+      <!-- 섹션 헤더 -->
+      <div class="section-header">
+        <h2 class="section-title">검색결과 목록</h2>
+
+        <div class="options-container">
+          <div class="view-options">
+            <div class="background-indicator"></div>
+
+            <button class="view-toggle agenda" data-view="agenda">
+              <span class="material-symbols-outlined"> view_agenda </span>
+            </button>
+            <button class="view-toggle cozy active" data-view="cozy">
+              <span class="material-symbols-outlined"> view_cozy </span>
+            </button>
+          </div>
+
+          <div class="sort-options">
+            <select class="sort-select" id="sortSelect">
+              <option value="latest">최신순</option>
+              <option value="oldest">오래된순</option>
+              <option value="popular">인기순</option>
+              <option value="views">조회수순</option>
+            </select>
+            <i class="fas fa-caret-down"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 게시글 컨테이너 (Cozy View) -->
+      <div class="recipe-container cozy-view" id="cozy">
+        <!-- 게시글 없을 때 -->
+        <div th:if="${#lists.isEmpty(searchAllBoardList)}" class="no-recipes">
+          <p>등록된 게시글이 없습니다.</p>
+        </div>
+
+        <!-- 게시글 목록 -->
+        <div th:unless="${#lists.isEmpty(searchAllBoardList)}" class="recipe-grid">
+
+          <!-- 게시글 아이템 -->
+          <div th:each="board : ${searchAllBoardList}" class="recipe-item"
+            th:data-url="${board.boardCode == 1} ? @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} : @{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort}">
+
+            <!-- 레시피 게시판 썸네일 -->
+            <div class="recipe-image">
+              <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                th:src="${board.boardCode == 1 ? board.thumbnailImgPath + board.thumbnailImgRename : board.thumbnail}"
+                
+                alt="레시피 이미지" />
+            </div>
+
+            <!-- 글 제목 / 댓글 수 -->
+            <div class="recipe-info">
+              <h3 class="recipe-title">
+                <div class="titleText" th:utext="${board.boardTitle}">레몬 팬케이크</div>
+                <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
+              </h3>
+              <!-- 레시피 게시판 해시태그 -->
+              <div class="recipe-tags">
+                <span th:if="${board.boardCode == 1}" class="tag" th:each="tag : ${board.hashTagList}"
+                  th:utext="'#' +${tag}">#레몬</span>
+              </div>
+
+              <!-- 상세페이지 이동 X -->
+              <div class="rowBox">
+                <div class="recipe-meta non-href">
+                  <!-- 사용자 정보 -->
+                  <div class="author-info">
+                    <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+                      th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                      th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                    <span class="author-name" th:utext="${board.memberNickname}"
+                      th:data-nickname="${board.memberNickname}">장미애 님</span>
+                  </div>
+                  <!-- 작성일 -->
+                  <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
+                </div>
+
+                <!-- 좋아요/조회수 -->
+                <div class="recipe-stats non-href">
+                  <!-- 좋아요 버튼 -->
+                  <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                    th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                    th:data-like-check="${board.likeCheck}"
+                    th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+                    <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+                    <span th:text="${board.likeCount}">28</span>
+                  </button>
+                  <!-- 조회수 -->
+                  <div class="views">
+                    <i class="material-symbols-outlined align-middle">visibility</i>
+                    <span th:text="${board.readCount}">36</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 게시글 컨테이너 (Agenda View) -->
+      <div class="recipe-container agenda-view" id="agenda" style="display: none">
+        <!-- 게시글 없을 때 -->
+        <div th:if="${#lists.isEmpty(searchAllBoardList)}" class="no-recipes">
+          <p>등록된 게시글이 없습니다.</p>
+        </div>
+
+        <!-- 게시글 목록 -->
+        <div th:unless="${#lists.isEmpty(searchAllBoardList)}" class="recipe-list">
+          <!-- 게시글 아이템 -->
+          <div th:each="board : ${searchAllBoardList}" class="recipe-item"
+            th:data-url="${board.boardCode == 1} ? @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} : @{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort}">
+
+            <!-- 레시피 게시판 썸네일 -->
+            <img class="recipe-image" onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+              th:src="${board.boardCode == 1 ? board.thumbnailImgPath + board.thumbnailImgRename : board.thumbnail}"
+              alt="레시피 이미지" />
+
+            <div class="recipe-details">
+              <!-- 글 제목 / 댓글 수 -->
+              <h3 class="recipe-title">
+                <div class="titleText" th:utext="${board.boardTitle}">레몬 팬케이크</div>
+                <span class="comment-count" th:text="'[' + ${board.commentCount} + ']'">[0]</span>
+              </h3>
+
+              <!-- 레시피 게시판 해시태그 -->
+              <div class="recipe-tags">
+                <span th:if="${board.boardCode == 1}" class="tag" th:each="tag : ${board.hashTagList}"
+                  th:utext="'#' +${tag}">#레몬</span>
+              </div>
+
+              <div class="recipe-info">
+                <!-- 작성자 정보 -->
+                <div class="recipe-meta non-href">
+                  <img class="author-image" onerror="this.onerror=null; this.src='/images/user.png';"
+                    th:src="${#strings.isEmpty(board.profileImg) ? '/images/user.png' : board.profileImg}"
+                    th:data-nickname="${board.memberNickname}" alt="프로필 이미지" />
+                  <span class="author-name" th:utext="${board.memberNickname}"
+                    th:data-nickname="${board.memberNickname}">장미애 님</span>
+                  <span class="recipe-date" th:text="${board.boardCreateDate}">2025-05-09</span>
+                </div>
+
+                <!-- 좋아요 / 조회수-->
+                <div class="recipe-stats non-href">
+                  <button type="button" class="likes" th:data-login-member-no="${session.loginMember?.memberNo}"
+                    th:data-board-code="${board.boardCode}" th:data-board-no="${board.boardNo}"
+                    th:data-like-check="${board.likeCheck}"
+                    th:classappend="${board.likeCheck == 1} ? likeChecked : likeUnChecked">
+                    <i class="fa-lemon" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular"></i>
+                    <span th:text="${board.likeCount}">28</span>
+                  </button>
+                  <div class="views">
+                    <i class="material-symbols-outlined align-middle">visibility</i>
+                    <span th:text="${board.readCount}">36</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 검색시 여백 -->
+      <div class="whiteSpace" style="flex: 1;"></div>
+
+      <div class="pagination-area">
+        <!-- 일반 목록 조회 (검색 X )-->
+        <ul class="pagination" th:unless="${param.key}" th:object="${pagination}">
+          <!-- 첫 페이지로 이동 -->
+          <li>
+            <a th:href="@{/search(cp=1)}">&lt;&lt;</a>
+          </li>
+          <!-- << : /board/1?cp=1 -->
+
+          <!-- 이전 목록 마지막 번호로 이동 -->
+          <li>
+            <a th:href="@{/search(cp=*{prevPage})}">&lt;</a>
+          </li>
+          <!-- < : /board/1?cp=10 -->
+
+          <!-- 특정 페이지로 이동 -->
+
+          <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <!-- 현재 보고있는 페이지 -->
+            <li th:if="${i} == *{currentPage}">
+              <a class="current" th:text="${i}">현재페이지</a>
+            </li>
+
+            <!-- 보고있지 않은 페이지 -->
+            <li th:unless="${i} == *{currentPage} or ${i} == 0">
+              <a th:href="@{/search(cp=${i})}" th:text="${i}">이동할 페이지</a>
+            </li>
+          </th:block>
+
+          <!-- 다음 목록 시작 번호로 이동 -->
+          <li>
+            <a th:href="@{/search(cp=*{nextPage})}">&gt;</a>
+          </li>
+
+          <!-- 끝 페이지로 이동 -->
+          <li>
+            <a th:href="@{/search(cp=*{maxPage})}">&gt;&gt;</a>
+          </li>
+        </ul>
+
+        <!-- 검색인 경우 -->
+        <ul class="pagination" th:if="${param.key}" th:object="${pagination}">
+          <!-- 첫 페이지로 이동 -->
+          <li>
+            <a th:href="@{/search(cp=1, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} ">&lt;&lt;</a>
+          </li>
+
+          <!-- 이전 목록 마지막 번호로 이동 -->
+          <li>
+            <a
+              th:href="@{/search(cp=*{prevPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} ">&lt;</a>
+          </li>
+
+          <!-- 특정 페이지로 이동 -->
+          <th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <!-- 현재 보고있는 페이지 -->
+            <li th:if="${i} == *{currentPage}">
+              <a class="current" th:text="${i}">현재페이지</a>
+            </li>
+
+            <!-- 보고있지 않은 페이지 -->
+            <li th:unless="${i} == *{currentPage}">
+              <a th:href="@{/search(cp=${i}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} "
+                th:text="${i}">이동할 페이지</a>
+            </li>
+          </th:block>
+
+          <!-- 일치하는 게시글이 없을 경우 -->
+          <th:block th:unless="*{startPage lt endPage}">
+            <li>
+              <a class="current">1</a>
+            </li>
+          </th:block>
+
+          <!-- 다음 목록 시작 번호로 이동 -->
+          <li>
+            <a
+              th:href="@{/search(cp=*{nextPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} ">&gt;</a>
+          </li>
+
+          <!-- 끝 페이지로 이동 -->
+          <li>
+            <a
+              th:href="@{/search(cp=*{maxPage}, key=${param.key}, queryb=${param.queryb})} + '&sort=' +  ${sort} ">&gt;&gt;</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- 푸터 프래그먼트 -->
+  <footer th:replace="~{common/footer :: footer}"></footer>
+
+  <!-- 공통 스크립트 -->
+  <script th:src="@{/js/board/boardList.js}"></script>
+  <script layout:fragment="script"></script>
+  <th:block th:replace="~{common/header :: search-header-js}"></th:block>
+</body>
+
+</html>

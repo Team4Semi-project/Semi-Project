@@ -1,0 +1,302 @@
+/* 로고 */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fbbf24;
+}
+
+/* 네비게이션 링크 */
+.nav a {
+  margin: 0 16px;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* 헤더 오른쪽 섹션 */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 검색 아이콘 */
+.search-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* 글쓰기 버튼 */
+.write-btn {
+  background-color: #fbbf24;
+  color: #000;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* 컨테이너 (공통) */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 프로필 섹션 */
+.profile-section {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  border-bottom: 2px solid #fdd835;
+  margin-bottom: 24px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 600px;
+}
+
+.profile-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fdd835;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.nickname-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.profile-nickname {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.edit-icon {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.edit-icon .material-symbols-outlined {
+  font-size: 24px;
+  color: #6b7280;
+  transition: color 0.3s;
+}
+
+.edit-icon:hover .material-symbols-outlined {
+  color: #fdd835;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 8px;
+}
+
+.stat-btn {
+  display: flex;
+  align-items: center;
+  background-color: #eeb604;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 16px;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.stat-number {
+  margin-left: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 탭 섹션 (mypage 특화) */
+.tabs {
+  display: flex;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  font-size: 16px;
+  background-color: #fff;
+  border-radius: 6px 6px 0 0;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 14px;
+  background-color: #e3e3e3;
+  border-right: 1px solid #ddd;
+  cursor: pointer;
+  min-width: 500px;
+  white-space: nowrap;
+  transition: background-color 0.3s;
+  text-decoration: none;
+  color: #000000;
+}
+
+.tab:hover {
+  background-color: #f0f0f0;
+}
+
+.tab:last-child {
+  border-right: none;
+}
+
+.tab.active {
+  background-color: #fae79a;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.tab.active:hover {
+  background-color: #f5b400;
+}
+
+/* 게시글 섹션 (mypage 특화) */
+.post-section {
+  display: block;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.recipe-card {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+}
+
+.recipe-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.recipe-content {
+  padding: 12px;
+  text-align: center;
+}
+
+.recipe-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.recipe-meta {
+  margin-bottom: 8px;
+}
+
+.recipe-date {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.recipe-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.icon {
+  font-size: 14px;
+}
+
+/* 페이지네이션 (mypage 특화) */
+.pagination-area {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  gap: 8px;
+}
+
+.pagination li {
+  display: inline-block;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #f9f9f9;
+}
+
+.pagination .current {
+  background-color: #fdd835;
+  border-color: #fdd835;
+  color: #333;
+  font-weight: bold;
+}
+
+/* 푸터 (공통) */
+.footer {
+  padding: 24px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.footer-content a {
+  color: #ddd;
+  text-decoration: none;
+  margin: 0 16px;
+  font-size: 14px;
+}

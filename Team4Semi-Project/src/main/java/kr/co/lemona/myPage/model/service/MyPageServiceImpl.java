@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ import kr.co.lemona.common.util.Utility;
 import kr.co.lemona.member.model.dto.Member;
 import kr.co.lemona.myPage.model.mapper.MyPageMapper;
 import kr.co.lemona.recipeBoard.model.dto.RecipeBoard;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

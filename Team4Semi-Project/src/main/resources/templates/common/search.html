@@ -62,11 +62,18 @@
             th:data-url="${board.boardCode == 1} ? @{/board/{boardCode}/{categoryNo}/{boardNo}(boardCode=${board.boardCode}, categoryNo=${categoryNo}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort} : @{/board/{boardCode}/{boardNo}(boardCode=${board.boardCode}, boardNo=${board.boardNo}, cp=${pagination.currentPage}, key=${param.key}, querys=${param.querys})} + '&sort=' +  ${sort}">
 
             <!-- 레시피 게시판 썸네일 -->
-            <div class="recipe-image">
+            <div th:if="${board.boardCode == 1}" class="recipe-image">
               <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
                 th:src="${#strings.isEmpty(board.thumbnailImgRename) ? '/images/lemona-logo.png' : board.thumbnailImgPath + board.thumbnailImgRename}"
                 alt="레시피 이미지" />
             </div>
+
+            <!-- 자유 게시판 썸네일 -->
+              <div th:if="${board.boardCode == 2 || board.boardCode == 3}" class="recipe-image">
+                <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
+                  th:src="${#strings.isEmpty(board.thumbnail) ? '/images/lemona-logo.png' : board.thumbnail}"
+                  alt="레시피 이미지" />
+              </div>
 
             <!-- 글 제목 / 댓글 수 -->
             <div class="recipe-info">

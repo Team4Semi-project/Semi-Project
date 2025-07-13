@@ -143,6 +143,10 @@ if (changePw != null) {
       return;
     }
 
+    if(currentPw != loginMember.memberPw){
+      alert("현재 비밀번호가 일치하지 않습니다.");
+    }
+
     // 새 비밀번호 정규식
     const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
 

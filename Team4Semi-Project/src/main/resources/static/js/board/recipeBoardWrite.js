@@ -513,6 +513,8 @@ document.addEventListener("DOMContentLoaded", function () {
         formData.append("imageExists", true);
       } else { // 이미지가 없을때
         // 공백 표시
+        alert("이미지를 업로드 해주세요");
+        return;
         formData.append("imageExists", false);
       }
 

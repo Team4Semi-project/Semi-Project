@@ -65,8 +65,8 @@
             <!-- 레시피 게시판 썸네일 -->
             <div class="recipe-image">
               <img onerror="this.onerror=null; this.src='/images/lemona-logo.png';"
-                th:src="${board.boardCode == 1 ? board.thumbnailImgPath + board.thumbnailImgRename : board.thumbnail}"
-                
+                th:src="${#strings.isEmpty(board.thumbnailImgRename)  ? '/images/lemona-logo.png' : 
+                      (board.boardCode == 1 ? board.thumbnailImgPath + board.thumbnailImgRename : board.thumbnail)}"
                 alt="레시피 이미지" />
             </div>
 
